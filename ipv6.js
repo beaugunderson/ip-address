@@ -67,8 +67,6 @@ function bigInteger(address) {
       temp.push(sprintf("%04x", parseInt(address[i], 16)));
    }
 
-   console.log(temp.join(''));
-
    var b = new BigInteger(temp.join(''), 16);
 
    return b;
@@ -90,15 +88,29 @@ var addresses = [
    "::"
 ];
 
-for (var i = 0; i < addresses.length; i++) {
-   var address = parseAddress(addresses[i]);
+function output(t, s) {
+   if (!t || !s) {
+      $("body").append("<p>&nbsp;</p>");
 
-   console.log(address, address.length);
-   console.log(longRepresentation(address));
-   console.log(decimalRepresentation(address));
+      return;
+   }
 
-   var b = bigInteger(address);
-
-   console.log(b.toString(16), b);
-   console.log(b.toString(), b);
+   $("body").append(sprintf("<p><span>%s:</span> %s</p>", t, s));
 }
+
+$(function() {
+   for (var i = 0; i < addresses.length; i++) {
+      var address = parseAddress(addresses[i]);
+
+      output("address", address.join(':'));
+      output("long", longRepresentation(address));
+      output("decimal", decimalRepresentation(address));
+
+      var b = bigInteger(address);
+
+      output("hex BigInteger", b.toString(16));
+      output("dec BigInteger", b.toString());
+
+      output();
+   }
+});
