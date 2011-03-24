@@ -1,9 +1,9 @@
 javascript-ipv6
 ===============
 
-Doesn't do much yet but I'd like it to be a useful library for manipulating IPV6 addresses in JavaScript.
+javascript-ipv6 is a library for manipulating IPv6 addresses in JavaScript.
 
-What it does now
+Current functionality
 ----------------
 
 - Parsing of most IPv6 notations
