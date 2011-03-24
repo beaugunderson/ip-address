@@ -1,6 +1,25 @@
 var FIELDS = 8;
+var RE_BAD_CHARACTERS = /[^0-9a-f:\/]/;
 
-function parseAddress(address) {
+var v6 = {};
+
+v6.Address = function(address) {
+   this.address = address;
+
+   this.parsed_address = this.parse(address);
+};
+
+v6.Address.prototype.isValid = function() {
+   return this.valid;
+};
+
+v6.Address.prototype.parse = function(address) {
+   if (RE_BAD_CHARACTERS.test(address)) {
+      this.valid = false;
+
+      return;
+   }
+
    var address_array = address.split('::');
    var quads;
 
@@ -31,48 +50,69 @@ function parseAddress(address) {
       quads = address.split(':');
 
       if (quads.length != 8) {
-         return false;
+         this.valid = false;
+
+         return;
       }
    } else {
-      return false;
+      this.valid = false;
+
+      return;
    }
+
+   this.valid = true;
 
    return quads;
-}
+};
 
-function longRepresentation(address) {
+v6.Address.prototype.long = function() {
+   if (!this.valid) {
+      return;
+   }
+
    var temp = [];
 
-   for (var i = 0; i < address.length; i++) {
-      temp.push(sprintf("%04x", parseInt(address[i], 16)));
+   for (var i = 0; i < this.parsed_address.length; i++) {
+      temp.push(sprintf("%04x", parseInt(this.parsed_address[i], 16)));
    }
 
    return temp.join(':');
-}
+};
 
-function decimalRepresentation(address) {
+v6.Address.prototype.decimal = function() {
+   if (!this.valid) {
+      return;
+   }
+
    var temp = [];
 
-   for (var i = 0; i < address.length; i++) {
-      temp.push(sprintf("%05d", parseInt(address[i], 16)));
+   for (var i = 0; i < this.parsed_address.length; i++) {
+      temp.push(sprintf("%05d", parseInt(this.parsed_address[i], 16)));
    }
 
    return temp.join(':');
-}
+};
 
-function bigInteger(address) {
+v6.Address.prototype.bigInteger = function() {
+   if (!this.valid) {
+      return;
+   }
+
    var temp = [];
 
-   for (var i = 0; i < address.length; i++) {
-      temp.push(sprintf("%04x", parseInt(address[i], 16)));
+   for (var i = 0; i < this.parsed_address.length; i++) {
+      temp.push(sprintf("%04x", parseInt(this.parsed_address[i], 16)));
    }
 
    var b = new BigInteger(temp.join(''), 16);
 
    return b;
-}
+};
 
 var addresses = [
+   "ffff:",
+   "ffff::ffff::ffff",
+   "ffgg:ffff:ffff:ffff:ffff:ffff:ffff:ffff",
    "ffff:ffff:ffff:ffff:ffff:ffff:ffff:ffff",
    "fedc:ba98:7654:3210:fedc:ba98:7654:3210",
    "2608:af09:30::102a:7b91:c239b:baff",
@@ -89,7 +129,7 @@ var addresses = [
 ];
 
 function output(t, s) {
-   if (!t || !s) {
+   if (!t || s == undefined) {
       $("body").append("<p>&nbsp;</p>");
 
       return;
@@ -100,16 +140,19 @@ function output(t, s) {
 
 $(function() {
    for (var i = 0; i < addresses.length; i++) {
-      var address = parseAddress(addresses[i]);
+      var address = new v6.Address(addresses[i]);
 
-      output("address", address.join(':'));
-      output("long", longRepresentation(address));
-      output("decimal", decimalRepresentation(address));
+      output("input address", address.address);
+      output("valid", address.isValid());
 
-      var b = bigInteger(address);
+      if (address.isValid()) {
+         output("parsed address", address.parsed_address.join(':'));
+         output("long", address.long());
+         output("decimal", address.decimal());
 
-      output("hex BigInteger", b.toString(16));
-      output("dec BigInteger", b.toString());
+         output("hex BigInteger", address.bigInteger().toString(16));
+         output("dec BigInteger", address.bigInteger().toString());
+      }
 
       output();
    }
