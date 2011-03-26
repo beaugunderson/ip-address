@@ -1,8 +1,10 @@
-var FIELDS = 8;
-var RE_BAD_CHARACTERS = /[^0-9a-f:\/]/i;
-
 var v6 = {};
 var v4 = {};
+
+v6.GROUPS = 8;
+
+v6.RE_BAD_CHARACTERS = /[^0-9a-f:\/]/i;
+v6.RE_BAD_ADDRESS = /[0-9a-f]{5,}|:{3,}|[^:]:$/i;
 
 v4.Address = function(address) {
 
@@ -22,15 +24,121 @@ v4.Address.fromHex = function(hex) {
    return ip.join('.');
 };
 
-v6.Address = function(address) {
+v6.Address = function(address, groups) {
    this.address = address;
 
+   if (groups == undefined) {
+      this.groups = v6.GROUPS;
+   } else {
+      this.groups = groups;
+   }
+
    this.parsed_address = this.parse(address);
+
+   this.correct = address == this.correct_form();
+   this.canonical = address == this.canonical_form();
 };
+
+v6.Address.compact = function(address, slice) {
+   var s1 = [];
+   var s2 = [];
+
+   for (var i = 0; i < address.length; i++) {
+      if (i < slice[0]) {
+         s1.push(address[i]);
+      } else if (i > slice[1]) {
+         s2.push(address[i]);
+      }
+   }
+
+   return s1.concat(['compact']).concat(s2);
+}
 
 v6.Address.prototype.isValid = function() {
    return this.valid;
 };
+
+v6.Address.prototype.isCorrect = function() {
+   return this.correct;
+};
+
+v6.Address.prototype.isCanonical = function() {
+   return this.canonical;
+};
+
+v6.Address.prototype.isTeredo = function() {
+   if (/2001:0000/.test(this.canonical_form())) {
+      return true;
+   }
+
+   return false;
+};
+
+v6.Address.prototype.correct_form = function() {
+   var groups = [];
+
+   var zero_counter = 0;
+   var zeroes = [];
+
+   var last_value = null;
+
+   if (!this.parsed_address) {
+      return;
+   }
+
+   for (var i = 0; i < this.parsed_address.length; i++) {
+      var value = parseInt(this.parsed_address[i], 16);
+
+      if (value === 0) {
+         zero_counter++;
+      }
+
+      if (value !== 0 && zero_counter > 0) {
+         if (zero_counter > 1) {
+            zeroes.push([i - zero_counter, i - 1]);
+         }
+
+         zero_counter = 0;
+      }
+
+      last_value = value;
+   }
+
+   // Do we end with a string of zeroes?
+   if (zero_counter > 1) {
+      zeroes.push([this.parsed_address.length - zero_counter, this.parsed_address.length - 1]);
+   }
+
+   var zero_lengths = $.map(zeroes, function(n) {
+      return (n[1] - n[0]) + 1;
+   });
+
+   last_value = null;
+   var different = false;
+
+   if (zeroes.length > 0) {
+      var max = Math.max.apply(Math, zero_lengths);
+      var index = zero_lengths.indexOf(max);
+
+      groups = v6.Address.compact(this.parsed_address, zeroes[index]);
+   } else {
+      groups = this.parsed_address;
+   }
+
+   for (var i = 0; i < groups.length; i++) {
+      if (groups[i] != 'compact') {
+         groups[i] = parseInt(groups[i], 16).toString(16);
+      }
+   }
+
+   var correct = groups.join(':');
+
+   correct = correct.replace(/^compact$/, '::');
+   correct = correct.replace(/^compact|compact$/, ':');
+   correct = correct.replace(/compact/, '');
+
+   return correct;
+}
 
 v6.Address.prototype.zeroPad = function() {
    var s = this.bigInteger().toString(2);
@@ -47,7 +155,13 @@ v6.Address.prototype.zeroPad = function() {
 };
 
 v6.Address.prototype.parse = function(address) {
-   if (RE_BAD_CHARACTERS.test(address)) {
+   if (v6.RE_BAD_CHARACTERS.test(address)) {
+      this.valid = false;
+
+      return;
+   }
+
+   if (v6.RE_BAD_ADDRESS.test(address)) {
       this.valid = false;
 
       return;
@@ -60,7 +174,7 @@ v6.Address.prototype.parse = function(address) {
       var first = address_array[0].split(':');
       var last = address_array[1].split(':');
 
-      var remaining = FIELDS - (first.length + last.length);
+      var remaining = this.groups - (first.length + last.length);
 
       for (var i = 0; i < first.length; i++) {
          if (first[i] == "") {
@@ -82,7 +196,7 @@ v6.Address.prototype.parse = function(address) {
    } else if (address_array.length == 1) {
       quads = address.split(':');
 
-      if (quads.length != 8) {
+      if (quads.length != this.groups) {
          this.valid = false;
 
          return;
@@ -106,7 +220,7 @@ v6.Address.prototype.parse = function(address) {
    return quads;
 };
 
-v6.Address.prototype.long = function() {
+v6.Address.prototype.canonical_form = function() {
    if (!this.valid) {
       return;
    }
@@ -150,12 +264,25 @@ v6.Address.prototype.bigInteger = function() {
    return b;
 };
 
-v6.Address.prototype.teredo = function() {
+v6.Address.prototype.v4_form = function() {
    var s = this.zeroPad().split('');
 
-   var b = $.map(this.zeroPad().split(''), function(i) {
-      return parseInt(i);
-   });
+   var v4_address = v4.Address.fromHex(new BigInteger(s.slice(96, 128).join(''), 2).toString(16));
+   var v6_address = new v6.Address(this.parsed_address.slice(0, 6).join(':'), 6);
+
+   var c = v6_address.correct_form();
+
+   var infix = '';
+
+   if (!/:$/.test(c)) {
+      infix = ':';
+   }
+
+   return v6_address.correct_form() + infix + v4_address;
+}
+
+v6.Address.prototype.teredo = function() {
+   var s = this.zeroPad().split('');
 
    /*
       - Bits 0 to 31 are set to the Teredo prefix (normally 2001:0000::/32).
@@ -184,60 +311,3 @@ v6.Address.prototype.teredo = function() {
       client_v4: client_v4_ip
    };
 }
-
-var addresses = [
-   "2001:0000:4136:e378:8000:63bf:3fff:fdd2",
-   "2001::CE49:7601:E866:EFFF:62C3:FFFE",
-   "2001::CE49:7601:2CAD:DFFF:7C94:FFFE",
-   "ffff:ffff:ffff:ffff:ffff:ffff:ffff:ffff",
-   "fedc:ba98:7654:3210:fedc:ba98:7654:3210",
-   "2608:af09:30:0:0:0:0:134",
-   "1080:0:0:0:8:800:200c:417a",
-   "1080::8:800:200c:417a",
-   "0:1:2:3:4:5:6:7",
-   "7:6:5:4:3:2:1:0",
-   "2608::3:5",
-   "ffff::3:5",
-   "::1",
-   "0:0:0:0:0:0:0:0",
-   "::",
-   "ffff:",
-   "ffff::ffff::ffff",
-   "ffgg:ffff:ffff:ffff:ffff:ffff:ffff:ffff",
-   "2608:af09:30::102a:7b91:c239b:baff"
-];
-
-function output(t, s) {
-   if (!t || s == undefined) {
-      $("body").append("<p>&nbsp;</p>");
-
-      return;
-   }
-
-   $("body").append(sprintf("<p><span>%s:</span> %s</p>", t, s));
-}
-
-$(function() {
-   for (var i = 0; i < addresses.length; i++) {
-      var address = new v6.Address(addresses[i]);
-
-      output("input address", address.address);
-      output("valid", address.isValid());
-
-      if (address.isValid()) {
-         output("parsed address", address.parsed_address.join(':'));
-         output("long", address.long());
-         output("decimal", address.decimal());
-
-         output("hex BigInteger", address.bigInteger().toString(16));
-         output("dec BigInteger", address.bigInteger().toString());
-         output("bin BigInteger", address.zeroPad());
-
-         if (/2001:0000/.test(address.long())) {
-            output("teredo decode", JSON.stringify(address.teredo(), '', 1));
-         }
-      }
-
-      output();
-   }
-});
