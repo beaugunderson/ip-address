@@ -1,0 +1,72 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+ <head>
+  <title>IPv6 address information - v6decode.com</title>
+
+  <link rel="stylesheet" type="text/css" href="v6decode.css" />
+
+  <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.5.1/jquery.min.js"></script>
+
+  <script type="text/javascript" src="lib/jsbn.js"></script>
+  <script type="text/javascript" src="lib/jsbn2.js"></script>
+  <script type="text/javascript" src="lib/json2.js"></script>
+  <script type="text/javascript" src="lib/sprintf.js"></script>
+  <script type="text/javascript" src="lib/diff_match_patch.js"></script>
+
+  <script type="text/javascript" src="http://gitforked.com/api/1.1/button.js"></script>
+
+  <script type="text/javascript" src="ipv6.js"></script>
+  <script type="text/javascript" src="v6decode.js"></script>
+ </head>
+
+ <body>
+  <h1>IPv6 Address Information</h1>
+
+  <div class="awesome blue" id="address-wrapper">
+   <input type="text" id="address" value="" />
+  </div>
+
+  <div id="examples">
+   Examples: <a href="#" id="teredo-example">Teredo</a> | <a href="#" id="canonical-example">Canonical</a> | <a href="#" id="correct-example">Correct</a>
+  </div>
+
+  <div id="settings">
+   <label><input type="checkbox" id="show-diff" /> Show diff?</label>
+   <label><input type="checkbox" id="show-arin" /> Show ARIN?</label>
+  </div>
+
+  <dl>
+   <dt>Valid?</dt> <dd class="output" id="valid"></dd>
+   <dt>Correct?</dt> <dd class="output" id="correct"></dd>
+   <dt>Canonical?</dt> <dd class="output" id="canonical"></dd>
+  </dl>
+
+  <dl>
+   <dt>Original</dt> <dd class="output" id="original"></dd>
+   <dt>Parsed address</dt> <dd class="output" id="parsed"></dd>
+   <dt>Correct form</dt> <dd class="output" id="correct-form"></dd>
+   <dt>Canonical form</dt> <dd class="output" id="canonical-form"></dd>
+   <dt>IPv4 form</dt> <dd class="output" id="ipv4-form"></dd>
+   <dt>Decimal form</dt> <dd class="output" id="decimal-groups">
+  </dl>
+
+  <dl>
+   <dt>Base 16</dt> <dd class="output" id="base-16"></dd>
+   <dt>Base 10</dt> <dd class="output" id="base-10"></dd>
+   <dt>Base 2</dt> <dd class="output" id="base-2"></dd>
+  </dl>
+
+  <dl>
+   <dt>Teredo</dt> <dd><pre class="output" id="teredo"></pre></dd>
+   <dt class="arin">ARIN lookup</dt> <dd><pre class="arin output" id="arin"></pre></dd>
+  </dl>
+
+  <div id="footer">
+   <a href="mailto:beau@beaugunderson.com">Beau Gunderson</a>, 2011
+
+   <a href="https://github.com/beaugunderson/javascript-ipv6"
+    class="gitforked-button gitforked-forks gitforked-watchers">Fork</a>
+  </div>
+ </body>
+</html>
