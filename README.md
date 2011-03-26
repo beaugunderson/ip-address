@@ -6,13 +6,15 @@ javascript-ipv6 is a library for manipulating IPv6 addresses in JavaScript.
 Current functionality
 ----------------
 
-- Parsing of most IPv6 notations
-- Validity checking
-- Decoding of the [Teredo information](http://en.wikipedia.org/wiki/Teredo_tunneling#IPv6_addressing) in an address
-- Hex, binary, and decimal display
-- Zero-padded IPv6 display
-- Correct address display
-- Translation to IPv4-compatible addresses (i.e. ::0.0.0.0)
+-    Parsing of most IPv6 notations
+-    Validity checking
+-    Decoding of the [Teredo information](http://en.wikipedia.org/wiki/Teredo_tunneling#IPv6_addressing) in an address
+-    Display methods
+
+     -    Hex, binary, and decimal
+     -    Canonical form
+     -    Correct form
+     -    IPv4-compatible (i.e. ::0.0.0.0)
 
 Future functionality
 --------------------
