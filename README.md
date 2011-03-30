@@ -23,3 +23,4 @@ Future functionality
 -    Whether one address is a valid subnet of another
 -    Number of subnets of a certain size in a given address
 -    What special properties a given address has (multicast prefix, unique local address prefix, etc.)
+-    Reverse lookups? (Whether a domain name has IPv6 glue)
