@@ -19,7 +19,7 @@ Current functionality
 Future functionality
 --------------------
 
-- Base 64 or 89 encoding?
-- Whether one address is a valid subnet of another
-- Number of subnets of a certain size in a given address
-- What special properties a given address has (multicast prefix, unique local address prefix, etc.)
+-    Base 64/85 encoding?
+-    Whether one address is a valid subnet of another
+-    Number of subnets of a certain size in a given address
+-    What special properties a given address has (multicast prefix, unique local address prefix, etc.)
