@@ -11,7 +11,7 @@ diff_match_patch.prototype.diff_ourHtml = function(diffs) {
       var op = diffs[x][0];    // Operation (insert, delete, equal)
       var data = diffs[x][1];  // Text of change.
       var text = data.replace(pattern_amp, '&amp;').replace(pattern_lt, '&lt;')
-      .replace(pattern_gt, '&gt;').replace(pattern_para, '&para;<br>');
+         .replace(pattern_gt, '&gt;').replace(pattern_para, '&para;<br>');
 
       switch (op) {
          case DIFF_INSERT:
@@ -37,12 +37,20 @@ function update_address() {
    var o = $('#address').val();
    var a = new v6.Address(o);
 
+   o = o.replace(/%.*/, '');
+
    if (a.isValid()) {
+      $('.error').hide();
+
+      $('#address-wrapper').addClass('blue');
+      $('#address-wrapper').removeClass('red');
+
       $('#valid').text('true');
       $('#correct').text(a.isCorrect());
       $('#canonical').text(a.isCanonical());
 
       $('#original').text(o);
+      $('#percent-string').text(a.percent_string);
 
       var p = a.parsed_address.join(':');
       var p2 = diff(o, p);
@@ -77,9 +85,19 @@ function update_address() {
 
       $.getJSON('/arin/ip/' + a.correct_form(), function(data) {
          $('#arin').text(JSON.stringify(data, '', 3));
+      }).error(function(result) {
+         if (result.status == 404) {
+            $('#arin').text('No ARIN record found for that address.');
+         }
       });
    } else {
+      $('#address-wrapper').addClass('red');
+      $('#address-wrapper').removeClass('blue');
+
       $('.output').text('');
+
+      $('.error').show();
+      $('#error').text(a.error);
 
       $('#valid').text('false');
    }

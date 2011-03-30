@@ -8,7 +8,12 @@ body {
 }
 
 a {
+   text-decoration: none;
    color: #2daebf;
+}
+
+.error {
+   display: none;
 }
 
 #address-wrapper {
@@ -30,12 +35,30 @@ a {
 }
 
 #footer {
+   clear: both;
    text-align: center;
 }
 
 h1 {
    text-align: center;
    font-size: 1.5em;
+}
+
+#more-information {
+   border-top: 1px solid #ddd;
+   font-size: 0.8em;
+   margin-top: 1.5em;
+   clear: both;
+}
+
+#rfcs {
+   float: left;
+   width: 46%;
+}
+
+#wikipedia {
+   float: right;
+   width: 46%;
 }
 
 #settings {

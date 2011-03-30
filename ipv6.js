@@ -3,8 +3,8 @@ var v4 = {};
 
 v6.GROUPS = 8;
 
-v6.RE_BAD_CHARACTERS = /[^0-9a-f:\/]/i;
-v6.RE_BAD_ADDRESS = /[0-9a-f]{5,}|:{3,}|[^:]:$/i;
+v6.RE_BAD_CHARACTERS = /[^0-9a-f:\/%]/ig;
+v6.RE_BAD_ADDRESS = /[0-9a-f]{5,}|:{3,}|[^:]:$/ig;
 
 v4.Address = function(address) {
 
@@ -33,6 +33,9 @@ v6.Address = function(address, groups) {
       this.groups = groups;
    }
 
+   this.percent_string = '';
+   this.error = '';
+
    this.parsed_address = this.parse(address);
 
    this.correct = address == this.correct_form();
@@ -52,7 +55,7 @@ v6.Address.compact = function(address, slice) {
    }
 
    return s1.concat(['compact']).concat(s2);
-}
+};
 
 v6.Address.prototype.isValid = function() {
    return this.valid;
@@ -138,7 +141,7 @@ v6.Address.prototype.correct_form = function() {
    correct = correct.replace(/compact/, '');
 
    return correct;
-}
+};
 
 v6.Address.prototype.zeroPad = function() {
    var s = this.bigInteger().toString(2);
@@ -155,61 +158,90 @@ v6.Address.prototype.zeroPad = function() {
 };
 
 v6.Address.prototype.parse = function(address) {
-   if (v6.RE_BAD_CHARACTERS.test(address)) {
+   var percent_string = /%.*$/.exec(address);
+
+   if (percent_string) {
+      this.percent_string = percent_string[0];
+
+      address = address.replace(/%.*$/, '');
+   }
+
+   var bad_characters = address.match(v6.RE_BAD_CHARACTERS);
+
+   if (bad_characters) {
       this.valid = false;
+      this.error = sprintf("Bad character%s detected in address: %s", bad_characters.length > 1 ? 's' : '', bad_characters.join(''));
 
       return;
    }
 
-   if (v6.RE_BAD_ADDRESS.test(address)) {
+   var bad_regex = address.match(v6.RE_BAD_ADDRESS);
+
+   if (bad_regex) {
       this.valid = false;
+      this.error = sprintf("Address failed regex: %s", bad_regex.join(''));
 
       return;
    }
+
+   var groups = [];
 
    var address_array = address.split('::');
-   var quads;
 
    if (address_array.length == 2) {
       var first = address_array[0].split(':');
       var last = address_array[1].split(':');
 
+      if (first.length == 1 &&
+         first[0] == '') {
+         first = [];
+      }
+
+      if (last.length == 1 &&
+         last[0] == '') {
+         last = [];
+      }
+
       var remaining = this.groups - (first.length + last.length);
 
-      for (var i = 0; i < first.length; i++) {
-         if (first[i] == "") {
-            first[i] = 0;
-         }
-      }
-
-      for (var i = 0; i < last.length; i++) {
-         if (last[i] == "") {
-            last[i] = 0;
-         }
-      }
-
-      for (var i = 0; i < remaining; i++) {
-         first.push(0);
-      }
-
-      quads = first.concat(last);
-   } else if (address_array.length == 1) {
-      quads = address.split(':');
-
-      if (quads.length != this.groups) {
+      if (!remaining) {
          this.valid = false;
+         this.error = "Error parsing groups";
 
          return;
       }
+
+      for (var i = 0; i < first.length; i++) {
+         groups.push(first[i]);
+      }
+
+      for (var i = 0; i < remaining; i++) {
+         groups.push(0);
+      }
+
+      for (var i = 0; i < last.length; i++) {
+         groups.push(last[i]);
+      }
+   } else if (address_array.length == 1) {
+      groups = address.split(':');
    } else {
       this.valid = false;
+      this.error = "Too many :: groups found";
 
       return;
    }
 
-   for (var i = 0; i < quads.length; i++) {
-      if (quads[i].length > 4) {
+   if (groups.length != this.groups) {
+      this.valid = false;
+      this.error = "Incorrect number of groups found";
+
+      return;
+   }
+
+   for (var i = 0; i < groups.length; i++) {
+      if (groups[i].length > 4) {
          this.valid = false;
+         this.error = sprintf("Group %d is too long", i + 1);
 
          return;
       }
@@ -217,7 +249,7 @@ v6.Address.prototype.parse = function(address) {
 
    this.valid = true;
 
-   return quads;
+   return groups;
 };
 
 v6.Address.prototype.canonical_form = function() {
@@ -279,7 +311,7 @@ v6.Address.prototype.v4_form = function() {
    }
 
    return v6_address.correct_form() + infix + v4_address;
-}
+};
 
 v6.Address.prototype.teredo = function() {
    var s = this.zeroPad().split('');
@@ -310,4 +342,4 @@ v6.Address.prototype.teredo = function() {
       udp_port: udp_port_dec,
       client_v4: client_v4_ip
    };
-}
+};
