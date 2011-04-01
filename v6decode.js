@@ -116,8 +116,7 @@ function diff(a, b) {
 
 function set_address(address) {
    $('#address').val(address);
-
-   update_address();
+   $('#address').change();
 
    return false;
 }
@@ -163,7 +162,7 @@ $(function() {
       return set_address('2001::ce49:7601:e866:efff:62c3:fffe');
    });
 
-   $('#address').keyup(function() {
+   $('#address').bind('change keyup', function() {
       update_address();
    });
 });
