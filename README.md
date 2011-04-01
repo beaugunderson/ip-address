@@ -24,3 +24,9 @@ Future functionality
 -    Number of subnets of a certain size in a given address
 -    What special properties a given address has (multicast prefix, unique local address prefix, etc.)
 -    Reverse lookups? (Whether a domain name has IPv6 glue)
+
+TODO
+----
+
+-    Documentation
+-    Comprehensive CLI-based unit tests
