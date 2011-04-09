@@ -1,10 +1,28 @@
-var v6 = {};
-var v4 = {};
+if (typeof exports !== 'undefined') {
+   var sprintf = require('lib/sprintf').sprintf,
+       BigInteger = require('lib/jsbn-combined').BigInteger;
+}
+
+var v6 = this.v6 = {};
+var v4 = this.v4 = {};
 
 v6.GROUPS = 8;
 
 v6.RE_BAD_CHARACTERS = /[^0-9a-f:\/%]/ig;
 v6.RE_BAD_ADDRESS = /[0-9a-f]{5,}|:{3,}|[^:]:$/ig;
+
+v6.RE_SUBNET_STRING = /\/\d{1,3}/;
+v6.RE_PERCENT_STRING = /%.*$/;
+
+function map(array, f) {
+   var r = [];
+
+   for (var i = 0; i < array.length; i++) {
+      r.push(f(array[i]));
+   }
+
+   return r;
+};
 
 v4.Address = function(address) {
 
@@ -33,6 +51,7 @@ v6.Address = function(address, groups) {
       this.groups = groups;
    }
 
+   this.subnet_string = '';
    this.percent_string = '';
    this.error = '';
 
@@ -78,16 +97,16 @@ v6.Address.prototype.isTeredo = function() {
 };
 
 v6.Address.prototype.correct_form = function() {
+   if (!this.parsed_address) {
+      return;
+   }
+
    var groups = [];
 
    var zero_counter = 0;
    var zeroes = [];
 
    var last_value = null;
-
-   if (!this.parsed_address) {
-      return;
-   }
 
    for (var i = 0; i < this.parsed_address.length; i++) {
       var value = parseInt(this.parsed_address[i], 16);
@@ -112,7 +131,7 @@ v6.Address.prototype.correct_form = function() {
       zeroes.push([this.parsed_address.length - zero_counter, this.parsed_address.length - 1]);
    }
 
-   var zero_lengths = $.map(zeroes, function(n) {
+   var zero_lengths = map(zeroes, function(n) {
       return (n[1] - n[0]) + 1;
    });
 
@@ -158,12 +177,28 @@ v6.Address.prototype.zeroPad = function() {
 };
 
 v6.Address.prototype.parse = function(address) {
-   var percent_string = /%.*$/.exec(address);
+   var subnet_string = v6.RE_SUBNET_STRING.exec(address);
+
+   if (subnet_string) {
+      this.subnet_mask = parseInt(subnet_string[0].replace('/', ''));
+      this.subnet_string = subnet_string[0];
+
+      if (this.subnet_mask < 0 || this.subnet_mask > 128) {
+         this.valid = false;
+         this.error = "Invalid subnet mask.";
+
+         return;
+      }
+
+      address = address.replace(v6.RE_SUBNET_STRING, '');
+   }
+
+   var percent_string = v6.RE_PERCENT_STRING.exec(address);
 
    if (percent_string) {
       this.percent_string = percent_string[0];
 
-      address = address.replace(/%.*$/, '');
+      address = address.replace(v6.RE_PERCENT_STRING, '');
    }
 
    var bad_characters = address.match(v6.RE_BAD_CHARACTERS);
