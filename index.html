@@ -8,6 +8,8 @@
 
   <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.5.1/jquery.min.js"></script>
 
+  <script type="text/javascript" src="lib/jquery.ba-bbq.min.js"></script>
+
   <script type="text/javascript" src="lib/jsbn.js"></script>
   <script type="text/javascript" src="lib/jsbn2.js"></script>
   <script type="text/javascript" src="lib/json2.js"></script>
@@ -36,35 +38,38 @@
    <label><input type="checkbox" id="show-arin" /> Show ARIN?</label>
   </div>
 
-  <dl>
-   <dt>Valid?</dt> <dd class="output" id="valid"></dd>
-   <dt class="error">Error</dt> <dd class="error" id="error"></dd>
-   <dt><a href="http://tools.ietf.org/html/rfc5952">Correct?</a></dt> <dd class="output" id="correct"></dd>
-   <dt>Canonical?</dt> <dd class="output" id="canonical"></dd>
-  </dl>
+  <div class="clear-fix">
+   <dl>
+    <dt>Valid?</dt> <dd class="output" id="valid"></dd>
+    <dt class="error">Error</dt> <dd class="error" id="error"></dd>
+    <dt><a href="http://tools.ietf.org/html/rfc5952">Correct?</a></dt> <dd class="output" id="correct"></dd>
+    <dt>Canonical?</dt> <dd class="output" id="canonical"></dd>
+   </dl>
 
-  <dl>
-   <dt>Original</dt> <dd class="output" id="original"></dd>
-   <dt>Percent string</dt> <dd class="output" id="percent-string"></dd>
-   <dt>Parsed address</dt> <dd class="output" id="parsed"></dd>
-   <dt>Correct form</dt> <dd class="output" id="correct-form"></dd>
-   <dt>Canonical form</dt> <dd class="output" id="canonical-form"></dd>
-   <dt>IPv4 form</dt> <dd class="output" id="ipv4-form"></dd>
-   <dt>Decimal form</dt> <dd class="output" id="decimal-groups">
-  </dl>
+   <dl>
+    <dt>Original</dt> <dd class="output" id="original"></dd>
+    <dt>Subnet string</dt> <dd class="output" id="subnet-string"></dd>
+    <dt>Percent string</dt> <dd class="output" id="percent-string"></dd>
+    <dt>Parsed address</dt> <dd class="output" id="parsed"></dd>
+    <dt>Correct form</dt> <dd class="output" id="correct-form"></dd>
+    <dt>Canonical form</dt> <dd class="output" id="canonical-form"></dd>
+    <dt>IPv4 form</dt> <dd class="output" id="ipv4-form"></dd>
+    <dt>Decimal form</dt> <dd class="output" id="decimal-groups">
+   </dl>
 
-  <dl>
-   <dt>Base 16</dt> <dd class="output" id="base-16"></dd>
-   <dt>Base 10</dt> <dd class="output" id="base-10"></dd>
-   <dt>Base 2</dt> <dd class="output" id="base-2"></dd>
-  </dl>
+   <dl>
+    <dt>Base 16</dt> <dd class="output" id="base-16"></dd>
+    <dt>Base 10</dt> <dd class="output" id="base-10"></dd>
+    <dt>Base 2</dt> <dd class="output" id="base-2"></dd>
+   </dl>
 
-  <dl>
-   <dt>Teredo</dt> <dd><pre class="output" id="teredo"></pre></dd>
-   <dt class="arin">ARIN lookup</dt> <dd><pre class="arin output" id="arin"></pre></dd>
-  </dl>
+   <dl>
+    <dt>Teredo</dt> <dd><pre class="output" id="teredo"></pre></dd>
+    <dt class="arin">ARIN lookup</dt> <dd><pre class="arin output" id="arin"></pre></dd>
+   </dl>
+  </div>
 
-  <div id="more-information">
+  <div id="more-information" class="clear-fix">
    <h2>More information:</h2>
 
    <ul id="rfcs">

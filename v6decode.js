@@ -37,6 +37,8 @@ function update_address() {
    var o = $('#address').val();
    var a = new v6.Address(o);
 
+   $.bbq.pushState({ address: o });
+
    o = o.replace(/%.*/, '');
 
    if (a.isValid()) {
@@ -50,6 +52,7 @@ function update_address() {
       $('#canonical').text(a.isCanonical());
 
       $('#original').text(o);
+      $('#subnet-string').text(a.subnet_string);
       $('#percent-string').text(a.percent_string);
 
       var p = a.parsed_address.join(':');
@@ -139,7 +142,18 @@ function update_diff() {
    }
 }
 
+function update_from_hash() {
+   var a = $.bbq.getState('address');
+
+   if (a) {
+      $('#address').val(a);
+
+      update_address();
+   }
+}
+
 $(function() {
+   update_from_hash();
    update_arin();
 
    $('#show-arin').click(function() {
