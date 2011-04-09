@@ -7,6 +7,15 @@ body {
    padding: 2em 10em;
 }
 
+.clear-fix:after {
+   content: ".";
+   display: block;
+   font-size: 0;
+   height: 0;
+   clear: both;
+   visibility: hidden;
+}
+
 a {
    text-decoration: none;
    color: #2daebf;
@@ -35,7 +44,6 @@ a {
 }
 
 #footer {
-   clear: both;
    text-align: center;
 }
 
@@ -47,8 +55,8 @@ h1 {
 #more-information {
    border-top: 1px solid #ddd;
    font-size: 0.8em;
-   margin-top: 1.5em;
-   clear: both;
+   margin-top: 0;
+   margin-bottom: 1em;
 }
 
 #rfcs {
