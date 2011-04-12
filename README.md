@@ -18,9 +18,9 @@ Current functionality
      -    Hex, binary, and decimal
      -    Canonical form
      -    Correct form
-     -    IPv4-compatible (i.e. ::0.0.0.0)
--    Works in node.js and the browser
--    Unit tests with node.js/Vows
+     -    IPv4-compatible (i.e. `::0.0.0.0`)
+-    Works in [node.js](http://nodejs.org/) and the browser
+-    Unit tests with [node.js](http://nodejs.org/) and [Vows](http://vowsjs.org/)
 
 Future functionality
 --------------------
