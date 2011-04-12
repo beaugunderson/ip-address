@@ -4,7 +4,7 @@ javascript-ipv6
 javascript-ipv6 is a library for manipulating IPv6 addresses in JavaScript.
 
 Current functionality
-----------------
+---------------------
 
 -    Parsing of most IPv6 notations
 -    Validity checking
@@ -15,6 +15,9 @@ Current functionality
      -    Canonical form
      -    Correct form
      -    IPv4-compatible (i.e. ::0.0.0.0)
+
+-    Works in node.js and the browser
+-    Unit tests with node.js/Vows
 
 Future functionality
 --------------------
@@ -29,4 +32,3 @@ TODO
 ----
 
 -    Documentation
--    Comprehensive CLI-based unit tests
