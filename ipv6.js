@@ -1,5 +1,5 @@
 if (typeof exports !== 'undefined') {
-   var sprintf = require('./lib/sprintf').sprintf,
+   var sprintf = require('sprintf').sprintf,
        BigInteger = require('./lib/bigint').BigInteger;
 }
 

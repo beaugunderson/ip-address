@@ -8,5 +8,8 @@
   "repository" : {
     "type" : "git",
     "url" : "https://github.com/beaugunderson/javascript-ipv6"
+  },
+  "dependencies" : {
+    "sprintf" : ">= 0.1.1"
   }
 }
