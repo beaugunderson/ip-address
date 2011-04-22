@@ -1,6 +1,6 @@
 if (typeof exports !== 'undefined') {
-   var sprintf = require('lib/sprintf').sprintf,
-       BigInteger = require('lib/jsbn-combined').BigInteger;
+   var sprintf = require('./lib/sprintf').sprintf,
+       BigInteger = require('./lib/bigint').BigInteger;
 }
 
 var v6 = this.v6 = {};
