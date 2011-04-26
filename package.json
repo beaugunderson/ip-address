@@ -10,6 +10,7 @@
     "url" : "https://github.com/beaugunderson/javascript-ipv6"
   },
   "dependencies" : {
-    "sprintf" : ">= 0.1.1"
+    "sprintf" : ">= 0.1.1",
+    "vows" : ">= 0.5.8"
   }
 }
