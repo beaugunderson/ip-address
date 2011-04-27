@@ -6,8 +6,8 @@ var vows = require('vows'),
 // XXX A hack for the BigInteger library
 global.navigator = {};
 
-var v6 = require('ipv6').v6,
-    BigInteger = require('lib/jsbn-combined');
+var v6 = require('javascript-ipv6').v6,
+    BigInteger = require('../lib/bigint');
 
 function notations_to_addresses(notations) {
    var addresses = [];
