@@ -3,12 +3,11 @@ require.paths.push('..');
 var vows = require('vows'),
     assert = require('assert');
 
-// XXX A hack for the BigInteger library
-global.navigator = {};
-
 var v6 = require('javascript-ipv6').v6,
-    BigInteger = require('../lib/bigint');
+    BigInteger = require('../lib/node/bigint');
 
+// A convenience function to convert a list of IPv6 address notations
+// to v6.Address instances
 function notations_to_addresses(notations) {
    var addresses = [];
 
@@ -111,13 +110,13 @@ vows.describe('v6.Address').addBatch({
 
    'Invalid addresses': {
       topic: notations_to_addresses([
-         'abcdefg',
-         'a:b',
-         'a::b::c',
-         'a::g',
-         '-1',
-         '::-1',
-         'a:a:a:a:a:a:a:a:a'
+         'a:b:c:d:e:f:g:0', // Invalid characters
+         'a:b', // Too few octets
+         'a::b::c', // Too many elisions
+         'a::g', // Invalid characters
+         '-1', // Too few octets, invalid characters (but it's an integer)
+         '::-1', // Invalid characters (but it's an integer)
+         'a:a:a:a:a:a:a:a:a' // Too many octets
       ]),
 
       'do not validate': function (addresses) {
