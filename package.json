@@ -1,16 +1,21 @@
 {
-  "name": "javascript-ipv6",
-  "description": "Javascript library for parsing ipv6 addresses",
-  "version": "0.0.1",
-  "author": "Beau Gunderson <beau@beaugunderson.com>",
-  "main": "index",
-  "engines": { "node": ">= 0.4.1 < 0.5.0" },
-  "repository" : {
-    "type" : "git",
-    "url" : "https://github.com/beaugunderson/javascript-ipv6"
-  },
-  "dependencies" : {
-    "sprintf" : ">= 0.1.1",
-    "vows" : ">= 0.5.8"
-  }
+   "name": "ipv6",
+   "description": "A browser- and node-compatible library for parsing IPv6 addresses",
+   "keywords": ["ipv6", "browser"],
+   "version": "0.0.1",
+   "author": "Beau Gunderson <beau@beaugunderson.com>",
+   "main": "index",
+   "engines": {
+      "node": ">= 0.4.1 < 0.5.0"
+   },
+   "repository": {
+      "type": "git",
+      "url": "https://github.com/beaugunderson/javascript-ipv6"
+   },
+   "dependencies": {
+      "sprintf": ">= 0.1.1"
+   },
+   "devDependencies": {
+      "vows": ">= 0.5.8"
+   }
 }
