@@ -1,3 +1,5 @@
+// This is a re-implementation of the example given in diff_match_patch;
+// I needed a way to specify a class name for the wrapped text.
 diff_match_patch.prototype.diff_ourHtml = function(diffs) {
    var html = [];
    var i = 0;
@@ -33,6 +35,7 @@ diff_match_patch.prototype.diff_ourHtml = function(diffs) {
    return html.join('');
 };
 
+// Runs whenever the address changes
 function update_address() {
    var o = $('#address').val();
    var a = new v6.Address(o);
@@ -109,6 +112,7 @@ function update_address() {
    update_arin();
 }
 
+// A convenience function to diff two addresses (or other text)
 function diff(a, b) {
    var dmp = new diff_match_patch();
 
@@ -156,6 +160,7 @@ $(function() {
    update_from_hash();
    update_arin();
 
+   // Setup the event handlers for the 'Show ARIN' and 'Show diff' checkboxes
    $('#show-arin').click(function() {
       update_arin();
    });
@@ -164,6 +169,7 @@ $(function() {
       update_diff();
    });
 
+   // Setup the event handlers for the example addresses
    $('#correct-example').click(function() {
       return set_address('2608::3:5');
    });
@@ -176,6 +182,7 @@ $(function() {
       return set_address('2001::ce49:7601:e866:efff:62c3:fffe');
    });
 
+   // Make the input textbox update on change and keyup
    $('#address').bind('change keyup', function() {
       update_address();
    });
