@@ -3,10 +3,12 @@ javascript-ipv6
 
 javascript-ipv6 is a library for manipulating IPv6 addresses in JavaScript:
 
-    > var address = new v6.Address('2001:0:ce49:7601:e866:efff:62c3:fffe')
-    > var teredo = address.teredo()
-    > teredo.client_v4
-      "157.60.0.1"
+```js
+var address = new v6.Address('2001:0:ce49:7601:e866:efff:62c3:fffe');
+var teredo = address.teredo();
+
+console.log(teredo.client_v4); // Prints "157.60.0.1"
+```
 
 Current functionality
 ---------------------
