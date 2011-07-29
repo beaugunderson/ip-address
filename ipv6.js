@@ -7,39 +7,64 @@ var v6 = this.v6 = {};
 var v4 = this.v4 = {};
 
 v6.GROUPS = 8;
+v4.GROUPS = 4;
 
-v6.RE_BAD_CHARACTERS = /[^0-9a-f:\/%]/ig;
-v6.RE_BAD_ADDRESS = /[0-9a-f]{5,}|:{3,}|[^:]:$/ig;
+v6.RE_V4 = /(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/g;
+
+v6.RE_BAD_CHARACTERS = /([^0-9a-f:\/%])/ig;
+v6.RE_BAD_ADDRESS = /([0-9a-f]{5,}|:{3,}|[^:]:)$/ig;
 
 v6.RE_SUBNET_STRING = /\/\d{1,3}/;
 v6.RE_PERCENT_STRING = /%.*$/;
 
 function map(array, f) {
-   var r = [];
+   var results = [];
 
    for (var i = 0; i < array.length; i++) {
-      r.push(f(array[i]));
+      results.push(f(array[i], i));
    }
 
-   return r;
+   return results;
 };
 
 v4.Address = function(address) {
-
+   this.address = address;
+   this.groups = v4.GROUPS;
+   this.parsed_address = this.parse(address);
 };
 
-v4.Address.fromHex = function(hex) {
-   var padded = String("00000000" + hex).slice(-8);
+v4.Address.prototype.parse = function(address) {
+   var groups = address.split('.');
 
-   var ip = [];
+   return groups;
+};
+
+v4.Address.prototype.toHex = function() {
+   var output = [];
+
+   for (var i = 0; i < v4.GROUPS; i += 2) {
+      var hex = sprintf('%02x%02x',
+         parseInt(this.parsed_address[i], 10),
+         parseInt(this.parsed_address[i + 1], 10));
+
+      output.push(sprintf('%x', parseInt(hex, 16)));
+   }
+
+   return output.join(':');
+}
+
+v4.Address.fromHex = function(hex) {
+   var padded = String("00000000" + hex.replace(/:/g, '')).slice(-8);
+
+   var groups = [];
 
    for (var i = 0; i < 8; i += 2) {
       var h = padded.slice(i, i + 2);
 
-      ip.push(parseInt(h, 16));
+      groups.push(parseInt(h, 16));
    }
 
-   return ip.join('.');
+   return new v4.Address(groups.join('.'));
 };
 
 v6.Address = function(address, groups) {
@@ -94,6 +119,87 @@ v6.Address.prototype.isTeredo = function() {
    }
 
    return false;
+};
+
+function spanLeadingZeroesInner(group) {
+   return group.replace(/^(0+)/, '<span class="zero">$1</span>');
+}
+
+v6.Address.spanLeadingZeroes = function(address) {
+   var groups = address.split(':');
+
+   groups = $.map(groups, function(g, i) {
+      return spanLeadingZeroesInner(g);
+   });
+
+   return groups.join(':');
+};
+
+v6.Address.simpleGroup = function(addressString, offset) {
+   var groups = addressString.split(':');
+
+   if (!offset) {
+      offset = 0;
+   }
+
+   groups = map(groups, function(g, i) {
+      if (/group-v4/.test(g)) {
+         return g;
+      }
+
+      return sprintf('<span class="hover-group group-%d">%s</span>', i + offset,
+         spanLeadingZeroesInner(g));
+   });
+
+   return groups.join(':');
+};
+
+v6.Address.group = function(addressString) {
+   var address = new v6.Address(addressString);
+   var v4_address = address.address.match(v6.RE_V4);
+
+   // The IPv4 case
+   if (v4_address) {
+      var segments = v4_address[0].split('.');
+
+      address.address = address.address.replace(v6.RE_V4, sprintf('<span class="hover-group group-v4 group-6">%s</span>' +
+         '.' +
+         '<span class="hover-group group-v4 group-7">%s</span>',
+         segments.slice(0, 2).join('.'),
+         segments.slice(2, 4).join('.')));
+   }
+
+   if (address.elided_groups == 0) {
+      // The simple case
+      return v6.Address.simpleGroup(address.address);
+   } else {
+      // The elided case
+      var output = [];
+
+      var halves = address.address.split('::');
+
+      if (halves[0].length) {
+         output.push(v6.Address.simpleGroup(halves[0]));
+      } else {
+         output.push('');
+      }
+
+      var classes = ['hover-group'];
+
+      for (var i = address.elision_begin; i < address.elision_begin + address.elided_groups; i++) {
+         classes.push(sprintf('group-%d', i));
+      }
+
+      output.push(sprintf('<span class="%s"></span>', classes.join(' ')));
+
+      if (halves[1].length) {
+         output.push(v6.Address.simpleGroup(halves[1], address.elision_end));
+      } else {
+         output.push('');
+      }
+
+      return output.join(':');
+   }
 };
 
 v6.Address.prototype.correct_form = function() {
@@ -201,11 +307,21 @@ v6.Address.prototype.parse = function(address) {
       address = address.replace(v6.RE_PERCENT_STRING, '');
    }
 
+   var v4_address = address.match(v6.RE_V4);
+
+   if (v4_address) {
+      var v4_temp = new v4.Address(v4_address[0]);
+
+      address = address.replace(v6.RE_V4, v4_temp.toHex());
+   }
+
    var bad_characters = address.match(v6.RE_BAD_CHARACTERS);
 
    if (bad_characters) {
       this.valid = false;
       this.error = sprintf("Bad character%s detected in address: %s", bad_characters.length > 1 ? 's' : '', bad_characters.join(''));
+
+      this.parse_error = address.replace(v6.RE_BAD_CHARACTERS, sprintf('<span class="parse-error">$1</span>'));
 
       return;
    }
@@ -215,6 +331,8 @@ v6.Address.prototype.parse = function(address) {
    if (bad_regex) {
       this.valid = false;
       this.error = sprintf("Address failed regex: %s", bad_regex.join(''));
+
+      this.parse_error = address.replace(v6.RE_BAD_ADDRESS, sprintf('<span class="parse-error">$1</span>'));
 
       return;
    }
@@ -246,6 +364,11 @@ v6.Address.prototype.parse = function(address) {
          return;
       }
 
+      this.elided_groups = remaining;
+
+      this.elision_begin = first.length;
+      this.elision_end = first.length + this.elided_groups;
+
       for (var i = 0; i < first.length; i++) {
          groups.push(first[i]);
       }
@@ -259,12 +382,18 @@ v6.Address.prototype.parse = function(address) {
       }
    } else if (address_array.length == 1) {
       groups = address.split(':');
+
+      this.elided_groups = 0;
    } else {
       this.valid = false;
       this.error = "Too many :: groups found";
 
       return;
    }
+
+   groups = map(groups, function(g) {
+      return sprintf('%x', parseInt(g, 16));
+   });
 
    if (groups.length != this.groups) {
       this.valid = false;
@@ -274,7 +403,7 @@ v6.Address.prototype.parse = function(address) {
    }
 
    for (var i = 0; i < groups.length; i++) {
-      if (groups[i].length > 4) {
+      if (groups[i].length > 4 && !v4_address) {
          this.valid = false;
          this.error = sprintf("Group %d is too long", i + 1);
 
@@ -345,7 +474,7 @@ v6.Address.prototype.v4_form = function() {
       infix = ':';
    }
 
-   return v6_address.correct_form() + infix + v4_address;
+   return v6_address.correct_form() + infix + v4_address.address;
 };
 
 v6.Address.prototype.teredo = function() {
@@ -372,9 +501,9 @@ v6.Address.prototype.teredo = function() {
 
    return {
       prefix: sprintf('%s:%s', prefix.slice(0, 4), prefix.slice(4, 8)),
-      server_v4: server_v4,
+      server_v4: server_v4.address,
+      client_v4: client_v4_ip.address,
       flags: flags.join(''),
-      udp_port: udp_port_dec,
-      client_v4: client_v4_ip
+      udp_port: udp_port_dec
    };
 };
