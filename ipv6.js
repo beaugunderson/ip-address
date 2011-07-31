@@ -3,14 +3,14 @@ if (typeof exports !== 'undefined') {
        BigInteger = require('./lib/node/bigint').BigInteger;
 }
 
-var v6 = this.v6 = {};
 var v4 = this.v4 = {};
+var v6 = this.v6 = {};
 
-v6.GROUPS = 8;
 v4.GROUPS = 4;
+v6.GROUPS = 8;
 
-v6.BITS = 128;
 v4.BITS = 32;
+v6.BITS = 128;
 
 v6.SCOPES = {
    0: 'Reserved',
@@ -26,7 +26,7 @@ v6.SCOPES = {
 v6.RE_V4 = /(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/g;
 
 v6.RE_BAD_CHARACTERS = /([^0-9a-f:\/%])/ig;
-v6.RE_BAD_ADDRESS = /([0-9a-f]{5,}|:{3,}|[^:]:)$/ig;
+v6.RE_BAD_ADDRESS = /([0-9a-f]{5,}|:{3,}|[^:]:$|^:[^:])/ig;
 
 v6.RE_SUBNET_STRING = /\/\d{1,3}/;
 v6.RE_ZONE_STRING = /%.*$/;
@@ -465,6 +465,31 @@ v6.Address.prototype.parse = function(address) {
 
    if (v4_address) {
       var v4_temp = new v4.Address(v4_address[0]);
+
+      for (var i = 0; i < v4_temp.groups; i++) {
+         if (/^0[0-9]+/.test(v4_temp.parsedAddress[i])) {
+            this.valid = false;
+            this.error = 'IPv4 addresses can not have leading zeroes.';
+
+            this.parseError = address.replace(v6.RE_V4, map(v4_temp.parsedAddress, function(n) {
+               n = n.replace(/^(0{1,})([1-9]+)$/, '<span class="parse-error">$1</span>$2');
+               n = n.replace(/^(0{1,})(0)$/, '<span class="parse-error">$1</span>$2');
+
+               return n;
+            }).join('.'));
+
+            return;
+         }
+      }
+
+      if (/[0-9]$/.test(address.replace(v6.RE_V4, ''))) {
+         this.valid = false;
+         this.error = 'Invalid v4-in-v6 address';
+
+         this.parseError = address.replace(v6.RE_V4, sprintf('<span class="parse-error">%s</span>', v4_address));
+
+         return;
+      }
 
       address = address.replace(v6.RE_V4, v4_temp.toHex());
    }
