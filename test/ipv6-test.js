@@ -691,7 +691,7 @@ vows.describe('v6.Address').addBatch({
          for (var i = 0, a; a = addresses[i], i < addresses.length; i++) {
             assert.equal(a.correctForm(), '2001:db8::1:0:0:1');
             assert.equal(a.canonicalForm(), '2001:0db8:0000:0000:0001:0000:0000:0001');
-            assert.equal(a.v4_form(), '2001:db8::1:0:0.0.0.1');
+            assert.equal(a.v4inv6(), '2001:db8::1:0:0.0.0.1');
             assert.equal(a.decimal(), '08193:03512:00000:00000:00001:00000:00000:00001');
             assert.equal(a.binaryZeroPad(), '0010000000000001000011011011100000000000000000000000000000000000' +
                '0000000000000001000000000000000000000000000000000000000000000001');

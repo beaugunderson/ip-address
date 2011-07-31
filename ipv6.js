@@ -307,11 +307,11 @@ v6.Address.simpleGroup = function(addressString, offset) {
 
 v6.Address.group = function(addressString) {
    var address = new v6.Address(addressString);
-   var v4_address = address.address.match(v6.RE_V4);
+   var address4 = address.address.match(v6.RE_V4);
 
-   if (v4_address) {
+   if (address4) {
       // The IPv4 case
-      var segments = v4_address[0].split('.');
+      var segments = address4[0].split('.');
 
       address.address = address.address.replace(v6.RE_V4, sprintf('<span class="hover-group group-v4 group-6">%s</span>' +
          '.' +
@@ -360,43 +360,37 @@ v6.Address.prototype.correctForm = function() {
 
    var groups = [];
 
-   var zero_counter = 0;
+   var zeroCounter = 0;
    var zeroes = [];
-
-   var last_value = null;
 
    for (var i = 0; i < this.parsedAddress.length; i++) {
       var value = parseInt(this.parsedAddress[i], 16);
 
       if (value === 0) {
-         zero_counter++;
+         zeroCounter++;
       }
 
-      if (value !== 0 && zero_counter > 0) {
-         if (zero_counter > 1) {
-            zeroes.push([i - zero_counter, i - 1]);
+      if (value !== 0 && zeroCounter > 0) {
+         if (zeroCounter > 1) {
+            zeroes.push([i - zeroCounter, i - 1]);
          }
 
-         zero_counter = 0;
+         zeroCounter = 0;
       }
-
-      last_value = value;
    }
 
    // Do we end with a string of zeroes?
-   if (zero_counter > 1) {
-      zeroes.push([this.parsedAddress.length - zero_counter, this.parsedAddress.length - 1]);
+   if (zeroCounter > 1) {
+      zeroes.push([this.parsedAddress.length - zeroCounter, this.parsedAddress.length - 1]);
    }
 
-   var zero_lengths = map(zeroes, function(n) {
+   var zeroLengths = map(zeroes, function(n) {
       return (n[1] - n[0]) + 1;
    });
 
-   last_value = null;
-
    if (zeroes.length > 0) {
-      var max = Math.max.apply(Math, zero_lengths);
-      var index = zero_lengths.indexOf(max);
+      var max = Math.max.apply(Math, zeroLengths);
+      var index = zeroLengths.indexOf(max);
 
       groups = v6.Address.compact(this.parsedAddress, zeroes[index]);
    } else {
@@ -461,17 +455,17 @@ v6.Address.prototype.parse = function(address) {
       address = address.replace(v6.RE_ZONE_STRING, '');
    }
 
-   var v4_address = address.match(v6.RE_V4);
+   var address4 = address.match(v6.RE_V4);
 
-   if (v4_address) {
-      var v4_temp = new v4.Address(v4_address[0]);
+   if (address4) {
+      var temp4 = new v4.Address(address4[0]);
 
-      for (var i = 0; i < v4_temp.groups; i++) {
-         if (/^0[0-9]+/.test(v4_temp.parsedAddress[i])) {
+      for (var i = 0; i < temp4.groups; i++) {
+         if (/^0[0-9]+/.test(temp4.parsedAddress[i])) {
             this.valid = false;
             this.error = 'IPv4 addresses can not have leading zeroes.';
 
-            this.parseError = address.replace(v6.RE_V4, map(v4_temp.parsedAddress, function(n) {
+            this.parseError = address.replace(v6.RE_V4, map(temp4.parsedAddress, function(n) {
                n = n.replace(/^(0{1,})([1-9]+)$/, '<span class="parse-error">$1</span>$2');
                n = n.replace(/^(0{1,})(0)$/, '<span class="parse-error">$1</span>$2');
 
@@ -486,43 +480,47 @@ v6.Address.prototype.parse = function(address) {
          this.valid = false;
          this.error = 'Invalid v4-in-v6 address';
 
-         this.parseError = address.replace(v6.RE_V4, sprintf('<span class="parse-error">%s</span>', v4_address));
+         this.parseError = address.replace(v6.RE_V4,
+            sprintf('<span class="parse-error">%s</span>', address4));
 
          return;
       }
 
-      address = address.replace(v6.RE_V4, v4_temp.toHex());
+      address = address.replace(v6.RE_V4, temp4.toHex());
    }
 
-   var bad_characters = address.match(v6.RE_BAD_CHARACTERS);
+   var badCharacters = address.match(v6.RE_BAD_CHARACTERS);
 
-   if (bad_characters) {
+   if (badCharacters) {
       this.valid = false;
-      this.error = sprintf("Bad character%s detected in address: %s", bad_characters.length > 1 ? 's' : '', bad_characters.join(''));
+      this.error = sprintf("Bad character%s detected in address: %s",
+         badCharacters.length > 1 ? 's' : '', badCharacters.join(''));
 
-      this.parseError = address.replace(v6.RE_BAD_CHARACTERS, sprintf('<span class="parse-error">$1</span>'));
+      this.parseError = address.replace(v6.RE_BAD_CHARACTERS,
+         sprintf('<span class="parse-error">$1</span>'));
 
       return;
    }
 
-   var bad_regex = address.match(v6.RE_BAD_ADDRESS);
+   var badAddress = address.match(v6.RE_BAD_ADDRESS);
 
-   if (bad_regex) {
+   if (badAddress) {
       this.valid = false;
-      this.error = sprintf("Address failed regex: %s", bad_regex.join(''));
+      this.error = sprintf("Address failed regex: %s", badAddress.join(''));
 
-      this.parseError = address.replace(v6.RE_BAD_ADDRESS, sprintf('<span class="parse-error">$1</span>'));
+      this.parseError = address.replace(v6.RE_BAD_ADDRESS,
+         sprintf('<span class="parse-error">$1</span>'));
 
       return;
    }
 
    var groups = [];
 
-   var address_array = address.split('::');
+   var halves = address.split('::');
 
-   if (address_array.length == 2) {
-      var first = address_array[0].split(':');
-      var last = address_array[1].split(':');
+   if (halves.length == 2) {
+      var first = halves[0].split(':');
+      var last = halves[1].split(':');
 
       if (first.length == 1 &&
          first[0] == '') {
@@ -559,7 +557,7 @@ v6.Address.prototype.parse = function(address) {
       for (var i = 0; i < last.length; i++) {
          groups.push(last[i]);
       }
-   } else if (address_array.length == 1) {
+   } else if (halves.length == 1) {
       groups = address.split(':');
 
       this.elidedGroups = 0;
@@ -582,7 +580,7 @@ v6.Address.prototype.parse = function(address) {
    }
 
    for (var i = 0; i < groups.length; i++) {
-      if (groups[i].length > 4 && !v4_address) {
+      if (groups[i].length > 4 && !address4) {
          this.valid = false;
          this.error = sprintf("Group %d is too long", i + 1);
 
@@ -625,13 +623,13 @@ v6.Address.prototype.bigInteger = function() {
    }).join(''), 16);
 };
 
-v6.Address.prototype.v4_form = function() {
+v6.Address.prototype.v4inv6 = function() {
    var binary = this.binaryZeroPad().split('');
 
-   var v4_address = v4.Address.fromHex(new BigInteger(binary.slice(96, 128).join(''), 2).toString(16));
-   var v6_address = new v6.Address(this.parsedAddress.slice(0, 6).join(':'), 6);
+   var address4 = v4.Address.fromHex(new BigInteger(binary.slice(96, 128).join(''), 2).toString(16));
+   var address6 = new v6.Address(this.parsedAddress.slice(0, 6).join(':'), 6);
 
-   var correct = v6_address.correctForm();
+   var correct = address6.correctForm();
 
    var infix = '';
 
@@ -639,7 +637,7 @@ v6.Address.prototype.v4_form = function() {
       infix = ':';
    }
 
-   return v6_address.correctForm() + infix + v4_address.address;
+   return address6.correctForm() + infix + address4.address;
 };
 
 v6.Address.prototype.teredo = function() {
