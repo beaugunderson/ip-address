@@ -83,7 +83,7 @@ v4.Address.prototype.toHex = function() {
    }
 
    return output.join(':');
-}
+};
 
 /* v6 address constructor */
 v6.Address = function(address, opt_groups) {
@@ -222,7 +222,7 @@ v6.Address.prototype.getType = function() {
    }
 
    return type;
-}
+};
 
 v6.Address.prototype.getBits = function(start, end) {
    return new BigInteger(this.getBitsBase2(start, end), 2);
@@ -430,7 +430,7 @@ function repeatString(s, n) {
 
 v6.Address.zeroPad = function(s, n) {
    return String(repeatString(0, n) + s).slice(n * -1);
-}
+};
 
 v6.Address.prototype.binaryZeroPad = function() {
    return v6.Address.zeroPad(this.bigInteger().toString(2), v6.BITS);
