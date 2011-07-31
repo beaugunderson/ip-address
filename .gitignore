@@ -1,4 +1,2 @@
-google*.html
-.sass-cache
 */*.swp
 node_modules
