@@ -89,7 +89,7 @@ v4.Address.prototype.toHex = function() {
 v6.Address = function(address, opt_groups) {
    this.address = address;
 
-   if (opt_groups == undefined) {
+   if (opt_groups === undefined) {
       this.groups = v6.GROUPS;
    } else {
       this.groups = opt_groups;
@@ -150,7 +150,7 @@ v6.Address.prototype.isMulticast = function() {
 };
 
 v6.Address.prototype.mask = function(opt_mask) {
-   if (opt_mask == undefined) {
+   if (opt_mask === undefined) {
       opt_mask = this.subnetMask;
    }
 
@@ -167,8 +167,24 @@ function addCommas(number) {
    return number;
 }
 
+v6.Address.prototype.link = function(opt_prefix, opt_class) {
+   if (opt_class === undefined) {
+      opt_class = '';
+   }
+
+   if (opt_prefix === undefined) {
+      opt_prefix = '/#address=';
+   }
+
+   if (opt_class) {
+      return sprintf('<a href="%1$s%2$s" class="%3$s">%2$s</a>', opt_prefix, this.correctForm(), opt_class);
+   } else {
+      return sprintf('<a href="%1$s%2$s">%2$s</a>', opt_prefix, this.correctForm());
+   }
+}
+
 v6.Address.prototype.possibleAddresses = function(opt_subnetSize) {
-   if (opt_subnetSize == undefined) {
+   if (opt_subnetSize === undefined) {
       opt_subnetSize = 0;
    }
 
@@ -259,7 +275,7 @@ function spanLeadingZeroesInner(group) {
 }
 
 v6.Address.spanAll = function(s, opt_offset) {
-   if (opt_offset == undefined) {
+   if (opt_offset === undefined) {
       opt_offset = 0;
    }
 
