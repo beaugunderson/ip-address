@@ -1,11 +1,14 @@
 {
    "addresses":
    {
+      "0000:0000:0000:0000:0000:0000:0000:0000/128": {
+         "conditions": ["incorrect", "canonical"]
+      },
       "0000:0000:0000:0000:0000:0000:0000:0000": {
-         "conditions": ["incorrect"]
+         "conditions": ["incorrect", "canonical"]
       },
       "0000:0000:0000:0000:0000:0000:0000:0001": {
-         "conditions": ["incorrect"]
+         "conditions": ["incorrect", "canonical"]
       },
       "0:0:0:0:0:0:0:0": {
          "conditions": ["incorrect"]
@@ -39,6 +42,9 @@
       },
       "0:0::": {
          "conditions": ["incorrect"]
+      },
+      "0:1:2:3:4:5:6:7/128": {
+         "conditions": ["correct"]
       },
       "0:1:2:3:4:5:6:7": {
          "conditions": ["correct"]

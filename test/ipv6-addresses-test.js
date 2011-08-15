@@ -21,6 +21,13 @@ function assertIsCorrect() {
    }
 }
 
+/* Fails if the address is not canonical */
+function assertIsCanonical() {
+   return function(e, address) {
+      assert.isTrue(address.isCanonical());
+   }
+}
+
 /* Fails if the address is valid */
 function assertIsInvalid() {
    return function(e, address) {
@@ -68,6 +75,10 @@ function addressIs(descriptors) {
 
       if (descriptor == 'invalid') {
          context['should not validate'] = assertIsInvalid();
+      }
+
+      if (descriptor == 'canonical') {
+         context['is canonical'] = assertIsCanonical();
       }
 
       if (descriptor == 'correct') {
