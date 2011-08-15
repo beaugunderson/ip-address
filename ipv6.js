@@ -1,6 +1,6 @@
 if (typeof exports !== 'undefined') {
-   var sprintf = require('sprintf').sprintf,
-       BigInteger = require('./lib/node/bigint').BigInteger;
+   var sprintf = require('sprintf').sprintf;
+   var BigInteger = require('./lib/node/bigint').BigInteger;
 }
 
 var v4 = this.v4 = {};
@@ -39,23 +39,29 @@ function map(array, f) {
    }
 
    return results;
-};
+}
 
-/* v4 address constructor */
+/*
+ * Instantiates an IPv4 address
+ */
 v4.Address = function(address) {
    this.address = address;
    this.groups = v4.GROUPS;
    this.parsedAddress = this.parse(address);
 };
 
-/* parse a v4 address */
+/*
+ * Parses a v4 address
+ */
 v4.Address.prototype.parse = function(address) {
    var groups = address.split('.');
 
    return groups;
 };
 
-/* convert a hex string to a v4 address object */
+/*
+ * Converts a hex string to an IPv4 address object
+ */
 v4.Address.fromHex = function(hex) {
    var padded = String("00000000" + hex.replace(/:/g, '')).slice(-8);
 
@@ -70,7 +76,9 @@ v4.Address.fromHex = function(hex) {
    return new v4.Address(groups.join('.'));
 };
 
-/* convert a v4 address object to a hex string */
+/*
+ * Converts an IPv4 address object to a hex string
+ */
 v4.Address.prototype.toHex = function() {
    var output = [];
 
@@ -85,15 +93,17 @@ v4.Address.prototype.toHex = function() {
    return output.join(':');
 };
 
-/* v6 address constructor */
+/*
+ * Instantiates an IPv6 address
+ */
 v6.Address = function(address, opt_groups) {
-   this.address = address;
-
    if (opt_groups === undefined) {
       this.groups = v6.GROUPS;
    } else {
       this.groups = opt_groups;
    }
+
+   this.v4 = false;
 
    this.subnet = '/128';
    this.subnetMask = 128;
@@ -102,10 +112,40 @@ v6.Address = function(address, opt_groups) {
 
    this.error = '';
 
-   this.parsedAddress = this.parse(address);
+   this.address = address;
+
+   var subnet = v6.RE_SUBNET_STRING.exec(address);
+
+   if (subnet) {
+      this.subnetMask = parseInt(subnet[0].replace('/', ''));
+      this.subnet = subnet[0];
+
+      if (this.subnetMask < 0 || this.subnetMask > v6.BITS) {
+         this.valid = false;
+         this.error = "Invalid subnet mask.";
+
+         return;
+      }
+
+      address = address.replace(v6.RE_SUBNET_STRING, '');
+   }
+
+   var zone = v6.RE_ZONE_STRING.exec(address);
+
+   if (zone) {
+      this.zone = zone[0];
+
+      address = address.replace(v6.RE_ZONE_STRING, '');
+   }
+
+   this.addressMinusSuffix = address;
+
+   this.parsedAddress = this.parse(this.addressMinusSuffix);
 };
 
-/* convert a BigInteger to a v6 address object */
+/*
+ * Converts a BigInteger to a v6 address object
+ */
 v6.Address.fromBigInteger = function(bigInteger) {
    var hex = v6.Address.zeroPad(bigInteger.toString(16), 32);
 
@@ -118,6 +158,9 @@ v6.Address.fromBigInteger = function(bigInteger) {
    return new v6.Address(groups.join(':'));
 };
 
+/*
+ * A helper function to compact an array
+ */
 v6.Address.compact = function(address, slice) {
    var s1 = [];
    var s2 = [];
@@ -133,22 +176,97 @@ v6.Address.compact = function(address, slice) {
    return s1.concat(['compact']).concat(s2);
 };
 
+/*
+ * Returns true if the address is valid, false otherwise
+ */
 v6.Address.prototype.isValid = function() {
    return this.valid;
 };
 
+/*
+ * Returns true if the address is correct, false otherwise
+ */
 v6.Address.prototype.isCorrect = function() {
-   return this.address == this.correctForm();
+   return this.addressMinusSuffix == this.correctForm();
 };
 
+/*
+ * Returns true if the address is a link local address, false otherwise
+ */
+v6.Address.prototype.isLinkLocal = function() {
+   // Zeroes are required, i.e. we can't check isInSubnet with 'fe80::/10'
+   if (this.getBitsBase2(0, 64) ==
+      "1111111010000000000000000000000000000000000000000000000000000000") {
+      return true;
+   }
+
+   return false;
+};
+
+/*
+ * Returns true if the address is in the canonical form, false otherwise
+ */
 v6.Address.prototype.isCanonical = function() {
-   return this.address == this.canonicalForm();
+   return this.addressMinusSuffix == this.canonicalForm();
 };
 
+/*
+ * Returns true if the address is a multicast address, false otherwise
+ */
 v6.Address.prototype.isMulticast = function() {
    return this.getType() == 'Multicast';
 };
 
+/*
+ * Returns true if the address is a v4-in-v6 address, false otherwise
+ */
+v6.Address.prototype.is4 = function() {
+   return this.v4;
+};
+
+/*
+ * Returns true if the address is a Teredo address, false otherwise
+ */
+v6.Address.prototype.isTeredo = function() {
+   if (this.isInSubnet(new v6.Address('2001::/32'))) {
+      return true;
+   }
+
+   return false;
+};
+
+/*
+ * Returns true if the address is a loopback address, false otherwise
+ */
+v6.Address.prototype.isLoopback = function() {
+   return this.getType() == 'Loopback';
+};
+
+/*
+ * Returns the Microsoft UNC transcription of the address
+ */
+v6.Address.prototype.microsoftTranscription = function() {
+   return sprintf('%s.ipv6-literal.net',
+      this.correctForm().replace(/:/g, '-'));
+};
+
+/*
+ * Returns the address in link form with a default port of 80
+ */
+v6.Address.prototype.href = function(opt_port) {
+   if (opt_port === undefined) {
+      opt_port = '';
+   } else {
+      opt_port = sprintf(':%s', opt_port);
+   }
+
+   return sprintf('http://[%s]%s/', this.correctForm(), opt_port);
+}
+
+/*
+ * Returns the first n bits of the address, defaulting to the
+ * subnet mask
+ */
 v6.Address.prototype.mask = function(opt_mask) {
    if (opt_mask === undefined) {
       opt_mask = this.subnetMask;
@@ -167,6 +285,9 @@ function addCommas(number) {
    return number;
 }
 
+/*
+ * Returns a link suitable for conveying the address via a URL hash
+ */
 v6.Address.prototype.link = function(opt_prefix, opt_class) {
    if (opt_class === undefined) {
       opt_class = '';
@@ -183,6 +304,9 @@ v6.Address.prototype.link = function(opt_prefix, opt_class) {
    }
 }
 
+/*
+ * Returns the number of possible subnets of a given size in the address
+ */
 v6.Address.prototype.possibleAddresses = function(opt_subnetSize) {
    if (opt_subnetSize === undefined) {
       opt_subnetSize = 0;
@@ -191,7 +315,15 @@ v6.Address.prototype.possibleAddresses = function(opt_subnetSize) {
    return addCommas(new BigInteger('2', 10).pow((v6.BITS - this.subnetMask) - (v6.BITS - opt_subnetSize)).toString(10));
 };
 
+/*
+ * Returns true if the given address is in the subnet of the current address
+ */
 v6.Address.prototype.isInSubnet = function(address) {
+   // XXX: This is a hunch
+   if (this.subnetMask < address.subnetMask) {
+      return false;
+   }
+
    if (this.mask(address.subnetMask) == address.mask()) {
       return true;
    } else {
@@ -199,23 +331,36 @@ v6.Address.prototype.isInSubnet = function(address) {
    }
 };
 
+/*
+ * The first address in the range given by this address' subnet
+ */
 v6.Address.prototype.startAddress = function() {
-   var bigInteger = new BigInteger(this.mask() + repeatString(0, v6.BITS - this.subnetMask), 2);
+   var startAddress = new BigInteger(this.mask() + repeatString(0, v6.BITS - this.subnetMask), 2);
 
-   return v6.Address.fromBigInteger(bigInteger);
+   return v6.Address.fromBigInteger(startAddress);
 };
 
+/*
+ * The last address in the range given by this address' subnet
+ */
 v6.Address.prototype.endAddress = function() {
-   var bigInteger = new BigInteger(this.mask() + repeatString(1, v6.BITS - this.subnetMask), 2);
+   var endAddress = new BigInteger(this.mask() + repeatString(1, v6.BITS - this.subnetMask), 2);
 
-   return v6.Address.fromBigInteger(bigInteger);
+   return v6.Address.fromBigInteger(endAddress);
 };
 
+/*
+ * Returns the scope of the address
+ */
 v6.Address.prototype.getScope = function() {
    return v6.SCOPES[this.getBits(12, 16)];
 };
 
+/*
+ * Returns the type of the address
+ */
 v6.Address.prototype.getType = function() {
+   // TODO: Move this to a constant?
    var TYPES = {
       '::/128': 'Unspecified',
       '::1/128': 'Loopback',
@@ -240,14 +385,23 @@ v6.Address.prototype.getType = function() {
    return type;
 };
 
+/*
+ * Returns the bits in the given range as a BigInteger
+ */
 v6.Address.prototype.getBits = function(start, end) {
    return new BigInteger(this.getBitsBase2(start, end), 2);
 };
 
+/*
+ * Returns the bits in the given range as a base-2 string
+ */
 v6.Address.prototype.getBitsBase2 = function(start, end) {
    return this.binaryZeroPad().slice(start, end);
 };
 
+/*
+ * Returns the bits in the given range as a base-16 string
+ */
 v6.Address.prototype.getBitsBase16 = function(start, end) {
    var length = end - start;
 
@@ -258,22 +412,16 @@ v6.Address.prototype.getBitsBase16 = function(start, end) {
    return v6.Address.zeroPad(this.getBits(start, end).toString(16), length / 4);
 };
 
+/*
+ * Returns the bits that are set past the subnet mask length
+ */
 v6.Address.prototype.getBitsPastSubnet = function() {
    return this.getBitsBase2(this.subnetMask, v6.BITS);
 };
 
-v6.Address.prototype.isTeredo = function() {
-   if (this.isInSubnet(new v6.Address('2001::/32'))) {
-      return true;
-   }
-
-   return false;
-};
-
-function spanLeadingZeroesInner(group) {
-   return group.replace(/^(0+)/, '<span class="zero">$1</span>');
-}
-
+/*
+ * Returns the string with each character contained in a <span>
+ */
 v6.Address.spanAll = function(s, opt_offset) {
    if (opt_offset === undefined) {
       opt_offset = 0;
@@ -288,10 +436,20 @@ v6.Address.spanAll = function(s, opt_offset) {
    }).join('');
 };
 
+function spanLeadingZeroesInner(group) {
+   return group.replace(/^(0+)/, '<span class="zero">$1</span>');
+}
+
+/*
+ * Returns the string with all zeroes contained in a <span>
+ */
 v6.Address.spanAllZeroes = function(s) {
    return s.replace(/(0+)/g, '<span class="zero">$1</span>');
 };
 
+/*
+ * Returns the string with leading zeroes contained in a <span>
+ */
 v6.Address.spanLeadingZeroes = function(address) {
    var groups = address.split(':');
 
@@ -302,6 +460,9 @@ v6.Address.spanLeadingZeroes = function(address) {
    return groups.join(':');
 };
 
+/*
+ * Groups an address
+ */
 v6.Address.simpleGroup = function(addressString, offset) {
    var groups = addressString.split(':');
 
@@ -314,36 +475,40 @@ v6.Address.simpleGroup = function(addressString, offset) {
          return g;
       }
 
-      return sprintf('<span class="hover-group group-%d">%s</span>', i + offset,
+      return sprintf('<span class="hover-group group-%d">%s</span>',
+         i + offset,
          spanLeadingZeroesInner(g));
    });
 
    return groups.join(':');
 };
 
+/*
+ * Groups an address
+ */
 v6.Address.group = function(addressString) {
-   var address = new v6.Address(addressString);
-   var address4 = address.address.match(v6.RE_V4);
+   var address6 = new v6.Address(addressString);
+   var address4 = address6.address.match(v6.RE_V4);
 
    if (address4) {
       // The IPv4 case
       var segments = address4[0].split('.');
 
-      address.address = address.address.replace(v6.RE_V4, sprintf('<span class="hover-group group-v4 group-6">%s</span>' +
+      address6.address = address6.address.replace(v6.RE_V4, sprintf('<span class="hover-group group-v4 group-6">%s</span>' +
          '.' +
          '<span class="hover-group group-v4 group-7">%s</span>',
          segments.slice(0, 2).join('.'),
          segments.slice(2, 4).join('.')));
    }
 
-   if (address.elidedGroups == 0) {
+   if (address6.elidedGroups == 0) {
       // The simple case
-      return v6.Address.simpleGroup(address.address);
+      return v6.Address.simpleGroup(address6.address);
    } else {
       // The elided case
       var output = [];
 
-      var halves = address.address.split('::');
+      var halves = address6.address.split('::');
 
       if (halves[0].length) {
          output.push(v6.Address.simpleGroup(halves[0]));
@@ -353,14 +518,14 @@ v6.Address.group = function(addressString) {
 
       var classes = ['hover-group'];
 
-      for (var i = address.elisionBegin; i < address.elisionBegin + address.elidedGroups; i++) {
+      for (var i = address6.elisionBegin; i < address6.elisionBegin + address6.elidedGroups; i++) {
          classes.push(sprintf('group-%d', i));
       }
 
       output.push(sprintf('<span class="%s"></span>', classes.join(' ')));
 
       if (halves[1].length) {
-         output.push(v6.Address.simpleGroup(halves[1], address.elisionEnd));
+         output.push(v6.Address.simpleGroup(halves[1], address6.elisionEnd));
       } else {
          output.push('');
       }
@@ -369,6 +534,9 @@ v6.Address.group = function(addressString) {
    }
 };
 
+/*
+ * Returns the correct form of the address
+ */
 v6.Address.prototype.correctForm = function() {
    if (!this.parsedAddress) {
       return;
@@ -438,39 +606,22 @@ function repeatString(s, n) {
    return result;
 }
 
+/*
+ * Returns the string left-padded with zeroes
+ */
 v6.Address.zeroPad = function(s, n) {
    return String(repeatString(0, n) + s).slice(n * -1);
 };
 
+/*
+ * Returns a zero-padded base-2 string representation of the address
+ */
 v6.Address.prototype.binaryZeroPad = function() {
    return v6.Address.zeroPad(this.bigInteger().toString(2), v6.BITS);
 };
 
+// TODO: Make private?
 v6.Address.prototype.parse = function(address) {
-   var subnet = v6.RE_SUBNET_STRING.exec(address);
-
-   if (subnet) {
-      this.subnetMask = parseInt(subnet[0].replace('/', ''));
-      this.subnet = subnet[0];
-
-      if (this.subnetMask < 0 || this.subnetMask > v6.BITS) {
-         this.valid = false;
-         this.error = "Invalid subnet mask.";
-
-         return;
-      }
-
-      address = address.replace(v6.RE_SUBNET_STRING, '');
-   }
-
-   var zone = v6.RE_ZONE_STRING.exec(address);
-
-   if (zone) {
-      this.zone = zone[0];
-
-      address = address.replace(v6.RE_ZONE_STRING, '');
-   }
-
    var address4 = address.match(v6.RE_V4);
 
    if (address4) {
@@ -502,6 +653,8 @@ v6.Address.prototype.parse = function(address) {
          return;
       }
 
+      this.v4 = true;
+
       address = address.replace(v6.RE_V4, temp4.toHex());
    }
 
@@ -513,7 +666,7 @@ v6.Address.prototype.parse = function(address) {
          badCharacters.length > 1 ? 's' : '', badCharacters.join(''));
 
       this.parseError = address.replace(v6.RE_BAD_CHARACTERS,
-         sprintf('<span class="parse-error">$1</span>'));
+         '<span class="parse-error">$1</span>');
 
       return;
    }
@@ -525,7 +678,7 @@ v6.Address.prototype.parse = function(address) {
       this.error = sprintf("Address failed regex: %s", badAddress.join(''));
 
       this.parseError = address.replace(v6.RE_BAD_ADDRESS,
-         sprintf('<span class="parse-error">$1</span>'));
+         '<span class="parse-error">$1</span>');
 
       return;
    }
@@ -609,6 +762,9 @@ v6.Address.prototype.parse = function(address) {
    return groups;
 };
 
+/*
+ * Returns the canonical form of the address
+ */
 v6.Address.prototype.canonicalForm = function() {
    if (!this.valid) {
       return;
@@ -619,6 +775,9 @@ v6.Address.prototype.canonicalForm = function() {
    }).join(':');
 };
 
+/*
+ * Returns the decimal form of the address
+ */
 v6.Address.prototype.decimal = function() {
    if (!this.valid) {
       return;
@@ -629,6 +788,9 @@ v6.Address.prototype.decimal = function() {
    }).join(':');
 };
 
+/*
+ * Returns the address as a BigInteger
+ */
 v6.Address.prototype.bigInteger = function() {
    if (!this.valid) {
       return;
@@ -639,6 +801,9 @@ v6.Address.prototype.bigInteger = function() {
    }).join(''), 16);
 };
 
+/*
+ * Returns the v4-in-v6 form of the address
+ */
 v6.Address.prototype.v4inv6 = function() {
    var binary = this.binaryZeroPad().split('');
 
@@ -656,49 +821,62 @@ v6.Address.prototype.v4inv6 = function() {
    return address6.correctForm() + infix + address4.address;
 };
 
+/*
+ * Returns an object containing the Teredo properties of the address
+ */
 v6.Address.prototype.teredo = function() {
    /*
-      - Bits 0 to 31 are set to the Teredo prefix (normally 2001:0000::/32).
-      - Bits 32 to 63 embed the primary IPv4 address of the Teredo server that is used.
-      - Bits 64 to 79 can be used to define some flags. Currently only the higher order bit is used; it is set to 1 if the Teredo client is located behind a cone NAT, 0 otherwise. For Microsoft's Windows Vista and Windows Server 2008 implementations, more bits are used. In those implementations, the format for these 16 bits is "CRAAAAUG AAAAAAAA", where "C" remains the "Cone" flag. The "R" bit is reserved for future use. The "U" bit is for the Universal/Local flag (set to 0). The "G" bit is Individual/Group flag (set to 0). The A bits are set to a 12-bit randomly generated number chosen by the Teredo client to introduce additional protection for the Teredo node against IPv6-based scanning attacks.
-      - Bits 80 to 95 contains the obfuscated UDP port number. This is the port number that is mapped by the NAT to the Teredo client with all bits inverted.
-      - Bits 96 to 127 contains the obfuscated IPv4 address. This is the public IPv4 address of the NAT with all bits inverted.
+    - Bits 0 to 31 are set to the Teredo prefix (normally 2001:0000::/32).
+    - Bits 32 to 63 embed the primary IPv4 address of the Teredo server that
+      is used.
+    - Bits 64 to 79 can be used to define some flags. Currently only the
+      higher order bit is used; it is set to 1 if the Teredo client is
+      located behind a cone NAT, 0 otherwise. For Microsoft's Windows Vista
+      and Windows Server 2008 implementations, more bits are used. In those
+      implementations, the format for these 16 bits is "CRAAAAUG AAAAAAAA",
+      where "C" remains the "Cone" flag. The "R" bit is reserved for future
+      use. The "U" bit is for the Universal/Local flag (set to 0). The "G" bit
+      is Individual/Group flag (set to 0). The A bits are set to a 12-bit
+      randomly generated number chosen by the Teredo client to introduce
+      additional protection for the Teredo node against IPv6-based scanning
+      attacks.
+    - Bits 80 to 95 contains the obfuscated UDP port number. This is the
+      port number that is mapped by the NAT to the Teredo client with all
+      bits inverted.
+    - Bits 96 to 127 contains the obfuscated IPv4 address. This is the
+      public IPv4 address of the NAT with all bits inverted.
    */
 
    var s = this.binaryZeroPad().split('');
 
    var prefix = this.getBitsBase16(0, 32);
 
+   var udpPort = this.getBits(80, 96).xor(new BigInteger('ffff', 16)).toString();
+
+   var server4 = v4.Address.fromHex(this.getBitsBase16(32, 64));
+   var client4 = v4.Address.fromHex(this.getBits(96, 128).xor(new BigInteger('ffffffff', 16)).toString(16));
+
    var flags = this.getBits(64, 80);
    var flagsBase2 = this.getBitsBase2(64, 80);
 
    var coneNat = flags.testBit(15);
-
    var reserved = flags.testBit(14);
    var groupIndividual = flags.testBit(8);
    var universalLocal = flags.testBit(9);
-   var random = new BigInteger(flagsBase2.slice(2, 6) + flagsBase2.slice(8, 16), 2).toString(10);
-
-   var udpPort = this.getBits(80, 96);
-   udpPort = udpPort.xor(new BigInteger('ffff', 16)).toString();
-
-   var server4 = v4.Address.fromHex(this.getBitsBase16(32, 64));
-
-   var client4 = this.getBits(96, 128);
-   client4 = v4.Address.fromHex(client4.xor(new BigInteger('ffffffff', 16)).toString(16));
+   var nonce = new BigInteger(flagsBase2.slice(2, 6) + flagsBase2.slice(8, 16), 2).toString(10);
 
    return {
       prefix: sprintf('%s:%s', prefix.slice(0, 4), prefix.slice(4, 8)),
       server4: server4.address,
       client4: client4.address,
       flags: flagsBase2,
-      windows: {
+      coneNat: coneNat,
+      microsoft: {
          reserved: reserved,
          universalLocal: universalLocal,
          groupIndividual: groupIndividual,
-         random: random
+         nonce: nonce
       },
-      coneNat: coneNat,
       udpPort: udpPort
    };
 };

@@ -1,8 +1,8 @@
 {
    "name": "ipv6",
    "description": "A browser- and node-compatible library for parsing IPv6 addresses",
-   "keywords": ["ipv6", "browser"],
-   "version": "0.0.1",
+   "keywords": ["ipv6", "browser", "validation"],
+   "version": "1.0.0",
    "author": "Beau Gunderson <beau@beaugunderson.com>",
    "main": "index",
    "engines": {
