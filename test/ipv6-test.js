@@ -1,6 +1,7 @@
 require.paths.push('..');
 
 var fs = require('fs'),
+    sprintf = require('sprintf').sprintf,
     vows = require('vows'),
     assert = require('assert');
 
@@ -19,74 +20,6 @@ function notations_to_addresses(notations) {
    return addresses;
 }
 
-/* Fails if the address is correct */
-function assertIsIncorrect() {
-   return function(e, address) {
-      assert.isFalse(address.isCorrect());
-   }
-}
-
-/* Fails if the address is incorrect */
-function assertIsCorrect() {
-   return function(e, address) {
-      assert.isTrue(address.isCorrect());
-   }
-}
-
-/* Fails if the address is valid */
-function assertIsInvalid() {
-   return function(e, address) {
-      assert.isString(address.error);
-      assert.isFalse(address.isValid());
-   };
-}
-
-/* Fails if the address is invalid */
-function assertIsValid() {
-   return function(e, address) {
-      assert.isObject(address);
-
-      assert.isArray(address.parsedAddress);
-      assert.length(address.parsedAddress, 8);
-
-      assert.isTrue(address.isValid());
-   };
-}
-
-function addressIs(descriptors) {
-   var context = {
-      topic: function() {
-         var addressString = this.context.name;
-         var address = new v6.Address(addressString);
-
-         // XXX Proper way to call this?
-         this.callback(null, address);
-      }
-   };
-
-   for (var i = 0; i < descriptors.length; i++) {
-      var descriptor = descriptors[i];
-
-      if (descriptor == 'valid') {
-         context['should validate'] = assertIsValid();
-      }
-
-      if (descriptor == 'invalid') {
-         context['should not validate'] = assertIsInvalid();
-      }
-
-      if (descriptor == 'correct') {
-         context['is correct'] = assertIsCorrect();
-      }
-
-      if (descriptor == 'incorrect') {
-         context['is incorrect'] = assertIsIncorrect();
-      }
-   }
-
-   return context;
-}
-
 var batch = {
    'A correct address': {
       topic: new v6.Address('a::b'),
@@ -97,6 +30,30 @@ var batch = {
       'validates as correct': function(a) {
          assert.isTrue(a.isCorrect());
          assert.equal(a.correctForm(), 'a::b');
+      }
+   },
+
+   'Small subnets': {
+      topic: new v6.Address('ffff::/64'),
+
+      'are contained by larger subnets': function(a) {
+         for (var i = 63; i > 0; i--) {
+            var larger = new v6.Address(sprintf('ffff::/%d', i));
+
+            assert.isTrue(a.isInSubnet(larger));
+         }
+      }
+   },
+
+   'Large subnets': {
+      topic: new v6.Address('ffff::/8'),
+
+      'are not contained by smaller subnets': function(a) {
+         for (var i = 9; i <= 128; i++) {
+            var smaller = new v6.Address(sprintf('ffff::/%d', i));
+
+            assert.isFalse(a.isInSubnet(smaller));
+         }
       }
    },
 
@@ -117,6 +74,9 @@ var batch = {
 
       'validates': function(a) {
          assert.isTrue(a.isValid());
+      },
+      'is v4': function(a) {
+         assert.isTrue(a.is4());
       }
    },
 
@@ -184,17 +144,12 @@ var batch = {
             assert.equal(a.v4inv6(), '2001:db8::1:0:0.0.0.1');
             assert.equal(a.decimal(), '08193:03512:00000:00000:00001:00000:00000:00001');
             assert.equal(a.binaryZeroPad(), '0010000000000001000011011011100000000000000000000000000000000000' +
-               '0000000000000001000000000000000000000000000000000000000000000001');
+                                            '0000000000000001000000000000000000000000000000000000000000000001');
          }
       }
    }
 };
 
-var data = fs.readFileSync('test/addresses.json');
-var json = JSON.parse(data);
-
-for (var address in json.addresses) {
-   batch[address] = addressIs(json.addresses[address].conditions);
-}
-
-vows.describe('v6.Address').addBatch(batch).export(module);
+vows.describe('v6.Address - Functionality')
+   .addBatch(batch)
+   .export(module);
