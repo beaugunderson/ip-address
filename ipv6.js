@@ -31,14 +31,27 @@ v6.RE_BAD_ADDRESS = /([0-9a-f]{5,}|:{3,}|[^:]:$|^:[^:])/ig;
 v6.RE_SUBNET_STRING = /\/\d{1,3}/;
 v6.RE_ZONE_STRING = /%.*$/;
 
+// Convenience functions
 function map(array, f) {
    var results = [];
+   var i;
 
-   for (var i = 0; i < array.length; i++) {
+   for (i = 0; i < array.length; i++) {
       results.push(f(array[i], i));
    }
 
    return results;
+}
+
+function repeatString(s, n) {
+   var result = '';
+   var i;
+
+   for (i = 0; i < n; i++) {
+      result += s;
+   }
+
+   return result;
 }
 
 /*
@@ -64,10 +77,10 @@ v4.Address.prototype.parse = function(address) {
  */
 v4.Address.fromHex = function(hex) {
    var padded = String("00000000" + hex.replace(/:/g, '')).slice(-8);
-
    var groups = [];
+   var i;
 
-   for (var i = 0; i < 8; i += 2) {
+   for (i = 0; i < 8; i += 2) {
       var h = padded.slice(i, i + 2);
 
       groups.push(parseInt(h, 16));
@@ -81,8 +94,9 @@ v4.Address.fromHex = function(hex) {
  */
 v4.Address.prototype.toHex = function() {
    var output = [];
+   var i;
 
-   for (var i = 0; i < v4.GROUPS; i += 2) {
+   for (i = 0; i < v4.GROUPS; i += 2) {
       var hex = sprintf('%02x%02x',
          parseInt(this.parsedAddress[i], 10),
          parseInt(this.parsedAddress[i + 1], 10));
@@ -117,7 +131,7 @@ v6.Address = function(address, opt_groups) {
    var subnet = v6.RE_SUBNET_STRING.exec(address);
 
    if (subnet) {
-      this.subnetMask = parseInt(subnet[0].replace('/', ''));
+      this.subnetMask = parseInt(subnet[0].replace('/', ''), 10);
       this.subnet = subnet[0];
 
       if (this.subnetMask < 0 || this.subnetMask > v6.BITS) {
@@ -148,10 +162,10 @@ v6.Address = function(address, opt_groups) {
  */
 v6.Address.fromBigInteger = function(bigInteger) {
    var hex = v6.Address.zeroPad(bigInteger.toString(16), 32);
-
    var groups = [];
+   var i;
 
-   for (var i = 0; i < 8; i++) {
+   for (i = 0; i < 8; i++) {
       groups.push(hex.slice(i * 4, (i + 1) * 4));
    }
 
@@ -164,8 +178,9 @@ v6.Address.fromBigInteger = function(bigInteger) {
 v6.Address.compact = function(address, slice) {
    var s1 = [];
    var s2 = [];
+   var i;
 
-   for (var i = 0; i < address.length; i++) {
+   for (i = 0; i < address.length; i++) {
       if (i < slice[0]) {
          s1.push(address[i]);
       } else if (i > slice[1]) {
@@ -261,7 +276,7 @@ v6.Address.prototype.href = function(opt_port) {
    }
 
    return sprintf('http://[%s]%s/', this.correctForm(), opt_port);
-}
+};
 
 /*
  * Returns the first n bits of the address, defaulting to the
@@ -302,7 +317,7 @@ v6.Address.prototype.link = function(opt_prefix, opt_class) {
    } else {
       return sprintf('<a href="%1$s%2$s">%2$s</a>', opt_prefix, this.correctForm());
    }
-}
+};
 
 /*
  * Returns the number of possible subnets of a given size in the address
@@ -405,7 +420,7 @@ v6.Address.prototype.getBitsBase2 = function(start, end) {
 v6.Address.prototype.getBitsBase16 = function(start, end) {
    var length = end - start;
 
-   if (length % 4 != 0) {
+   if (length % 4 !== 0) {
       return;
    }
 
@@ -501,7 +516,7 @@ v6.Address.group = function(addressString) {
          segments.slice(2, 4).join('.')));
    }
 
-   if (address6.elidedGroups == 0) {
+   if (address6.elidedGroups === 0) {
       // The simple case
       return v6.Address.simpleGroup(address6.address);
    } else {
@@ -542,12 +557,13 @@ v6.Address.prototype.correctForm = function() {
       return;
    }
 
+   var i;
    var groups = [];
 
    var zeroCounter = 0;
    var zeroes = [];
 
-   for (var i = 0; i < this.parsedAddress.length; i++) {
+   for (i = 0; i < this.parsedAddress.length; i++) {
       var value = parseInt(this.parsedAddress[i], 16);
 
       if (value === 0) {
@@ -581,7 +597,7 @@ v6.Address.prototype.correctForm = function() {
       groups = this.parsedAddress;
    }
 
-   for (var i = 0; i < groups.length; i++) {
+   for (i = 0; i < groups.length; i++) {
       if (groups[i] != 'compact') {
          groups[i] = parseInt(groups[i], 16).toString(16);
       }
@@ -595,16 +611,6 @@ v6.Address.prototype.correctForm = function() {
 
    return correct;
 };
-
-function repeatString(s, n) {
-   var result = '';
-
-   for (var i = 0; i < n; i++) {
-      result += s;
-   }
-
-   return result;
-}
 
 /*
  * Returns the string left-padded with zeroes
@@ -620,24 +626,27 @@ v6.Address.prototype.binaryZeroPad = function() {
    return v6.Address.zeroPad(this.bigInteger().toString(2), v6.BITS);
 };
 
+function spanLeadingZeroes4(n) {
+   n = n.replace(/^(0{1,})([1-9]+)$/, '<span class="parse-error">$1</span>$2');
+   n = n.replace(/^(0{1,})(0)$/, '<span class="parse-error">$1</span>$2');
+
+   return n;
+}
+
 // TODO: Make private?
 v6.Address.prototype.parse = function(address) {
    var address4 = address.match(v6.RE_V4);
+   var i;
 
    if (address4) {
       var temp4 = new v4.Address(address4[0]);
 
-      for (var i = 0; i < temp4.groups; i++) {
+      for (i = 0; i < temp4.groups; i++) {
          if (/^0[0-9]+/.test(temp4.parsedAddress[i])) {
             this.valid = false;
             this.error = 'IPv4 addresses can not have leading zeroes.';
 
-            this.parseError = address.replace(v6.RE_V4, map(temp4.parsedAddress, function(n) {
-               n = n.replace(/^(0{1,})([1-9]+)$/, '<span class="parse-error">$1</span>$2');
-               n = n.replace(/^(0{1,})(0)$/, '<span class="parse-error">$1</span>$2');
-
-               return n;
-            }).join('.'));
+            this.parseError = address.replace(v6.RE_V4, map(temp4.parsedAddress, spanLeadingZeroes4).join('.'));
 
             return;
          }
@@ -692,12 +701,12 @@ v6.Address.prototype.parse = function(address) {
       var last = halves[1].split(':');
 
       if (first.length == 1 &&
-         first[0] == '') {
+         first[0] === '') {
          first = [];
       }
 
       if (last.length == 1 &&
-         last[0] == '') {
+         last[0] === '') {
          last = [];
       }
 
@@ -715,15 +724,15 @@ v6.Address.prototype.parse = function(address) {
       this.elisionBegin = first.length;
       this.elisionEnd = first.length + this.elidedGroups;
 
-      for (var i = 0; i < first.length; i++) {
+      for (i = 0; i < first.length; i++) {
          groups.push(first[i]);
       }
 
-      for (var i = 0; i < remaining; i++) {
+      for (i = 0; i < remaining; i++) {
          groups.push(0);
       }
 
-      for (var i = 0; i < last.length; i++) {
+      for (i = 0; i < last.length; i++) {
          groups.push(last[i]);
       }
    } else if (halves.length == 1) {
@@ -748,7 +757,7 @@ v6.Address.prototype.parse = function(address) {
       return;
    }
 
-   for (var i = 0; i < groups.length; i++) {
+   for (i = 0; i < groups.length; i++) {
       if (groups[i].length > 4 && !address4) {
          this.valid = false;
          this.error = sprintf("Group %d is too long", i + 1);
