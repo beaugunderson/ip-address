@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+ <head>
+  <meta charset="utf-8" />
+
+  <title>Simple IPv6 test</title>
+
+  <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script>
+
+  <script type="text/javascript" src="/lib/jsbn.js"></script>
+  <script type="text/javascript" src="/lib/jsbn2.js"></script>
+
+  <script type="text/javascript" src="/lib/sprintf.js"></script>
+
+  <script type="text/javascript" src="/ipv6/ipv6.js"></script>
+
+  <script type="text/javascript">
+   $(function() {
+    var address6 = new v6.Address('a::b');
+
+    $('#output').text(address6.canonicalForm());
+   });
+  </script>
+ </head>
+
+ <body>
+  The canonical form of <code>a::b</code> is: <code><span id="output"></span></code>
+ </body>
+</html>
