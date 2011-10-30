@@ -33,6 +33,16 @@ var batch = {
       }
    },
 
+   'Identical subnets': {
+      topic: new v6.Address('ffff::/64'),
+
+      'are contained by identical subnets': function(a) {
+         var same = new v6.Address('ffff::/64');
+
+         assert.isTrue(a.isInSubnet(same));
+      }
+   },
+
    'Small subnets': {
       topic: new v6.Address('ffff::/64'),
 

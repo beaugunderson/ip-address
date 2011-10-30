@@ -6,7 +6,9 @@
    "author": "Beau Gunderson <beau@beaugunderson.com>",
    "main": "index",
    "bin": {
-      "ipv6": "bin/ipv6.js"
+      "ipv6": "bin/ipv6.js",
+      "ipv6grep": "bin/ipv6grep.js",
+      "ipv6ack": "bin/ipv6ack.js"
    },
    "engines": {
       "node": ">= 0.4.1"
@@ -18,7 +20,8 @@
    "dependencies": {
       "sprintf": ">= 0.1.1",
       "cli": ">= 0.3.7",
-      "cliff": ">= 0.1.3"
+      "cliff": ">= 0.1.3",
+      "eyes": ">= 0.1.6"
    },
    "devDependencies": {
       "vows": ">= 0.5.8"

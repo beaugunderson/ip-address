@@ -26,7 +26,7 @@ v6.SCOPES = {
 v6.RE_V4 = /(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/g;
 
 v6.RE_BAD_CHARACTERS = /([^0-9a-f:\/%])/ig;
-v6.RE_BAD_ADDRESS = /([0-9a-f]{5,}|:{3,}|[^:]:$|^:[^:])/ig;
+v6.RE_BAD_ADDRESS = /([0-9a-f]{5,}|:{3,}|[^:]:$|^:[^:]|\/$)/ig;
 
 v6.RE_SUBNET_STRING = /\/\d{1,3}/;
 v6.RE_ZONE_STRING = /%.*$/;
@@ -52,6 +52,44 @@ function repeatString(s, n) {
    }
 
    return result;
+}
+
+function addCommas(number) {
+   var r = /(\d+)(\d{3})/;
+
+   while (r.test(number)) {
+      number = number.replace(r, '$1,$2');
+   }
+
+   return number;
+}
+
+function spanLeadingZeroesSimple(group) {
+   return group.replace(/^(0+)/, '<span class="zero">$1</span>');
+}
+
+function spanLeadingZeroes4(n) {
+   n = n.replace(/^(0{1,})([1-9]+)$/, '<span class="parse-error">$1</span>$2');
+   n = n.replace(/^(0{1,})(0)$/, '<span class="parse-error">$1</span>$2');
+
+   return n;
+}
+
+function simpleRegularExpression(addressArray) {
+   var output = [];
+   var i;
+
+   for (i = 0; i < addressArray.length; i++) {
+      var segment = addressArray[i];
+
+      if (segment.length < 4) {
+         output.push(sprintf('0{0,%d}%s', 4 - segment.length, segment));
+      } else {
+         output.push(segment);
+      }
+   }
+
+   return output.join(':');
 }
 
 /*
@@ -290,16 +328,6 @@ v6.Address.prototype.mask = function(opt_mask) {
    return this.getBitsBase2(0, opt_mask);
 };
 
-function addCommas(number) {
-   var r = /(\d+)(\d{3})/;
-
-   while (r.test(number)) {
-      number = number.replace(r, '$1,$2');
-   }
-
-   return number;
-}
-
 /*
  * Returns a link suitable for conveying the address via a URL hash
  */
@@ -368,15 +396,42 @@ v6.Address.prototype.endAddress = function() {
  * Returns the scope of the address
  */
 v6.Address.prototype.getScope = function() {
-   return v6.SCOPES[this.getBits(12, 16)];
+   var scope = v6.SCOPES[this.getBits(12, 16)];
+
+   if (this.getType() == "Global unicast") {
+      if (scope != "Link local") {
+         scope = "Global";
+      }
+   }
+
+   return scope;
 };
 
 /*
  * Returns the type of the address
  */
 v6.Address.prototype.getType = function() {
-   // TODO: Move this to a constant?
+   // TODO: Refactor this
+   // TODO: Add ff0x::fb, etc. for multicast DNS
    var TYPES = {
+      'ff01::1/128': 'Multicast (All nodes on this interface)',
+      'ff01::2/128': 'Multicast (All routers on this interface)',
+      'ff02::1/128': 'Multicast (All nodes on this link)',
+      'ff02::2/128': 'Multicast (All routers on this link)',
+      'ff05::2/128': 'Multicast (All routers in this site)',
+      'ff02::5/128': 'Multicast (OSPFv3 AllSPF routers)',
+      'ff02::6/128': 'Multicast (OSPFv3 AllDR routers)',
+      'ff02::9/128': 'Multicast (RIP routers)',
+      'ff02::a/128': 'Multicast (EIGRP routers)',
+      'ff02::d/128': 'Multicast (PIM routers)',
+      'ff02::16/128': 'Multicast (MLDv2 reports)',
+      'ff01::fb/128': 'Multicast (mDNSv6)',
+      'ff02::fb/128': 'Multicast (mDNSv6)',
+      'ff05::fb/128': 'Multicast (mDNSv6)',
+      'ff02::1:2/128': 'Multicast (All DHCP servers and relay agents on this link)',
+      'ff05::1:2/128': 'Multicast (All DHCP servers and relay agents in this site)',
+      'ff02::1:3/128': 'Multicast (All DHCP servers on this link)',
+      'ff05::1:3/128': 'Multicast (All DHCP servers in this site)',
       '::/128': 'Unspecified',
       '::1/128': 'Loopback',
       'ff00::/8': 'Multicast',
@@ -451,10 +506,6 @@ v6.Address.spanAll = function(s, opt_offset) {
    }).join('');
 };
 
-function spanLeadingZeroesInner(group) {
-   return group.replace(/^(0+)/, '<span class="zero">$1</span>');
-}
-
 /*
  * Returns the string with all zeroes contained in a <span>
  */
@@ -469,7 +520,7 @@ v6.Address.spanLeadingZeroes = function(address) {
    var groups = address.split(':');
 
    groups = map(groups, function(g, i) {
-      return spanLeadingZeroesInner(g);
+      return spanLeadingZeroesSimple(g);
    });
 
    return groups.join(':');
@@ -492,7 +543,7 @@ v6.Address.simpleGroup = function(addressString, offset) {
 
       return sprintf('<span class="hover-group group-%d">%s</span>',
          i + offset,
-         spanLeadingZeroesInner(g));
+         spanLeadingZeroesSimple(g));
    });
 
    return groups.join(':');
@@ -546,6 +597,26 @@ v6.Address.group = function(addressString) {
       }
 
       return output.join(':');
+   }
+};
+
+/*
+ * Returns the reversed ip6.arpa form of the address
+ */
+v6.Address.prototype.reverseForm = function() {
+   var characters = Math.floor(this.subnetMask / 4);
+
+   var reversed = this.canonicalForm()
+      .replace(/:/g, '')
+      .split('')
+      .slice(0, characters)
+      .reverse()
+      .join('.');
+
+   if (characters > 0) {
+      return sprintf("%s.ip6.arpa.", reversed);
+   } else {
+      return 'ip6.arpa.';
    }
 };
 
@@ -625,13 +696,6 @@ v6.Address.zeroPad = function(s, n) {
 v6.Address.prototype.binaryZeroPad = function() {
    return v6.Address.zeroPad(this.bigInteger().toString(2), v6.BITS);
 };
-
-function spanLeadingZeroes4(n) {
-   n = n.replace(/^(0{1,})([1-9]+)$/, '<span class="parse-error">$1</span>$2');
-   n = n.replace(/^(0{1,})(0)$/, '<span class="parse-error">$1</span>$2');
-
-   return n;
-}
 
 // TODO: Make private?
 v6.Address.prototype.parse = function(address) {
@@ -769,6 +833,56 @@ v6.Address.prototype.parse = function(address) {
    this.valid = true;
 
    return groups;
+};
+
+/*
+ * Generate a regular expression string that can be used to find or validate all
+ * variations of this address.
+ */
+v6.Address.prototype.regularExpressionString = function(opt_subString) {
+   if (opt_subString === undefined) {
+      opt_subString = false;
+   }
+
+   var i;
+   var output = [];
+
+   var address6 = new v6.Address(this.correctForm());
+
+   if (address6.elidedGroups === 0) {
+      // The simple case
+      output = simpleRegularExpression(address6.parsedAddress);
+   } else {
+      // The elided case
+      // TODO: Allow sloppy elision
+      // TODO: Compute all possible elisions
+      var halves = address6.address.split('::');
+
+      if (halves[0].length) {
+         output = output.concat(simpleRegularExpression(halves[0].split(':')));
+         output.push(':');
+      }
+
+      output.push(sprintf('((0{1,4}:){%d}|:)', address6.elidedGroups));
+
+      if (halves[1].length) {
+         output = output.concat(simpleRegularExpression(halves[1].split(':')));
+      }
+   }
+
+   if (!opt_subString) {
+      output = [].concat('\\b', output, '\\b');
+   }
+
+   return output.join('');
+};
+
+/*
+ * Generate a regular expression that can be used to find or validate all
+ * variations of this address.
+ */
+v6.Address.prototype.regularExpression = function() {
+   return new RegExp(this.regularExpressionString(), 'i');
 };
 
 /*

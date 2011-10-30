@@ -7,6 +7,28 @@ var fs = require('fs'),
 var v6 = require('ipv6').v6,
     BigInteger = require('../lib/node/bigint');
 
+/* Fails if the generated regular expression doesn't validate */
+function assertCanonicalFormValidatesRegEx() {
+   return function(e, address) {
+      var re = address.regularExpression();
+
+      console.log(address.canonicalForm(), address.regularExpressionString());
+
+      assert.isTrue(re.test(address.canonicalForm()));
+   }
+}
+
+/* Fails if the generated regular expression doesn't validate */
+function assertCorrectFormValidatesRegEx() {
+   return function(e, address) {
+      var re = address.regularExpression();
+
+      console.log(address.correctForm(), address.regularExpressionString());
+
+      assert.isTrue(re.test(address.correctForm()));
+   }
+}
+
 /* Fails if the address is correct */
 function assertIsIncorrect() {
    return function(e, address) {
@@ -71,6 +93,8 @@ function addressIs(descriptors) {
 
       if (descriptor == 'valid') {
          context['should validate'] = assertIsValid();
+         context['should validate canonical form via regex'] = assertCanonicalFormValidatesRegEx();
+         context['should validate correct form via regex'] = assertCorrectFormValidatesRegEx();
       }
 
       if (descriptor == 'invalid') {
