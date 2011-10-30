@@ -1,13 +1,54 @@
 javascript-ipv6
 ===============
 
-javascript-ipv6 is a library for manipulating IPv6 addresses in JavaScript:
+javascript-ipv6 is a library for manipulating IPv6 addresses in JavaScript.
+
+Examples
+--------
+
+For node:
 
 ```js
+var v6 = require('ipv6').v6;
+
 var address = new v6.Address('2001:0:ce49:7601:e866:efff:62c3:fffe');
 var teredo = address.teredo();
 
 console.log(teredo.client4); // Prints "157.60.0.1"
+```
+
+For a browser:
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+ <head>
+  <meta charset="utf-8" />
+
+  <title>Simple IPv6 test</title>
+
+  <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js"></script>
+
+  <script type="text/javascript" src="/lib/jsbn.js"></script>
+  <script type="text/javascript" src="/lib/jsbn2.js"></script>
+
+  <script type="text/javascript" src="/lib/sprintf.js"></script>
+
+  <script type="text/javascript" src="/ipv6/ipv6.js"></script>
+
+  <script type="text/javascript">
+   $(function() {
+    var address6 = new v6.Address('a::b');
+
+    $('#output').text(address6.canonicalForm());
+   });
+  </script>
+ </head>
+
+ <body>
+  The canonical form of <code>a::b</code> is: <code id="output"></code>
+ </body>
+</html>
 ```
 
 Current functionality
