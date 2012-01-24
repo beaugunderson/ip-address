@@ -7,7 +7,7 @@
    "license": "MIT",
    "main": "index",
    "scripts": {
-      "test": "vows --spec | less -r"
+      "test": "vows --spec"
    },
    "bin": {
       "ipv6": "bin/ipv6.js",
