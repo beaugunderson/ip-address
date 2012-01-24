@@ -1,10 +1,8 @@
-require.paths.push('..');
-
 var fs = require('fs'),
     vows = require('vows'),
     assert = require('assert');
 
-var v6 = require('ipv6').v6,
+var v6 = require('../ipv6').v6,
     BigInteger = require('../lib/node/bigint');
 
 /* Fails if the generated regular expression doesn't validate */

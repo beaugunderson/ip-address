@@ -1,11 +1,9 @@
-require.paths.push('..');
-
 var fs = require('fs'),
     sprintf = require('sprintf').sprintf,
     vows = require('vows'),
     assert = require('assert');
 
-var v6 = require('ipv6').v6,
+var v6 = require('../ipv6').v6,
     BigInteger = require('../lib/node/bigint');
 
 // A convenience function to convert a list of IPv6 address notations
