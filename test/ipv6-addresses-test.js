@@ -62,7 +62,7 @@ function assertIsValid() {
       assert.isObject(address);
 
       assert.isArray(address.parsedAddress);
-      assert.length(address.parsedAddress, 8);
+      assert.equal(address.parsedAddress.length, 8);
 
       assert.isTrue(address.isValid());
    };
