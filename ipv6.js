@@ -23,7 +23,7 @@ v6.SCOPES = {
    16: 'Reserved'
 };
 
-v6.RE_V4 = /(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/g;
+v4.RE_ADDRESS = /(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/g;
 
 v6.RE_BAD_CHARACTERS = /([^0-9a-f:\/%])/ig;
 v6.RE_BAD_ADDRESS = /([0-9a-f]{5,}|:{3,}|[^:]:$|^:[^:]|\/$)/ig;
@@ -96,8 +96,10 @@ function simpleRegularExpression(addressArray) {
  * Instantiates an IPv4 address
  */
 v4.Address = function(address) {
+   this.valid = false;
    this.address = address;
    this.groups = v4.GROUPS;
+
    this.parsedAddress = this.parse(address);
 };
 
@@ -107,8 +109,19 @@ v4.Address = function(address) {
 v4.Address.prototype.parse = function(address) {
    var groups = address.split('.');
 
+   if (address.match(v4.RE_ADDRESS)) {
+      this.valid = true;
+   }
+
    return groups;
 };
+
+/*
+ * Returns true if the address is valid
+ */
+v4.Address.prototype.isValid = function() {
+   return this.valid;
+}
 
 /*
  * Converts a hex string to an IPv4 address object
@@ -331,19 +344,33 @@ v6.Address.prototype.mask = function(opt_mask) {
 /*
  * Returns a link suitable for conveying the address via a URL hash
  */
-v6.Address.prototype.link = function(opt_prefix, opt_class) {
-   if (opt_class === undefined) {
-      opt_class = '';
+v6.Address.prototype.link = function(options) {
+   if (!options) {
+      options = {};
    }
 
-   if (opt_prefix === undefined) {
-      opt_prefix = '/#address=';
+   if (options.class === undefined) {
+      options.class = '';
    }
 
-   if (opt_class) {
-      return sprintf('<a href="%1$s%2$s" class="%3$s">%2$s</a>', opt_prefix, this.correctForm(), opt_class);
+   if (options.prefix === undefined) {
+      options.prefix = '/#address=';
+   }
+
+   if (options.v4 === undefined) {
+      options.v4 = false;
+   }
+
+   var formFunction = this.correctForm;
+
+   if (options.v4) {
+      formFunction = this.v4inv6;
+   }
+
+   if (options.class) {
+      return sprintf('<a href="%1$s%2$s" class="%3$s">%2$s</a>', options.prefix, formFunction.call(this), options.class);
    } else {
-      return sprintf('<a href="%1$s%2$s">%2$s</a>', opt_prefix, this.correctForm());
+      return sprintf('<a href="%1$s%2$s">%2$s</a>', options.prefix, formFunction.call(this));
    }
 };
 
@@ -372,6 +399,13 @@ v6.Address.prototype.isInSubnet = function(address) {
    } else {
       return false;
    }
+};
+
+/*
+ * Create an IPv6-mapped address given an IPv4 address
+ */
+v6.Address.fromAddress4 = function(address4) {
+   return new v6.Address('::ffff:' + address4);
 };
 
 /*
@@ -554,13 +588,13 @@ v6.Address.simpleGroup = function(addressString, offset) {
  */
 v6.Address.group = function(addressString) {
    var address6 = new v6.Address(addressString);
-   var address4 = address6.address.match(v6.RE_V4);
+   var address4 = address6.address.match(v4.RE_ADDRESS);
 
    if (address4) {
       // The IPv4 case
       var segments = address4[0].split('.');
 
-      address6.address = address6.address.replace(v6.RE_V4, sprintf('<span class="hover-group group-v4 group-6">%s</span>' +
+      address6.address = address6.address.replace(v4.RE_ADDRESS, sprintf('<span class="hover-group group-v4 group-6">%s</span>' +
          '.' +
          '<span class="hover-group group-v4 group-7">%s</span>',
          segments.slice(0, 2).join('.'),
@@ -699,7 +733,7 @@ v6.Address.prototype.binaryZeroPad = function() {
 
 // TODO: Make private?
 v6.Address.prototype.parse = function(address) {
-   var address4 = address.match(v6.RE_V4);
+   var address4 = address.match(v4.RE_ADDRESS);
    var i;
 
    if (address4) {
@@ -710,17 +744,17 @@ v6.Address.prototype.parse = function(address) {
             this.valid = false;
             this.error = 'IPv4 addresses can not have leading zeroes.';
 
-            this.parseError = address.replace(v6.RE_V4, map(temp4.parsedAddress, spanLeadingZeroes4).join('.'));
+            this.parseError = address.replace(v4.RE_ADDRESS, map(temp4.parsedAddress, spanLeadingZeroes4).join('.'));
 
             return;
          }
       }
 
-      if (/[0-9]$/.test(address.replace(v6.RE_V4, ''))) {
+      if (/[0-9]$/.test(address.replace(v4.RE_ADDRESS, ''))) {
          this.valid = false;
          this.error = 'Invalid v4-in-v6 address';
 
-         this.parseError = address.replace(v6.RE_V4,
+         this.parseError = address.replace(v4.RE_ADDRESS,
             sprintf('<span class="parse-error">%s</span>', address4));
 
          return;
@@ -728,7 +762,7 @@ v6.Address.prototype.parse = function(address) {
 
       this.v4 = true;
 
-      address = address.replace(v6.RE_V4, temp4.toHex());
+      address = address.replace(v4.RE_ADDRESS, temp4.toHex());
    }
 
    var badCharacters = address.match(v6.RE_BAD_CHARACTERS);
