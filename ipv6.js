@@ -886,8 +886,22 @@ v6.Address.prototype.regularExpressionString = function(opt_subString) {
    if (address6.elidedGroups === 0) {
       // The simple case
       output = simpleRegularExpression(address6.parsedAddress);
+   } else if (address6.elidedGroups === 8) {
+      output.push('::|');
+
+      // TODO: Validate this
+      for (i = 0; i < address6.elidedGroups; i++) {
+         var pipe = '|';
+
+         if (i == address6.elidedGroups - 1) {
+            pipe = '';
+         }
+
+         output.push(sprintf('(0{1,4}:){%d}:%s', address6.elidedGroups, pipe));
+      }
    } else {
       // The elided case
+
       // TODO: Allow sloppy elision
       // TODO: Compute all possible elisions
       var halves = address6.address.split('::');

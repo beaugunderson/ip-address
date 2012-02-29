@@ -71,6 +71,7 @@ Current functionality
 Future functionality
 --------------------
 
+-    Investigate `procstreams`
 -    Base 64/85 encoding?
 -    Reverse lookups? (Whether a domain name has IPv6 glue)
 
