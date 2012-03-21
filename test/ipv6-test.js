@@ -1,163 +1,169 @@
 var fs = require('fs'),
     sprintf = require('sprintf').sprintf,
-    vows = require('vows'),
-    assert = require('assert');
+    should = require('should');
 
 var v6 = require('../ipv6').v6,
     BigInteger = require('../lib/node/bigint');
 
 // A convenience function to convert a list of IPv6 address notations
 // to v6.Address instances
-function notations_to_addresses(notations) {
+function notationsToAddresseses(notations) {
    var addresses = [];
 
-   for (var i = 0; i < notations.length; i++) {
-      addresses.push(new v6.Address(notations[i]));
-   }
+   notations.forEach(function(notation) {
+      addresses.push(new v6.Address(notation));
+   });
 
    return addresses;
 }
 
-var batch = {
-   'A correct address': {
-      topic: new v6.Address('a::b'),
+describe('A correct address', function() {
+   var topic = new v6.Address('a::b');
 
-      'contains no uppercase letters': function(a) {
-         assert.isFalse(/[A-Z]/.test(a.address));
-      },
-      'validates as correct': function(a) {
-         assert.isTrue(a.isCorrect());
-         assert.equal(a.correctForm(), 'a::b');
+   it('contains no uppercase letters', function() {
+      /[A-Z]/.test(topic.address).should.be.false;
+   });
+
+   it('validates as correct', function() {
+      topic.isCorrect().should.be.true;
+
+      should.equal(topic.correctForm(), 'a::b');
+   });
+});
+
+describe('An address with a subnet', function() {
+   var topic = new v6.Address('ffff::/64');
+
+   it('is contained by an identical address with an identical subnet', function() {
+      var same = new v6.Address('ffff::/64');
+
+      topic.isInSubnet(same).should.be.true;
+   });
+});
+
+describe('Small subnets', function() {
+   var topic = new v6.Address('ffff::/64');
+
+   it('is contained by larger subnets', function() {
+      for (var i = 63; i > 0; i--) {
+         var larger = new v6.Address(sprintf('ffff::/%d', i));
+
+         topic.isInSubnet(larger).should.be.true;
       }
-   },
+   });
+});
 
-   'Identical subnets': {
-      topic: new v6.Address('ffff::/64'),
+describe('Large subnets', function() {
+   var topic = new v6.Address('ffff::/8');
 
-      'are contained by identical subnets': function(a) {
-         var same = new v6.Address('ffff::/64');
+   it('is not contained by smaller subnets', function() {
+      for (var i = 9; i <= 128; i++) {
+         var smaller = new v6.Address(sprintf('ffff::/%d', i));
 
-         assert.isTrue(a.isInSubnet(same));
+         topic.isInSubnet(smaller).should.be.false;
       }
-   },
+   });
+});
 
-   'Small subnets': {
-      topic: new v6.Address('ffff::/64'),
+describe('A canonical address', function() {
+   var topic = new v6.Address('000a:0000:0000:0000:0000:0000:0000:000b');
 
-      'are contained by larger subnets': function(a) {
-         for (var i = 63; i > 0; i--) {
-            var larger = new v6.Address(sprintf('ffff::/%d', i));
+   it('is 39 characters long', function() {
+      should.equal(topic.address.length, 39);
+   });
 
-            assert.isTrue(a.isInSubnet(larger));
-         }
-      }
-   },
+   it('validates as canonical', function() {
+      topic.isCanonical().should.be.true;
 
-   'Large subnets': {
-      topic: new v6.Address('ffff::/8'),
+      should.equal(topic.canonicalForm(), '000a:0000:0000:0000:0000:0000:0000:000b');
+   });
+});
 
-      'are not contained by smaller subnets': function(a) {
-         for (var i = 9; i <= 128; i++) {
-            var smaller = new v6.Address(sprintf('ffff::/%d', i));
+describe('A v4-in-v6 address', function() {
+   var topic = new v6.Address('::192.168.0.1');
 
-            assert.isFalse(a.isInSubnet(smaller));
-         }
-      }
-   },
+   it('validates', function() {
+      topic.isValid().should.be.true;
+   });
 
-   'A canonical address': {
-      topic: new v6.Address('000a:0000:0000:0000:0000:0000:0000:000b'),
+   it('is v4', function() {
+      topic.is4().should.be.true;
+   });
+});
 
-      'is 39 characters long': function(a) {
-         assert.equal(a.address.length, 39);
-      },
-      'validates as canonical': function(a) {
-         assert.isTrue(a.isCanonical());
-         assert.equal(a.canonicalForm(), '000a:0000:0000:0000:0000:0000:0000:000b');
-      }
-   },
+describe('An address with a subnet', function() {
+   var topic = new v6.Address('a::b/48');
 
-   'A v4 in v6 address': {
-      topic: new v6.Address('::192.168.0.1'),
+   it('validates', function() {
+      topic.isValid().should.be.true;
+   });
 
-      'validates': function(a) {
-         assert.isTrue(a.isValid());
-      },
-      'is v4': function(a) {
-         assert.isTrue(a.is4());
-      }
-   },
+   it('parses the subnet', function() {
+      should.equal(topic.subnet, '/48');
+   });
 
-   'An address with a subnet': {
-      topic: new v6.Address('a::b/48'),
+   it('is in its own subnet', function() {
+      topic.isInSubnet(new v6.Address('a::b/48')).should.be.true;
+   });
 
-      'validates': function (a) {
-         assert.isTrue(a.isValid());
-      },
-      'parses the subnet': function (a) {
-         assert.equal(a.subnet, '/48');
-      },
-      'is in its own subnet': function (a) {
-         assert.isTrue(a.isInSubnet(new v6.Address('a::b/48')));
-      },
-      'is not in a another subnet': function (a) {
-         assert.isTrue(a.isInSubnet(new v6.Address('a::c/48')));
-      }
-   },
+   it('is not in another subnet', function() {
+      topic.isInSubnet(new v6.Address('a::c/48')).should.be.true;
+   });
+});
 
-   'An address with a zone': {
-      topic: new v6.Address('a::b%abcdefg'),
+describe('An address with a zone', function() {
+   var topic = new v6.Address('a::b%abcdefg');
 
-      'validates': function (a) {
-         assert.isTrue(a.isValid());
-      },
-      'parses the zone': function (a) {
-         assert.equal(a.zone, '%abcdefg');
-      }
-   },
+   it('validates', function() {
+      topic.isValid().should.be.true;
+   });
 
-   'A Teredo address': {
-      topic: new v6.Address('2001:0000:ce49:7601:e866:efff:62c3:fffe'),
+   it('parses the zone', function() {
+      should.equal(topic.zone, '%abcdefg');
+   });
+});
 
-      'validates as Teredo': function(a) {
-         assert.isTrue(a.isTeredo());
-      },
-      'contains valid Teredo information': function(a) {
-         var teredo = a.teredo();
+describe('A teredo address', function() {
+   var topic = new v6.Address('2001:0000:ce49:7601:e866:efff:62c3:fffe');
 
-         assert.equal(teredo.prefix, '2001:0000');
-         assert.equal(teredo.server4, '206.73.118.1');
-         assert.equal(teredo.flags, '1110100001100110');
-         assert.equal(teredo.udpPort, '4096');
-         assert.equal(teredo.client4, '157.60.0.1');
-      }
-   },
+   it('validates as Teredo', function() {
+      topic.isTeredo().should.be.true;
+   });
 
-   'Different notations of the same address': {
-      topic: notations_to_addresses([
-         "2001:db8:0:0:1:0:0:1",
-         "2001:0db8:0:0:1:0:0:1",
-         "2001:db8::1:0:0:1",
-         "2001:db8::0:1:0:0:1",
-         "2001:0db8::1:0:0:1",
-         "2001:db8:0:0:1::1",
-         "2001:db8:0000:0:1::1",
-         "2001:DB8:0:0:1::1"
-      ]),
+   it('contains valid Teredo information', function() {
+      var teredo = topic.teredo();
 
-      'are parsed to the same result': function (addresses) {
-         for (var i = 0, a; a = addresses[i], i < addresses.length; i++) {
-            assert.equal(a.correctForm(), '2001:db8::1:0:0:1');
-            assert.equal(a.canonicalForm(), '2001:0db8:0000:0000:0001:0000:0000:0001');
-            assert.equal(a.v4inv6(), '2001:db8::1:0:0.0.0.1');
-            assert.equal(a.decimal(), '08193:03512:00000:00000:00001:00000:00000:00001');
-            assert.equal(a.binaryZeroPad(), '0010000000000001000011011011100000000000000000000000000000000000' +
-                                            '0000000000000001000000000000000000000000000000000000000000000001');
-         }
-      }
-   }
-};
+      should.equal(teredo.prefix, '2001:0000');
+      should.equal(teredo.server4, '206.73.118.1');
+      should.equal(teredo.flags, '1110100001100110');
+      should.equal(teredo.udpPort, '4096');
+      should.equal(teredo.client4, '157.60.0.1');
+   });
+});
 
-vows.describe('v6.Address - Functionality')
-   .addBatch(batch)
-   .export(module);
+describe('A different notation of the same address', function() {
+   var addresses = notationsToAddresseses([
+      "2001:db8:0:0:1:0:0:1/128",
+      "2001:db8:0:0:1:0:0:1/128%eth0",
+      "2001:db8:0:0:1:0:0:1%eth0",
+      "2001:db8:0:0:1:0:0:1",
+      "2001:0db8:0:0:1:0:0:1",
+      "2001:db8::1:0:0:1",
+      "2001:db8::0:1:0:0:1",
+      "2001:0db8::1:0:0:1",
+      "2001:db8:0:0:1::1",
+      "2001:db8:0000:0:1::1",
+      "2001:DB8:0:0:1::1"
+   ]);
+
+   it('is parsed to the same result', function() {
+      addresses.forEach(function(topic) {
+         should.equal(topic.correctForm(), '2001:db8::1:0:0:1');
+         should.equal(topic.canonicalForm(), '2001:0db8:0000:0000:0001:0000:0000:0001');
+         should.equal(topic.v4inv6(), '2001:db8::1:0:0.0.0.1');
+         should.equal(topic.decimal(), '08193:03512:00000:00000:00001:00000:00000:00001');
+         should.equal(topic.binaryZeroPad(), '0010000000000001000011011011100000000000000000000000000000000000' +
+                                             '0000000000000001000000000000000000000000000000000000000000000001');
+      });
+   });
+});

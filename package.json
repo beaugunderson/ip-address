@@ -7,7 +7,7 @@
    "license": "MIT",
    "main": "index",
    "scripts": {
-      "test": "vows --spec"
+      "test": "mocha -R spec"
    },
    "bin": {
       "ipv6": "bin/ipv6.js",
@@ -28,6 +28,7 @@
       "eyes": ">= 0.1.6"
    },
    "devDependencies": {
-      "vows": ">= 0.5.8"
+      "mocha": ">= 0.14.1",
+      "should": ">= 0.6.0"
    }
 }

@@ -1,575 +1,762 @@
-{
-   "addresses":
+[
    {
-      "0000:0000:0000:0000:0000:0000:0000:0000/128": {
-         "conditions": ["incorrect", "canonical"]
-      },
-      "0000:0000:0000:0000:0000:0000:0000:0000": {
-         "conditions": ["incorrect", "canonical"]
-      },
-      "0000:0000:0000:0000:0000:0000:0000:0001": {
-         "conditions": ["incorrect", "canonical"]
-      },
-      "0:0:0:0:0:0:0:0": {
-         "conditions": ["incorrect"]
-      },
-      "0:0:0:0:0:0:0:1": {
-         "conditions": ["incorrect"]
-      },
-      "0:0:0:0:0:0:0::": {
-         "conditions": ["incorrect"]
-      },
-      "0:0:0:0:0:0:13.1.68.3": {
-         "conditions": ["incorrect", "ipv4"]
-      },
-      "0:0:0:0:0:0::": {
-         "conditions": ["incorrect"]
-      },
-      "0:0:0:0:0::": {
-         "conditions": ["incorrect"]
-      },
-      "0:0:0:0:0:FFFF:129.144.52.38": {
-         "conditions": ["incorrect", "ipv4"]
-      },
-      "0:0:0:0:1:0:0:0": {
-         "conditions": ["incorrect"]
-      },
-      "0:0:0:0::": {
-         "conditions": ["incorrect"]
-      },
-      "0:0:0::": {
-         "conditions": ["incorrect"]
-      },
-      "0:0::": {
-         "conditions": ["incorrect"]
-      },
-      "0:1:2:3:4:5:6:7/128": {
-         "conditions": ["correct"]
-      },
-      "0:1:2:3:4:5:6:7": {
-         "conditions": ["correct"]
-      },
-      "0::": {
-         "conditions": ["incorrect"]
-      },
-      "0:a:b:c:d:e:f::": {
-         "conditions": ["incorrect"]
-      },
-      "1080:0:0:0:8:800:200c:417a": {
-         "conditions": ["incorrect"]
-      },
-      "1080::8:800:200c:417a": {
-         "conditions": ["correct"]
-      },
-      "1111:2222:3333:4444:5555:6666:123.123.123.123": {
-         "conditions": ["ipv4"]
-      },
-      "1111:2222:3333:4444:5555:6666:7777:8888": {
-         "conditions": ["correct"]
-      },
-      "1111:2222:3333:4444:5555:6666:7777::": {
-         "conditions": ["incorrect"]
-      },
-      "1111:2222:3333:4444:5555:6666::": {
-         "conditions": ["correct"]
-      },
-      "1111:2222:3333:4444:5555:6666::8888": {
-         "conditions": ["incorrect"]
-      },
-      "1111:2222:3333:4444:5555::": {
-         "conditions": ["correct"]
-      },
-      "1111:2222:3333:4444:5555::123.123.123.123": {
-         "conditions": ["ipv4"]
-      },
-      "1111:2222:3333:4444:5555::7777:8888": {
-         "conditions": ["incorrect"]
-      },
-      "1111:2222:3333:4444:5555::8888": {
-         "conditions": ["correct"]
-      },
-      "1111:2222:3333:4444::": {
-         "conditions": ["correct"]
-      },
-      "1111:2222:3333:4444::123.123.123.123": {
-         "conditions": ["ipv4"]
-      },
-      "1111:2222:3333:4444::6666:123.123.123.123": {
-         "conditions": []
-      },
-      "1111:2222:3333:4444::6666:7777:8888": {
-         "conditions": ["incorrect"]
-      },
-      "1111:2222:3333:4444::7777:8888": {
-         "conditions": ["correct"]
-      },
-      "1111:2222:3333:4444::8888": {
-         "conditions": ["correct"]
-      },
-      "1111:2222:3333::": {
-         "conditions": ["correct"]
-      },
-      "1111:2222:3333::123.123.123.123": {
-         "conditions": ["ipv4"]
-      },
-      "1111:2222:3333::5555:6666:123.123.123.123": {
-         "conditions": ["ipv4"]
-      },
-      "1111:2222:3333::5555:6666:7777:8888": {
-         "conditions": ["incorrect"]
-      },
-      "1111:2222:3333::6666:123.123.123.123": {
-         "conditions": ["ipv4"]
-      },
-      "1111:2222:3333::6666:7777:8888": {
-         "conditions": ["correct"]
-      },
-      "1111:2222:3333::7777:8888": {
-         "conditions": ["correct"]
-      },
-      "1111:2222:3333::8888": {
-         "conditions": ["correct"]
-      },
-      "1111:2222::": {
-         "conditions": ["correct"]
-      },
-      "1111:2222::123.123.123.123": {
-         "conditions": ["ipv4"]
-      },
-      "1111:2222::4444:5555:6666:123.123.123.123": {
-         "conditions": ["ipv4"]
-      },
-      "1111:2222::4444:5555:6666:7777:8888": {
-         "conditions": ["incorrect"]
-      },
-      "1111:2222::5555:6666:123.123.123.123": {
-         "conditions": ["ipv4"]
-      },
-      "1111:2222::5555:6666:7777:8888": {
-         "conditions": ["correct"]
-      },
-      "1111:2222::6666:123.123.123.123": {
-         "conditions": ["ipv4"]
-      },
-      "1111:2222::6666:7777:8888": {
-         "conditions": ["correct"]
-      },
-      "1111:2222::7777:8888": {
-         "conditions": ["correct"]
-      },
-      "1111:2222::8888": {
-         "conditions": ["correct"]
-      },
-      "1111::": {
-         "conditions": ["correct"]
-      },
-      "1111::123.123.123.123": {
-         "conditions": ["ipv4"]
-      },
-      "1111::3333:4444:5555:6666:123.123.123.123": {
-         "conditions": []
-      },
-      "1111::3333:4444:5555:6666:7777:8888": {
-         "conditions": ["incorrect"]
-      },
-      "1111::4444:5555:6666:123.123.123.123": {
-         "conditions": ["ipv4"]
-      },
-      "1111::4444:5555:6666:7777:8888": {
-         "conditions": ["correct"]
-      },
-      "1111::5555:6666:123.123.123.123": {
-         "conditions": ["ipv4"]
-      },
-      "1111::5555:6666:7777:8888": {
-         "conditions": ["correct"]
-      },
-      "1111::6666:123.123.123.123": {
-         "conditions": ["ipv4"]
-      },
-      "1111::6666:7777:8888": {
-         "conditions": ["correct"]
-      },
-      "1111::7777:8888": {
-         "conditions": ["correct"]
-      },
-      "1111::8888": {
-         "conditions": ["correct"]
-      },
-      "1:2:3:4:5:6:1.2.3.4": {
-         "conditions": ["ipv4"]
-      },
-      "1:2:3:4:5:6:7:8": {
-         "conditions": []
-      },
-      "1:2:3:4:5:6::": {
-         "conditions": ["correct"]
-      },
-      "1:2:3:4:5:6::8": {
-         "conditions": ["incorrect"]
-      },
-      "1:2:3:4:5::": {
-         "conditions": ["correct"]
-      },
-      "1:2:3:4:5::1.2.3.4": {
-         "conditions": ["ipv4"]
-      },
-      "1:2:3:4:5::7:8": {
-         "conditions": ["incorrect"]
-      },
-      "1:2:3:4:5::8": {
-         "conditions": ["correct"]
-      },
-      "1:2:3:4::": {
-         "conditions": ["correct"]
-      },
-      "1:2:3:4::1.2.3.4": {
-         "conditions": ["ipv4"]
-      },
-      "1:2:3:4::5:1.2.3.4": {
-         "conditions": ["ipv4"]
-      },
-      "1:2:3:4::7:8": {
-         "conditions": []
-      },
-      "1:2:3:4::8": {
-         "conditions": []
-      },
-      "1:2:3::": {
-         "conditions": []
-      },
-      "1:2:3::1.2.3.4": {
-         "conditions": ["ipv4"]
-      },
-      "1:2:3::5:1.2.3.4": {
-         "conditions": ["ipv4"]
-      },
-      "1:2:3::7:8": {
-         "conditions": []
-      },
-      "1:2:3::8": {
-         "conditions": []
-      },
-      "1:2::": {
-         "conditions": []
-      },
-      "1:2::1.2.3.4": {
-         "conditions": ["ipv4"]
-      },
-      "1:2::5:1.2.3.4": {
-         "conditions": ["ipv4"]
-      },
-      "1:2::7:8": {
-         "conditions": []
-      },
-      "1:2::8": {
-         "conditions": []
-      },
-      "1::": {
-         "conditions": []
-      },
-      "1::1.2.3.4": {
-         "conditions": ["ipv4"]
-      },
-      "1::2:3": {
-         "conditions": []
-      },
-      "1::2:3:4": {
-         "conditions": []
-      },
-      "1::2:3:4:5": {
-         "conditions": []
-      },
-      "1::2:3:4:5:6": {
-         "conditions": []
-      },
-      "1::2:3:4:5:6:7": {
-         "conditions": []
-      },
-      "1::5:1.2.3.4": {
-         "conditions": ["ipv4"]
-      },
-      "1::5:11.22.33.44": {
-         "conditions": ["ipv4"]
-      },
-      "1::7:8": {
-         "conditions": []
-      },
-      "1::8": {
-         "conditions": []
-      },
-      "2001:0000:1234:0000:0000:C1C0:ABCD:0876": {
-         "conditions": []
-      },
-      "2001:0000:4136:e378:8000:63bf:3fff:fdd2": {
-         "conditions": []
-      },
-      "2001:0DB8:0000:CD30:0000:0000:0000:0000/60": {
-         "conditions": []
-      },
-      "2001:0DB8:0:CD30::/60": {
-         "conditions": []
-      },
-      "2001:0DB8::CD30:0:0:0:0/60": {
-         "conditions": []
-      },
-      "2001:0db8:0000:0000:0000:0000:1428:57ab": {
-         "conditions": []
-      },
-      "2001:0db8:0000:0000:0000::1428:57ab": {
-         "conditions": []
-      },
-      "2001:0db8:0:0:0:0:1428:57ab": {
-         "conditions": []
-      },
-      "2001:0db8:0:0::1428:57ab": {
-         "conditions": []
-      },
-      "2001:0db8:1234:0000:0000:0000:0000:0000": {
-         "conditions": []
-      },
-      "2001:0db8:1234::": {
-         "conditions": []
-      },
-      "2001:0db8:1234:ffff:ffff:ffff:ffff:ffff": {
-         "conditions": []
-      },
-      "2001:0db8:85a3:0000:0000:8a2e:0370:7334": {
-         "conditions": []
-      },
-      "2001:0db8::1428:57ab": {
-         "conditions": []
-      },
-      "2001::CE49:7601:2CAD:DFFF:7C94:FFFE": {
-         "conditions": []
-      },
-      "2001::CE49:7601:E866:EFFF:62C3:FFFE": {
-         "conditions": []
-      },
-      "2001:DB8:0:0:8:800:200C:417A": {
-         "conditions": []
-      },
-      "2001:DB8::8:800:200C:417A": {
-         "conditions": []
-      },
-      "2001:db8:85a3:0:0:8a2e:370:7334": {
-         "conditions": []
-      },
-      "2001:db8:85a3::8a2e:370:7334": {
-         "conditions": []
-      },
-      "2001:db8::": {
-         "conditions": []
-      },
-      "2001:db8::1428:57ab": {
-         "conditions": []
-      },
-      "2001:db8:a::123": {
-         "conditions": []
-      },
-      "2002::": {
-         "conditions": []
-      },
-      "2608::3:5": {
-         "conditions": []
-      },
-      "2608:af09:30:0:0:0:0:134": {
-         "conditions": []
-      },
-      "2608:af09:30::102a:7b91:c239:baff": {
-         "conditions": []
-      },
-      "2::10": {
-         "conditions": []
-      },
-      "3ffe:0b00:0000:0000:0001:0000:0000:000a": {
-         "conditions": []
-      },
-      "7:6:5:4:3:2:1:0": {
-         "conditions": []
-      },
-      "::": {
-         "conditions": []
-      },
-      "::/128": {
-         "conditions": []
-      },
-      "::0": {
-         "conditions": []
-      },
-      "::0:0": {
-         "conditions": []
-      },
-      "::0:0:0": {
-         "conditions": []
-      },
-      "::0:0:0:0": {
-         "conditions": []
-      },
-      "::0:0:0:0:0": {
-         "conditions": []
-      },
-      "::0:0:0:0:0:0": {
-         "conditions": []
-      },
-      "::0:0:0:0:0:0:0": {
-         "conditions": []
-      },
-      "::0:a:b:c:d:e:f": {
-         "conditions": []
-      },
-      "::1": {
-         "conditions": []
-      },
-      "::1/128": {
-         "conditions": []
-      },
-      "::123.123.123.123": {
-         "conditions": ["ipv4"]
-      },
-      "::13.1.68.3": {
-         "conditions": ["ipv4"]
-      },
-      "::2222:3333:4444:5555:6666:123.123.123.123": {
-         "conditions": ["ipv4"]
-      },
-      "::2222:3333:4444:5555:6666:7777:8888": {
-         "conditions": []
-      },
-      "::2:3": {
-         "conditions": []
-      },
-      "::2:3:4": {
-         "conditions": []
-      },
-      "::2:3:4:5": {
-         "conditions": []
-      },
-      "::2:3:4:5:6": {
-         "conditions": []
-      },
-      "::2:3:4:5:6:7": {
-         "conditions": []
-      },
-      "::2:3:4:5:6:7:8": {
-         "conditions": []
-      },
-      "::3333:4444:5555:6666:7777:8888": {
-         "conditions": []
-      },
-      "::4444:5555:6666:123.123.123.123": {
-         "conditions": ["ipv4"]
-      },
-      "::4444:5555:6666:7777:8888": {
-         "conditions": []
-      },
-      "::5555:6666:123.123.123.123": {
-         "conditions": ["ipv4"]
-      },
-      "::5555:6666:7777:8888": {
-         "conditions": []
-      },
-      "::6666:123.123.123.123": {
-         "conditions": ["ipv4"]
-      },
-      "::6666:7777:8888": {
-         "conditions": []
-      },
-      "::7777:8888": {
-         "conditions": []
-      },
-      "::8": {
-         "conditions": []
-      },
-      "::8888": {
-         "conditions": []
-      },
-      "::FFFF:129.144.52.38": {
-         "conditions": ["ipv4"]
-      },
-      "::ffff:0:0": {
-         "conditions": []
-      },
-      "::ffff:0c22:384e": {
-         "conditions": []
-      },
-      "::ffff:12.34.56.78": {
-         "conditions": ["ipv4"]
-      },
-      "::ffff:192.0.2.128": {
-         "conditions": ["ipv4"]
-      },
-      "::ffff:192.168.1.1": {
-         "conditions": ["ipv4"]
-      },
-      "::ffff:192.168.1.26": {
-         "conditions": ["ipv4"]
-      },
-      "::ffff:c000:280": {
-         "conditions": []
-      },
-      "FE80::/10": {
-         "conditions": []
-      },
-      "FEC0::/10": {
-         "conditions": []
-      },
-      "FF00::/8": {
-         "conditions": []
-      },
-      "FF01:0:0:0:0:0:0:101": {
-         "conditions": []
-      },
-      "FF01::101": {
-         "conditions": []
-      },
-      "FF02:0000:0000:0000:0000:0000:0000:0001": {
-         "conditions": []
-      },
-      "a:b:c:d:e:f:0::": {
-         "conditions": []
-      },
-      "fe80:0000:0000:0000:0204:61ff:fe9d:f156": {
-         "conditions": []
-      },
-      "fe80:0:0:0:204:61ff:254.157.241.86": {
-         "conditions": ["ipv4"]
-      },
-      "fe80:0:0:0:204:61ff:fe9d:f156": {
-         "conditions": []
-      },
-      "fe80::": {
-         "conditions": []
-      },
-      "fe80::1": {
-         "conditions": []
-      },
-      "fe80::204:61ff:254.157.241.86": {
-         "conditions": ["ipv4"]
-      },
-      "fe80::204:61ff:fe9d:f156": {
-         "conditions": []
-      },
-      "fe80::217:f2ff:254.7.237.98": {
-         "conditions": ["ipv4"]
-      },
-      "fe80::217:f2ff:fe07:ed62": {
-         "conditions": []
-      },
-      "fedc:ba98:7654:3210:fedc:ba98:7654:3210": {
-         "conditions": []
-      },
-      "ff02::1": {
-         "conditions": []
-      },
-      "ffff::": {
-         "conditions": []
-      },
-      "ffff::3:5": {
-         "conditions": []
-      },
-      "ffff:ffff:ffff:ffff:ffff:ffff:ffff:ffff": {
-         "conditions": []
-      }
+      "address": "0000:0000:0000:0000:0000:0000:0000:0000/128",
+      "conditions": ["incorrect", "canonical"]
+   },
+   {
+      "address": "0000:0000:0000:0000:0000:0000:0000:0000",
+      "conditions": ["incorrect", "canonical"]
+   },
+   {
+      "address": "0000:0000:0000:0000:0000:0000:0000:0001",
+      "conditions": ["incorrect", "canonical"]
+   },
+   {
+      "address": "0:0:0:0:0:0:0:0",
+      "conditions": ["incorrect"]
+   },
+   {
+      "address": "0:0:0:0:0:0:0:1",
+      "conditions": ["incorrect"]
+   },
+   {
+      "address": "0:0:0:0:0:0:0::",
+      "conditions": ["incorrect"]
+   },
+   {
+      "address": "0:0:0:0:0:0:13.1.68.3",
+      "conditions": ["incorrect", "ipv4"]
+   },
+   {
+      "address": "0:0:0:0:0:0::",
+      "conditions": ["incorrect"]
+   },
+   {
+      "address": "0:0:0:0:0::",
+      "conditions": ["incorrect"]
+   },
+   {
+      "address": "0:0:0:0:0:FFFF:129.144.52.38",
+      "conditions": ["incorrect", "ipv4"]
+   },
+   {
+      "address": "0:0:0:0:1:0:0:0",
+      "conditions": ["incorrect"]
+   },
+   {
+      "address": "0:0:0:0::",
+      "conditions": ["incorrect"]
+   },
+   {
+      "address": "0:0:0::",
+      "conditions": ["incorrect"]
+   },
+   {
+      "address": "0:0::",
+      "conditions": ["incorrect"]
+   },
+   {
+      "address": "0:1:2:3:4:5:6:7/128",
+      "conditions": ["correct"]
+   },
+   {
+      "address": "0:1:2:3:4:5:6:7",
+      "conditions": ["correct"]
+   },
+   {
+      "address": "0::",
+      "conditions": ["incorrect"]
+   },
+   {
+      "address": "0:a:b:c:d:e:f::",
+      "conditions": ["incorrect"]
+   },
+   {
+      "address": "1080:0:0:0:8:800:200c:417a",
+      "conditions": ["incorrect"]
+   },
+   {
+      "address": "1080::8:800:200c:417a",
+      "conditions": ["correct"]
+   },
+   {
+      "address": "1111:2222:3333:4444:5555:6666:123.123.123.123",
+      "conditions": ["ipv4"]
+   },
+   {
+      "address": "1111:2222:3333:4444:5555:6666:7777:8888",
+      "conditions": ["correct"]
+   },
+   {
+      "address": "1111:2222:3333:4444:5555:6666:7777::",
+      "conditions": ["incorrect"]
+   },
+   {
+      "address": "1111:2222:3333:4444:5555:6666::",
+      "conditions": ["correct"]
+   },
+   {
+      "address": "1111:2222:3333:4444:5555:6666::8888",
+      "conditions": ["incorrect"]
+   },
+   {
+      "address": "1111:2222:3333:4444:5555::",
+      "conditions": ["correct"]
+   },
+   {
+      "address": "1111:2222:3333:4444:5555::123.123.123.123",
+      "conditions": ["ipv4"]
+   },
+   {
+      "address": "1111:2222:3333:4444:5555::7777:8888",
+      "conditions": ["incorrect"]
+   },
+   {
+      "address": "1111:2222:3333:4444:5555::8888",
+      "conditions": ["correct"]
+   },
+   {
+      "address": "1111:2222:3333:4444::",
+      "conditions": ["correct"]
+   },
+   {
+      "address": "1111:2222:3333:4444::123.123.123.123",
+      "conditions": ["ipv4"]
+   },
+   {
+      "address": "1111:2222:3333:4444::6666:123.123.123.123",
+      "conditions": []
+   },
+   {
+      "address": "1111:2222:3333:4444::6666:7777:8888",
+      "conditions": ["incorrect"]
+   },
+   {
+      "address": "1111:2222:3333:4444::7777:8888",
+      "conditions": ["correct"]
+   },
+   {
+      "address": "1111:2222:3333:4444::8888",
+      "conditions": ["correct"]
+   },
+   {
+      "address": "1111:2222:3333::",
+      "conditions": ["correct"]
+   },
+   {
+      "address": "1111:2222:3333::123.123.123.123",
+      "conditions": ["ipv4"]
+   },
+   {
+      "address": "1111:2222:3333::5555:6666:123.123.123.123",
+      "conditions": ["ipv4"]
+   },
+   {
+      "address": "1111:2222:3333::5555:6666:7777:8888",
+      "conditions": ["incorrect"]
+   },
+   {
+      "address": "1111:2222:3333::6666:123.123.123.123",
+      "conditions": ["ipv4"]
+   },
+   {
+      "address": "1111:2222:3333::6666:7777:8888",
+      "conditions": ["correct"]
+   },
+   {
+      "address": "1111:2222:3333::7777:8888",
+      "conditions": ["correct"]
+   },
+   {
+      "address": "1111:2222:3333::8888",
+      "conditions": ["correct"]
+   },
+   {
+      "address": "1111:2222::",
+      "conditions": ["correct"]
+   },
+   {
+      "address": "1111:2222::123.123.123.123",
+      "conditions": ["ipv4"]
+   },
+   {
+      "address": "1111:2222::4444:5555:6666:123.123.123.123",
+      "conditions": ["ipv4"]
+   },
+   {
+      "address": "1111:2222::4444:5555:6666:7777:8888",
+      "conditions": ["incorrect"]
+   },
+   {
+      "address": "1111:2222::5555:6666:123.123.123.123",
+      "conditions": ["ipv4"]
+   },
+   {
+      "address": "1111:2222::5555:6666:7777:8888",
+      "conditions": ["correct"]
+   },
+   {
+      "address": "1111:2222::6666:123.123.123.123",
+      "conditions": ["ipv4"]
+   },
+   {
+      "address": "1111:2222::6666:7777:8888",
+      "conditions": ["correct"]
+   },
+   {
+      "address": "1111:2222::7777:8888",
+      "conditions": ["correct"]
+   },
+   {
+      "address": "1111:2222::8888",
+      "conditions": ["correct"]
+   },
+   {
+      "address": "1111::",
+      "conditions": ["correct"]
+   },
+   {
+      "address": "1111::123.123.123.123",
+      "conditions": ["ipv4"]
+   },
+   {
+      "address": "1111::3333:4444:5555:6666:123.123.123.123",
+      "conditions": []
+   },
+   {
+      "address": "1111::3333:4444:5555:6666:7777:8888",
+      "conditions": ["incorrect"]
+   },
+   {
+      "address": "1111::4444:5555:6666:123.123.123.123",
+      "conditions": ["ipv4"]
+   },
+   {
+      "address": "1111::4444:5555:6666:7777:8888",
+      "conditions": ["correct"]
+   },
+   {
+      "address": "1111::5555:6666:123.123.123.123",
+      "conditions": ["ipv4"]
+   },
+   {
+      "address": "1111::5555:6666:7777:8888",
+      "conditions": ["correct"]
+   },
+   {
+      "address": "1111::6666:123.123.123.123",
+      "conditions": ["ipv4"]
+   },
+   {
+      "address": "1111::6666:7777:8888",
+      "conditions": ["correct"]
+   },
+   {
+      "address": "1111::7777:8888",
+      "conditions": ["correct"]
+   },
+   {
+      "address": "1111::8888",
+      "conditions": ["correct"]
+   },
+   {
+      "address": "1:2:3:4:5:6:1.2.3.4",
+      "conditions": ["ipv4"]
+   },
+   {
+      "address": "1:2:3:4:5:6:7:8",
+      "conditions": []
+   },
+   {
+      "address": "1:2:3:4:5:6::",
+      "conditions": ["correct"]
+   },
+   {
+      "address": "1:2:3:4:5:6::8",
+      "conditions": ["incorrect"]
+   },
+   {
+      "address": "1:2:3:4:5::",
+      "conditions": ["correct"]
+   },
+   {
+      "address": "1:2:3:4:5::1.2.3.4",
+      "conditions": ["ipv4"]
+   },
+   {
+      "address": "1:2:3:4:5::7:8",
+      "conditions": ["incorrect"]
+   },
+   {
+      "address": "1:2:3:4:5::8",
+      "conditions": ["correct"]
+   },
+   {
+      "address": "1:2:3:4::",
+      "conditions": ["correct"]
+   },
+   {
+      "address": "1:2:3:4::1.2.3.4",
+      "conditions": ["ipv4"]
+   },
+   {
+      "address": "1:2:3:4::5:1.2.3.4",
+      "conditions": ["ipv4"]
+   },
+   {
+      "address": "1:2:3:4::7:8",
+      "conditions": []
+   },
+   {
+      "address": "1:2:3:4::8",
+      "conditions": []
+   },
+   {
+      "address": "1:2:3::",
+      "conditions": []
+   },
+   {
+      "address": "1:2:3::1.2.3.4",
+      "conditions": ["ipv4"]
+   },
+   {
+      "address": "1:2:3::5:1.2.3.4",
+      "conditions": ["ipv4"]
+   },
+   {
+      "address": "1:2:3::7:8",
+      "conditions": []
+   },
+   {
+      "address": "1:2:3::8",
+      "conditions": []
+   },
+   {
+      "address": "1:2::",
+      "conditions": []
+   },
+   {
+      "address": "1:2::1.2.3.4",
+      "conditions": ["ipv4"]
+   },
+   {
+      "address": "1:2::5:1.2.3.4",
+      "conditions": ["ipv4"]
+   },
+   {
+      "address": "1:2::7:8",
+      "conditions": []
+   },
+   {
+      "address": "1:2::8",
+      "conditions": []
+   },
+   {
+      "address": "1::",
+      "conditions": []
+   },
+   {
+      "address": "1::1.2.3.4",
+      "conditions": ["ipv4"]
+   },
+   {
+      "address": "1::2:3",
+      "conditions": []
+   },
+   {
+      "address": "1::2:3:4",
+      "conditions": []
+   },
+   {
+      "address": "1::2:3:4:5",
+      "conditions": []
+   },
+   {
+      "address": "1::2:3:4:5:6",
+      "conditions": []
+   },
+   {
+      "address": "1::2:3:4:5:6:7",
+      "conditions": []
+   },
+   {
+      "address": "1::5:1.2.3.4",
+      "conditions": ["ipv4"]
+   },
+   {
+      "address": "1::5:11.22.33.44",
+      "conditions": ["ipv4"]
+   },
+   {
+      "address": "1::7:8",
+      "conditions": []
+   },
+   {
+      "address": "1::8",
+      "conditions": []
+   },
+   {
+      "address": "2001:0000:1234:0000:0000:C1C0:ABCD:0876",
+      "conditions": []
+   },
+   {
+      "address": "2001:0000:4136:e378:8000:63bf:3fff:fdd2",
+      "conditions": []
+   },
+   {
+      "address": "2001:0DB8:0000:CD30:0000:0000:0000:0000/60",
+      "conditions": []
+   },
+   {
+      "address": "2001:0DB8:0:CD30::/60",
+      "conditions": []
+   },
+   {
+      "address": "2001:0DB8::CD30:0:0:0:0/60",
+      "conditions": []
+   },
+   {
+      "address": "2001:0db8:0000:0000:0000:0000:1428:57ab",
+      "conditions": []
+   },
+   {
+      "address": "2001:0db8:0000:0000:0000::1428:57ab",
+      "conditions": []
+   },
+   {
+      "address": "2001:0db8:0:0:0:0:1428:57ab",
+      "conditions": []
+   },
+   {
+      "address": "2001:0db8:0:0::1428:57ab",
+      "conditions": []
+   },
+   {
+      "address": "2001:0db8:1234:0000:0000:0000:0000:0000",
+      "conditions": []
+   },
+   {
+      "address": "2001:0db8:1234::",
+      "conditions": []
+   },
+   {
+      "address": "2001:0db8:1234:ffff:ffff:ffff:ffff:ffff",
+      "conditions": []
+   },
+   {
+      "address": "2001:0db8:85a3:0000:0000:8a2e:0370:7334",
+      "conditions": []
+   },
+   {
+      "address": "2001:0db8::1428:57ab",
+      "conditions": []
+   },
+   {
+      "address": "2001::CE49:7601:2CAD:DFFF:7C94:FFFE",
+      "conditions": []
+   },
+   {
+      "address": "2001::CE49:7601:E866:EFFF:62C3:FFFE",
+      "conditions": []
+   },
+   {
+      "address": "2001:DB8:0:0:8:800:200C:417A",
+      "conditions": []
+   },
+   {
+      "address": "2001:DB8::8:800:200C:417A",
+      "conditions": []
+   },
+   {
+      "address": "2001:db8:85a3:0:0:8a2e:370:7334",
+      "conditions": []
+   },
+   {
+      "address": "2001:db8:85a3::8a2e:370:7334",
+      "conditions": []
+   },
+   {
+      "address": "2001:db8::",
+      "conditions": []
+   },
+   {
+      "address": "2001:db8::1428:57ab",
+      "conditions": []
+   },
+   {
+      "address": "2001:db8:a::123",
+      "conditions": []
+   },
+   {
+      "address": "2002::",
+      "conditions": []
+   },
+   {
+      "address": "2608::3:5",
+      "conditions": []
+   },
+   {
+      "address": "2608:af09:30:0:0:0:0:134",
+      "conditions": []
+   },
+   {
+      "address": "2608:af09:30::102a:7b91:c239:baff",
+      "conditions": []
+   },
+   {
+      "address": "2::10",
+      "conditions": []
+   },
+   {
+      "address": "3ffe:0b00:0000:0000:0001:0000:0000:000a",
+      "conditions": []
+   },
+   {
+      "address": "7:6:5:4:3:2:1:0",
+      "conditions": []
+   },
+   {
+      "address": "::",
+      "conditions": []
+   },
+   {
+      "address": "::/128",
+      "conditions": []
+   },
+   {
+      "address": "::0",
+      "conditions": []
+   },
+   {
+      "address": "::0:0",
+      "conditions": []
+   },
+   {
+      "address": "::0:0:0",
+      "conditions": []
+   },
+   {
+      "address": "::0:0:0:0",
+      "conditions": []
+   },
+   {
+      "address": "::0:0:0:0:0",
+      "conditions": []
+   },
+   {
+      "address": "::0:0:0:0:0:0",
+      "conditions": []
+   },
+   {
+      "address": "::0:0:0:0:0:0:0",
+      "conditions": []
+   },
+   {
+      "address": "::0:a:b:c:d:e:f",
+      "conditions": []
+   },
+   {
+      "address": "::1",
+      "conditions": []
+   },
+   {
+      "address": "::1/128",
+      "conditions": []
+   },
+   {
+      "address": "::123.123.123.123",
+      "conditions": ["ipv4"]
+   },
+   {
+      "address": "::13.1.68.3",
+      "conditions": ["ipv4"]
+   },
+   {
+      "address": "::2222:3333:4444:5555:6666:123.123.123.123",
+      "conditions": ["ipv4"]
+   },
+   {
+      "address": "::2222:3333:4444:5555:6666:7777:8888",
+      "conditions": []
+   },
+   {
+      "address": "::2:3",
+      "conditions": []
+   },
+   {
+      "address": "::2:3:4",
+      "conditions": []
+   },
+   {
+      "address": "::2:3:4:5",
+      "conditions": []
+   },
+   {
+      "address": "::2:3:4:5:6",
+      "conditions": []
+   },
+   {
+      "address": "::2:3:4:5:6:7",
+      "conditions": []
+   },
+   {
+      "address": "::2:3:4:5:6:7:8",
+      "conditions": []
+   },
+   {
+      "address": "::3333:4444:5555:6666:7777:8888",
+      "conditions": []
+   },
+   {
+      "address": "::4444:5555:6666:123.123.123.123",
+      "conditions": ["ipv4"]
+   },
+   {
+      "address": "::4444:5555:6666:7777:8888",
+      "conditions": []
+   },
+   {
+      "address": "::5555:6666:123.123.123.123",
+      "conditions": ["ipv4"]
+   },
+   {
+      "address": "::5555:6666:7777:8888",
+      "conditions": []
+   },
+   {
+      "address": "::6666:123.123.123.123",
+      "conditions": ["ipv4"]
+   },
+   {
+      "address": "::6666:7777:8888",
+      "conditions": []
+   },
+   {
+      "address": "::7777:8888",
+      "conditions": []
+   },
+   {
+      "address": "::8",
+      "conditions": []
+   },
+   {
+      "address": "::8888",
+      "conditions": []
+   },
+   {
+      "address": "::FFFF:129.144.52.38",
+      "conditions": ["ipv4"]
+   },
+   {
+      "address": "::ffff:0:0",
+      "conditions": []
+   },
+   {
+      "address": "::ffff:0c22:384e",
+      "conditions": []
+   },
+   {
+      "address": "::ffff:12.34.56.78",
+      "conditions": ["ipv4"]
+   },
+   {
+      "address": "::ffff:192.0.2.128",
+      "conditions": ["ipv4"]
+   },
+   {
+      "address": "::ffff:192.168.1.1",
+      "conditions": ["ipv4"]
+   },
+   {
+      "address": "::ffff:192.168.1.26",
+      "conditions": ["ipv4"]
+   },
+   {
+      "address": "::ffff:c000:280",
+      "conditions": []
+   },
+   {
+      "address": "FE80::/10",
+      "conditions": []
+   },
+   {
+      "address": "FEC0::/10",
+      "conditions": []
+   },
+   {
+      "address": "FF00::/8",
+      "conditions": []
+   },
+   {
+      "address": "FF01:0:0:0:0:0:0:101",
+      "conditions": []
+   },
+   {
+      "address": "FF01::101",
+      "conditions": []
+   },
+   {
+      "address": "FF02:0000:0000:0000:0000:0000:0000:0001",
+      "conditions": []
+   },
+   {
+      "address": "a:b:c:d:e:f:0::",
+      "conditions": []
+   },
+   {
+      "address": "fe80:0000:0000:0000:0204:61ff:fe9d:f156",
+      "conditions": []
+   },
+   {
+      "address": "fe80:0:0:0:204:61ff:254.157.241.86",
+      "conditions": ["ipv4"]
+   },
+   {
+      "address": "fe80:0:0:0:204:61ff:fe9d:f156",
+      "conditions": []
+   },
+   {
+      "address": "fe80::",
+      "conditions": []
+   },
+   {
+      "address": "fe80::1",
+      "conditions": []
+   },
+   {
+      "address": "fe80::204:61ff:254.157.241.86",
+      "conditions": ["ipv4"]
+   },
+   {
+      "address": "fe80::204:61ff:fe9d:f156",
+      "conditions": []
+   },
+   {
+      "address": "fe80::217:f2ff:254.7.237.98",
+      "conditions": ["ipv4"]
+   },
+   {
+      "address": "fe80::217:f2ff:fe07:ed62",
+      "conditions": []
+   },
+   {
+      "address": "fedc:ba98:7654:3210:fedc:ba98:7654:3210",
+      "conditions": []
+   },
+   {
+      "address": "ff02::1",
+      "conditions": []
+   },
+   {
+      "address": "ffff::",
+      "conditions": []
+   },
+   {
+      "address": "ffff::3:5",
+      "conditions": []
+   },
+   {
+      "address": "ffff:ffff:ffff:ffff:ffff:ffff:ffff:ffff",
+      "conditions": []
    }
-}
+]
