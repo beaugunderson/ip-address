@@ -7,7 +7,7 @@
    "license": "MIT",
    "main": "index",
    "scripts": {
-      "test": "mocha -R spec"
+      "test": "./node_modules/.bin/mocha --reporter spec"
    },
    "bin": {
       "ipv6": "bin/ipv6.js",
