@@ -12,9 +12,12 @@ For node:
 var v6 = require('ipv6').v6;
 
 var address = new v6.Address('2001:0:ce49:7601:e866:efff:62c3:fffe');
+
+console.log(address.isValid()); // Prints "true"
+
 var teredo = address.teredo();
 
-console.log(teredo.client4); // Prints "157.60.0.1"
+console.log(teredo.client4);    // Prints "157.60.0.1"
 ```
 
 For a browser:
@@ -23,11 +26,9 @@ For a browser:
 <!DOCTYPE html>
 <html lang="en">
  <head>
-  <meta charset="utf-8" />
-
   <title>Simple IPv6 test</title>
 
-  <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js"></script>
+  <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
 
   <script type="text/javascript" src="/lib/jsbn.js"></script>
   <script type="text/javascript" src="/lib/jsbn2.js"></script>
@@ -68,10 +69,16 @@ Current functionality
 -    Works in [node.js](http://nodejs.org/) and the browser
 -    Unit tests with [node.js](http://nodejs.org/) and [Vows](http://vowsjs.org/)
 
+Used by
+-------
+
+-    [Rackspace](http://www.rackspace.com/) in [node-swiz](https://github.com/racker/node-swiz)
+-    [node-socksified](https://github.com/vially/node-socksified)
+
 Future functionality
 --------------------
 
--    Investigate `procstreams`
+-    Investigate `procstreams` for the CLI tool
 -    Base 64/85 encoding?
 -    Reverse lookups? (Whether a domain name has IPv6 glue)
 

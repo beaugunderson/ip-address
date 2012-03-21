@@ -1,7 +1,7 @@
 [
    {
       "address": "0000:0000:0000:0000:0000:0000:0000:0000/128",
-      "conditions": ["incorrect", "canonical"]
+      "conditions": ["incorrect", "canonical", "has-subnet"]
    },
    {
       "address": "0000:0000:0000:0000:0000:0000:0000:0000",
@@ -57,7 +57,7 @@
    },
    {
       "address": "0:1:2:3:4:5:6:7/128",
-      "conditions": ["correct"]
+      "conditions": ["correct", "has-subnet"]
    },
    {
       "address": "0:1:2:3:4:5:6:7",
@@ -125,7 +125,7 @@
    },
    {
       "address": "1111:2222:3333:4444::6666:123.123.123.123",
-      "conditions": []
+      "conditions": ["ipv4"]
    },
    {
       "address": "1111:2222:3333:4444::6666:7777:8888",
@@ -221,7 +221,7 @@
    },
    {
       "address": "1111::3333:4444:5555:6666:123.123.123.123",
-      "conditions": []
+      "conditions": ["ipv4"]
    },
    {
       "address": "1111::3333:4444:5555:6666:7777:8888",
@@ -265,7 +265,7 @@
    },
    {
       "address": "1:2:3:4:5:6:7:8",
-      "conditions": []
+      "conditions": ["correct"]
    },
    {
       "address": "1:2:3:4:5:6::",
@@ -305,15 +305,15 @@
    },
    {
       "address": "1:2:3:4::7:8",
-      "conditions": []
+      "conditions": ["correct"]
    },
    {
       "address": "1:2:3:4::8",
-      "conditions": []
+      "conditions": ["correct"]
    },
    {
       "address": "1:2:3::",
-      "conditions": []
+      "conditions": ["correct"]
    },
    {
       "address": "1:2:3::1.2.3.4",
@@ -325,15 +325,15 @@
    },
    {
       "address": "1:2:3::7:8",
-      "conditions": []
+      "conditions": ["correct"]
    },
    {
       "address": "1:2:3::8",
-      "conditions": []
+      "conditions": ["correct"]
    },
    {
       "address": "1:2::",
-      "conditions": []
+      "conditions": ["correct"]
    },
    {
       "address": "1:2::1.2.3.4",
@@ -345,15 +345,15 @@
    },
    {
       "address": "1:2::7:8",
-      "conditions": []
+      "conditions": ["correct"]
    },
    {
       "address": "1:2::8",
-      "conditions": []
+      "conditions": ["correct"]
    },
    {
       "address": "1::",
-      "conditions": []
+      "conditions": ["correct"]
    },
    {
       "address": "1::1.2.3.4",
@@ -361,23 +361,23 @@
    },
    {
       "address": "1::2:3",
-      "conditions": []
+      "conditions": ["correct"]
    },
    {
       "address": "1::2:3:4",
-      "conditions": []
+      "conditions": ["correct"]
    },
    {
       "address": "1::2:3:4:5",
-      "conditions": []
+      "conditions": ["correct"]
    },
    {
       "address": "1::2:3:4:5:6",
-      "conditions": []
+      "conditions": ["correct"]
    },
    {
       "address": "1::2:3:4:5:6:7",
-      "conditions": []
+      "conditions": ["incorrect"]
    },
    {
       "address": "1::5:1.2.3.4",
@@ -389,31 +389,31 @@
    },
    {
       "address": "1::7:8",
-      "conditions": []
+      "conditions": ["correct"]
    },
    {
       "address": "1::8",
-      "conditions": []
+      "conditions": ["correct"]
    },
    {
       "address": "2001:0000:1234:0000:0000:C1C0:ABCD:0876",
-      "conditions": []
+      "conditions": ["incorrect"]
    },
    {
       "address": "2001:0000:4136:e378:8000:63bf:3fff:fdd2",
-      "conditions": []
+      "conditions": ["canonical"]
    },
    {
       "address": "2001:0DB8:0000:CD30:0000:0000:0000:0000/60",
-      "conditions": []
+      "conditions": ["incorrect", "has-subnet"]
    },
    {
       "address": "2001:0DB8:0:CD30::/60",
-      "conditions": []
+      "conditions": ["incorrect", "has-subnet"]
    },
    {
       "address": "2001:0DB8::CD30:0:0:0:0/60",
-      "conditions": []
+      "conditions": ["incorrect", "has-subnet"]
    },
    {
       "address": "2001:0db8:0000:0000:0000:0000:1428:57ab",
@@ -453,47 +453,47 @@
    },
    {
       "address": "2001::CE49:7601:2CAD:DFFF:7C94:FFFE",
-      "conditions": []
+      "conditions": ["incorrect"]
    },
    {
       "address": "2001::CE49:7601:E866:EFFF:62C3:FFFE",
-      "conditions": []
+      "conditions": ["incorrect"]
    },
    {
       "address": "2001:DB8:0:0:8:800:200C:417A",
-      "conditions": []
+      "conditions": ["incorrect"]
    },
    {
       "address": "2001:DB8::8:800:200C:417A",
-      "conditions": []
+      "conditions": ["incorrect"]
    },
    {
       "address": "2001:db8:85a3:0:0:8a2e:370:7334",
-      "conditions": []
+      "conditions": ["incorrect"]
    },
    {
       "address": "2001:db8:85a3::8a2e:370:7334",
-      "conditions": []
+      "conditions": ["correct"]
    },
    {
       "address": "2001:db8::",
-      "conditions": []
+      "conditions": ["correct"]
    },
    {
       "address": "2001:db8::1428:57ab",
-      "conditions": []
+      "conditions": ["correct"]
    },
    {
       "address": "2001:db8:a::123",
-      "conditions": []
+      "conditions": ["correct"]
    },
    {
       "address": "2002::",
-      "conditions": []
+      "conditions": ["correct"]
    },
    {
       "address": "2608::3:5",
-      "conditions": []
+      "conditions": ["correct"]
    },
    {
       "address": "2608:af09:30:0:0:0:0:134",
@@ -505,23 +505,23 @@
    },
    {
       "address": "2::10",
-      "conditions": []
+      "conditions": ["correct"]
    },
    {
       "address": "3ffe:0b00:0000:0000:0001:0000:0000:000a",
-      "conditions": []
+      "conditions": ["canonical"]
    },
    {
       "address": "7:6:5:4:3:2:1:0",
-      "conditions": []
+      "conditions": ["correct"]
    },
    {
       "address": "::",
-      "conditions": []
+      "conditions": ["correct"]
    },
    {
       "address": "::/128",
-      "conditions": []
+      "conditions": ["correct", "has-subnet"]
    },
    {
       "address": "::0",
@@ -561,7 +561,7 @@
    },
    {
       "address": "::1/128",
-      "conditions": []
+      "conditions": ["correct", "has-subnet"]
    },
    {
       "address": "::123.123.123.123",
@@ -677,35 +677,35 @@
    },
    {
       "address": "FE80::/10",
-      "conditions": []
+      "conditions": ["incorrect", "has-subnet"]
    },
    {
       "address": "FEC0::/10",
-      "conditions": []
+      "conditions": ["incorrect", "has-subnet"]
    },
    {
       "address": "FF00::/8",
-      "conditions": []
+      "conditions": ["incorrect", "has-subnet"]
    },
    {
       "address": "FF01:0:0:0:0:0:0:101",
-      "conditions": []
+      "conditions": ["incorrect"]
    },
    {
       "address": "FF01::101",
-      "conditions": []
+      "conditions": ["incorrect"]
    },
    {
       "address": "FF02:0000:0000:0000:0000:0000:0000:0001",
-      "conditions": []
+      "conditions": ["incorrect"]
    },
    {
       "address": "a:b:c:d:e:f:0::",
-      "conditions": []
+      "conditions": ["incorrect"]
    },
    {
       "address": "fe80:0000:0000:0000:0204:61ff:fe9d:f156",
-      "conditions": []
+      "conditions": ["canonical"]
    },
    {
       "address": "fe80:0:0:0:204:61ff:254.157.241.86",
@@ -713,15 +713,15 @@
    },
    {
       "address": "fe80:0:0:0:204:61ff:fe9d:f156",
-      "conditions": []
+      "conditions": ["incorrect"]
    },
    {
       "address": "fe80::",
-      "conditions": []
+      "conditions": ["correct"]
    },
    {
       "address": "fe80::1",
-      "conditions": []
+      "conditions": ["correct"]
    },
    {
       "address": "fe80::204:61ff:254.157.241.86",
@@ -737,26 +737,26 @@
    },
    {
       "address": "fe80::217:f2ff:fe07:ed62",
-      "conditions": []
+      "conditions": ["correct"]
    },
    {
       "address": "fedc:ba98:7654:3210:fedc:ba98:7654:3210",
-      "conditions": []
+      "conditions": ["correct", "canonical"]
    },
    {
       "address": "ff02::1",
-      "conditions": []
+      "conditions": ["correct"]
    },
    {
       "address": "ffff::",
-      "conditions": []
+      "conditions": ["correct"]
    },
    {
       "address": "ffff::3:5",
-      "conditions": []
+      "conditions": ["correct"]
    },
    {
       "address": "ffff:ffff:ffff:ffff:ffff:ffff:ffff:ffff",
-      "conditions": []
+      "conditions": ["correct", "canonical"]
    }
 ]

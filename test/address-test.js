@@ -63,6 +63,12 @@ function addressIs(addressString, descriptors) {
             });
          }
 
+         if (descriptor ==='has-subnet') {
+            it('parses the subnet', function() {
+               address.subnet.should.match(/^\/\d{1,3}/);
+            });
+         }
+
          if (descriptor === 'ipv4') {
             it('is an ipv4-in-ipv6 address', function() {
                address.is4().should.be.true;
@@ -89,5 +95,10 @@ function loadJsonBatch(file, classes) {
    });
 }
 
-loadJsonBatch('test/data/good-addresses.json', ['valid']);
-loadJsonBatch('test/data/bad-addresses.json', ['invalid']);
+describe('Valid addresses', function() {
+   loadJsonBatch('test/data/good-addresses.json', ['valid']);
+});
+
+describe('Invalid addresses', function() {
+   loadJsonBatch('test/data/bad-addresses.json', ['invalid']);
+});
