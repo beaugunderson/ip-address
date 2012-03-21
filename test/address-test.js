@@ -89,5 +89,5 @@ function loadJsonBatch(file, classes) {
    });
 }
 
-loadJsonBatch('test/ipv6-good.json', ['valid']);
-loadJsonBatch('test/ipv6-bad.json', ['invalid']);
+loadJsonBatch('test/data/good-addresses.json', ['valid']);
+loadJsonBatch('test/data/bad-addresses.json', ['invalid']);
