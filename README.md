@@ -1,4 +1,4 @@
-javascript-ipv6
+javascript-ipv6 [![Build Status](https://secure.travis-ci.org/beaugunderson/javascript-ipv6.png?branch=master)](http://travis-ci.org/beaugunderson/javascript-ipv6)
 ===============
 
 javascript-ipv6 is a library for manipulating IPv6 addresses in JavaScript.
