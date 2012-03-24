@@ -1076,10 +1076,10 @@ v6.Address.prototype.six2four = function() {
 
    var prefix = this.getBitsBase16(0, 16);
 
-   var gateway4 = v4.Address.fromHex(this.getBitsBase16(16, 48));
+   var gateway = v4.Address.fromHex(this.getBitsBase16(16, 48));
 
    return {
       prefix: sprintf('%s', prefix.slice(0, 4)),
-      gateway4: gateway4.address,
+      gateway: gateway.address,
    };
 };
