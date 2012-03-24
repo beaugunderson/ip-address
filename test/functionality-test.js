@@ -141,6 +141,21 @@ describe('A teredo address', function() {
    });
 });
 
+describe('A 6to4 address', function() {
+   var topic = new v6.Address('2002:ce49:7601:1:2de:adff:febe:eeef');
+
+   it('validates as 6to4', function() {
+      topic.is6to4().should.be.true;
+   });
+
+   it('contains valid 6to4 information', function() {
+      var six2four = topic.six2four();
+
+      should.equal(six2four.prefix, '2002');
+      should.equal(six2four.gateway, '206.73.118.1');
+   });
+});
+
 describe('A different notation of the same address', function() {
    var addresses = notationsToAddresseses([
       "2001:db8:0:0:1:0:0:1/128",
