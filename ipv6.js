@@ -302,6 +302,17 @@ v6.Address.prototype.isTeredo = function() {
 };
 
 /*
+ * Returns true if the address is a 6to4 address, false otherwise
+ */
+v6.Address.prototype.is6to4 = function() {
+   if (this.isInSubnet(new v6.Address('2002::/16'))) {
+      return true;
+   }
+
+   return false;
+};
+
+/*
  * Returns true if the address is a loopback address, false otherwise
  */
 v6.Address.prototype.isLoopback = function() {
