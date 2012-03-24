@@ -67,7 +67,7 @@ Current functionality
      -    Correct form
      -    IPv4-compatible (i.e. `::ffff:192.168.0.1`)
 -    Works in [node.js](http://nodejs.org/) and the browser
--    Unit tests with [node.js](http://nodejs.org/) and [Vows](http://vowsjs.org/)
+-    Unit tests with [node.js](http://nodejs.org/) and [Mocha](http://visionmedia.github.com/mocha/)
 
 Used by
 -------
