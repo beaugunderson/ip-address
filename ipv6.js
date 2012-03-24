@@ -1062,3 +1062,24 @@ v6.Address.prototype.teredo = function() {
       udpPort: udpPort
    };
 };
+
+/*
+ * Returns an object containing the 6to4 properties of the address
+ */
+v6.Address.prototype.6to4 = function() {
+   /*
+    - Bits 0 to 15 are set to the 6to4 prefix (2002::/16).
+    - Bits 16 to 48 embed the IPv4 address of the 6to4 gateway that is used.
+   */
+
+   var s = this.binaryZeroPad().split('');
+
+   var prefix = this.getBitsBase16(0, 16);
+
+   var gateway4 = v4.Address.fromHex(this.getBitsBase16(16, 48));
+
+   return {
+      prefix: sprintf('%s', prefix.slice(0, 4)),
+      gateway4: gateway4.address,
+   };
+};
