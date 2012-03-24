@@ -1066,7 +1066,7 @@ v6.Address.prototype.teredo = function() {
 /*
  * Returns an object containing the 6to4 properties of the address
  */
-v6.Address.prototype.6to4 = function() {
+v6.Address.prototype.six2four = function() {
    /*
     - Bits 0 to 15 are set to the 6to4 prefix (2002::/16).
     - Bits 16 to 48 embed the IPv4 address of the 6to4 gateway that is used.
