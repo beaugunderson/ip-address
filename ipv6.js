@@ -302,6 +302,17 @@ v6.Address.prototype.isTeredo = function() {
 };
 
 /*
+ * Returns true if the address is a 6to4 address, false otherwise
+ */
+v6.Address.prototype.is6to4 = function() {
+   if (this.isInSubnet(new v6.Address('2002::/16'))) {
+      return true;
+   }
+
+   return false;
+};
+
+/*
  * Returns true if the address is a loopback address, false otherwise
  */
 v6.Address.prototype.isLoopback = function() {
@@ -1049,5 +1060,26 @@ v6.Address.prototype.teredo = function() {
          nonce: nonce
       },
       udpPort: udpPort
+   };
+};
+
+/*
+ * Returns an object containing the 6to4 properties of the address
+ */
+v6.Address.prototype.six2four = function() {
+   /*
+    - Bits 0 to 15 are set to the 6to4 prefix (2002::/16).
+    - Bits 16 to 48 embed the IPv4 address of the 6to4 gateway that is used.
+   */
+
+   var s = this.binaryZeroPad().split('');
+
+   var prefix = this.getBitsBase16(0, 16);
+
+   var gateway = v4.Address.fromHex(this.getBitsBase16(16, 48));
+
+   return {
+      prefix: sprintf('%s', prefix.slice(0, 4)),
+      gateway: gateway.address,
    };
 };
