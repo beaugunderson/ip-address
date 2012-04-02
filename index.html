@@ -1,0 +1,143 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>Javascript-ipv6 by beaugunderson</title>
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+    <script src="javascripts/respond.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <!--[if lt IE 8]>
+    <link rel="stylesheet" href="stylesheets/ie.css">
+    <![endif]-->
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+
+  </head>
+  <body>
+
+      <div id="header">
+        <nav>
+          <li class="fork"><a href="https://github.com/beaugunderson/javascript-ipv6">Fork On GitHub</a></li>
+          <li class="downloads"><a href="https://github.com/beaugunderson/javascript-ipv6/zipball/master">ZIP</a></li>
+          <li class="downloads"><a href="https://github.com/beaugunderson/javascript-ipv6/tarball/master">TAR</a></li>
+          <li class="title">DOWNLOADS</li>
+        </nav>
+      </div><!-- end header -->
+
+    <div class="wrapper">
+
+      <section>
+        <div id="title">
+          <h1>Javascript-ipv6</h1>
+          <p>A library for parsing and manipulating IPv6 (and v4) addresses in JavaScript</p>
+          <hr>
+          <span class="credits left">Project maintained by <a href="https://github.com/beaugunderson">beaugunderson</a></span>
+          <span class="credits right">Hosted on GitHub Pages &mdash; Theme by <a href="https://twitter.com/#!/michigangraham">mattgraham</a></span>
+        </div>
+
+        <h1>javascript-ipv6 <a href="http://travis-ci.org/beaugunderson/javascript-ipv6"><img src="https://secure.travis-ci.org/beaugunderson/javascript-ipv6.png?branch=master" alt="Build Status"></a>
+</h1>
+
+<p>javascript-ipv6 is a library for manipulating IPv6 addresses in JavaScript.</p>
+
+<h2>Examples</h2>
+
+<p>For node:</p>
+
+<div class="highlight">
+<pre><span class="kd">var</span> <span class="nx">v6</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'ipv6'</span><span class="p">).</span><span class="nx">v6</span><span class="p">;</span>
+
+<span class="kd">var</span> <span class="nx">address</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">v6</span><span class="p">.</span><span class="nx">Address</span><span class="p">(</span><span class="s1">'2001:0:ce49:7601:e866:efff:62c3:fffe'</span><span class="p">);</span>
+
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">address</span><span class="p">.</span><span class="nx">isValid</span><span class="p">());</span> <span class="c1">// Prints "true"</span>
+
+<span class="kd">var</span> <span class="nx">teredo</span> <span class="o">=</span> <span class="nx">address</span><span class="p">.</span><span class="nx">teredo</span><span class="p">();</span>
+
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">teredo</span><span class="p">.</span><span class="nx">client4</span><span class="p">);</span>    <span class="c1">// Prints "157.60.0.1"</span>
+</pre>
+</div>
+
+
+<p>For a browser:</p>
+
+<div class="highlight">
+<pre><span class="cp">&lt;!DOCTYPE html&gt;</span>
+<span class="nt">&lt;html</span> <span class="na">lang=</span><span class="s">"en"</span><span class="nt">&gt;</span>
+ <span class="nt">&lt;head&gt;</span>
+  <span class="nt">&lt;title&gt;</span>Simple IPv6 test<span class="nt">&lt;/title&gt;</span>
+
+  <span class="nt">&lt;script </span><span class="na">type=</span><span class="s">"text/javascript"</span> <span class="na">src=</span><span class="s">"//ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"</span><span class="nt">&gt;&lt;/script&gt;</span>
+
+  <span class="nt">&lt;script </span><span class="na">type=</span><span class="s">"text/javascript"</span> <span class="na">src=</span><span class="s">"/lib/jsbn.js"</span><span class="nt">&gt;&lt;/script&gt;</span>
+  <span class="nt">&lt;script </span><span class="na">type=</span><span class="s">"text/javascript"</span> <span class="na">src=</span><span class="s">"/lib/jsbn2.js"</span><span class="nt">&gt;&lt;/script&gt;</span>
+
+  <span class="nt">&lt;script </span><span class="na">type=</span><span class="s">"text/javascript"</span> <span class="na">src=</span><span class="s">"/lib/sprintf.js"</span><span class="nt">&gt;&lt;/script&gt;</span>
+
+  <span class="nt">&lt;script </span><span class="na">type=</span><span class="s">"text/javascript"</span> <span class="na">src=</span><span class="s">"/ipv6/ipv6.js"</span><span class="nt">&gt;&lt;/script&gt;</span>
+
+  <span class="nt">&lt;script </span><span class="na">type=</span><span class="s">"text/javascript"</span><span class="nt">&gt;</span>
+   <span class="nx">$</span><span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+    <span class="kd">var</span> <span class="nx">address6</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">v6</span><span class="p">.</span><span class="nx">Address</span><span class="p">(</span><span class="s1">'a::b'</span><span class="p">);</span>
+
+    <span class="nx">$</span><span class="p">(</span><span class="s1">'#output'</span><span class="p">).</span><span class="nx">text</span><span class="p">(</span><span class="nx">address6</span><span class="p">.</span><span class="nx">canonicalForm</span><span class="p">());</span>
+   <span class="p">});</span>
+  <span class="nt">&lt;/script&gt;</span>
+ <span class="nt">&lt;/head&gt;</span>
+
+ <span class="nt">&lt;body&gt;</span>
+  The canonical form of <span class="nt">&lt;code&gt;</span>a::b<span class="nt">&lt;/code&gt;</span> is: <span class="nt">&lt;code</span> <span class="na">id=</span><span class="s">"output"</span><span class="nt">&gt;&lt;/code&gt;</span>
+ <span class="nt">&lt;/body&gt;</span>
+<span class="nt">&lt;/html&gt;</span>
+</pre>
+</div>
+
+
+<h2>Current functionality</h2>
+
+<ul>
+<li>   Parsing of most IPv6 notations</li>
+<li>   Validity checking</li>
+<li>   Decoding of the <a href="http://en.wikipedia.org/wiki/Teredo_tunneling#IPv6_addressing">Teredo information</a> in an address</li>
+<li>   Whether one address is a valid subnet of another</li>
+<li>   What special properties a given address has (multicast prefix, unique local address prefix, etc.)</li>
+<li>   Number of subnets of a certain size in a given address</li>
+<li>   Display methods
+
+<ul>
+<li>   Hex, binary, and decimal</li>
+<li>   Canonical form</li>
+<li>   Correct form</li>
+<li>   IPv4-compatible (i.e. <code>::ffff:192.168.0.1</code>)</li>
+</ul>
+</li>
+<li>   Works in <a href="http://nodejs.org/">node.js</a> and the browser</li>
+<li>   Unit tests with <a href="http://nodejs.org/">node.js</a> and <a href="http://visionmedia.github.com/mocha/">Mocha</a>
+</li>
+</ul><h2>Used by</h2>
+
+<ul>
+<li>   <a href="http://www.rackspace.com/">Rackspace</a> in <a href="https://github.com/racker/node-swiz">node-swiz</a>
+</li>
+<li>   <a href="https://github.com/vially/node-socksified">node-socksified</a>
+</li>
+</ul><h2>Future functionality</h2>
+
+<ul>
+<li>   Investigate <code>procstreams</code> for the CLI tool</li>
+<li>   Base 64/85 encoding?</li>
+<li>   Reverse lookups? (Whether a domain name has IPv6 glue)</li>
+</ul><h2>TODO</h2>
+
+<ul>
+<li>   Documentation</li>
+</ul>
+      </section>
+
+    </div>
+    <!--[if !IE]><script>fixScale(document);</script><!--<![endif]-->
+  </body>
+</html>
