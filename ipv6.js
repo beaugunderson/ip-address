@@ -121,7 +121,7 @@ v4.Address.prototype.parse = function(address) {
  */
 v4.Address.prototype.isValid = function() {
    return this.valid;
-}
+};
 
 /*
  * Converts a hex string to an IPv4 address object
@@ -253,7 +253,7 @@ v6.Address.prototype.isValid = function() {
  * Returns true if the address is correct, false otherwise
  */
 v6.Address.prototype.isCorrect = function() {
-   return this.addressMinusSuffix == this.correctForm();
+   return this.addressMinusSuffix === this.correctForm();
 };
 
 /*
@@ -261,7 +261,7 @@ v6.Address.prototype.isCorrect = function() {
  */
 v6.Address.prototype.isLinkLocal = function() {
    // Zeroes are required, i.e. we can't check isInSubnet with 'fe80::/10'
-   if (this.getBitsBase2(0, 64) ==
+   if (this.getBitsBase2(0, 64) ===
       "1111111010000000000000000000000000000000000000000000000000000000") {
       return true;
    }
@@ -273,14 +273,14 @@ v6.Address.prototype.isLinkLocal = function() {
  * Returns true if the address is in the canonical form, false otherwise
  */
 v6.Address.prototype.isCanonical = function() {
-   return this.addressMinusSuffix == this.canonicalForm();
+   return this.addressMinusSuffix === this.canonicalForm();
 };
 
 /*
  * Returns true if the address is a multicast address, false otherwise
  */
 v6.Address.prototype.isMulticast = function() {
-   return this.getType() == 'Multicast';
+   return this.getType() === 'Multicast';
 };
 
 /*
@@ -316,7 +316,7 @@ v6.Address.prototype.is6to4 = function() {
  * Returns true if the address is a loopback address, false otherwise
  */
 v6.Address.prototype.isLoopback = function() {
-   return this.getType() == 'Loopback';
+   return this.getType() === 'Loopback';
 };
 
 /*
@@ -405,7 +405,7 @@ v6.Address.prototype.isInSubnet = function(address) {
       return false;
    }
 
-   if (this.mask(address.subnetMask) == address.mask()) {
+   if (this.mask(address.subnetMask) === address.mask()) {
       return true;
    } else {
       return false;
@@ -443,8 +443,8 @@ v6.Address.prototype.endAddress = function() {
 v6.Address.prototype.getScope = function() {
    var scope = v6.SCOPES[this.getBits(12, 16)];
 
-   if (this.getType() == "Global unicast") {
-      if (scope != "Link local") {
+   if (this.getType() === "Global unicast") {
+      if (scope !== "Link local") {
          scope = "Global";
       }
    }
@@ -484,16 +484,15 @@ v6.Address.prototype.getType = function() {
    };
 
    var type = 'Global unicast';
+   var p;
 
-   for (var p in TYPES) {
-      if (!TYPES.hasOwnProperty(p)) {
-         continue;
-      }
+   for (p in TYPES) {
+      if (TYPES.hasOwnProperty(p)) {
+         if (this.isInSubnet(new v6.Address(p))) {
+            type = TYPES[p];
 
-      if (this.isInSubnet(new v6.Address(p))) {
-         type = TYPES[p];
-
-         break;
+            break;
+         }
       }
    }
 
@@ -600,6 +599,7 @@ v6.Address.simpleGroup = function(addressString, offset) {
 v6.Address.group = function(addressString) {
    var address6 = new v6.Address(addressString);
    var address4 = address6.address.match(v4.RE_ADDRESS);
+   var i;
 
    if (address4) {
       // The IPv4 case
@@ -629,7 +629,7 @@ v6.Address.group = function(addressString) {
 
       var classes = ['hover-group'];
 
-      for (var i = address6.elisionBegin; i < address6.elisionBegin + address6.elidedGroups; i++) {
+      for (i = address6.elisionBegin; i < address6.elisionBegin + address6.elidedGroups; i++) {
          classes.push(sprintf('group-%d', i));
       }
 
@@ -714,7 +714,7 @@ v6.Address.prototype.correctForm = function() {
    }
 
    for (i = 0; i < groups.length; i++) {
-      if (groups[i] != 'compact') {
+      if (groups[i] !== 'compact') {
          groups[i] = parseInt(groups[i], 16).toString(16);
       }
    }
@@ -805,16 +805,16 @@ v6.Address.prototype.parse = function(address) {
 
    var halves = address.split('::');
 
-   if (halves.length == 2) {
+   if (halves.length === 2) {
       var first = halves[0].split(':');
       var last = halves[1].split(':');
 
-      if (first.length == 1 &&
+      if (first.length === 1 &&
          first[0] === '') {
          first = [];
       }
 
-      if (last.length == 1 &&
+      if (last.length === 1 &&
          last[0] === '') {
          last = [];
       }
@@ -844,7 +844,7 @@ v6.Address.prototype.parse = function(address) {
       for (i = 0; i < last.length; i++) {
          groups.push(last[i]);
       }
-   } else if (halves.length == 1) {
+   } else if (halves.length === 1) {
       groups = address.split(':');
 
       this.elidedGroups = 0;
@@ -859,7 +859,7 @@ v6.Address.prototype.parse = function(address) {
       return sprintf('%x', parseInt(g, 16));
    });
 
-   if (groups.length != this.groups) {
+   if (groups.length !== this.groups) {
       this.valid = false;
       this.error = "Incorrect number of groups found";
 
@@ -904,7 +904,7 @@ v6.Address.prototype.regularExpressionString = function(opt_subString) {
       for (i = 0; i < address6.elidedGroups; i++) {
          var pipe = '|';
 
-         if (i == address6.elidedGroups - 1) {
+         if (i === address6.elidedGroups - 1) {
             pipe = '';
          }
 
