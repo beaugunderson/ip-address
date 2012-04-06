@@ -1,34 +1,42 @@
 {
-   "name": "ipv6",
-   "description": "A browser- and node-compatible library for parsing IPv6 addresses",
-   "keywords": ["ipv6", "browser", "validation"],
-   "version": "2.0.0",
-   "author": "Beau Gunderson <beau@beaugunderson.com>",
-   "license": "MIT",
-   "main": "index",
-   "scripts": {
-      "test": "./node_modules/.bin/mocha --reporter spec"
-   },
-   "bin": {
-      "ipv6": "bin/ipv6.js",
-      "ipv6grep": "bin/ipv6grep.js",
-      "ipv6ack": "bin/ipv6ack.js"
-   },
-   "engine": {
-      "node": ">= 0.4.1"
-   },
-   "repository": {
-      "type": "git",
-      "url": "https://github.com/beaugunderson/javascript-ipv6"
-   },
-   "dependencies": {
-      "sprintf": ">= 0.1.1",
-      "cli": ">= 0.3.7",
-      "cliff": ">= 0.1.3",
-      "eyes": ">= 0.1.6"
-   },
-   "devDependencies": {
-      "mocha": ">= 0.14.1",
-      "should": ">= 0.6.0"
-   }
+  "name": "ipv6",
+  "description": "A browser- and node-compatible library for parsing IPv6 addresses",
+  "keywords": [
+    "ipv6",
+    "browser",
+    "validation"
+  ],
+  "version": "2.0.1",
+  "author": "Beau Gunderson <beau@beaugunderson.com>",
+  "license": "MIT",
+  "main": "index",
+  "scripts": {
+    "test": "./node_modules/.bin/mocha --reporter spec"
+  },
+  "bin": {
+    "ipv6": "bin/ipv6.js",
+    "ipv6grep": "bin/ipv6grep.js",
+    "ipv6ack": "bin/ipv6ack.js"
+  },
+  "engine": {
+    "node": ">= 0.4.1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/beaugunderson/javascript-ipv6.git"
+  },
+  "dependencies": {
+    "sprintf": ">= 0.1.1",
+    "cli": ">= 0.3.7",
+    "cliff": ">= 0.1.3",
+    "eyes": ">= 0.1.6"
+  },
+  "devDependencies": {
+    "mocha": ">= 0.14.1",
+    "should": ">= 0.6.0"
+  },
+  "optionalDependencies": {},
+  "engines": {
+    "node": "*"
+  }
 }
