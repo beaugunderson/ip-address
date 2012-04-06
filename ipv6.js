@@ -380,9 +380,9 @@ v6.Address.prototype.link = function(options) {
 
    if (options.className) {
       return sprintf('<a href="%1$s%2$s" class="%3$s">%2$s</a>', options.prefix, formFunction.call(this), options.className);
-   } else {
-      return sprintf('<a href="%1$s%2$s">%2$s</a>', options.prefix, formFunction.call(this));
    }
+
+   return sprintf('<a href="%1$s%2$s">%2$s</a>', options.prefix, formFunction.call(this));
 };
 
 /*
@@ -407,9 +407,9 @@ v6.Address.prototype.isInSubnet = function(address) {
 
    if (this.mask(address.subnetMask) === address.mask()) {
       return true;
-   } else {
-      return false;
    }
+
+   return false;
 };
 
 /*
@@ -615,34 +615,34 @@ v6.Address.group = function(addressString) {
    if (address6.elidedGroups === 0) {
       // The simple case
       return v6.Address.simpleGroup(address6.address);
-   } else {
-      // The elided case
-      var output = [];
-
-      var halves = address6.address.split('::');
-
-      if (halves[0].length) {
-         output.push(v6.Address.simpleGroup(halves[0]));
-      } else {
-         output.push('');
-      }
-
-      var classes = ['hover-group'];
-
-      for (i = address6.elisionBegin; i < address6.elisionBegin + address6.elidedGroups; i++) {
-         classes.push(sprintf('group-%d', i));
-      }
-
-      output.push(sprintf('<span class="%s"></span>', classes.join(' ')));
-
-      if (halves[1].length) {
-         output.push(v6.Address.simpleGroup(halves[1], address6.elisionEnd));
-      } else {
-         output.push('');
-      }
-
-      return output.join(':');
    }
+
+   // The elided case
+   var output = [];
+
+   var halves = address6.address.split('::');
+
+   if (halves[0].length) {
+      output.push(v6.Address.simpleGroup(halves[0]));
+   } else {
+      output.push('');
+   }
+
+   var classes = ['hover-group'];
+
+   for (i = address6.elisionBegin; i < address6.elisionBegin + address6.elidedGroups; i++) {
+      classes.push(sprintf('group-%d', i));
+   }
+
+   output.push(sprintf('<span class="%s"></span>', classes.join(' ')));
+
+   if (halves[1].length) {
+      output.push(v6.Address.simpleGroup(halves[1], address6.elisionEnd));
+   } else {
+      output.push('');
+   }
+
+   return output.join(':');
 };
 
 /*
@@ -660,9 +660,9 @@ v6.Address.prototype.reverseForm = function() {
 
    if (characters > 0) {
       return sprintf("%s.ip6.arpa.", reversed);
-   } else {
-      return 'ip6.arpa.';
    }
+
+   return 'ip6.arpa.';
 };
 
 /*
@@ -1080,6 +1080,6 @@ v6.Address.prototype.six2four = function() {
 
    return {
       prefix: sprintf('%s', prefix.slice(0, 4)),
-      gateway: gateway.address,
+      gateway: gateway.address
    };
 };
