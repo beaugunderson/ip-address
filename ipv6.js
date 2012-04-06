@@ -360,8 +360,8 @@ v6.Address.prototype.link = function(options) {
       options = {};
    }
 
-   if (options.class === undefined) {
-      options.class = '';
+   if (options.className === undefined) {
+      options.className = '';
    }
 
    if (options.prefix === undefined) {
@@ -378,8 +378,8 @@ v6.Address.prototype.link = function(options) {
       formFunction = this.v4inv6;
    }
 
-   if (options.class) {
-      return sprintf('<a href="%1$s%2$s" class="%3$s">%2$s</a>', options.prefix, formFunction.call(this), options.class);
+   if (options.className) {
+      return sprintf('<a href="%1$s%2$s" class="%3$s">%2$s</a>', options.prefix, formFunction.call(this), options.className);
    } else {
       return sprintf('<a href="%1$s%2$s">%2$s</a>', options.prefix, formFunction.call(this));
    }
