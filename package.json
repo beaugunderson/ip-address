@@ -15,8 +15,7 @@
   },
   "bin": {
     "ipv6": "bin/ipv6.js",
-    "ipv6grep": "bin/ipv6grep.js",
-    "ipv6ack": "bin/ipv6ack.js"
+    "ipv6grep": "bin/ipv6grep.js"
   },
   "engine": {
     "node": ">= 0.4.1"
