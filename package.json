@@ -6,7 +6,7 @@
     "browser",
     "validation"
   ],
-  "version": "2.0.1",
+  "version": "2.0.2",
   "author": "Beau Gunderson <beau@beaugunderson.com>",
   "license": "MIT",
   "main": "index",
