@@ -24,6 +24,7 @@ v6.SCOPES = {
 };
 
 v4.RE_ADDRESS = /(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/g;
+v4.RE_SUBNET_STRING = /\/\d{1,2}/;
 
 v6.RE_BAD_CHARACTERS = /([^0-9a-f:\/%])/ig;
 v6.RE_BAD_ADDRESS = /([0-9a-f]{5,}|:{3,}|[^:]:$|^:[^:]|\/$)/ig;
@@ -99,6 +100,24 @@ v4.Address = function(address) {
    this.valid = false;
    this.address = address;
    this.groups = v4.GROUPS;
+
+   this.subnet = '/32';
+   this.subnetMask = 32;
+
+   var subnet = v4.RE_SUBNET_STRING.exec(address);
+   if (subnet) {
+      this.subnetMask = parseInt(subnet[0].replace('/', ''), 10);
+      this.subnet = subnet[0];
+
+      if (this.subnetMask < 0 || this.subnetMask > v4.BITS) {
+         this.valid = false;
+         this.error = "Invalid subnet mask.";
+
+         return;
+      }
+
+      address = address.replace(v4.RE_SUBNET_STRING, '');
+   }
 
    this.parsedAddress = this.parse(address);
 };
