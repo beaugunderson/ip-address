@@ -101,6 +101,8 @@ v4.Address = function(address) {
    this.address = address;
    this.groups = v4.GROUPS;
 
+   this.v4 = true;
+
    this.subnet = '/32';
    this.subnetMask = 32;
 
