@@ -93,6 +93,10 @@ function simpleRegularExpression(addressArray) {
    return output.join(':');
 }
 
+function zeroPad(s, n) {
+   return String(repeatString(0, n) + s).slice(n * -1);
+}
+
 /*
  * Instantiates an IPv4 address
  */
