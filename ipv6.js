@@ -142,6 +142,24 @@ v4.Address.prototype.parse = function(address) {
 };
 
 /*
+ * convert an integer into a v4 address
+ */
+v4.Address.parse_u32 = function(int_ip) {
+  var str_ip = '';
+  for (i = 1; i < 5; i += 1) {
+    divisor = Math.pow(256, 4 - i);
+    octet = parseInt(int_ip / divisor);
+    int_ip = int_ip - (octet * divisor);
+    if (i == 1) {
+      str_ip = octet;
+    } else {
+      str_ip += "." + octet;
+    }
+  }
+  return new v4.Address(str_ip);
+};
+
+/*
  * Returns true if the address is valid
  */
 v4.Address.prototype.isValid = function() {
@@ -182,6 +200,75 @@ v4.Address.prototype.toHex = function() {
 
    return output.join(':');
 };
+
+/*
+ * Returns the address as a BigInteger
+ */
+v4.Address.prototype.bigInteger = function() {
+   if (!this.valid) {
+      return;
+   }
+
+   return new BigInteger(map(this.parsedAddress, function(n) {
+      return sprintf("%04x", parseInt(n));
+   }).join(''), 4);
+};
+
+/*
+ * The first address in the range given by this address' subnet.
+ * Often referred to as the Network Address.
+ */
+v4.Address.prototype.startAddress = function() {
+  var startAddress = new BigInteger(this.mask() + repeatString(0, v4.BITS - this.subnetMask), 2);
+  return v4.Address.fromBigInteger(startAddress);
+};
+
+/*
+ * The last address in the range given by this address' subnet
+ * Often referred to as the Broadcast
+ */
+v4.Address.prototype.endAddress = function() {
+   var endAddress = new BigInteger(this.mask() + repeatString(1, v4.BITS - this.subnetMask), 2);
+
+   return v4.Address.parse_u32(endAddress.intValue());
+};
+
+
+/*
+ * Converts a BigInteger to a v4 address object
+ */
+v4.Address.fromBigInteger = function(bigInteger) {
+   return new v4.Address(bigInteger.toByteArray().join('.'));
+};
+
+
+/*
+ * Returns the first n bits of the address, defaulting to the
+ * subnet mask
+ */
+v4.Address.prototype.mask = function(opt_mask) {
+   if (opt_mask === undefined) {
+      opt_mask = this.subnetMask;
+   }
+
+   return this.getBitsBase2(0, opt_mask);
+};
+
+/*
+ * Returns the bits in the given range as a base-2 string
+ */
+v4.Address.prototype.getBitsBase2 = function(start, end) {
+   return this.binaryZeroPad().slice(start, end);
+};
+
+
+/*
+ * Returns a zero-padded base-2 string representation of the address
+ */
+v4.Address.prototype.binaryZeroPad = function() {
+   return zeroPad(this.bigInteger().toString(2), v4.BITS);
+};
+
 
 /*
  * Instantiates an IPv6 address
