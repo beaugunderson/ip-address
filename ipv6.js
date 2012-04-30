@@ -324,7 +324,7 @@ v6.Address = function(address, opt_groups) {
  * Converts a BigInteger to a v6 address object
  */
 v6.Address.fromBigInteger = function(bigInteger) {
-   var hex = v6.Address.zeroPad(bigInteger.toString(16), 32);
+   var hex = zeroPad(bigInteger.toString(16), 32);
    var groups = [];
    var i;
 
@@ -635,7 +635,7 @@ v6.Address.prototype.getBitsBase16 = function(start, end) {
       return;
    }
 
-   return v6.Address.zeroPad(this.getBits(start, end).toString(16), length / 4);
+   return zeroPad(this.getBits(start, end).toString(16), length / 4);
 };
 
 /*
@@ -840,18 +840,12 @@ v6.Address.prototype.correctForm = function() {
    return correct;
 };
 
-/*
- * Returns the string left-padded with zeroes
- */
-v6.Address.zeroPad = function(s, n) {
-   return String(repeatString(0, n) + s).slice(n * -1);
-};
 
 /*
  * Returns a zero-padded base-2 string representation of the address
  */
 v6.Address.prototype.binaryZeroPad = function() {
-   return v6.Address.zeroPad(this.bigInteger().toString(2), v6.BITS);
+   return zeroPad(this.bigInteger().toString(2), v6.BITS);
 };
 
 // TODO: Make private?
