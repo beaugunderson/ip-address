@@ -24,6 +24,7 @@ v6.SCOPES = {
 };
 
 v4.RE_ADDRESS = /(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/g;
+v4.RE_SUBNET_STRING = /\/\d{1,2}/;
 
 v6.RE_BAD_CHARACTERS = /([^0-9a-f:\/%])/ig;
 v6.RE_BAD_ADDRESS = /([0-9a-f]{5,}|:{3,}|[^:]:$|^:[^:]|\/$)/ig;
@@ -92,6 +93,10 @@ function simpleRegularExpression(addressArray) {
    return output.join(':');
 }
 
+function zeroPad(s, n) {
+   return String(repeatString(0, n) + s).slice(n * -1);
+}
+
 /*
  * Instantiates an IPv4 address
  */
@@ -99,6 +104,26 @@ v4.Address = function(address) {
    this.valid = false;
    this.address = address;
    this.groups = v4.GROUPS;
+
+   this.v4 = true;
+
+   this.subnet = '/32';
+   this.subnetMask = 32;
+
+   var subnet = v4.RE_SUBNET_STRING.exec(address);
+   if (subnet) {
+      this.subnetMask = parseInt(subnet[0].replace('/', ''), 10);
+      this.subnet = subnet[0];
+
+      if (this.subnetMask < 0 || this.subnetMask > v4.BITS) {
+         this.valid = false;
+         this.error = "Invalid subnet mask.";
+
+         return;
+      }
+
+      address = address.replace(v4.RE_SUBNET_STRING, '');
+   }
 
    this.parsedAddress = this.parse(address);
 };
@@ -114,6 +139,24 @@ v4.Address.prototype.parse = function(address) {
    }
 
    return groups;
+};
+
+/*
+ * convert an integer into a v4 address
+ */
+v4.Address.parse_u32 = function(int_ip) {
+  var str_ip = '';
+  for (i = 1; i < 5; i += 1) {
+    divisor = Math.pow(256, 4 - i);
+    octet = parseInt(int_ip / divisor);
+    int_ip = int_ip - (octet * divisor);
+    if (i == 1) {
+      str_ip = octet;
+    } else {
+      str_ip += "." + octet;
+    }
+  }
+  return new v4.Address(str_ip);
 };
 
 /*
@@ -157,6 +200,75 @@ v4.Address.prototype.toHex = function() {
 
    return output.join(':');
 };
+
+/*
+ * Returns the address as a BigInteger
+ */
+v4.Address.prototype.bigInteger = function() {
+   if (!this.valid) {
+      return;
+   }
+
+   return new BigInteger(map(this.parsedAddress, function(n) {
+      return sprintf("%04x", parseInt(n));
+   }).join(''), 4);
+};
+
+/*
+ * The first address in the range given by this address' subnet.
+ * Often referred to as the Network Address.
+ */
+v4.Address.prototype.startAddress = function() {
+  var startAddress = new BigInteger(this.mask() + repeatString(0, v4.BITS - this.subnetMask), 2);
+  return v4.Address.fromBigInteger(startAddress);
+};
+
+/*
+ * The last address in the range given by this address' subnet
+ * Often referred to as the Broadcast
+ */
+v4.Address.prototype.endAddress = function() {
+   var endAddress = new BigInteger(this.mask() + repeatString(1, v4.BITS - this.subnetMask), 2);
+
+   return v4.Address.parse_u32(endAddress.intValue());
+};
+
+
+/*
+ * Converts a BigInteger to a v4 address object
+ */
+v4.Address.fromBigInteger = function(bigInteger) {
+   return new v4.Address(bigInteger.toByteArray().join('.'));
+};
+
+
+/*
+ * Returns the first n bits of the address, defaulting to the
+ * subnet mask
+ */
+v4.Address.prototype.mask = function(opt_mask) {
+   if (opt_mask === undefined) {
+      opt_mask = this.subnetMask;
+   }
+
+   return this.getBitsBase2(0, opt_mask);
+};
+
+/*
+ * Returns the bits in the given range as a base-2 string
+ */
+v4.Address.prototype.getBitsBase2 = function(start, end) {
+   return this.binaryZeroPad().slice(start, end);
+};
+
+
+/*
+ * Returns a zero-padded base-2 string representation of the address
+ */
+v4.Address.prototype.binaryZeroPad = function() {
+   return zeroPad(this.bigInteger().toString(2), v4.BITS);
+};
+
 
 /*
  * Instantiates an IPv6 address
@@ -212,7 +324,7 @@ v6.Address = function(address, opt_groups) {
  * Converts a BigInteger to a v6 address object
  */
 v6.Address.fromBigInteger = function(bigInteger) {
-   var hex = v6.Address.zeroPad(bigInteger.toString(16), 32);
+   var hex = zeroPad(bigInteger.toString(16), 32);
    var groups = [];
    var i;
 
@@ -523,7 +635,7 @@ v6.Address.prototype.getBitsBase16 = function(start, end) {
       return;
    }
 
-   return v6.Address.zeroPad(this.getBits(start, end).toString(16), length / 4);
+   return zeroPad(this.getBits(start, end).toString(16), length / 4);
 };
 
 /*
@@ -728,18 +840,12 @@ v6.Address.prototype.correctForm = function() {
    return correct;
 };
 
-/*
- * Returns the string left-padded with zeroes
- */
-v6.Address.zeroPad = function(s, n) {
-   return String(repeatString(0, n) + s).slice(n * -1);
-};
 
 /*
  * Returns a zero-padded base-2 string representation of the address
  */
 v6.Address.prototype.binaryZeroPad = function() {
-   return v6.Address.zeroPad(this.bigInteger().toString(2), v6.BITS);
+   return zeroPad(this.bigInteger().toString(2), v6.BITS);
 };
 
 // TODO: Make private?
