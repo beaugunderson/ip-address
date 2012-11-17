@@ -225,14 +225,12 @@ v4.Address.prototype.endAddress = function () {
   return v4.Address.parse_u32(endAddress.intValue());
 };
 
-
 /*
  * Converts a BigInteger to a v4 address object
  */
 v4.Address.fromBigInteger = function (bigInteger) {
   return new v4.Address(bigInteger.toByteArray().join('.'));
 };
-
 
 /*
  * Returns the first n bits of the address, defaulting to the
