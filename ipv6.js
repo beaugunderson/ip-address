@@ -111,6 +111,7 @@ v4.Address = function (address) {
   this.subnetMask = 32;
 
   var subnet = v4.RE_SUBNET_STRING.exec(address);
+
   if (subnet) {
     this.subnetMask = parseInt(subnet[0].replace('/', ''), 10);
     this.subnet = subnet[0];
@@ -142,13 +143,6 @@ v4.Address.prototype.parse = function (address) {
 };
 
 /*
- * Converts an integer into a v4 address
- */
-v4.Address.fromInteger = function (integer) {
-  return v4.Address.fromHex(integer.toString(16));
-};
-
-/*
  * Returns true if the address is valid
  */
 v4.Address.prototype.isValid = function () {
@@ -170,6 +164,13 @@ v4.Address.fromHex = function (hex) {
   }
 
   return new v4.Address(groups.join('.'));
+};
+
+/*
+ * Converts an integer into a IPv4 address object
+ */
+v4.Address.fromInteger = function (integer) {
+  return v4.Address.fromHex(integer.toString(16));
 };
 
 /*

@@ -1,6 +1,7 @@
 var sprintf = require('sprintf').sprintf;
 var should = require('chai').should();
 
+var v4 = require('../ipv6').v4;
 var v6 = require('../ipv6').v6;
 
 // A convenience function to convert a list of IPv6 address notations
@@ -86,6 +87,30 @@ describe('A v4-in-v6 address', function () {
 
   it('is v4', function () {
     topic.is4().should.equal(true);
+  });
+});
+
+describe('An integer v4 address', function () {
+  var topic = new v4.Address.fromInteger(432432423);
+
+  it('validates', function () {
+    topic.isValid().should.equal(true);
+  });
+
+  it('parses correctly', function () {
+    topic.address.should.equal('25.198.101.39');
+
+    topic.subnet.should.equal('/32');
+    topic.subnetMask.should.equal(32);
+  });
+
+  it('should match an address from its hex representation', function () {
+    var hex = v4.Address.fromHex('19c66527');
+
+    hex.address.should.equal('25.198.101.39');
+
+    hex.subnet.should.equal('/32');
+    hex.subnetMask.should.equal(32);
   });
 });
 
