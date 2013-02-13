@@ -24,12 +24,12 @@ v6.SCOPES = {
 };
 
 v4.RE_ADDRESS = /^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/g;
-v4.RE_SUBNET_STRING = /\/\d{1,2}/;
+v4.RE_SUBNET_STRING = /\/\d{1,2}$/;
 
 v6.RE_BAD_CHARACTERS = /([^0-9a-f:\/%])/ig;
 v6.RE_BAD_ADDRESS = /([0-9a-f]{5,}|:{3,}|[^:]:$|^:[^:]|\/$)/ig;
 
-v6.RE_SUBNET_STRING = /\/\d{1,3}/;
+v6.RE_SUBNET_STRING = /\/\d{1,3}(?=%|$)/;
 v6.RE_ZONE_STRING = /%.*$/;
 
 // Convenience functions
@@ -113,8 +113,9 @@ v4.Address = function (address) {
   var subnet = v4.RE_SUBNET_STRING.exec(address);
 
   if (subnet) {
-    this.subnetMask = parseInt(subnet[0].replace('/', ''), 10);
-    this.subnet = subnet[0];
+    this.parsedSubnet = subnet[0].replace('/', '');
+    this.subnetMask = parseInt(this.parsedSubnet, 10);
+    this.subnet = '/' + this.subnetMask;
 
     if (this.subnetMask < 0 || this.subnetMask > v4.BITS) {
       this.valid = false;
@@ -284,8 +285,9 @@ v6.Address = function (address, opt_groups) {
   var subnet = v6.RE_SUBNET_STRING.exec(address);
 
   if (subnet) {
-    this.subnetMask = parseInt(subnet[0].replace('/', ''), 10);
-    this.subnet = subnet[0];
+    this.parsedSubnet = subnet[0].replace('/', '');
+    this.subnetMask = parseInt(this.parsedSubnet, 10);
+    this.subnet = '/' + this.subnetMask;
 
     if (isNaN(this.subnetMask) ||
       this.subnetMask < 0 ||
@@ -297,6 +299,11 @@ v6.Address = function (address, opt_groups) {
     }
 
     address = address.replace(v6.RE_SUBNET_STRING, '');
+  } else if (/\//.test(address)) {
+    this.valid = false;
+    this.error = "Invalid subnet mask.";
+
+    return;
   }
 
   var zone = v6.RE_ZONE_STRING.exec(address);
@@ -357,7 +364,9 @@ v6.Address.prototype.isValid = function () {
  * Returns true if the address is correct, false otherwise
  */
 v6.Address.prototype.isCorrect = function () {
-  return this.addressMinusSuffix === this.correctForm();
+  return this.addressMinusSuffix === this.correctForm() &&
+    (this.subnetMask === 128 ||
+      this.parsedSubnet === String(this.subnet.replace('/')));
 };
 
 /*

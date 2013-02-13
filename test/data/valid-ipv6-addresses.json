@@ -56,6 +56,10 @@
       "conditions": ["incorrect"]
    },
    {
+      "address": "0:1:2:3:4:5:6:7/001",
+      "conditions": ["incorrect", "has-subnet"]
+   },
+   {
       "address": "0:1:2:3:4:5:6:7/128",
       "conditions": ["correct", "has-subnet"]
    },
