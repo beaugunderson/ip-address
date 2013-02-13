@@ -25,7 +25,7 @@
    },
    {
       "address": "0:0:0:0:0:0:13.1.68.3",
-      "conditions": ["incorrect", "ipv4"]
+      "conditions": ["incorrect", "v4-in-v6"]
    },
    {
       "address": "0:0:0:0:0:0::",
@@ -37,7 +37,7 @@
    },
    {
       "address": "0:0:0:0:0:FFFF:129.144.52.38",
-      "conditions": ["incorrect", "ipv4"]
+      "conditions": ["incorrect", "v4-in-v6"]
    },
    {
       "address": "0:0:0:0:1:0:0:0",
@@ -81,7 +81,7 @@
    },
    {
       "address": "1111:2222:3333:4444:5555:6666:123.123.123.123",
-      "conditions": ["ipv4"]
+      "conditions": ["v4-in-v6"]
    },
    {
       "address": "1111:2222:3333:4444:5555:6666:7777:8888",
@@ -105,7 +105,7 @@
    },
    {
       "address": "1111:2222:3333:4444:5555::123.123.123.123",
-      "conditions": ["ipv4"]
+      "conditions": ["v4-in-v6"]
    },
    {
       "address": "1111:2222:3333:4444:5555::7777:8888",
@@ -121,11 +121,11 @@
    },
    {
       "address": "1111:2222:3333:4444::123.123.123.123",
-      "conditions": ["ipv4"]
+      "conditions": ["v4-in-v6"]
    },
    {
       "address": "1111:2222:3333:4444::6666:123.123.123.123",
-      "conditions": ["ipv4"]
+      "conditions": ["v4-in-v6"]
    },
    {
       "address": "1111:2222:3333:4444::6666:7777:8888",
@@ -145,11 +145,11 @@
    },
    {
       "address": "1111:2222:3333::123.123.123.123",
-      "conditions": ["ipv4"]
+      "conditions": ["v4-in-v6"]
    },
    {
       "address": "1111:2222:3333::5555:6666:123.123.123.123",
-      "conditions": ["ipv4"]
+      "conditions": ["v4-in-v6"]
    },
    {
       "address": "1111:2222:3333::5555:6666:7777:8888",
@@ -157,7 +157,7 @@
    },
    {
       "address": "1111:2222:3333::6666:123.123.123.123",
-      "conditions": ["ipv4"]
+      "conditions": ["v4-in-v6"]
    },
    {
       "address": "1111:2222:3333::6666:7777:8888",
@@ -177,11 +177,11 @@
    },
    {
       "address": "1111:2222::123.123.123.123",
-      "conditions": ["ipv4"]
+      "conditions": ["v4-in-v6"]
    },
    {
       "address": "1111:2222::4444:5555:6666:123.123.123.123",
-      "conditions": ["ipv4"]
+      "conditions": ["v4-in-v6"]
    },
    {
       "address": "1111:2222::4444:5555:6666:7777:8888",
@@ -189,7 +189,7 @@
    },
    {
       "address": "1111:2222::5555:6666:123.123.123.123",
-      "conditions": ["ipv4"]
+      "conditions": ["v4-in-v6"]
    },
    {
       "address": "1111:2222::5555:6666:7777:8888",
@@ -197,7 +197,7 @@
    },
    {
       "address": "1111:2222::6666:123.123.123.123",
-      "conditions": ["ipv4"]
+      "conditions": ["v4-in-v6"]
    },
    {
       "address": "1111:2222::6666:7777:8888",
@@ -217,11 +217,11 @@
    },
    {
       "address": "1111::123.123.123.123",
-      "conditions": ["ipv4"]
+      "conditions": ["v4-in-v6"]
    },
    {
       "address": "1111::3333:4444:5555:6666:123.123.123.123",
-      "conditions": ["ipv4"]
+      "conditions": ["v4-in-v6"]
    },
    {
       "address": "1111::3333:4444:5555:6666:7777:8888",
@@ -229,7 +229,7 @@
    },
    {
       "address": "1111::4444:5555:6666:123.123.123.123",
-      "conditions": ["ipv4"]
+      "conditions": ["v4-in-v6"]
    },
    {
       "address": "1111::4444:5555:6666:7777:8888",
@@ -237,7 +237,7 @@
    },
    {
       "address": "1111::5555:6666:123.123.123.123",
-      "conditions": ["ipv4"]
+      "conditions": ["v4-in-v6"]
    },
    {
       "address": "1111::5555:6666:7777:8888",
@@ -245,7 +245,7 @@
    },
    {
       "address": "1111::6666:123.123.123.123",
-      "conditions": ["ipv4"]
+      "conditions": ["v4-in-v6"]
    },
    {
       "address": "1111::6666:7777:8888",
@@ -261,7 +261,7 @@
    },
    {
       "address": "1:2:3:4:5:6:1.2.3.4",
-      "conditions": ["ipv4"]
+      "conditions": ["v4-in-v6"]
    },
    {
       "address": "1:2:3:4:5:6:7:8",
@@ -281,7 +281,7 @@
    },
    {
       "address": "1:2:3:4:5::1.2.3.4",
-      "conditions": ["ipv4"]
+      "conditions": ["v4-in-v6"]
    },
    {
       "address": "1:2:3:4:5::7:8",
@@ -297,11 +297,11 @@
    },
    {
       "address": "1:2:3:4::1.2.3.4",
-      "conditions": ["ipv4"]
+      "conditions": ["v4-in-v6"]
    },
    {
       "address": "1:2:3:4::5:1.2.3.4",
-      "conditions": ["ipv4"]
+      "conditions": ["v4-in-v6"]
    },
    {
       "address": "1:2:3:4::7:8",
@@ -317,11 +317,11 @@
    },
    {
       "address": "1:2:3::1.2.3.4",
-      "conditions": ["ipv4"]
+      "conditions": ["v4-in-v6"]
    },
    {
       "address": "1:2:3::5:1.2.3.4",
-      "conditions": ["ipv4"]
+      "conditions": ["v4-in-v6"]
    },
    {
       "address": "1:2:3::7:8",
@@ -337,11 +337,11 @@
    },
    {
       "address": "1:2::1.2.3.4",
-      "conditions": ["ipv4"]
+      "conditions": ["v4-in-v6"]
    },
    {
       "address": "1:2::5:1.2.3.4",
-      "conditions": ["ipv4"]
+      "conditions": ["v4-in-v6"]
    },
    {
       "address": "1:2::7:8",
@@ -357,7 +357,7 @@
    },
    {
       "address": "1::1.2.3.4",
-      "conditions": ["ipv4"]
+      "conditions": ["v4-in-v6"]
    },
    {
       "address": "1::2:3",
@@ -381,11 +381,11 @@
    },
    {
       "address": "1::5:1.2.3.4",
-      "conditions": ["ipv4"]
+      "conditions": ["v4-in-v6"]
    },
    {
       "address": "1::5:11.22.33.44",
-      "conditions": ["ipv4"]
+      "conditions": ["v4-in-v6"]
    },
    {
       "address": "1::7:8",
@@ -565,15 +565,15 @@
    },
    {
       "address": "::123.123.123.123",
-      "conditions": ["ipv4"]
+      "conditions": ["v4-in-v6"]
    },
    {
       "address": "::13.1.68.3",
-      "conditions": ["ipv4"]
+      "conditions": ["v4-in-v6"]
    },
    {
       "address": "::2222:3333:4444:5555:6666:123.123.123.123",
-      "conditions": ["ipv4"]
+      "conditions": ["v4-in-v6"]
    },
    {
       "address": "::2222:3333:4444:5555:6666:7777:8888",
@@ -609,7 +609,7 @@
    },
    {
       "address": "::4444:5555:6666:123.123.123.123",
-      "conditions": ["ipv4"]
+      "conditions": ["v4-in-v6"]
    },
    {
       "address": "::4444:5555:6666:7777:8888",
@@ -617,7 +617,7 @@
    },
    {
       "address": "::5555:6666:123.123.123.123",
-      "conditions": ["ipv4"]
+      "conditions": ["v4-in-v6"]
    },
    {
       "address": "::5555:6666:7777:8888",
@@ -625,7 +625,7 @@
    },
    {
       "address": "::6666:123.123.123.123",
-      "conditions": ["ipv4"]
+      "conditions": ["v4-in-v6"]
    },
    {
       "address": "::6666:7777:8888",
@@ -645,7 +645,7 @@
    },
    {
       "address": "::FFFF:129.144.52.38",
-      "conditions": ["ipv4"]
+      "conditions": ["v4-in-v6"]
    },
    {
       "address": "::ffff:0:0",
@@ -657,19 +657,19 @@
    },
    {
       "address": "::ffff:12.34.56.78",
-      "conditions": ["ipv4"]
+      "conditions": ["v4-in-v6"]
    },
    {
       "address": "::ffff:192.0.2.128",
-      "conditions": ["ipv4"]
+      "conditions": ["v4-in-v6"]
    },
    {
       "address": "::ffff:192.168.1.1",
-      "conditions": ["ipv4"]
+      "conditions": ["v4-in-v6"]
    },
    {
       "address": "::ffff:192.168.1.26",
-      "conditions": ["ipv4"]
+      "conditions": ["v4-in-v6"]
    },
    {
       "address": "::ffff:c000:280",
@@ -709,7 +709,7 @@
    },
    {
       "address": "fe80:0:0:0:204:61ff:254.157.241.86",
-      "conditions": ["ipv4"]
+      "conditions": ["v4-in-v6"]
    },
    {
       "address": "fe80:0:0:0:204:61ff:fe9d:f156",
@@ -725,7 +725,7 @@
    },
    {
       "address": "fe80::204:61ff:254.157.241.86",
-      "conditions": ["ipv4"]
+      "conditions": ["v4-in-v6"]
    },
    {
       "address": "fe80::204:61ff:fe9d:f156",
@@ -733,7 +733,7 @@
    },
    {
       "address": "fe80::217:f2ff:254.7.237.98",
-      "conditions": ["ipv4"]
+      "conditions": ["v4-in-v6"]
    },
    {
       "address": "fe80::217:f2ff:fe07:ed62",

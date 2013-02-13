@@ -23,7 +23,7 @@ v6.SCOPES = {
   16: 'Reserved'
 };
 
-v4.RE_ADDRESS = /(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/g;
+v4.RE_ADDRESS = /^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/g;
 v4.RE_SUBNET_STRING = /\/\d{1,2}/;
 
 v6.RE_BAD_CHARACTERS = /([^0-9a-f:\/%])/ig;
@@ -137,6 +137,8 @@ v4.Address.prototype.parse = function (address) {
 
   if (address.match(v4.RE_ADDRESS)) {
     this.valid = true;
+  } else {
+    this.error = 'Invalid IPv4 address.';
   }
 
   return groups;
@@ -277,8 +279,6 @@ v6.Address = function (address, opt_groups) {
 
   this.zone = '';
 
-  this.error = '';
-
   this.address = address;
 
   var subnet = v6.RE_SUBNET_STRING.exec(address);
@@ -287,7 +287,9 @@ v6.Address = function (address, opt_groups) {
     this.subnetMask = parseInt(subnet[0].replace('/', ''), 10);
     this.subnet = subnet[0];
 
-    if (this.subnetMask < 0 || this.subnetMask > v6.BITS) {
+    if (isNaN(this.subnetMask) ||
+      this.subnetMask < 0 ||
+      this.subnetMask > v6.BITS) {
       this.valid = false;
       this.error = "Invalid subnet mask.";
 
@@ -845,15 +847,17 @@ v6.Address.prototype.binaryZeroPad = function () {
   return zeroPad(this.bigInteger().toString(2), v6.BITS);
 };
 
-// TODO: Make private?
-v6.Address.prototype.parse = function (address) {
-  var address4 = address.match(v4.RE_ADDRESS);
-  var i;
+// TODO: Improve the semantics of this helper function
+v6.Address.prototype.parse4in6 = function (address) {
+  var groups = address.split(':');
+  var lastGroup = groups.slice(-1)[0];
+
+  var address4 = lastGroup.match(v4.RE_ADDRESS);
 
   if (address4) {
     var temp4 = new v4.Address(address4[0]);
 
-    for (i = 0; i < temp4.groups; i++) {
+    for (var i = 0; i < temp4.groups; i++) {
       if (/^0[0-9]+/.test(temp4.parsedAddress[i])) {
         this.valid = false;
         this.error = 'IPv4 addresses can not have leading zeroes.';
@@ -865,19 +869,22 @@ v6.Address.prototype.parse = function (address) {
       }
     }
 
-    if (/[0-9]$/.test(address.replace(v4.RE_ADDRESS, ''))) {
-      this.valid = false;
-      this.error = 'Invalid v4-in-v6 address';
-
-      this.parseError = address.replace(v4.RE_ADDRESS,
-        sprintf('<span class="parse-error">%s</span>', address4));
-
-      return;
-    }
-
     this.v4 = true;
 
-    address = address.replace(v4.RE_ADDRESS, temp4.toHex());
+    groups[groups.length - 1] = temp4.toHex();
+
+    address = groups.join(':');
+  }
+
+  return address;
+};
+
+// TODO: Make private?
+v6.Address.prototype.parse = function (address) {
+  address = this.parse4in6(address);
+
+  if (this.error) {
+    return;
   }
 
   var badCharacters = address.match(v6.RE_BAD_CHARACTERS);
@@ -937,17 +944,17 @@ v6.Address.prototype.parse = function (address) {
     this.elisionBegin = first.length;
     this.elisionEnd = first.length + this.elidedGroups;
 
-    for (i = 0; i < first.length; i++) {
-      groups.push(first[i]);
-    }
+    first.forEach(function (group) {
+      groups.push(group);
+    });
 
-    for (i = 0; i < remaining; i++) {
+    for (var i = 0; i < remaining; i++) {
       groups.push(0);
     }
 
-    for (i = 0; i < last.length; i++) {
-      groups.push(last[i]);
-    }
+    last.forEach(function (group) {
+      groups.push(group);
+    });
   } else if (halves.length === 1) {
     groups = address.split(':');
 
@@ -970,14 +977,14 @@ v6.Address.prototype.parse = function (address) {
     return;
   }
 
-  for (i = 0; i < groups.length; i++) {
-    if (groups[i].length > 4 && !address4) {
+  groups.forEach(function (group, i) {
+    if (groups.length > 4 && !this.v4) {
       this.valid = false;
       this.error = sprintf("Group %d is too long", i + 1);
 
       return;
     }
-  }
+  });
 
   this.valid = true;
 
