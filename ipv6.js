@@ -226,7 +226,7 @@ v4.Address.prototype.endAddress = function () {
   var endAddress = new BigInteger(this.mask() + repeatString(1,
     v4.BITS - this.subnetMask), 2);
 
-  return v4.Address.parse_u32(endAddress.intValue());
+  return v4.Address.fromInteger(endAddress.intValue());
 };
 
 /*
