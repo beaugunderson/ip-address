@@ -203,8 +203,8 @@ v4.Address.prototype.bigInteger = function () {
   }
 
   return new BigInteger(map(this.parsedAddress, function (n) {
-    return sprintf("%04x", parseInt(n, 10));
-  }).join(''), 4);
+    return sprintf("%02x", parseInt(n, 10));
+  }).join(''), 16);
 };
 
 /*
