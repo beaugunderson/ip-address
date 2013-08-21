@@ -233,7 +233,12 @@ v4.Address.prototype.endAddress = function () {
  * Converts a BigInteger to a v4 address object
  */
 v4.Address.fromBigInteger = function (bigInteger) {
-  return new v4.Address(bigInteger.toByteArray().join('.'));
+  integer = parseInt(bigInteger.toString())
+  groups = []
+  for (var i=0; i<4; i++) {
+    groups[i] = (integer >> 8 * i) & 255
+  }
+  return new v4.Address(groups.reverse().join('.'))
 };
 
 /*
