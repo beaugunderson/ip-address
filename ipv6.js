@@ -156,7 +156,7 @@ v4.Address.prototype.isValid = function () {
  * Converts a hex string to an IPv4 address object
  */
 v4.Address.fromHex = function (hex) {
-  var padded = String("00000000" + hex.replace(/:/g, '')).slice(-8);
+  var padded = zeroPad(hex.replace(/:/g, ''), 8);
   var groups = [];
   var i;
 
@@ -233,12 +233,7 @@ v4.Address.prototype.endAddress = function () {
  * Converts a BigInteger to a v4 address object
  */
 v4.Address.fromBigInteger = function (bigInteger) {
-  integer = parseInt(bigInteger.toString())
-  groups = []
-  for (var i=0; i<4; i++) {
-    groups[i] = (integer >> 8 * i) & 255
-  }
-  return new v4.Address(groups.reverse().join('.'))
+  return v4.Address.fromInteger(parseInt(bigInteger.toString()));
 };
 
 /*
