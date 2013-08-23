@@ -97,6 +97,19 @@ function zeroPad(s, n) {
   return String(repeatString(0, n) + s).slice(n * -1);
 }
 
+function isInSubnet(address) {
+  // XXX: This is a hunch
+  if (this.subnetMask < address.subnetMask) {
+    return false;
+  }
+
+  if (this.mask(address.subnetMask) === address.mask()) {
+    return true;
+  }
+
+  return false;
+}
+
 /*
  * Instantiates an IPv4 address
  */
@@ -127,6 +140,8 @@ v4.Address = function (address) {
     address = address.replace(v4.RE_SUBNET_STRING, '');
   }
 
+  this.addressMinusSuffix = address;
+
   this.parsedAddress = this.parse(address);
 };
 
@@ -150,6 +165,24 @@ v4.Address.prototype.parse = function (address) {
  */
 v4.Address.prototype.isValid = function () {
   return this.valid;
+};
+
+/*
+ * Returns the correct form of an address
+ */
+v4.Address.prototype.correctForm = function () {
+  return this.parsedAddress.map(function (part) {
+    return parseInt(part, 10);
+  }).join('.');
+};
+
+/*
+ * Returns true if the address is correct, false otherwise
+ */
+v4.Address.prototype.isCorrect = function () {
+  return this.addressMinusSuffix === this.correctForm() &&
+    (this.subnetMask === 32 ||
+      this.parsedSubnet === String(this.subnet.replace('/')));
 };
 
 /*
@@ -255,6 +288,10 @@ v4.Address.prototype.getBitsBase2 = function (start, end) {
   return this.binaryZeroPad().slice(start, end);
 };
 
+/*
+ * Returns true if the given address is in the subnet of the current address
+ */
+v4.Address.prototype.isInSubnet = isInSubnet;
 
 /*
  * Returns a zero-padded base-2 string representation of the address
@@ -515,18 +552,7 @@ v6.Address.prototype.possibleAddresses = function (opt_subnetSize) {
 /*
  * Returns true if the given address is in the subnet of the current address
  */
-v6.Address.prototype.isInSubnet = function (address) {
-  // XXX: This is a hunch
-  if (this.subnetMask < address.subnetMask) {
-    return false;
-  }
-
-  if (this.mask(address.subnetMask) === address.mask()) {
-    return true;
-  }
-
-  return false;
-};
+v6.Address.prototype.isInSubnet = isInSubnet;
 
 /*
  * Create an IPv6-mapped address given an IPv4 address

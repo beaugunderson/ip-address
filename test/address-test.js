@@ -16,6 +16,11 @@ function addressIs(addressString, descriptors) {
           address4.parsedAddress.should.be.an.instanceOf(Array);
           address4.parsedAddress.length.should.equal(4);
 
+          address4.subnetMask.should.be.a('number');
+
+          address4.subnetMask.should.be.at.least(0);
+          address4.subnetMask.should.be.at.most(128);
+
           should.not.exist(address4.error);
           should.not.exist(address4.parseError);
 
@@ -91,9 +96,21 @@ function addressIs(addressString, descriptors) {
         });
       }
 
+      if (descriptor === 'correct-ipv4') {
+        it('is correct', function () {
+          address4.isCorrect().should.equal(true);
+        });
+      }
+
       if (descriptor === 'incorrect') {
         it('is incorrect', function () {
           address6.isCorrect().should.equal(false);
+        });
+      }
+
+      if (descriptor === 'incorrect-ipv4') {
+        it('is incorrect', function () {
+          address4.isCorrect().should.equal(false);
         });
       }
 

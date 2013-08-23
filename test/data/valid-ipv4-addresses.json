@@ -1,22 +1,22 @@
 [
    {
       "address": "001.002.003.004",
-      "conditions": []
+      "conditions": ["incorrect-ipv4"]
    },
    {
       "address": "127.0.0.1",
-      "conditions": []
+      "conditions": ["correct-ipv4"]
    },
    {
       "address": "127.0.0.1/02",
-      "conditions": []
+      "conditions": ["incorrect-ipv4"]
    },
    {
       "address": "127.0.0.1/32",
-      "conditions": []
+      "conditions": ["correct-ipv4"]
    },
    {
       "address": "255.255.255.255/32",
-      "conditions": []
+      "conditions": ["correct-ipv4"]
    }
 ]

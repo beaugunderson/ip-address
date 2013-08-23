@@ -56,6 +56,10 @@
       "conditions": []
    },
    {
+      "address": "::1//64",
+      "conditions": []
+   },
+   {
       "address": "::1/0001",
       "conditions": []
    },
@@ -1265,6 +1269,10 @@
    },
    {
       "address": "::/129",
+      "conditions": []
+   },
+   {
+      "address": "1000:://32",
       "conditions": []
    },
    {
