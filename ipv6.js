@@ -213,6 +213,15 @@ v4.Address.fromInteger = function (integer) {
  * Converts an IPv4 address object to a hex string
  */
 v4.Address.prototype.toHex = function () {
+  return this.parsedAddress.map(function (part) {
+    return sprintf('%02x', parseInt(part, 10));
+  }).join(':');
+};
+
+/*
+ * Converts an IPv4 address object to an IPv6 address group
+ */
+v4.Address.prototype.toV6Group = function () {
   var output = [];
   var i;
 
@@ -906,7 +915,7 @@ v6.Address.prototype.parse4in6 = function (address) {
 
     this.v4 = true;
 
-    groups[groups.length - 1] = temp4.toHex();
+    groups[groups.length - 1] = temp4.toV6Group();
 
     address = groups.join(':');
   }
