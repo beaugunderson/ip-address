@@ -189,7 +189,7 @@ v4.Address.prototype.isCorrect = function () {
  * Converts a hex string to an IPv4 address object
  */
 v4.Address.fromHex = function (hex) {
-  var padded = String("00000000" + hex.replace(/:/g, '')).slice(-8);
+  var padded = zeroPad(hex.replace(/:/g, ''), 8);
   var groups = [];
   var i;
 
@@ -236,8 +236,8 @@ v4.Address.prototype.bigInteger = function () {
   }
 
   return new BigInteger(map(this.parsedAddress, function (n) {
-    return sprintf("%04x", parseInt(n, 10));
-  }).join(''), 4);
+    return sprintf("%02x", parseInt(n, 10));
+  }).join(''), 16);
 };
 
 /*
@@ -259,14 +259,14 @@ v4.Address.prototype.endAddress = function () {
   var endAddress = new BigInteger(this.mask() + repeatString(1,
     v4.BITS - this.subnetMask), 2);
 
-  return v4.Address.parse_u32(endAddress.intValue());
+  return v4.Address.fromBigInteger(endAddress);
 };
 
 /*
  * Converts a BigInteger to a v4 address object
  */
 v4.Address.fromBigInteger = function (bigInteger) {
-  return new v4.Address(bigInteger.toByteArray().join('.'));
+  return v4.Address.fromInteger(parseInt(bigInteger.toString()));
 };
 
 /*
