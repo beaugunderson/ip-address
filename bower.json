@@ -14,7 +14,7 @@
   ],
   "license": "MIT",
   "dependencies": {
-    "sprintf": "*",
+    "sprintf": "*"
   },
   "ignore": [
     "**/.*",
