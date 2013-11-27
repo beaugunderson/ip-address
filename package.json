@@ -27,8 +27,7 @@
   "dependencies": {
     "sprintf": "0.1.x",
     "cli": "0.3.x",
-    "cliff": "0.1.x",
-    "eyes": "0.1.x"
+    "cliff": "0.1.x"
   },
   "devDependencies": {
     "mocha": "1.8.x",
