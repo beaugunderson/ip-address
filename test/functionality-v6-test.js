@@ -189,53 +189,69 @@ describe('v6', function () {
     });
   });
 
-  describe('Address inside a URI or inside a URI with a port', function () {
+  describe('Address inside a URL or inside a URL with a port', function () {
     it('should work with a host address', function () {
-      var obj = v6.Address.fromURL('2001:db8::5')
-      expect(obj.address.valid).to.equal(true)
-      expect(obj.address.address).to.equal('2001:db8::5')
-      expect(obj.port).to.equal(null)
-    })
-    it('should work with a basic URI', function () {
-      var obj = v6.Address.fromURL('http://2001:db8::5/foo')
-      expect(obj.address.isValid()).to.equal(true)
-      expect(obj.address.address).equal('2001:db8::5')
-      expect(obj.port).to.equal(null)
-    })
-    it('should work with a URI with a port', function () {
-      var obj = v6.Address.fromURL('http://[2001:db8::5]:80/foo')
-      expect(obj.address.isValid()).to.equal(true)
-      expect(obj.address.address).to.equal('2001:db8::5')
-      expect(obj.port).to.equal(80)
-    })
-    it('should work with a URI with a long port number', function () {
-      var obj = v6.Address.fromURL('http://[2001:db8::5]:65536/foo')
-      expect(obj.address.isValid()).to.equal(true)
-      expect(obj.address.address).to.equal('2001:db8::5')
-      expect(obj.port).to.equal(65536)
-    })
+      var obj = v6.Address.fromURL('2001:db8::5');
+
+      expect(obj.address.valid).to.equal(true);
+      expect(obj.address.address).to.equal('2001:db8::5');
+      expect(obj.port).to.equal(null);
+    });
+
+    it('should work with a basic URL', function () {
+      var obj = v6.Address.fromURL('http://2001:db8::5/foo');
+
+      expect(obj.address.isValid()).to.equal(true);
+      expect(obj.address.address).equal('2001:db8::5');
+      expect(obj.port).to.equal(null);
+    });
+
+    it('should work with a URL with a port', function () {
+      var obj = v6.Address.fromURL('http://[2001:db8::5]:80/foo');
+
+      expect(obj.address.isValid()).to.equal(true);
+      expect(obj.address.address).to.equal('2001:db8::5');
+      expect(obj.port).to.equal(80);
+    });
+
+    it('should work with a URL with a long port number', function () {
+      var obj = v6.Address.fromURL('http://[2001:db8::5]:65536/foo');
+
+      expect(obj.address.isValid()).to.equal(true);
+      expect(obj.address.address).to.equal('2001:db8::5');
+      expect(obj.port).to.equal(65536);
+    });
+
     it('should work with a address with a port', function () {
-      var obj = v6.Address.fromURL('[2001:db8::5]:80')
-      expect(obj.address.isValid()).to.equal(true)
-      expect(obj.address.address).to.equal('2001:db8::5')
-      expect(obj.port).to.equal(80)
-    })
+      var obj = v6.Address.fromURL('[2001:db8::5]:80');
+
+      expect(obj.address.isValid()).to.equal(true);
+      expect(obj.address.address).to.equal('2001:db8::5');
+      expect(obj.port).to.equal(80);
+    });
+
     it('should work with a address with a long port', function () {
-      var obj = v6.Address.fromURL('[2001:db8::5]:65536')
-      expect(obj.address.isValid()).to.equal(true)
-      expect(obj.address.address).to.equal('2001:db8::5')
-      expect(obj.port).to.equal(65536)
-    })
+      var obj = v6.Address.fromURL('[2001:db8::5]:65536');
+
+      expect(obj.address.isValid()).to.equal(true);
+      expect(obj.address.address).to.equal('2001:db8::5');
+      expect(obj.port).to.equal(65536);
+    });
+
     it('should parse the address but fail with an invalid port', function () {
-      var obj = v6.Address.fromURL('[2001:db8::5]:65537')
-      expect(obj.address.isValid()).to.equal(true)
-      expect(obj.address.address).to.equal('2001:db8::5')
-      expect(obj.port).to.equal(null)
-    })
-    it('should fail with an invalid address and not return a port', function () {
-      var obj = v6.Address.fromURL('[2001:db8:z:5]:65536')
-      expect(obj.error).to.equal('failed to parse address with port')
-      expect(obj.port).to.equal(null)
-    })
-  })
+      var obj = v6.Address.fromURL('[2001:db8::5]:65537');
+
+      expect(obj.address.isValid()).to.equal(true);
+      expect(obj.address.address).to.equal('2001:db8::5');
+      expect(obj.port).to.equal(null);
+    });
+
+    it('should fail with an invalid address and not return a port',
+      function () {
+      var obj = v6.Address.fromURL('[2001:db8:z:5]:65536');
+
+      expect(obj.error).to.equal('failed to parse address with port');
+      expect(obj.port).to.equal(null);
+    });
+  });
 });
