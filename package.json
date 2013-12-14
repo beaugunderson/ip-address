@@ -26,12 +26,12 @@
   },
   "dependencies": {
     "sprintf": "0.1.x",
-    "cli": "0.3.x",
+    "cli": "0.4.x",
     "cliff": "0.1.x"
   },
   "devDependencies": {
-    "mocha": "1.8.x",
-    "chai": "1.5.x"
+    "mocha": "1.15.x",
+    "chai": "1.8.x"
   },
   "engines": {
     "node": "*"
