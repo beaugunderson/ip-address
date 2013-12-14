@@ -56,6 +56,7 @@ Current functionality
 ---------------------
 
 -    Parsing of most IPv6 notations
+-    Parsing of IPv6 Addresses and Ports from URLs with `v6.Address.fromURL(url)`
 -    Validity checking
 -    Decoding of the [Teredo information](http://en.wikipedia.org/wiki/Teredo_tunneling#IPv6_addressing) in an address
 -    Whether one address is a valid subnet of another

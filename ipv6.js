@@ -381,6 +381,49 @@ v6.Address.fromBigInteger = function (bigInteger) {
 };
 
 /*
+ * Converts a URI (optional port number) to an address object
+ */
+v6.Address.fromURLRegExp = new RegExp(/([0-9a-f:]+)/)
+v6.Address.fromURLRegExpWithPort = new RegExp(/\[([0-9a-f:]+)\]:([0-9]{1,5})/)
+v6.Address.fromURL = function (uri) {
+  var host, port, res
+  //if we have brackets parse them and find a port
+  if ( -1 < uri.indexOf('[') && -1 < uri.indexOf(']') ) {
+    res = v6.Address.fromURLRegExpWithPort.exec(uri)
+    if (null === res) {
+      return {error: 'failed to parse address with port', address: null, port: null}
+    }
+    host = res[1]
+    port = res[2]
+  //if there is a uri extract the address
+  } else if ( -1 < uri.indexOf('/') ){
+    //remove the protocol prefix
+    uri = uri.replace(/^[a-z0-9]+:\/\//,'')
+    //parse the address
+    res = v6.Address.fromURLRegExp.exec(uri)
+    if (null === res) {
+      return {error: 'failed to parse address from uri', address: null, port: null}
+    }
+    host = res[1]
+  //otherwise just assign the uri to the host and let the
+  //  library try to parse it
+  } else {
+    host = uri
+  }
+  //if there is a port convert it to an integer
+  if(port){
+    port = parseInt(port)
+    //squelch out of range ports
+    if(port < 0 || port > 65536){
+      port = null
+    }
+  } else {
+    port = null
+  }
+  return {address: new v6.Address(host), port: port}
+};
+
+/*
  * A helper function to compact an array
  */
 v6.Address.compact = function (address, slice) {
