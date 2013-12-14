@@ -275,7 +275,7 @@ v4.Address.prototype.endAddress = function () {
  * Converts a BigInteger to a v4 address object
  */
 v4.Address.fromBigInteger = function (bigInteger) {
-  return v4.Address.fromInteger(parseInt(bigInteger.toString()));
+  return v4.Address.fromInteger(parseInt(bigInteger.toString(), 10));
 };
 
 /*
