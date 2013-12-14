@@ -3,7 +3,6 @@ var chai = require('chai');
 var should = chai.should();
 var expect = chai.expect;
 
-var v4 = require('../ipv6').v4;
 var v6 = require('../ipv6').v6;
 
 // A convenience function to convert a list of IPv6 address notations
@@ -36,7 +35,8 @@ describe('v6', function () {
   describe('An address with a subnet', function () {
     var topic = new v6.Address('ffff::/64');
 
-    it('is contained by an identical address with an identical subnet', function () {
+    it('is contained by an identical address with an identical subnet',
+      function () {
       var same = new v6.Address('ffff::/64');
 
       topic.isInSubnet(same).should.equal(true);
@@ -77,7 +77,8 @@ describe('v6', function () {
     it('validates as canonical', function () {
       topic.isCanonical().should.equal(true);
 
-      should.equal(topic.canonicalForm(), '000a:0000:0000:0000:0000:0000:0000:000b');
+      should.equal(topic.canonicalForm(),
+        '000a:0000:0000:0000:0000:0000:0000:000b');
     });
   });
 
@@ -94,7 +95,7 @@ describe('v6', function () {
   });
 
   describe('An address with a subnet', function () {
-    var topic = new v6.Address('a::b/48');
+    var topic = new v6.Address('a:b::/48');
 
     it('validates', function () {
       topic.isValid().should.equal(true);
@@ -105,12 +106,11 @@ describe('v6', function () {
     });
 
     it('is in its own subnet', function () {
-      topic.isInSubnet(new v6.Address('a::b/48')).should.equal(true);
+      topic.isInSubnet(new v6.Address('a:b::/48')).should.equal(true);
     });
 
-    // XXX? .should.equal(false) right?
     it('is not in another subnet', function () {
-      topic.isInSubnet(new v6.Address('a::c/48')).should.equal(true);
+      topic.isInSubnet(new v6.Address('a:c::/48')).should.equal(false);
     });
   });
 
