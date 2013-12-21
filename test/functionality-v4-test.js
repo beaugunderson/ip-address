@@ -139,12 +139,14 @@ describe('v4', function () {
     });
   });
 
-  describe('Converting an address to an array', function() {
+  describe('Converting an address to an array', function () {
     var topic = new v4.Address('127.0.0.1');
 
-    it('should convert correctly', function() {
+    it('should convert correctly', function () {
       var a = topic.toArray();
+
       a.should.be.an.instanceOf(Array).and.have.lengthOf(4);
+
       a[0].should.equal(127);
       a[1].should.equal(0);
       a[2].should.equal(0);
