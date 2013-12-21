@@ -225,13 +225,9 @@ v4.Address.prototype.toHex = function () {
  * Converts an IPv4 address object to an array of bytes
  */
 v4.Address.prototype.toArray = function () {
-  var array = new Array(4);
-
-  this.parsedAddress.map(function (part, index) {
-    array[index] = parseInt(part, 10);
+  return this.parsedAddress.map(function (part) {
+    return parseInt(part, 10);
   });
-
-  return array;
 };
 
 /*
