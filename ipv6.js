@@ -222,6 +222,18 @@ v4.Address.prototype.toHex = function () {
 };
 
 /*
+ * Converts an IPv4 address object to an array of bytes
+ */
+v4.Address.prototype.toArray = function() {
+  var a = new Array(4);
+  var i = 0;
+  this.parsedAddress.map(function (part) {
+      a[i++] = parseInt(part, 10);
+  });
+  return a;
+};
+
+/*
  * Converts an IPv4 address object to an IPv6 address group
  */
 v4.Address.prototype.toV6Group = function () {
