@@ -1,0 +1,26 @@
+{
+  "name": "javascript-ipv6",
+  "main": "ipv6.js",
+  "version": "3.0.0",
+  "homepage": "https://github.com/beaugunderson/javascript-ipv6",
+  "authors": [
+    "Beau Gunderson <beau@beaugunderson.com>"
+  ],
+  "description": "A browser- and node-compatible library for parsing IPv6 addresses",
+  "keywords": [
+    "ipv6",
+    "browser",
+    "validation"
+  ],
+  "license": "MIT",
+  "dependencies": {
+    "sprintf": "*"
+  },
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
