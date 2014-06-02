@@ -18,7 +18,7 @@
     "ipv6grep": "bin/ipv6grep.js"
   },
   "engines": {
-    "node": ">= 0.6"
+    "node": ">= 0.10"
   },
   "repository": {
     "type": "git",
