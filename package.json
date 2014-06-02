@@ -1,15 +1,15 @@
 {
   "name": "ipv6",
-  "description": "A browser- and node-compatible library for parsing IPv6 addresses",
+  "description": "A browser and node-compatible library for parsing IPv6 addresses.",
   "keywords": [
     "ipv6",
     "browser",
     "validation"
   ],
   "version": "3.1.1",
-  "author": "Beau Gunderson <beau@beaugunderson.com>",
+  "author": "Beau Gunderson <beau@beaugunderson.com> (http://beaugunderson.com/)",
   "license": "MIT",
-  "main": "index",
+  "main": "ipv6",
   "scripts": {
     "test": "./node_modules/.bin/mocha --reporter spec"
   },
@@ -17,7 +17,7 @@
     "ipv6": "bin/ipv6.js",
     "ipv6grep": "bin/ipv6grep.js"
   },
-  "engine": {
+  "engines": {
     "node": ">= 0.4.1"
   },
   "repository": {
@@ -32,8 +32,5 @@
   "devDependencies": {
     "mocha": "1.15.x",
     "chai": "1.8.x"
-  },
-  "engines": {
-    "node": "*"
   }
 }

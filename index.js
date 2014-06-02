@@ -1,1 +1,0 @@
-exports = module.exports = require('./ipv6.js');
