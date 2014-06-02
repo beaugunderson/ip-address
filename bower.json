@@ -6,7 +6,7 @@
   "authors": [
     "Beau Gunderson <beau@beaugunderson.com>"
   ],
-  "description": "A browser and node-compatible library for parsing IPv6 addresses.",
+  "description": "A library for parsing IPv6 (and IPv4) addresses in node and the browser.",
   "keywords": [
     "ipv6",
     "browser",

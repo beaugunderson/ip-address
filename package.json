@@ -1,6 +1,6 @@
 {
   "name": "ipv6",
-  "description": "A browser and node-compatible library for parsing IPv6 addresses.",
+  "description": "A library for parsing IPv6 (and IPv4) addresses in node and the browser.",
   "keywords": [
     "ipv6",
     "browser",
@@ -18,7 +18,7 @@
     "ipv6grep": "bin/ipv6grep.js"
   },
   "engines": {
-    "node": ">= 0.4.1"
+    "node": ">= 0.6"
   },
   "repository": {
     "type": "git",
