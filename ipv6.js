@@ -1312,3 +1312,22 @@ v6.Address.prototype.six2four = function () {
     gateway: gateway.address
   };
 };
+
+/*
+ * Returns a v6 6to4 address from a v6 v4inv6 address.
+ */
+v6.Address.prototype.get6to4 = function () {
+  if (!this.is4()) {
+    return false;
+  }
+
+  var addr6to4 = [
+    '2002',
+    this.getBitsBase16(96, 112),
+    this.getBitsBase16(112, 128),
+    '',
+    '/16'
+  ].join(':');
+
+  return new v6.Address(addr6to4);
+};
