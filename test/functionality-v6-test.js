@@ -206,6 +206,14 @@ describe('v6', function () {
       expect(obj.port).to.equal(null);
     });
 
+    it('should work with a basic URL enclosed in brackets', function () {
+      var obj = v6.Address.fromURL('http://[2001:db8::5]/foo');
+
+      expect(obj.address.isValid()).to.equal(true);
+      expect(obj.address.address).equal('2001:db8::5');
+      expect(obj.port).to.equal(null);
+    });
+
     it('should work with a URL with a port', function () {
       var obj = v6.Address.fromURL('http://[2001:db8::5]:80/foo');
 

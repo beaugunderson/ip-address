@@ -32,7 +32,7 @@ v6.RE_BAD_ADDRESS = /([0-9a-f]{5,}|:{3,}|[^:]:$|^:[^:]|\/$)/ig;
 v6.RE_SUBNET_STRING = /\/\d{1,3}(?=%|$)/;
 v6.RE_ZONE_STRING = /%.*$/;
 
-v6.RE_URL = new RegExp(/([0-9a-f:]+)/);
+v6.RE_URL = new RegExp(/\[{0,1}([0-9a-f:]+)\]{0,1}/);
 v6.RE_URL_WITH_PORT = new RegExp(/\[([0-9a-f:]+)\]:([0-9]{1,5})/);
 
 // Convenience functions
@@ -401,7 +401,7 @@ v6.Address.fromURL = function (url) {
   var result;
 
   // If we have brackets parse them and find a port
-  if (url.indexOf('[') !== -1 && url.indexOf(']') !== -1) {
+  if (url.indexOf('[') !== -1 && url.indexOf(']:') !== -1) {
     result = v6.RE_URL_WITH_PORT.exec(url);
 
     if (result === null) {
