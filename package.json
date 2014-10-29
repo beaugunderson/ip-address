@@ -26,9 +26,10 @@
     "url": "git://github.com/beaugunderson/javascript-ipv6.git"
   },
   "dependencies": {
-    "sprintf": "0.1.x",
     "cli": "0.4.x",
-    "cliff": "0.1.x"
+    "cliff": "0.1.x",
+    "jsbn": "0.0.0",
+    "sprintf": "0.1.x"
   },
   "devDependencies": {
     "blanket": "^1.1.6",
