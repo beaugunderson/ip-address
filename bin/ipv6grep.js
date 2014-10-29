@@ -1,11 +1,13 @@
 #!/usr/bin/env node
 
-var v6 = require('../ipv6.js').v6;
-var v4 = require('../ipv6.js').v4;
+'use strict';
 
-var sprintf = require('sprintf').sprintf;
+var v6 = require('../ipv6.js').v6;
+//var v4 = require('../ipv6.js').v4;
+
+//var sprintf = require('sprintf').sprintf;
 var cli = require('cli');
-var cliff = require('cliff');
+//var cliff = require('cliff');
 
 var util = require('util');
 var spawn = require('child_process').spawn;
@@ -20,21 +22,24 @@ cli.parse({
 
 cli.debug('script: ' + process.ARGV[1]);
 
-cli.main(function(args, options) {
+cli.main(function (args, options) {
    cli.debug('args: ' + util.inspect(args));
    cli.debug('options: ' + util.inspect(options));
 
    var grepArguments = ['-E', '-n', '--color=always'];
    var stdin = false;
 
-   if (args.length == 0 && options.all) {
+   var address;
+   var regex;
+
+   if (args.length === 0 && options.all) {
       // STDIN with all addresses
       grepArguments.push('ADDRESS');
       stdin = true;
-   } else if (args.length == 1) {
+   } else if (args.length === 1) {
       // STDIN
-      var address = new v6.Address(new v6.Address(args[0]).correctForm());
-      var regex = address.regularExpressionString(options.substring);
+      address = new v6.Address(new v6.Address(args[0]).correctForm());
+      regex = address.regularExpressionString(options.substring);
 
       cli.debug('address: ' + util.inspect(address.regularExpression()));
 
@@ -42,15 +47,15 @@ cli.main(function(args, options) {
       stdin = true;
    } else if (args.length > 1) {
       // filename
-      var address = new v6.Address(new v6.Address(args[0]).correctForm());
-      var regex = address.regularExpressionString(options.substring);
+      address = new v6.Address(new v6.Address(args[0]).correctForm());
+      regex = address.regularExpressionString(options.substring);
 
       var files = args.slice(1, args.length);
 
       cli.debug('address: ' + util.inspect(address.regularExpression()));
       cli.debug('files: ' + util.inspect(files));
 
-      grepArguments = grepArguments.concat(regex, files)
+      grepArguments = grepArguments.concat(regex, files);
    }
 
    cli.debug('grep arguments: ' + util.inspect(grepArguments));

@@ -1,3 +1,5 @@
+'use strict';
+
 if (typeof exports !== 'undefined') {
   var sprintf = require('sprintf').sprintf;
   var BigInteger = require('./lib/node/bigint').BigInteger;
@@ -34,18 +36,6 @@ v6.RE_ZONE_STRING = /%.*$/;
 
 v6.RE_URL = new RegExp(/\[{0,1}([0-9a-f:]+)\]{0,1}/);
 v6.RE_URL_WITH_PORT = new RegExp(/\[([0-9a-f:]+)\]:([0-9]{1,5})/);
-
-// Convenience functions
-function map(array, fn) {
-  var results = [];
-  var i;
-
-  for (i = 0; i < array.length; i++) {
-    results.push(fn(array[i], i));
-  }
-
-  return results;
-}
 
 function repeatString(s, n) {
   var result = '';
@@ -135,7 +125,7 @@ v4.Address = function (address) {
 
     if (this.subnetMask < 0 || this.subnetMask > v4.BITS) {
       this.valid = false;
-      this.error = "Invalid subnet mask.";
+      this.error = 'Invalid subnet mask.';
 
       return;
     }
@@ -253,11 +243,11 @@ v4.Address.prototype.toV6Group = function () {
  */
 v4.Address.prototype.bigInteger = function () {
   if (!this.valid) {
-    return;
+    return null;
   }
 
-  return new BigInteger(map(this.parsedAddress, function (n) {
-    return sprintf("%02x", parseInt(n, 10));
+  return new BigInteger(this.parsedAddress.map(function (n) {
+    return sprintf('%02x', parseInt(n, 10));
   }).join(''), 16);
 };
 
@@ -294,12 +284,12 @@ v4.Address.fromBigInteger = function (bigInteger) {
  * Returns the first n bits of the address, defaulting to the
  * subnet mask
  */
-v4.Address.prototype.mask = function (opt_mask) {
-  if (opt_mask === undefined) {
-    opt_mask = this.subnetMask;
+v4.Address.prototype.mask = function (optionalMask) {
+  if (optionalMask === undefined) {
+    optionalMask = this.subnetMask;
   }
 
-  return this.getBitsBase2(0, opt_mask);
+  return this.getBitsBase2(0, optionalMask);
 };
 
 /*
@@ -324,11 +314,11 @@ v4.Address.prototype.binaryZeroPad = function () {
 /*
  * Instantiates an IPv6 address
  */
-v6.Address = function (address, opt_groups) {
-  if (opt_groups === undefined) {
+v6.Address = function (address, optionalGroups) {
+  if (optionalGroups === undefined) {
     this.groups = v6.GROUPS;
   } else {
-    this.groups = opt_groups;
+    this.groups = optionalGroups;
   }
 
   this.v4 = false;
@@ -351,7 +341,7 @@ v6.Address = function (address, opt_groups) {
       this.subnetMask < 0 ||
       this.subnetMask > v6.BITS) {
       this.valid = false;
-      this.error = "Invalid subnet mask.";
+      this.error = 'Invalid subnet mask.';
 
       return;
     }
@@ -359,7 +349,7 @@ v6.Address = function (address, opt_groups) {
     address = address.replace(v6.RE_SUBNET_STRING, '');
   } else if (/\//.test(address)) {
     this.valid = false;
-    this.error = "Invalid subnet mask.";
+    this.error = 'Invalid subnet mask.';
 
     return;
   }
@@ -496,7 +486,7 @@ v6.Address.prototype.isCorrect = function () {
 v6.Address.prototype.isLinkLocal = function () {
   // Zeroes are required, i.e. we can't check isInSubnet with 'fe80::/10'
   if (this.getBitsBase2(0, 64) ===
-    "1111111010000000000000000000000000000000000000000000000000000000") {
+    '1111111010000000000000000000000000000000000000000000000000000000') {
     return true;
   }
 
@@ -564,26 +554,26 @@ v6.Address.prototype.microsoftTranscription = function () {
 /*
  * Returns the address in link form with a default port of 80
  */
-v6.Address.prototype.href = function (opt_port) {
-  if (opt_port === undefined) {
-    opt_port = '';
+v6.Address.prototype.href = function (optionalPort) {
+  if (optionalPort === undefined) {
+    optionalPort = '';
   } else {
-    opt_port = sprintf(':%s', opt_port);
+    optionalPort = sprintf(':%s', optionalPort);
   }
 
-  return sprintf('http://[%s]%s/', this.correctForm(), opt_port);
+  return sprintf('http://[%s]%s/', this.correctForm(), optionalPort);
 };
 
 /*
  * Returns the first n bits of the address, defaulting to the
  * subnet mask
  */
-v6.Address.prototype.mask = function (opt_mask) {
-  if (opt_mask === undefined) {
-    opt_mask = this.subnetMask;
+v6.Address.prototype.mask = function (optionalMask) {
+  if (optionalMask === undefined) {
+    optionalMask = this.subnetMask;
   }
 
-  return this.getBitsBase2(0, opt_mask);
+  return this.getBitsBase2(0, optionalMask);
 };
 
 /*
@@ -624,13 +614,13 @@ v6.Address.prototype.link = function (options) {
 /*
  * Returns the number of possible subnets of a given size in the address
  */
-v6.Address.prototype.possibleAddresses = function (opt_subnetSize) {
-  if (opt_subnetSize === undefined) {
-    opt_subnetSize = 0;
+v6.Address.prototype.possibleAddresses = function (optionalSubnetSize) {
+  if (optionalSubnetSize === undefined) {
+    optionalSubnetSize = 0;
   }
 
   return addCommas(new BigInteger('2', 10).pow((v6.BITS - this.subnetMask) -
-    (v6.BITS - opt_subnetSize)).toString(10));
+    (v6.BITS - optionalSubnetSize)).toString(10));
 };
 
 /*
@@ -671,10 +661,9 @@ v6.Address.prototype.endAddress = function () {
 v6.Address.prototype.getScope = function () {
   var scope = v6.SCOPES[this.getBits(12, 16)];
 
-  if (this.getType() === "Global unicast") {
-    if (scope !== "Link local") {
-      scope = "Global";
-    }
+  if (this.getType() === 'Global unicast' &&
+      scope !== 'Link local') {
+    scope = 'Global';
   }
 
   return scope;
@@ -748,7 +737,7 @@ v6.Address.prototype.getBitsBase16 = function (start, end) {
   var length = end - start;
 
   if (length % 4 !== 0) {
-    return;
+    return null;
   }
 
   return zeroPad(this.getBits(start, end).toString(16), length / 4);
@@ -764,16 +753,16 @@ v6.Address.prototype.getBitsPastSubnet = function () {
 /*
  * Returns the string with each character contained in a <span>
  */
-v6.Address.spanAll = function (s, opt_offset) {
-  if (opt_offset === undefined) {
-    opt_offset = 0;
+v6.Address.spanAll = function (s, optionalOffset) {
+  if (optionalOffset === undefined) {
+    optionalOffset = 0;
   }
 
   var letters = s.split('');
 
-  return map(letters, function (n, i) {
+  return letters.map(function (n, i) {
     return sprintf('<span class="digit value-%s position-%d">%s</span>', n,
-      i + opt_offset,
+      i + optionalOffset,
       v6.Address.spanAllZeroes(n)); // XXX Use #base-2 .value-0 instead?
   }).join('');
 };
@@ -791,11 +780,9 @@ v6.Address.spanAllZeroes = function (s) {
 v6.Address.spanLeadingZeroes = function (address) {
   var groups = address.split(':');
 
-  groups = map(groups, function (g) {
+  return groups.map(function (g) {
     return spanLeadingZeroesSimple(g);
-  });
-
-  return groups.join(':');
+  }).join(':');
 };
 
 /*
@@ -808,7 +795,7 @@ v6.Address.simpleGroup = function (addressString, offset) {
     offset = 0;
   }
 
-  groups = map(groups, function (g, i) {
+  return groups.map(function (g, i) {
     if (/group-v4/.test(g)) {
       return g;
     }
@@ -816,9 +803,7 @@ v6.Address.simpleGroup = function (addressString, offset) {
     return sprintf('<span class="hover-group group-%d">%s</span>',
       i + offset,
       spanLeadingZeroesSimple(g));
-  });
-
-  return groups.join(':');
+  }).join(':');
 };
 
 /*
@@ -889,7 +874,7 @@ v6.Address.prototype.reverseForm = function () {
     .join('.');
 
   if (characters > 0) {
-    return sprintf("%s.ip6.arpa.", reversed);
+    return sprintf('%s.ip6.arpa.', reversed);
   }
 
   return 'ip6.arpa.';
@@ -900,7 +885,7 @@ v6.Address.prototype.reverseForm = function () {
  */
 v6.Address.prototype.correctForm = function () {
   if (!this.parsedAddress) {
-    return;
+    return null;
   }
 
   var i;
@@ -931,7 +916,7 @@ v6.Address.prototype.correctForm = function () {
       this.parsedAddress.length - 1]);
   }
 
-  var zeroLengths = map(zeroes, function (n) {
+  var zeroLengths = zeroes.map(function (n) {
     return (n[1] - n[0]) + 1;
   });
 
@@ -982,9 +967,9 @@ v6.Address.prototype.parse4in6 = function (address) {
         this.error = 'IPv4 addresses can not have leading zeroes.';
 
         this.parseError = address.replace(v4.RE_ADDRESS,
-          map(temp4.parsedAddress, spanLeadingZeroes4).join('.'));
+          temp4.parsedAddress.map(spanLeadingZeroes4).join('.'));
 
-        return;
+        return null;
       }
     }
 
@@ -1003,32 +988,32 @@ v6.Address.prototype.parse = function (address) {
   address = this.parse4in6(address);
 
   if (this.error) {
-    return;
+    return null;
   }
 
   var badCharacters = address.match(v6.RE_BAD_CHARACTERS);
 
   if (badCharacters) {
     this.valid = false;
-    this.error = sprintf("Bad character%s detected in address: %s",
+    this.error = sprintf('Bad character%s detected in address: %s',
       badCharacters.length > 1 ? 's' : '', badCharacters.join(''));
 
     this.parseError = address.replace(v6.RE_BAD_CHARACTERS,
       '<span class="parse-error">$1</span>');
 
-    return;
+    return null;
   }
 
   var badAddress = address.match(v6.RE_BAD_ADDRESS);
 
   if (badAddress) {
     this.valid = false;
-    this.error = sprintf("Address failed regex: %s", badAddress.join(''));
+    this.error = sprintf('Address failed regex: %s', badAddress.join(''));
 
     this.parseError = address.replace(v6.RE_BAD_ADDRESS,
       '<span class="parse-error">$1</span>');
 
-    return;
+    return null;
   }
 
   var groups = [];
@@ -1053,9 +1038,9 @@ v6.Address.prototype.parse = function (address) {
 
     if (!remaining) {
       this.valid = false;
-      this.error = "Error parsing groups";
+      this.error = 'Error parsing groups';
 
-      return;
+      return null;
     }
 
     this.elidedGroups = remaining;
@@ -1080,30 +1065,21 @@ v6.Address.prototype.parse = function (address) {
     this.elidedGroups = 0;
   } else {
     this.valid = false;
-    this.error = "Too many :: groups found";
+    this.error = 'Too many :: groups found';
 
-    return;
+    return null;
   }
 
-  groups = map(groups, function (g) {
+  groups = groups.map(function (g) {
     return sprintf('%x', parseInt(g, 16));
   });
 
   if (groups.length !== this.groups) {
     this.valid = false;
-    this.error = "Incorrect number of groups found";
+    this.error = 'Incorrect number of groups found';
 
-    return;
+    return null;
   }
-
-  groups.forEach(function (group, i) {
-    if (groups.length > 4 && !this.v4) {
-      this.valid = false;
-      this.error = sprintf("Group %d is too long", i + 1);
-
-      return;
-    }
-  });
 
   this.valid = true;
 
@@ -1114,9 +1090,9 @@ v6.Address.prototype.parse = function (address) {
  * Generate a regular expression string that can be used to find or validate all
  * variations of this address.
  */
-v6.Address.prototype.regularExpressionString = function (opt_subString) {
-  if (opt_subString === undefined) {
-    opt_subString = false;
+v6.Address.prototype.regularExpressionString = function (optionalSubString) {
+  if (optionalSubString === undefined) {
+    optionalSubString = false;
   }
 
   var i;
@@ -1159,7 +1135,7 @@ v6.Address.prototype.regularExpressionString = function (opt_subString) {
     }
   }
 
-  if (!opt_subString) {
+  if (!optionalSubString) {
     output = [].concat('\\b', output, '\\b');
   }
 
@@ -1179,11 +1155,11 @@ v6.Address.prototype.regularExpression = function () {
  */
 v6.Address.prototype.canonicalForm = function () {
   if (!this.valid) {
-    return;
+    return null;
   }
 
-  return map(this.parsedAddress, function (n) {
-    return sprintf("%04x", parseInt(n, 16));
+  return this.parsedAddress.map(function (n) {
+    return sprintf('%04x', parseInt(n, 16));
   }).join(':');
 };
 
@@ -1192,11 +1168,11 @@ v6.Address.prototype.canonicalForm = function () {
  */
 v6.Address.prototype.decimal = function () {
   if (!this.valid) {
-    return;
+    return null;
   }
 
-  return map(this.parsedAddress, function (n) {
-    return sprintf("%05d", parseInt(n, 16));
+  return this.parsedAddress.map(function (n) {
+    return sprintf('%05d', parseInt(n, 16));
   }).join(':');
 };
 
@@ -1205,11 +1181,11 @@ v6.Address.prototype.decimal = function () {
  */
 v6.Address.prototype.bigInteger = function () {
   if (!this.valid) {
-    return;
+    return null;
   }
 
-  return new BigInteger(map(this.parsedAddress, function (n) {
-    return sprintf("%04x", parseInt(n, 16));
+  return new BigInteger(this.parsedAddress.map(function (n) {
+    return sprintf('%04x', parseInt(n, 16));
   }).join(''), 16);
 };
 

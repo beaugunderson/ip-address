@@ -1,5 +1,7 @@
 #!/usr/bin/env node
 
+'use strict';
+
 var v6 = require('../ipv6.js').v6;
 var v4 = require('../ipv6.js').v4;
 
@@ -11,9 +13,9 @@ var options = cli.parse();
 
 var rows = [['Address', 'Valid', 'Correct Form', 'Canonical Form']];
 
-cli.withStdinLines(function(lines, newline) {
+cli.withStdinLines(function (lines, newline) {
    for (var i = 0; i < lines.length; i++) {
-      if (lines[i] == '') {
+      if (lines[i] === '') {
          continue;
       }
 

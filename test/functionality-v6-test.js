@@ -1,3 +1,5 @@
+'use strict';
+
 var sprintf = require('sprintf').sprintf;
 var chai = require('chai');
 var should = chai.should();
@@ -18,6 +20,16 @@ function notationsToAddresseses(notations) {
 }
 
 describe('v6', function () {
+  describe('An invalid address', function () {
+    var topic = new v6.Address('a:abcde::');
+
+    it('is invalid', function () {
+      topic.error.should.equal('Address failed regex: abcde');
+      topic.valid.should.equal(false);
+      topic.isCorrect().should.equal(false);
+    });
+  });
+
   describe('A correct address', function () {
     var topic = new v6.Address('a::b');
 
@@ -161,17 +173,17 @@ describe('v6', function () {
 
   describe('A different notation of the same address', function () {
     var addresses = notationsToAddresseses([
-      "2001:db8:0:0:1:0:0:1/128",
-      "2001:db8:0:0:1:0:0:1/128%eth0",
-      "2001:db8:0:0:1:0:0:1%eth0",
-      "2001:db8:0:0:1:0:0:1",
-      "2001:0db8:0:0:1:0:0:1",
-      "2001:db8::1:0:0:1",
-      "2001:db8::0:1:0:0:1",
-      "2001:0db8::1:0:0:1",
-      "2001:db8:0:0:1::1",
-      "2001:db8:0000:0:1::1",
-      "2001:DB8:0:0:1::1"
+      '2001:db8:0:0:1:0:0:1/128',
+      '2001:db8:0:0:1:0:0:1/128%eth0',
+      '2001:db8:0:0:1:0:0:1%eth0',
+      '2001:db8:0:0:1:0:0:1',
+      '2001:0db8:0:0:1:0:0:1',
+      '2001:db8::1:0:0:1',
+      '2001:db8::0:1:0:0:1',
+      '2001:0db8::1:0:0:1',
+      '2001:db8:0:0:1::1',
+      '2001:db8:0000:0:1::1',
+      '2001:DB8:0:0:1::1'
     ]);
 
     it('is parsed to the same result', function () {

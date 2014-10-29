@@ -1,3 +1,5 @@
+'use strict';
+
 var should = require('chai').should();
 
 var v4 = require('../ipv6').v4;

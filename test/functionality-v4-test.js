@@ -1,3 +1,5 @@
+'use strict';
+
 var sprintf = require('sprintf').sprintf;
 var should = require('chai').should();
 
@@ -62,7 +64,7 @@ describe('v4', function () {
   });
 
   describe('An integer v4 address', function () {
-    var topic = new v4.Address.fromInteger(432432423);
+    var topic = v4.Address.fromInteger(432432423);
 
     it('validates', function () {
       topic.isValid().should.equal(true);
@@ -156,13 +158,13 @@ describe('v4', function () {
 
   describe('A different notation of the same address', function () {
     var addresses = notationsToAddresseses([
-      "127.0.0.1/32",
-      "127.0.0.1/032",
-      "127.000.000.001/032",
-      "127.000.000.001/32",
-      "127.0.0.1",
-      "127.000.000.001",
-      "127.000.0.1"
+      '127.0.0.1/32',
+      '127.0.0.1/032',
+      '127.000.000.001/032',
+      '127.000.000.001/32',
+      '127.0.0.1',
+      '127.000.000.001',
+      '127.000.0.1'
     ]);
 
     it('is parsed to the same result', function () {
