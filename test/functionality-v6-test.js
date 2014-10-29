@@ -1,11 +1,14 @@
 'use strict';
 
-var sprintf = require('sprintf').sprintf;
 var chai = require('chai');
-var should = chai.should();
-var expect = chai.expect;
 
-var v6 = require('../ipv6').v6;
+var expect = chai.expect;
+var should = chai.should();
+
+var BigInteger = require('jsbn');
+var sprintf = require('sprintf').sprintf;
+
+var v6 = require('..').v6;
 
 // A convenience function to convert a list of IPv6 address notations
 // to v6.Address instances
@@ -25,13 +28,22 @@ describe('v6', function () {
 
     it('is invalid', function () {
       topic.error.should.equal('Address failed regex: abcde');
+
       topic.valid.should.equal(false);
+
       topic.isCorrect().should.equal(false);
+
+      should.equal(topic.canonicalForm(), null);
+      should.equal(topic.decimal(), null);
+      should.equal(topic.bigInteger(), null);
+      should.equal(topic.get6to4(), null);
+
+      topic.isTeredo().should.equal(false);
     });
   });
 
   describe('A correct address', function () {
-    var topic = new v6.Address('a::b');
+    var topic = new v6.Address('a:b:c:d:e:f:0:1/64');
 
     it('contains no uppercase letters', function () {
       /[A-Z]/.test(topic.address).should.equal(false);
@@ -40,7 +52,40 @@ describe('v6', function () {
     it('validates as correct', function () {
       topic.isCorrect().should.equal(true);
 
-      should.equal(topic.correctForm(), 'a::b');
+      should.equal(topic.correctForm(), 'a:b:c:d:e:f:0:1');
+    });
+
+    it('gets the correct type', function () {
+      topic.getType().should.equal('Global unicast');
+
+      topic.isTeredo().should.equal(false);
+      topic.isLoopback().should.equal(false);
+      topic.isMulticast().should.equal(false);
+      topic.isLinkLocal().should.equal(false);
+    });
+
+    it('gets the correct scope', function () {
+      topic.getScope().should.equal('Global');
+    });
+
+    it('gets the correct is6to4 information', function () {
+      topic.is6to4().should.equal(false);
+    });
+
+    it('has correct bit information', function () {
+      topic.getBitsPastSubnet().should.equal(
+        '0000000000001110000000000000111100000000000000000000000000000001');
+
+      topic.getBitsBase16(0, 64).should.equal('000a000b000c000d');
+
+      topic.getBitsBase16(0, 128).should.equal(
+        '000a000b000c000d000e000f00000001');
+
+      should.equal(topic.getBitsBase16(0, 127), null);
+
+      topic.getBitsBase2().should.equal(
+        '0000000000001010000000000000101100000000000011000000000000001101' +
+        '0000000000001110000000000000111100000000000000000000000000000001');
     });
   });
 
@@ -272,6 +317,20 @@ describe('v6', function () {
 
       expect(obj.error).to.equal('failed to parse address with port');
       expect(obj.port).to.equal(null);
+    });
+  });
+
+  describe('An address from a BigInteger', function () {
+    var topic = v6.Address
+      .fromBigInteger(new BigInteger('51923840109643282840007714694758401'));
+
+    it('should parse correctly', function () {
+      topic.valid.should.equal(true);
+
+      // TODO: Define this behavior
+      //topic.isCorrect().should.equal(true);
+
+      should.equal(topic.correctForm(), 'a:b:c:d:e:f:0:1');
     });
   });
 });

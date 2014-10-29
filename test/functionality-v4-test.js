@@ -3,7 +3,7 @@
 var sprintf = require('sprintf').sprintf;
 var should = require('chai').should();
 
-var v4 = require('../ipv6').v4;
+var v4 = require('..').v4;
 
 // A convenience function to convert a list of IPv4 address notations
 // to v4.Address instances
@@ -18,6 +18,21 @@ function notationsToAddresseses(notations) {
 }
 
 describe('v4', function () {
+  describe('An invalid address', function () {
+    var topic = new v4.Address('127.0.0');
+
+    it('is invalid', function () {
+      topic.error.should.equal('Invalid IPv4 address.');
+
+      topic.valid.should.equal(false);
+
+      topic.isCorrect().should.equal(false);
+
+      should.equal(topic.bigInteger(), null);
+    });
+
+  });
+
   describe('A correct address', function () {
     var topic = new v4.Address('127.0.0.1');
 

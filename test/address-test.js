@@ -2,8 +2,10 @@
 
 var should = require('chai').should();
 
-var v4 = require('../ipv6').v4;
-var v6 = require('../ipv6').v6;
+var ip = require('..');
+
+var v4 = ip.v4;
+var v6 = ip.v6;
 
 function addressIs(addressString, descriptors) {
   var address4 = new v4.Address(addressString);
@@ -52,20 +54,17 @@ function addressIs(addressString, descriptors) {
           address6.isValid().should.equal(true);
         });
 
-        // TODO: These aren't quite ready for primetime yet.
-        /*
-        it('validates the correct form via regex', function () {
-          var re = address.regularExpression();
+        it('matches the correct form via regex', function () {
+          var re = address6.regularExpression();
 
-          re.test(address.correctForm()).should.equal(true);
+          re.test(address6.correctForm()).should.equal(true);
         });
 
-        it('validates the canonical form via regex', function () {
-          var re = address.regularExpression();
+        it('matches the canonical form via regex', function () {
+          var re = address6.regularExpression();
 
-          re.test(address.canonicalForm()).should.equal(true);
+          re.test(address6.canonicalForm()).should.equal(true);
         });
-        */
       }
 
       if (descriptor === 'invalid-ipv4') {
