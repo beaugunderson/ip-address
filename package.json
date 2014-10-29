@@ -11,7 +11,8 @@
   "license": "MIT",
   "main": "ipv6",
   "scripts": {
-    "test": "./node_modules/.bin/mocha --reporter spec"
+    "test": "./node_modules/.bin/mocha -R spec",
+    "posttest": "./node_modules/.bin/mocha --require blanket -R html-cov > coverage.html"
   },
   "bin": {
     "ipv6": "bin/ipv6.js",
@@ -30,7 +31,13 @@
     "cliff": "0.1.x"
   },
   "devDependencies": {
-    "mocha": "1.15.x",
-    "chai": "1.8.x"
+    "blanket": "^1.1.6",
+    "chai": "1.8.x",
+    "mocha": "1.15.x"
+  },
+  "config": {
+    "blanket": {
+      "pattern": "ipv6.js"
+    }
   }
 }
