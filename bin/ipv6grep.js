@@ -2,15 +2,12 @@
 
 'use strict';
 
-var v6 = require('../ipv6.js').v6;
-//var v4 = require('../ipv6.js').v4;
-
-//var sprintf = require('sprintf').sprintf;
 var cli = require('cli');
-//var cliff = require('cliff');
 
 var util = require('util');
 var spawn = require('child_process').spawn;
+
+var v6 = require('..').v6;
 
 cli.enable('version', 'status', 'glob');
 
@@ -20,13 +17,13 @@ cli.parse({
    substring: ['s', 'Substring match']
 });
 
-cli.debug('script: ' + process.ARGV[1]);
+cli.debug('script: ' + process.argv[1]);
 
 cli.main(function (args, options) {
    cli.debug('args: ' + util.inspect(args));
    cli.debug('options: ' + util.inspect(options));
 
-   var grepArguments = ['-E', '-n', '--color=always'];
+   var grepArguments = ['-P', '-i', '-n', '--color=always'];
    var stdin = false;
 
    var address;
@@ -65,6 +62,10 @@ cli.main(function (args, options) {
 
       grep.stdout.on('data', function (data) {
          console.log(String(data).trim());
+      });
+
+      grep.stderr.on('data', function (data) {
+         cli.debug(String(data).trim());
       });
 
       grep.on('exit', function (code) {
