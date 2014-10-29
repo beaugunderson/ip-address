@@ -3,6 +3,17 @@ javascript-ipv6 [![Build Status](https://secure.travis-ci.org/beaugunderson/java
 
 javascript-ipv6 is a library for manipulating IPv6 addresses in JavaScript.
 
+Pardon our dust
+---------------
+
+I'm currently working on tearing out the browser-specific stuff because I don't
+want to duplicate the work of browserify. You should be able to use it just
+fine with browserify right now but I'd like to do more cleanup before pushing
+4.0 to npm.
+
+I'll also be doing some renaming but will keep around the old names with
+deprecation warnings.
+
 Examples
 --------
 
