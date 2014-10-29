@@ -762,5 +762,33 @@
    {
       "address": "ffff:ffff:ffff:ffff:ffff:ffff:ffff:ffff",
       "conditions": ["correct", "canonical"]
+   },
+   {
+      "address": "a:0::0:b",
+      "conditions": ["incorrect"]
+   },
+   {
+      "address": "a:0:0::0:b",
+      "conditions": ["incorrect"]
+   },
+   {
+      "address": "a:0::0:0:b",
+      "conditions": ["incorrect"]
+   },
+   {
+      "address": "a::0:0:b",
+      "conditions": ["incorrect"]
+   },
+   {
+      "address": "a::0:b",
+      "conditions": ["incorrect"]
+   },
+   {
+      "address": "a:0::b",
+      "conditions": ["incorrect"]
+   },
+   {
+      "address": "a:0:0::b",
+      "conditions": ["incorrect"]
    }
 ]

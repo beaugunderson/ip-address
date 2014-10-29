@@ -65,6 +65,17 @@ function addressIs(addressString, descriptors) {
 
           re.test(address6.canonicalForm()).should.equal(true);
         });
+
+        it('matches the given form via regex', function () {
+          // We can't match addresses like ::192.168.0.1 yet
+          if (address6.is4()) {
+            return;
+          }
+
+          var re = address6.regularExpression();
+
+          re.test(addressString).should.equal(true);
+        });
       }
 
       if (descriptor === 'invalid-ipv4') {
