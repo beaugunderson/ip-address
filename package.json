@@ -12,7 +12,7 @@
   "main": "index.js",
   "scripts": {
     "test": "./node_modules/.bin/mocha -R spec",
-    "posttest": "./node_modules/.bin/mocha --require blanket -R html-cov > coverage.html"
+    "posttest": "./coverage.js"
   },
   "bin": {
     "ipv6": "bin/ipv6.js",
@@ -28,8 +28,10 @@
   "dependencies": {
     "cli": "0.4.x",
     "cliff": "0.1.x",
+    "coveralls": "^2.11.2",
     "jsbn": "0.0.0",
     "lodash": "^2.4.1",
+    "mocha-lcov-reporter": "0.0.1",
     "sprintf": "0.1.x"
   },
   "devDependencies": {
