@@ -98,6 +98,16 @@ describe('v6', function () {
 
       topic.isInSubnet(same).should.equal(true);
     });
+
+    it('calculates and formats the subnet size', function () {
+      topic.possibleSubnets().should.equal('18,446,744,073,709,551,616');
+      topic.possibleSubnets(128).should.equal('18,446,744,073,709,551,616');
+      topic.possibleSubnets(96).should.equal('4,294,967,296');
+      topic.possibleSubnets(65).should.equal('2');
+      topic.possibleSubnets(64).should.equal('1');
+      topic.possibleSubnets(63).should.equal('0');
+      topic.possibleSubnets(0).should.equal('0');
+    });
   });
 
   describe('Small subnets', function () {
