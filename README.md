@@ -53,7 +53,10 @@ console.log(teredo.client4);    // Prints "157.60.0.1"
 
 ### Used by
 
--    [Rackspace](http://www.rackspace.com/) in [node-swiz](https://github.com/racker/node-swiz)
+-    [anon](https://github.com/edsu/anon) which powers
+     [@congressedits](https://twitter.com/congressedits), among
+     [many others](https://github.com/edsu/anon#community)
+-    [node-swiz](https://github.com/racker/node-swiz) which is used by [Rackspace](http://www.rackspace.com/)
 -    [node-socksified](https://github.com/vially/node-socksified)
 
 ### Future functionality
