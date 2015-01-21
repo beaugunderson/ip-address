@@ -27,6 +27,7 @@
     "no-underscore-dangle": 0,
     "quotes": [1, "single", "avoid-escape"],
     "radix": 2,
+    "safe-regex": 2,
     "semi": [2, "always"],
     "space-after-keywords": [2, "always"],
     "space-in-brackets": [2, "never"],
