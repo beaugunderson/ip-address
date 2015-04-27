@@ -338,7 +338,7 @@ describe('v6', function () {
       topic.valid.should.equal(true);
 
       // TODO: Define this behavior
-      //topic.isCorrect().should.equal(true);
+      // topic.isCorrect().should.equal(true);
 
       should.equal(topic.correctForm(), 'a:b:c:d:e:f:0:1');
     });
