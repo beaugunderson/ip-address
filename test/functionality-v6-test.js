@@ -470,14 +470,12 @@ describe('v6', function () {
                         '<span class="hover-group group-7">1011</span>');
       });
 
-      it('should group a v4inv6 address', function () {
-        var topic = new v6.Address('::ffff:192.168.0.1');
+      it('should group an IPv4 address', function () {
+        var topic = new v6.Address('192.168.0.1');
 
-        topic.group()
-          .should.equal(':<span class="hover-group group-0 group-1 group-2 ' +
-                          'group-3 group-4"></span>:' +
-                        '<span class="hover-group group-5">ffff</span>:' +
-                        '<span class="hover-group group-6">192.168.0.1</span>');
+        topic.group().should.equal(
+          '<span class="hover-group group-v4 group-6">192.168</span>.' +
+          '<span class="hover-group group-v4 group-7">0.1</span>');
       });
     });
   });
