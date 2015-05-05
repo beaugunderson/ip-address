@@ -4,12 +4,12 @@ var should = require('chai').should();
 
 var ip = require('..');
 
-var v4 = ip.v4;
-var v6 = ip.v6;
+var Address4 = ip.Address4;
+var Address6 = ip.Address6;
 
 function addressIs(addressString, descriptors) {
-  var address4 = new v4.Address(addressString);
-  var address6 = new v6.Address(addressString);
+  var address4 = new Address4(addressString);
+  var address6 = new Address6(addressString);
 
   describe(addressString, function () {
     descriptors.forEach(function (descriptor) {

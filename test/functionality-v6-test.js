@@ -8,19 +8,21 @@ var should = chai.should();
 var BigInteger = require('jsbn');
 var sprintf = require('sprintf').sprintf;
 
+var Address6 = require('../lib/ipv6.js');
+
 var v6 = require('..').v6;
 
 // A convenience function to convert a list of IPv6 address notations
-// to v6.Address instances
+// to Address6 instances
 function notationsToAddresseses(notations) {
   return notations.map(function (notation) {
-    return new v6.Address(notation);
+    return new Address6(notation);
   });
 }
 
 describe('v6', function () {
   describe('An invalid address', function () {
-    var topic = new v6.Address('a:abcde::');
+    var topic = new Address6('a:abcde::');
 
     it('is invalid', function () {
       topic.error.should.equal('Address failed regex: abcde');
@@ -39,7 +41,7 @@ describe('v6', function () {
   });
 
   describe('a fully ellided /0 address', function () {
-    var topic = new v6.Address('::/0');
+    var topic = new Address6('::/0');
 
     it('gets the correct reverse from', function () {
       topic.reverseForm().should.equal('ip6.arpa.');
@@ -47,7 +49,7 @@ describe('v6', function () {
   });
 
   describe('A link local address', function () {
-    var topic = new v6.Address('fe80::baf6:b1ff:fe15:4885');
+    var topic = new Address6('fe80::baf6:b1ff:fe15:4885');
 
     it('gets the correct type', function () {
       topic.getType().should.equal('Link-local unicast');
@@ -60,7 +62,7 @@ describe('v6', function () {
   });
 
   describe('A correct address', function () {
-    var topic = new v6.Address('a:b:c:d:e:f:0:1/64');
+    var topic = new Address6('a:b:c:d:e:f:0:1/64');
 
     it('contains no uppercase letters', function () {
       /[A-Z]/.test(topic.address).should.equal(false);
@@ -117,11 +119,11 @@ describe('v6', function () {
   });
 
   describe('An address with a subnet', function () {
-    var topic = new v6.Address('ffff::/64');
+    var topic = new Address6('ffff::/64');
 
     it('is contained by an identical address with an identical subnet',
       function () {
-      var same = new v6.Address('ffff::/64');
+      var same = new Address6('ffff::/64');
 
       topic.isInSubnet(same).should.equal(true);
     });
@@ -147,11 +149,11 @@ describe('v6', function () {
   });
 
   describe('Small subnets', function () {
-    var topic = new v6.Address('ffff::/64');
+    var topic = new Address6('ffff::/64');
 
     it('is contained by larger subnets', function () {
       for (var i = 63; i > 0; i--) {
-        var larger = new v6.Address(sprintf('ffff::/%d', i));
+        var larger = new Address6(sprintf('ffff::/%d', i));
 
         topic.isInSubnet(larger).should.equal(true);
       }
@@ -159,11 +161,11 @@ describe('v6', function () {
   });
 
   describe('Large subnets', function () {
-    var topic = new v6.Address('ffff::/8');
+    var topic = new Address6('ffff::/8');
 
     it('is not contained by smaller subnets', function () {
       for (var i = 9; i <= 128; i++) {
-        var smaller = new v6.Address(sprintf('ffff::/%d', i));
+        var smaller = new Address6(sprintf('ffff::/%d', i));
 
         topic.isInSubnet(smaller).should.equal(false);
       }
@@ -171,7 +173,7 @@ describe('v6', function () {
   });
 
   describe('A canonical address', function () {
-    var topic = new v6.Address('000a:0000:0000:0000:0000:0000:0000:000b');
+    var topic = new Address6('000a:0000:0000:0000:0000:0000:0000:000b');
 
     it('is 39 characters long', function () {
       should.equal(topic.address.length, 39);
@@ -186,7 +188,7 @@ describe('v6', function () {
   });
 
   describe('A v4-in-v6 address', function () {
-    var topic = new v6.Address('::192.168.0.1');
+    var topic = new Address6('::192.168.0.1');
 
     it('validates', function () {
       topic.isValid().should.equal(true);
@@ -198,7 +200,7 @@ describe('v6', function () {
   });
 
   describe('An address with a subnet', function () {
-    var topic = new v6.Address('a:b::/48');
+    var topic = new Address6('a:b::/48');
 
     it('validates', function () {
       topic.isValid().should.equal(true);
@@ -209,16 +211,16 @@ describe('v6', function () {
     });
 
     it('is in its own subnet', function () {
-      topic.isInSubnet(new v6.Address('a:b::/48')).should.equal(true);
+      topic.isInSubnet(new Address6('a:b::/48')).should.equal(true);
     });
 
     it('is not in another subnet', function () {
-      topic.isInSubnet(new v6.Address('a:c::/48')).should.equal(false);
+      topic.isInSubnet(new Address6('a:c::/48')).should.equal(false);
     });
   });
 
   describe('An address with a zone', function () {
-    var topic = new v6.Address('a::b%abcdefg');
+    var topic = new Address6('a::b%abcdefg');
 
     it('validates', function () {
       topic.isValid().should.equal(true);
@@ -230,7 +232,7 @@ describe('v6', function () {
   });
 
   describe('A teredo address', function () {
-    var topic = new v6.Address('2001:0000:ce49:7601:e866:efff:62c3:fffe');
+    var topic = new Address6('2001:0000:ce49:7601:e866:efff:62c3:fffe');
 
     it('validates as Teredo', function () {
       topic.isTeredo().should.equal(true);
@@ -248,7 +250,7 @@ describe('v6', function () {
   });
 
   describe('A 6to4 address', function () {
-    var topic = new v6.Address('2002:ce49:7601:1:2de:adff:febe:eeef');
+    var topic = new Address6('2002:ce49:7601:1:2de:adff:febe:eeef');
 
     it('validates as 6to4', function () {
       topic.is6to4().should.equal(true);
@@ -293,7 +295,7 @@ describe('v6', function () {
   });
 
   describe('Address from an IPv4 address', function () {
-    var obj = v6.Address.fromAddress4('192.168.0.1');
+    var obj = Address6.fromAddress4('192.168.0.1');
 
     it('should parse correctly', function () {
       expect(obj.valid).to.equal(true);
@@ -308,7 +310,7 @@ describe('v6', function () {
 
   describe('Address inside a URL or inside a URL with a port', function () {
     it('should work with a host address', function () {
-      var obj = v6.Address.fromURL('2001:db8::5');
+      var obj = Address6.fromURL('2001:db8::5');
 
       expect(obj.address.valid).to.equal(true);
       expect(obj.address.address).to.equal('2001:db8::5');
@@ -316,7 +318,7 @@ describe('v6', function () {
     });
 
     it('should fail with an invalid URL', function () {
-      var obj = v6.Address.fromURL('http://zombo/foo');
+      var obj = Address6.fromURL('http://zombo/foo');
 
       expect(obj.error).to.equal('failed to parse address from URL');
       expect(obj.address).to.equal(null);
@@ -324,7 +326,7 @@ describe('v6', function () {
     });
 
     it('should work with a basic URL', function () {
-      var obj = v6.Address.fromURL('http://2001:db8::5/foo');
+      var obj = Address6.fromURL('http://2001:db8::5/foo');
 
       expect(obj.address.isValid()).to.equal(true);
       expect(obj.address.address).equal('2001:db8::5');
@@ -332,7 +334,7 @@ describe('v6', function () {
     });
 
     it('should work with a basic URL enclosed in brackets', function () {
-      var obj = v6.Address.fromURL('http://[2001:db8::5]/foo');
+      var obj = Address6.fromURL('http://[2001:db8::5]/foo');
 
       expect(obj.address.isValid()).to.equal(true);
       expect(obj.address.address).equal('2001:db8::5');
@@ -340,7 +342,7 @@ describe('v6', function () {
     });
 
     it('should work with a URL with a port', function () {
-      var obj = v6.Address.fromURL('http://[2001:db8::5]:80/foo');
+      var obj = Address6.fromURL('http://[2001:db8::5]:80/foo');
 
       expect(obj.address.isValid()).to.equal(true);
       expect(obj.address.address).to.equal('2001:db8::5');
@@ -348,7 +350,7 @@ describe('v6', function () {
     });
 
     it('should work with a URL with a long port number', function () {
-      var obj = v6.Address.fromURL('http://[2001:db8::5]:65536/foo');
+      var obj = Address6.fromURL('http://[2001:db8::5]:65536/foo');
 
       expect(obj.address.isValid()).to.equal(true);
       expect(obj.address.address).to.equal('2001:db8::5');
@@ -356,7 +358,7 @@ describe('v6', function () {
     });
 
     it('should work with a address with a port', function () {
-      var obj = v6.Address.fromURL('[2001:db8::5]:80');
+      var obj = Address6.fromURL('[2001:db8::5]:80');
 
       expect(obj.address.isValid()).to.equal(true);
       expect(obj.address.address).to.equal('2001:db8::5');
@@ -364,7 +366,7 @@ describe('v6', function () {
     });
 
     it('should work with an address with a long port', function () {
-      var obj = v6.Address.fromURL('[2001:db8::5]:65536');
+      var obj = Address6.fromURL('[2001:db8::5]:65536');
 
       expect(obj.address.isValid()).to.equal(true);
       expect(obj.address.address).to.equal('2001:db8::5');
@@ -372,7 +374,7 @@ describe('v6', function () {
     });
 
     it('should parse the address but fail with an invalid port', function () {
-      var obj = v6.Address.fromURL('[2001:db8::5]:65537');
+      var obj = Address6.fromURL('[2001:db8::5]:65537');
 
       expect(obj.address.isValid()).to.equal(true);
       expect(obj.address.address).to.equal('2001:db8::5');
@@ -381,7 +383,7 @@ describe('v6', function () {
 
     it('should fail with an invalid address and not return a port',
       function () {
-      var obj = v6.Address.fromURL('[2001:db8:z:5]:65536');
+      var obj = Address6.fromURL('[2001:db8:z:5]:65536');
 
       expect(obj.error).to.equal('failed to parse address with port');
       expect(obj.port).to.equal(null);
@@ -389,7 +391,7 @@ describe('v6', function () {
   });
 
   describe('An address from a BigInteger', function () {
-    var topic = v6.Address
+    var topic = Address6
       .fromBigInteger(new BigInteger('51923840109643282840007714694758401'));
 
     it('should parse correctly', function () {
@@ -404,7 +406,7 @@ describe('v6', function () {
 
   describe('HTML helpers', function () {
     describe('href', function () {
-      var topic = new v6.Address('2001:4860:4001:803::1011');
+      var topic = new Address6('2001:4860:4001:803::1011');
 
       it('should generate a URL correctly', function () {
         topic.href().should.equal('http://[2001:4860:4001:803::1011]/');
@@ -413,7 +415,7 @@ describe('v6', function () {
     });
 
     describe('link', function () {
-      var topic = new v6.Address('2001:4860:4001:803::1011');
+      var topic = new Address6('2001:4860:4001:803::1011');
 
       it('should generate an anchor correctly', function () {
         topic.link()
@@ -426,7 +428,7 @@ describe('v6', function () {
       });
 
       it('should generate a v4inv6 anchor correctly', function () {
-        var topic4 = new v6.Address('::ffff:c0a8:1');
+        var topic4 = new Address6('::ffff:c0a8:1');
 
         topic4.link({v4: true})
           .should.equal('<a href="/#address=::ffff:192.168.0.1">' +
@@ -436,7 +438,7 @@ describe('v6', function () {
 
     describe('group', function () {
       it('should group a fully ellided address', function () {
-        var topic = new v6.Address('::');
+        var topic = new Address6('::');
 
         topic.group()
           .should.equal(':<span class="hover-group group-0 group-1 group-2 ' +
@@ -444,7 +446,7 @@ describe('v6', function () {
       });
 
       it('should group an address with no ellision', function () {
-        var topic = new v6.Address('a:b:c:d:1:2:3:4');
+        var topic = new Address6('a:b:c:d:1:2:3:4');
 
         topic.group()
           .should.equal('<span class="hover-group group-0">a</span>:' +
@@ -458,7 +460,7 @@ describe('v6', function () {
       });
 
       it('should group an ellided address', function () {
-        var topic = new v6.Address('2001:4860:4001:803::1011');
+        var topic = new Address6('2001:4860:4001:803::1011');
 
         topic.group()
           .should.equal('<span class="hover-group group-0">2001</span>:' +
@@ -471,7 +473,7 @@ describe('v6', function () {
       });
 
       it('should group an IPv4 address', function () {
-        var topic = new v6.Address('192.168.0.1');
+        var topic = new Address6('192.168.0.1');
 
         topic.group().should.equal(
           '<span class="hover-group group-v4 group-6">192.168</span>.' +
