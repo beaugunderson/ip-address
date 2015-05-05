@@ -12,7 +12,8 @@
   "license": "MIT",
   "main": "index.js",
   "scripts": {
-    "test": "mocha -R spec"
+    "test": "mocha -R spec",
+    "docs": "documentation -o docs -f html -g ./index.js"
   },
   "bin": {
     "ipv6": "bin/ipv6.js",
@@ -36,6 +37,7 @@
   "devDependencies": {
     "chai": "^2.3.0",
     "coveralls": "^2.11.2",
+    "documentation": "^1.0.6",
     "istanbul": "^0.3.13",
     "mocha": "^2.2.4"
   }
