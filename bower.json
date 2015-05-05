@@ -1,14 +1,15 @@
 {
-  "name": "javascript-ipv6",
-  "main": "ipv6.js",
-  "version": "3.1.1",
-  "homepage": "https://github.com/beaugunderson/javascript-ipv6",
+  "name": "ip-address",
+  "main": "index.js",
+  "version": "3.2.1",
+  "homepage": "https://github.com/beaugunderson/ip-address",
   "authors": [
     "Beau Gunderson <beau@beaugunderson.com>"
   ],
-  "description": "A library for parsing IPv6 (and IPv4) addresses in node and the browser.",
+  "description": "A library for parsing IPv6 and IPv4 addresses in node and the browser.",
   "keywords": [
     "ipv6",
+    "ipv4",
     "browser",
     "validation"
   ],

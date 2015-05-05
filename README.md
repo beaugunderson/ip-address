@@ -1,8 +1,8 @@
-[![Build Status](https://secure.travis-ci.org/beaugunderson/javascript-ipv6.png?branch=master)](http://travis-ci.org/beaugunderson/javascript-ipv6) [![Coverage Status](https://img.shields.io/coveralls/beaugunderson/javascript-ipv6.svg)](https://coveralls.io/r/beaugunderson/javascript-ipv6?branch=master)
+[![Build Status](https://secure.travis-ci.org/beaugunderson/ip-address.png?branch=master)](http://travis-ci.org/beaugunderson/ip-address) [![Coverage Status](https://img.shields.io/coveralls/beaugunderson/ip-address.svg)](https://coveralls.io/r/beaugunderson/ip-address?branch=master)
 
-## javascript-ipv6
+## ip-address
 
-javascript-ipv6 is a library for manipulating IPv6 addresses in JavaScript.
+`ip-address` is a library for manipulating IPv6 and IPv4 addresses in JavaScript.
 
 ### Pardon our dust
 
@@ -19,7 +19,7 @@ deprecation warnings.
 For node:
 
 ```js
-var v6 = require('ipv6').v6;
+var v6 = require('ip-address').v6;
 
 var address = new v6.Address('2001:0:ce49:7601:e866:efff:62c3:fffe');
 

@@ -1,13 +1,14 @@
 {
-  "name": "ipv6",
-  "description": "A library for parsing IPv6 (and IPv4) addresses in node and the browser.",
+  "name": "ip-address",
+  "description": "A library for parsing IPv6 and IPv4 IP addresses in node and the browser.",
   "keywords": [
     "ipv6",
+    "ipv4",
     "browser",
     "validation"
   ],
-  "version": "3.1.1",
-  "author": "Beau Gunderson <beau@beaugunderson.com> (http://beaugunderson.com/)",
+  "version": "3.2.1",
+  "author": "Beau Gunderson <beau@beaugunderson.com> (https://beaugunderson.com/)",
   "license": "MIT",
   "main": "index.js",
   "scripts": {
@@ -23,21 +24,22 @@
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/beaugunderson/javascript-ipv6.git"
+    "url": "git://github.com/beaugunderson/ip-address.git"
   },
   "dependencies": {
     "cli": "0.6.x",
     "cliff": "0.1.x",
     "coveralls": "^2.11.2",
     "jsbn": "0.0.0",
-    "lodash": "^2.4.1",
-    "mocha-lcov-reporter": "0.0.1",
+    "lodash.find": "^3.2.0",
+    "lodash.merge": "^3.2.1",
+    "mocha-lcov-reporter": "0.0.2",
     "sprintf": "0.1.x"
   },
   "devDependencies": {
     "blanket": "^1.1.6",
-    "chai": "1.10.x",
-    "mocha": "2.0.x"
+    "chai": "^2.3.0",
+    "mocha": "^2.2.4"
   },
   "config": {
     "blanket": {
