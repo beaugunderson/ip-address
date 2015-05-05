@@ -42,6 +42,19 @@ describe('v6', function () {
     });
   });
 
+  describe('A link local address', function () {
+    var topic = new v6.Address('fe80::baf6:b1ff:fe15:4885');
+
+    it('gets the correct type', function () {
+      topic.getType().should.equal('Link-local unicast');
+
+      topic.isTeredo().should.equal(false);
+      topic.isLoopback().should.equal(false);
+      topic.isMulticast().should.equal(false);
+      topic.isLinkLocal().should.equal(true);
+    });
+  });
+
   describe('A correct address', function () {
     var topic = new v6.Address('a:b:c:d:e:f:0:1/64');
 
