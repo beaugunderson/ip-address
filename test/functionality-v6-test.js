@@ -38,6 +38,14 @@ describe('v6', function () {
     });
   });
 
+  describe('a fully ellided /0 address', function () {
+    var topic = new v6.Address('::/0');
+
+    it('gets the correct reverse from', function () {
+      topic.reverseForm().should.equal('ip6.arpa.');
+    });
+  });
+
   describe('A link local address', function () {
     var topic = new v6.Address('fe80::baf6:b1ff:fe15:4885');
 
@@ -73,12 +81,22 @@ describe('v6', function () {
       topic.isLinkLocal().should.equal(false);
     });
 
+    it('gets the correct reverse from', function () {
+      topic.reverseForm()
+        .should.equal('d.0.0.0.c.0.0.0.b.0.0.0.a.0.0.0.ip6.arpa.');
+    });
+
     it('gets the correct scope', function () {
       topic.getScope().should.equal('Global');
     });
 
     it('gets the correct is6to4 information', function () {
       topic.is6to4().should.equal(false);
+    });
+
+    it('gets the correct microsoft transcription', function () {
+      topic.microsoftTranscription()
+        .should.equal('a-b-c-d-e-f-0-1.ipv6-literal.net');
     });
 
     it('has correct bit information', function () {
@@ -106,6 +124,15 @@ describe('v6', function () {
       var same = new v6.Address('ffff::/64');
 
       topic.isInSubnet(same).should.equal(true);
+    });
+
+    it('has a correct start address', function () {
+      should.equal(topic.startAddress().correctForm(), 'ffff::');
+    });
+
+    it('has a correct end address', function () {
+      should.equal(topic.endAddress().correctForm(),
+        'ffff::ffff:ffff:ffff:ffff');
     });
 
     it('calculates and formats the subnet size', function () {
@@ -289,10 +316,10 @@ describe('v6', function () {
     });
 
     it('should fail with an invalid URL', function () {
-      var obj = v6.Address.fromURL('http://2001:db8::5/foo');
+      var obj = v6.Address.fromURL('http://zombo/foo');
 
-      expect(obj.address.isValid()).to.equal(true);
-      expect(obj.address.address).equal('2001:db8::5');
+      expect(obj.error).to.equal('failed to parse address from URL');
+      expect(obj.address).to.equal(null);
       expect(obj.port).to.equal(null);
     });
 
@@ -408,16 +435,27 @@ describe('v6', function () {
     });
 
     describe('group', function () {
-      var topic = new v6.Address('2001:4860:4001:803::1011');
-
       it('should group an address', function () {
+        var topic = new v6.Address('2001:4860:4001:803::1011');
+
         topic.group()
           .should.equal('<span class="hover-group group-0">2001</span>:' +
                         '<span class="hover-group group-1">4860</span>:' +
                         '<span class="hover-group group-2">4001</span>:' +
                         '<span class="hover-group group-3">803</span>:' +
-                        '<span class="hover-group group-4 group-5 group-6"></span>:' +
+                        '<span class="hover-group group-4 group-5 ' +
+                          'group-6"></span>:' +
                         '<span class="hover-group group-7">1011</span>');
+      });
+
+      it('should group a v4inv6 address', function () {
+        var topic = new v6.Address('::ffff:192.168.0.1');
+
+        topic.group()
+          .should.equal(':<span class="hover-group group-0 group-1 group-2 ' +
+                          'group-3 group-4"></span>:' +
+                        '<span class="hover-group group-5">ffff</span>:' +
+                        '<span class="hover-group group-6">192.168.0.1</span>');
       });
     });
   });

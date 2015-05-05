@@ -94,6 +94,7 @@ function addressIs(addressString, descriptors) {
           address6.error.should.be.a('string');
 
           address6.isValid().should.equal(false);
+          should.not.exist(address6.correctForm());
         });
       }
 

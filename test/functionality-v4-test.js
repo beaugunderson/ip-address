@@ -113,11 +113,11 @@ describe('v4', function () {
       should.equal(topic.subnet, '/16');
     });
 
-    it('should have a correct start address', function () {
+    it('has a correct start address', function () {
       should.equal(topic.startAddress().correctForm(), '127.0.0.0');
     });
 
-    it('should have a correct end address', function () {
+    it('has a correct end address', function () {
       should.equal(topic.endAddress().correctForm(), '127.0.255.255');
     });
 
