@@ -256,12 +256,34 @@ describe('v6', function () {
     });
   });
 
+  describe('Address from an IPv4 address', function () {
+    var obj = v6.Address.fromAddress4('192.168.0.1');
+
+    it('should parse correctly', function () {
+      expect(obj.valid).to.equal(true);
+      expect(obj.correctForm()).to.equal('::ffff:c0a8:1');
+      expect(obj.v4inv6()).to.equal('::ffff:192.168.0.1');
+    });
+
+    it('should generate a 6to4 address', function () {
+      expect(obj.get6to4().correctForm()).to.equal('2002:c0a8:1::');
+    });
+  });
+
   describe('Address inside a URL or inside a URL with a port', function () {
     it('should work with a host address', function () {
       var obj = v6.Address.fromURL('2001:db8::5');
 
       expect(obj.address.valid).to.equal(true);
       expect(obj.address.address).to.equal('2001:db8::5');
+      expect(obj.port).to.equal(null);
+    });
+
+    it('should fail with an invalid URL', function () {
+      var obj = v6.Address.fromURL('http://2001:db8::5/foo');
+
+      expect(obj.address.isValid()).to.equal(true);
+      expect(obj.address.address).equal('2001:db8::5');
       expect(obj.port).to.equal(null);
     });
 
@@ -305,7 +327,7 @@ describe('v6', function () {
       expect(obj.port).to.equal(80);
     });
 
-    it('should work with a address with a long port', function () {
+    it('should work with an address with a long port', function () {
       var obj = v6.Address.fromURL('[2001:db8::5]:65536');
 
       expect(obj.address.isValid()).to.equal(true);
