@@ -435,7 +435,29 @@ describe('v6', function () {
     });
 
     describe('group', function () {
-      it('should group an address', function () {
+      it('should group a fully ellided address', function () {
+        var topic = new v6.Address('::');
+
+        topic.group()
+          .should.equal(':<span class="hover-group group-0 group-1 group-2 ' +
+                        'group-3 group-4 group-5 group-6 group-7"></span>:');
+      });
+
+      it('should group an address with no ellision', function () {
+        var topic = new v6.Address('a:b:c:d:1:2:3:4');
+
+        topic.group()
+          .should.equal('<span class="hover-group group-0">a</span>:' +
+                        '<span class="hover-group group-1">b</span>:' +
+                        '<span class="hover-group group-2">c</span>:' +
+                        '<span class="hover-group group-3">d</span>:' +
+                        '<span class="hover-group group-4">1</span>:' +
+                        '<span class="hover-group group-5">2</span>:' +
+                        '<span class="hover-group group-6">3</span>:' +
+                        '<span class="hover-group group-7">4</span>');
+      });
+
+      it('should group an ellided address', function () {
         var topic = new v6.Address('2001:4860:4001:803::1011');
 
         topic.group()
