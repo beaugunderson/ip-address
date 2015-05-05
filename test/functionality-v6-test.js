@@ -13,13 +13,9 @@ var v6 = require('..').v6;
 // A convenience function to convert a list of IPv6 address notations
 // to v6.Address instances
 function notationsToAddresseses(notations) {
-  var addresses = [];
-
-  notations.forEach(function (notation) {
-    addresses.push(new v6.Address(notation));
+  return notations.map(function (notation) {
+    return new v6.Address(notation);
   });
-
-  return addresses;
 }
 
 describe('v6', function () {
