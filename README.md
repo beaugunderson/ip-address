@@ -4,16 +4,6 @@
 
 `ip-address` is a library for manipulating IPv6 and IPv4 addresses in JavaScript.
 
-### Pardon our dust
-
-I'm currently working on tearing out the browser-specific stuff because I don't
-want to duplicate the work of browserify. You should be able to use it just
-fine with browserify right now but I'd like to do more cleanup before pushing
-4.0 to npm.
-
-I'll also be doing some renaming but will keep around the old names with
-deprecation warnings.
-
 ### Examples
 
 For node:
@@ -47,8 +37,8 @@ console.log(teredo.client4);    // Prints "157.60.0.1"
      -    Canonical form
      -    Correct form
      -    IPv4-compatible (i.e. `::ffff:192.168.0.1`)
--    Works in [node.js](http://nodejs.org/) and the browser
--    Unit tests with [node.js](http://nodejs.org/) and
+-    Works in [node.js](http://nodejs.org/) and the browser (with browserify)
+-    1,500+ unit tests with [node.js](http://nodejs.org/) and
      [Mocha](http://visionmedia.github.com/mocha/)
 
 ### Used by
@@ -59,13 +49,6 @@ console.log(teredo.client4);    // Prints "157.60.0.1"
 -    [node-swiz](https://github.com/racker/node-swiz) which is used by [Rackspace](http://www.rackspace.com/)
 -    [node-socksified](https://github.com/vially/node-socksified)
 
-### Future functionality
-
--    Investigate `procstreams` for the CLI tool
--    Base 64/85 encoding?
--    Reverse lookups? (Whether a domain name has IPv6 glue)
-
 ### TODO
 
--    Documentation
--    npm deprecate, rename to ip-address
+-    [Better documentation](https://github.com/documentationjs/documentation)
