@@ -3,3 +3,4 @@ node_js:
    - "node"
    - "iojs"
    - "0.10"
+script: "./coverage.sh"
