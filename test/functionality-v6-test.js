@@ -378,4 +378,82 @@ describe('v6', function () {
       should.equal(topic.correctForm(), 'a:b:c:d:e:f:0:1');
     });
   });
+
+  describe('HTML helpers', function () {
+    describe('href', function () {
+      var topic = new v6.Address('2001:4860:4001:803::1011');
+
+      it('should generate a URL correctly', function () {
+        topic.href().should.equal('http://[2001:4860:4001:803::1011]/');
+        topic.href(8080).should.equal('http://[2001:4860:4001:803::1011]:8080/');
+      });
+    });
+
+    describe('link', function () {
+      var topic = new v6.Address('2001:4860:4001:803::1011');
+
+      it('should generate an anchor correctly', function () {
+        topic.link()
+          .should.equal('<a href="/#address=2001:4860:4001:803::1011">' +
+                        '2001:4860:4001:803::1011</a>');
+
+        topic.link({className: 'highlight', prefix: '/?address='})
+          .should.equal('<a href="/?address=2001:4860:4001:803::1011" ' +
+                        'class="highlight">2001:4860:4001:803::1011</a>');
+      });
+
+      it('should generate a v4inv6 anchor correctly', function () {
+        var topic4 = new v6.Address('::ffff:c0a8:1');
+
+        topic4.link({v4: true})
+          .should.equal('<a href="/#address=::ffff:192.168.0.1">' +
+                        '::ffff:192.168.0.1</a>');
+      });
+    });
+
+    describe('group', function () {
+      var topic = new v6.Address('2001:4860:4001:803::1011');
+
+      it('should group an address', function () {
+        topic.group()
+          .should.equal('<span class="hover-group group-0">2001</span>:' +
+                        '<span class="hover-group group-1">4860</span>:' +
+                        '<span class="hover-group group-2">4001</span>:' +
+                        '<span class="hover-group group-3">803</span>:' +
+                        '<span class="hover-group group-4 group-5 group-6"></span>:' +
+                        '<span class="hover-group group-7">1011</span>');
+      });
+    });
+  });
+
+  describe('String helpers', function () {
+    describe('spanLeadingZeroes', function () {
+      it('should span leading zeroes', function () {
+        var topic = v6.helpers.spanLeadingZeroes('0000:0000:4444:0001');
+
+        topic
+          .should.equal('<span class="zero">0000</span>:' +
+                        '<span class="zero">0000</span>:4444:' +
+                        '<span class="zero">000</span>1');
+      });
+    });
+
+    describe('spanAll', function () {
+      it('should span leading zeroes', function () {
+        var topic = v6.helpers.spanAll('001100');
+
+        topic
+          .should.equal('<span class="digit value-0 position-0">' +
+                          '<span class="zero">0</span></span>' +
+                        '<span class="digit value-0 position-1">' +
+                          '<span class="zero">0</span></span>' +
+                        '<span class="digit value-1 position-2">1</span>' +
+                        '<span class="digit value-1 position-3">1</span>' +
+                        '<span class="digit value-0 position-4">' +
+                          '<span class="zero">0</span></span>' +
+                        '<span class="digit value-0 position-5">' +
+                          '<span class="zero">0</span></span>');
+      });
+    });
+  });
 });
