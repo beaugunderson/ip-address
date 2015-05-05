@@ -54,16 +54,19 @@ function addressIs(addressString, descriptors) {
           address6.isValid().should.equal(true);
         });
 
-        it('matches the correct form via regex', function () {
-          var re = address6.regularExpression();
+        var re = address6.regularExpression();
+        var reSubstring = address6.regularExpression(true);
 
+        it('matches the correct form via regex', function () {
           re.test(address6.correctForm()).should.equal(true);
+          reSubstring.test('abc ' + address6.correctForm() + ' def')
+            .should.equal(true);
         });
 
         it('matches the canonical form via regex', function () {
-          var re = address6.regularExpression();
-
           re.test(address6.canonicalForm()).should.equal(true);
+          reSubstring.test('abc ' + address6.canonicalForm() + ' def')
+            .should.equal(true);
         });
 
         it('matches the given form via regex', function () {
@@ -72,9 +75,9 @@ function addressIs(addressString, descriptors) {
             return;
           }
 
-          var re = address6.regularExpression();
-
           re.test(addressString).should.equal(true);
+          reSubstring.test('abc ' + addressString + ' def')
+            .should.equal(true);
         });
       }
 
