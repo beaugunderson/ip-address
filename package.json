@@ -13,7 +13,7 @@
   "main": "index.js",
   "scripts": {
     "test": "mocha -R spec",
-    "docs": "documentation -o docs -f html -g ./index.js"
+    "docs": "documentation --output docs --format html ./index.js"
   },
   "bin": {
     "ipv6": "bin/ipv6.js",
