@@ -74,6 +74,20 @@ describe('v6', function () {
       should.equal(topic.correctForm(), 'a:b:c:d:e:f:0:1');
     });
 
+    it('converts to and from a signed byte array', function () {
+      var bytes = topic.toByteArray();
+      var address = Address6.fromByteArray(bytes);
+
+      address.correctForm().should.equal(topic.correctForm());
+    });
+
+    it('converts to and from an unsigned byte array', function () {
+      var unsignedBytes = topic.toUnsignedByteArray();
+      var address = Address6.fromUnsignedByteArray(unsignedBytes);
+
+      address.correctForm().should.equal(topic.correctForm());
+    });
+
     it('gets the correct type', function () {
       topic.getType().should.equal('Global unicast');
 
@@ -305,6 +319,10 @@ describe('v6', function () {
 
     it('should generate a 6to4 address', function () {
       expect(obj.get6to4().correctForm()).to.equal('2002:c0a8:1::');
+    });
+
+    it('should generate a v4 address', function () {
+      expect(obj.tov4().correctForm()).to.equal('192.168.0.1');
     });
   });
 
