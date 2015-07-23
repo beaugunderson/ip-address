@@ -304,6 +304,10 @@ describe('v6', function () {
     it('should generate a 6to4 address', function () {
       expect(obj.get6to4().correctForm()).to.equal('2002:c0a8:1::');
     });
+
+    it('should generate a v4 address', function () {
+      expect(obj.tov4().correctForm()).to.equal('192.168.0.1');
+    });
   });
 
   describe('Address inside a URL or inside a URL with a port', function () {
