@@ -27,18 +27,18 @@
     "url": "git://github.com/beaugunderson/ip-address.git"
   },
   "dependencies": {
-    "cli": "0.6.x",
+    "cli": "0.8.x",
     "cliff": "0.1.x",
     "jsbn": "0.0.0",
-    "lodash.find": "^3.2.0",
-    "lodash.merge": "^3.2.1",
+    "lodash.find": "^3.2.1",
+    "lodash.merge": "^3.3.2",
     "sprintf": "0.1.x"
   },
   "devDependencies": {
-    "chai": "^2.3.0",
-    "coveralls": "^2.11.2",
-    "documentation": "^1.0.6",
-    "istanbul": "^0.3.13",
-    "mocha": "^2.2.4"
+    "chai": "^3.2.0",
+    "coveralls": "^2.11.3",
+    "documentation": "^2.1.0-alpha2",
+    "istanbul": "^0.3.17",
+    "mocha": "^2.2.5"
   }
 }
