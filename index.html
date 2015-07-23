@@ -1,143 +1,1491 @@
-<!doctype html>
 <html>
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="chrome=1">
-    <title>Javascript-ipv6 by beaugunderson</title>
-    <link rel="stylesheet" href="stylesheets/styles.css">
-    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
-    <script src="javascripts/respond.js"></script>
-    <!--[if lt IE 9]>
-      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
-    <!--[if lt IE 8]>
-    <link rel="stylesheet" href="stylesheets/ie.css">
-    <![endif]-->
-    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
-
-  </head>
-  <body>
-
-      <div id="header">
-        <nav>
-          <li class="fork"><a href="https://github.com/beaugunderson/javascript-ipv6">Fork On GitHub</a></li>
-          <li class="downloads"><a href="https://github.com/beaugunderson/javascript-ipv6/zipball/master">ZIP</a></li>
-          <li class="downloads"><a href="https://github.com/beaugunderson/javascript-ipv6/tarball/master">TAR</a></li>
-          <li class="title">DOWNLOADS</li>
-        </nav>
-      </div><!-- end header -->
-
-    <div class="wrapper">
-
-      <section>
-        <div id="title">
-          <h1>Javascript-ipv6</h1>
-          <p>A library for parsing and manipulating IPv6 (and v4) addresses in JavaScript</p>
-          <hr>
-          <span class="credits left">Project maintained by <a href="https://github.com/beaugunderson">beaugunderson</a></span>
-          <span class="credits right">Hosted on GitHub Pages &mdash; Theme by <a href="https://twitter.com/#!/michigangraham">mattgraham</a></span>
+<head>
+  <meta charset='utf-8' />
+  <title> </title>
+  <link href='assets/bass.css' type='text/css' rel='stylesheet' />
+  <link href='assets/style.css' type='text/css' rel='stylesheet' />
+  <link href='assets/github.css' type='text/css' rel='stylesheet' />
+</head>
+<body class='documentation'>
+  <div class='px2'>
+    <div class='clearfix flex flex-stretch mxn2'>
+      <div class='documentation-sidebar relative top-0 bottom-0 right-0 px2 py2 col-3 sm-show'>
+        <div class='font-smaller fixed col-3 top-0 bottom-0 left-0 overflow-auto black bg-cloudy'>
+          <a href='/' class='h5 button block button-transparent'> </a>
+          <div class='px2'>
+              <a
+                href='#address4'
+                class='regular block'>
+                <code>Address4</code>
+              </a>
+                <a
+                  href='#address4/isvalid'
+                  class='px1 regular block'>
+                  <code>#isValid</code>
+                </a>
+              <a
+                href='#address6'
+                class='regular block'>
+                <code>Address6</code>
+              </a>
+                <a
+                  href='#address6/fromaddress4'
+                  class='px1 regular block'>
+                  <code>.fromAddress4</code>
+                </a>
+                <a
+                  href='#address6/frombiginteger'
+                  class='px1 regular block'>
+                  <code>.fromBigInteger</code>
+                </a>
+                <a
+                  href='#address6/frombytearray'
+                  class='px1 regular block'>
+                  <code>.fromByteArray</code>
+                </a>
+                <a
+                  href='#address6/fromurl'
+                  class='px1 regular block'>
+                  <code>.fromURL</code>
+                </a>
+                <a
+                  href='#address6/fromunsignedbytearray'
+                  class='px1 regular block'>
+                  <code>.fromUnsignedByteArray</code>
+                </a>
+                <a
+                  href='#address6/biginteger'
+                  class='px1 regular block'>
+                  <code>#bigInteger</code>
+                </a>
+                <a
+                  href='#address6/binaryzeropad'
+                  class='px1 regular block'>
+                  <code>#binaryZeroPad</code>
+                </a>
+                <a
+                  href='#address6/canonicalform'
+                  class='px1 regular block'>
+                  <code>#canonicalForm</code>
+                </a>
+                <a
+                  href='#address6/correctform'
+                  class='px1 regular block'>
+                  <code>#correctForm</code>
+                </a>
+                <a
+                  href='#address6/decimal'
+                  class='px1 regular block'>
+                  <code>#decimal</code>
+                </a>
+                <a
+                  href='#address6/endaddress'
+                  class='px1 regular block'>
+                  <code>#endAddress</code>
+                </a>
+                <a
+                  href='#address6/get6to4'
+                  class='px1 regular block'>
+                  <code>#get6to4</code>
+                </a>
+                <a
+                  href='#address6/getbits'
+                  class='px1 regular block'>
+                  <code>#getBits</code>
+                </a>
+                <a
+                  href='#address6/getbitsbase16'
+                  class='px1 regular block'>
+                  <code>#getBitsBase16</code>
+                </a>
+                <a
+                  href='#address6/getbitsbase2'
+                  class='px1 regular block'>
+                  <code>#getBitsBase2</code>
+                </a>
+                <a
+                  href='#address6/getbitspastsubnet'
+                  class='px1 regular block'>
+                  <code>#getBitsPastSubnet</code>
+                </a>
+                <a
+                  href='#address6/getscope'
+                  class='px1 regular block'>
+                  <code>#getScope</code>
+                </a>
+                <a
+                  href='#address6/gettype'
+                  class='px1 regular block'>
+                  <code>#getType</code>
+                </a>
+                <a
+                  href='#address6/is4'
+                  class='px1 regular block'>
+                  <code>#is4</code>
+                </a>
+                <a
+                  href='#address6/is6to4'
+                  class='px1 regular block'>
+                  <code>#is6to4</code>
+                </a>
+                <a
+                  href='#address6/iscanonical'
+                  class='px1 regular block'>
+                  <code>#isCanonical</code>
+                </a>
+                <a
+                  href='#address6/iscorrect'
+                  class='px1 regular block'>
+                  <code>#isCorrect</code>
+                </a>
+                <a
+                  href='#address6/isinsubnet'
+                  class='px1 regular block'>
+                  <code>#isInSubnet</code>
+                </a>
+                <a
+                  href='#address6/islinklocal'
+                  class='px1 regular block'>
+                  <code>#isLinkLocal</code>
+                </a>
+                <a
+                  href='#address6/isloopback'
+                  class='px1 regular block'>
+                  <code>#isLoopback</code>
+                </a>
+                <a
+                  href='#address6/ismulticast'
+                  class='px1 regular block'>
+                  <code>#isMulticast</code>
+                </a>
+                <a
+                  href='#address6/isteredo'
+                  class='px1 regular block'>
+                  <code>#isTeredo</code>
+                </a>
+                <a
+                  href='#address6/isvalid'
+                  class='px1 regular block'>
+                  <code>#isValid</code>
+                </a>
+                <a
+                  href='#address6/mask'
+                  class='px1 regular block'>
+                  <code>#mask</code>
+                </a>
+                <a
+                  href='#address6/microsofttranscription'
+                  class='px1 regular block'>
+                  <code>#microsoftTranscription</code>
+                </a>
+                <a
+                  href='#address6/possiblesubnets'
+                  class='px1 regular block'>
+                  <code>#possibleSubnets</code>
+                </a>
+                <a
+                  href='#address6/reverseform'
+                  class='px1 regular block'>
+                  <code>#reverseForm</code>
+                </a>
+                <a
+                  href='#address6/six2four'
+                  class='px1 regular block'>
+                  <code>#six2four</code>
+                </a>
+                <a
+                  href='#address6/startaddress'
+                  class='px1 regular block'>
+                  <code>#startAddress</code>
+                </a>
+                <a
+                  href='#address6/teredo'
+                  class='px1 regular block'>
+                  <code>#teredo</code>
+                </a>
+                <a
+                  href='#address6/tobytearray'
+                  class='px1 regular block'>
+                  <code>#toByteArray</code>
+                </a>
+                <a
+                  href='#address6/tounsignedbytearray'
+                  class='px1 regular block'>
+                  <code>#toUnsignedByteArray</code>
+                </a>
+                <a
+                  href='#address6/v4inv6'
+                  class='px1 regular block'>
+                  <code>#v4inv6</code>
+                </a>
+          </div>
         </div>
-
-        <h1>javascript-ipv6 <a href="http://travis-ci.org/beaugunderson/javascript-ipv6"><img src="https://secure.travis-ci.org/beaugunderson/javascript-ipv6.png?branch=master" alt="Build Status"></a>
-</h1>
-
-<p>javascript-ipv6 is a library for manipulating IPv6 addresses in JavaScript.</p>
-
-<h2>Examples</h2>
-
-<p>For node:</p>
-
-<div class="highlight">
-<pre><span class="kd">var</span> <span class="nx">v6</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'ipv6'</span><span class="p">).</span><span class="nx">v6</span><span class="p">;</span>
-
-<span class="kd">var</span> <span class="nx">address</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">v6</span><span class="p">.</span><span class="nx">Address</span><span class="p">(</span><span class="s1">'2001:0:ce49:7601:e866:efff:62c3:fffe'</span><span class="p">);</span>
-
-<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">address</span><span class="p">.</span><span class="nx">isValid</span><span class="p">());</span> <span class="c1">// Prints "true"</span>
-
-<span class="kd">var</span> <span class="nx">teredo</span> <span class="o">=</span> <span class="nx">address</span><span class="p">.</span><span class="nx">teredo</span><span class="p">();</span>
-
-<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">teredo</span><span class="p">.</span><span class="nx">client4</span><span class="p">);</span>    <span class="c1">// Prints "157.60.0.1"</span>
-</pre>
-</div>
+      </div>
+      <div class='sm-col  lg-col-9  flex flex-column'>
+        <div class='flex-auto full-width'>
+          <div class='px1'>
+<section id='address4'class='mt4 mb4 px2'>
+  <h3 class='regular'>
+    <a class='black' href='#address4'>
+      <code>
+        Address4<span class='gray'>(address)</span>
+      </code>
+    </a>
+  </h3>
+  <p>Represents an IPv4 address</p>
 
 
-<p>For a browser:</p>
-
-<div class="highlight">
-<pre><span class="cp">&lt;!DOCTYPE html&gt;</span>
-<span class="nt">&lt;html</span> <span class="na">lang=</span><span class="s">"en"</span><span class="nt">&gt;</span>
- <span class="nt">&lt;head&gt;</span>
-  <span class="nt">&lt;title&gt;</span>Simple IPv6 test<span class="nt">&lt;/title&gt;</span>
-
-  <span class="nt">&lt;script </span><span class="na">type=</span><span class="s">"text/javascript"</span> <span class="na">src=</span><span class="s">"//ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"</span><span class="nt">&gt;&lt;/script&gt;</span>
-
-  <span class="nt">&lt;script </span><span class="na">type=</span><span class="s">"text/javascript"</span> <span class="na">src=</span><span class="s">"/lib/jsbn.js"</span><span class="nt">&gt;&lt;/script&gt;</span>
-  <span class="nt">&lt;script </span><span class="na">type=</span><span class="s">"text/javascript"</span> <span class="na">src=</span><span class="s">"/lib/jsbn2.js"</span><span class="nt">&gt;&lt;/script&gt;</span>
-
-  <span class="nt">&lt;script </span><span class="na">type=</span><span class="s">"text/javascript"</span> <span class="na">src=</span><span class="s">"/lib/sprintf.js"</span><span class="nt">&gt;&lt;/script&gt;</span>
-
-  <span class="nt">&lt;script </span><span class="na">type=</span><span class="s">"text/javascript"</span> <span class="na">src=</span><span class="s">"/ipv6/ipv6.js"</span><span class="nt">&gt;&lt;/script&gt;</span>
-
-  <span class="nt">&lt;script </span><span class="na">type=</span><span class="s">"text/javascript"</span><span class="nt">&gt;</span>
-   <span class="nx">$</span><span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
-    <span class="kd">var</span> <span class="nx">address6</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">v6</span><span class="p">.</span><span class="nx">Address</span><span class="p">(</span><span class="s1">'a::b'</span><span class="p">);</span>
-
-    <span class="nx">$</span><span class="p">(</span><span class="s1">'#output'</span><span class="p">).</span><span class="nx">text</span><span class="p">(</span><span class="nx">address6</span><span class="p">.</span><span class="nx">canonicalForm</span><span class="p">());</span>
-   <span class="p">});</span>
-  <span class="nt">&lt;/script&gt;</span>
- <span class="nt">&lt;/head&gt;</span>
-
- <span class="nt">&lt;body&gt;</span>
-  The canonical form of <span class="nt">&lt;code&gt;</span>a::b<span class="nt">&lt;/code&gt;</span> is: <span class="nt">&lt;code</span> <span class="na">id=</span><span class="s">"output"</span><span class="nt">&gt;&lt;/code&gt;</span>
- <span class="nt">&lt;/body&gt;</span>
-<span class="nt">&lt;/html&gt;</span>
-</pre>
-</div>
+    <p>
+      <table class='table-light overflow-hidden bg-cloudy-light'>
+        <thead>
+          <th class='col-3'>parameter</th>
+          <th class='col-3'>type</th>
+          <th class='col-6'>description</th>
+        </thead>
+          <tr>
+            <td>address</td>
+            <td>
+              <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></code>
+            </td>
+            <td><p>An IPv4 address string</p>
+</td>
+          </tr>
+      </table>
+    </p>
 
 
-<h2>Current functionality</h2>
 
-<ul>
-<li>   Parsing of most IPv6 notations</li>
-<li>   Validity checking</li>
-<li>   Decoding of the <a href="http://en.wikipedia.org/wiki/Teredo_tunneling#IPv6_addressing">Teredo information</a> in an address</li>
-<li>   Whether one address is a valid subnet of another</li>
-<li>   What special properties a given address has (multicast prefix, unique local address prefix, etc.)</li>
-<li>   Number of subnets of a certain size in a given address</li>
-<li>   Display methods
 
-<ul>
-<li>   Hex, binary, and decimal</li>
-<li>   Canonical form</li>
-<li>   Correct form</li>
-<li>   IPv4-compatible (i.e. <code>::ffff:192.168.0.1</code>)</li>
-</ul>
-</li>
-<li>   Works in <a href="http://nodejs.org/">node.js</a> and the browser</li>
-<li>   Unit tests with <a href="http://nodejs.org/">node.js</a> and <a href="http://visionmedia.github.com/mocha/">Mocha</a>
-</li>
-</ul><h2>Used by</h2>
 
-<ul>
-<li>   <a href="http://www.rackspace.com/">Rackspace</a> in <a href="https://github.com/racker/node-swiz">node-swiz</a>
-</li>
-<li>   <a href="https://github.com/vially/node-socksified">node-socksified</a>
-</li>
-</ul><h2>Future functionality</h2>
 
-<ul>
-<li>   Investigate <code>procstreams</code> for the CLI tool</li>
-<li>   Base 64/85 encoding?</li>
-<li>   Reverse lookups? (Whether a domain name has IPv6 glue)</li>
-</ul><h2>TODO</h2>
+      <div class='section-indent'>
+<section id='address4/isvalid'class='mt4 mb4 px2'>
+  <h3 class='regular'>
+    <a class='black' href='#address4/isvalid'>
+      <code>
+        isValid<span class='gray'></span>
+      </code>
+    </a>
+  </h3>
+  <p>Return true if the address is valid</p>
 
-<ul>
-<li>   Documentation</li>
-</ul>
-      </section>
 
+
+
+      <h4>Returns</h4>
+      <code><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></code></code>
+      
+      <span class='force-inline'>
+        
+      </span>
+
+
+
+
+
+
+</section>
+      </div>
+
+
+</section>
+<section id='address6'class='mt4 mb4 px2'>
+  <h3 class='regular'>
+    <a class='black' href='#address6'>
+      <code>
+        Address6<span class='gray'>(address, [groups])</span>
+      </code>
+    </a>
+  </h3>
+  <p>Represents an IPv6 address</p>
+
+
+    <p>
+      <table class='table-light overflow-hidden bg-cloudy-light'>
+        <thead>
+          <th class='col-3'>parameter</th>
+          <th class='col-3'>type</th>
+          <th class='col-6'>description</th>
+        </thead>
+          <tr>
+            <td>address</td>
+            <td>
+              <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></code>
+            </td>
+            <td><p>An IPv6 address string</p>
+</td>
+          </tr>
+          <tr>
+            <td>groups</td>
+            <td>
+              <code>[<code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></code>]</code>
+                (default <code>8</code>)
+            </td>
+            <td><p>How many octets to parse</p>
+</td>
+          </tr>
+      </table>
+    </p>
+
+
+
+
+    <h4>Examples</h4>
+<pre><span class="hljs-keyword">var</span> address = <span class="hljs-keyword">new</span> Address6(<span class="hljs-string">'2001::/32'</span>);</pre>
+
+      <div class='section-indent'>
+<section id='address6/fromaddress4'class='mt4 mb4 px2'>
+  <h3 class='regular'>
+    <a class='black' href='#address6/fromaddress4'>
+      <code>
+        fromAddress4<span class='gray'>(address)</span>
+      </code>
+    </a>
+  </h3>
+  <p>Create an IPv6-mapped address given an IPv4 address</p>
+
+
+    <p>
+      <table class='table-light overflow-hidden bg-cloudy-light'>
+        <thead>
+          <th class='col-3'>parameter</th>
+          <th class='col-3'>type</th>
+          <th class='col-6'>description</th>
+        </thead>
+          <tr>
+            <td>address</td>
+            <td>
+              <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></code>
+            </td>
+            <td><p>An IPv4 address string</p>
+</td>
+          </tr>
+      </table>
+    </p>
+
+
+      <h4>Returns</h4>
+      <code><code><a href="#address6">Address6</a></code></code>
+      
+      <span class='force-inline'>
+        
+      </span>
+
+
+
+
+
+
+</section>
+      </div>
+      <div class='section-indent'>
+<section id='address6/frombiginteger'class='mt4 mb4 px2'>
+  <h3 class='regular'>
+    <a class='black' href='#address6/frombiginteger'>
+      <code>
+        fromBigInteger<span class='gray'>(bigInteger)</span>
+      </code>
+    </a>
+  </h3>
+  <p>Convert a BigInteger to a v6 address object</p>
+
+
+    <p>
+      <table class='table-light overflow-hidden bg-cloudy-light'>
+        <thead>
+          <th class='col-3'>parameter</th>
+          <th class='col-3'>type</th>
+          <th class='col-6'>description</th>
+        </thead>
+          <tr>
+            <td>bigInteger</td>
+            <td>
+              <code>BigInteger</code>
+            </td>
+            <td><p>a BigInteger to convert</p>
+</td>
+          </tr>
+      </table>
+    </p>
+
+
+
+
+    <h4>Examples</h4>
+<pre><span class="hljs-keyword">var</span> bigInteger = <span class="hljs-keyword">new</span> BigInteger(<span class="hljs-string">'1000000000000'</span>);
+<span class="hljs-keyword">var</span> address = Address6.fromBigInteger(bigInteger);</pre>
+
+
+
+
+</section>
+      </div>
+      <div class='section-indent'>
+<section id='address6/frombytearray'class='mt4 mb4 px2'>
+  <h3 class='regular'>
+    <a class='black' href='#address6/frombytearray'>
+      <code>
+        fromByteArray<span class='gray'></span>
+      </code>
+    </a>
+  </h3>
+  <p>Convert a byte array to an Address6 object</p>
+
+
+
+
+      <h4>Returns</h4>
+      <code><code><a href="#address6">Address6</a></code></code>
+      
+      <span class='force-inline'>
+        
+      </span>
+
+
+
+
+
+
+</section>
+      </div>
+      <div class='section-indent'>
+<section id='address6/fromurl'class='mt4 mb4 px2'>
+  <h3 class='regular'>
+    <a class='black' href='#address6/fromurl'>
+      <code>
+        fromURL<span class='gray'>(url)</span>
+      </code>
+    </a>
+  </h3>
+  <p>Convert a URL (with optional port number) to an address object</p>
+
+
+    <p>
+      <table class='table-light overflow-hidden bg-cloudy-light'>
+        <thead>
+          <th class='col-3'>parameter</th>
+          <th class='col-3'>type</th>
+          <th class='col-6'>description</th>
+        </thead>
+          <tr>
+            <td>url</td>
+            <td>
+              <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></code>
+            </td>
+            <td><p>a URL with optional port number</p>
+</td>
+          </tr>
+      </table>
+    </p>
+
+
+
+
+    <h4>Examples</h4>
+<pre><span class="hljs-keyword">var</span> address = Address6.fromURL(<span class="hljs-string">'http://[ffff::]:8080/foo/'</span>);</pre>
+
+
+
+
+</section>
+      </div>
+      <div class='section-indent'>
+<section id='address6/fromunsignedbytearray'class='mt4 mb4 px2'>
+  <h3 class='regular'>
+    <a class='black' href='#address6/fromunsignedbytearray'>
+      <code>
+        fromUnsignedByteArray<span class='gray'></span>
+      </code>
+    </a>
+  </h3>
+  <p>Convert an unsigned byte array to an Address6 object</p>
+
+
+
+
+      <h4>Returns</h4>
+      <code><code><a href="#address6">Address6</a></code></code>
+      
+      <span class='force-inline'>
+        
+      </span>
+
+
+
+
+
+
+</section>
+      </div>
+
+      <div class='section-indent'>
+<section id='address6/biginteger'class='mt4 mb4 px2'>
+  <h3 class='regular'>
+    <a class='black' href='#address6/biginteger'>
+      <code>
+        bigInteger<span class='gray'></span>
+      </code>
+    </a>
+  </h3>
+  <p>Return the address as a BigInteger</p>
+
+
+
+
+      <h4>Returns</h4>
+      <code><code>BigInteger</code></code>
+      
+      <span class='force-inline'>
+        
+      </span>
+
+
+
+
+
+
+</section>
+      </div>
+      <div class='section-indent'>
+<section id='address6/binaryzeropad'class='mt4 mb4 px2'>
+  <h3 class='regular'>
+    <a class='black' href='#address6/binaryzeropad'>
+      <code>
+        binaryZeroPad<span class='gray'></span>
+      </code>
+    </a>
+  </h3>
+  <p>Return a zero-padded base-2 string representation of the address</p>
+
+
+
+
+      <h4>Returns</h4>
+      <code><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></code></code>
+      
+      <span class='force-inline'>
+        
+      </span>
+
+
+
+
+
+
+</section>
+      </div>
+      <div class='section-indent'>
+<section id='address6/canonicalform'class='mt4 mb4 px2'>
+  <h3 class='regular'>
+    <a class='black' href='#address6/canonicalform'>
+      <code>
+        canonicalForm<span class='gray'></span>
+      </code>
+    </a>
+  </h3>
+  <p>Return the canonical form of the address</p>
+
+
+
+
+      <h4>Returns</h4>
+      <code><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></code></code>
+      
+      <span class='force-inline'>
+        
+      </span>
+
+
+
+
+
+
+</section>
+      </div>
+      <div class='section-indent'>
+<section id='address6/correctform'class='mt4 mb4 px2'>
+  <h3 class='regular'>
+    <a class='black' href='#address6/correctform'>
+      <code>
+        correctForm<span class='gray'></span>
+      </code>
+    </a>
+  </h3>
+  <p>Return the correct form of the address</p>
+
+
+
+
+      <h4>Returns</h4>
+      <code><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></code></code>
+      
+      <span class='force-inline'>
+        
+      </span>
+
+
+
+
+
+
+</section>
+      </div>
+      <div class='section-indent'>
+<section id='address6/decimal'class='mt4 mb4 px2'>
+  <h3 class='regular'>
+    <a class='black' href='#address6/decimal'>
+      <code>
+        decimal<span class='gray'></span>
+      </code>
+    </a>
+  </h3>
+  <p>Return the decimal form of the address</p>
+
+
+
+
+      <h4>Returns</h4>
+      <code><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></code></code>
+      
+      <span class='force-inline'>
+        
+      </span>
+
+
+
+
+
+
+</section>
+      </div>
+      <div class='section-indent'>
+<section id='address6/endaddress'class='mt4 mb4 px2'>
+  <h3 class='regular'>
+    <a class='black' href='#address6/endaddress'>
+      <code>
+        endAddress<span class='gray'></span>
+      </code>
+    </a>
+  </h3>
+  <p>The last address in the range given by this address' subnet</p>
+
+
+
+
+      <h4>Returns</h4>
+      <code><code><a href="#address6">Address6</a></code></code>
+      
+      <span class='force-inline'>
+        
+      </span>
+
+
+
+
+
+
+</section>
+      </div>
+      <div class='section-indent'>
+<section id='address6/get6to4'class='mt4 mb4 px2'>
+  <h3 class='regular'>
+    <a class='black' href='#address6/get6to4'>
+      <code>
+        get6to4<span class='gray'></span>
+      </code>
+    </a>
+  </h3>
+  <p>Return a v6 6to4 address from a v6 v4inv6 address</p>
+
+
+
+
+      <h4>Returns</h4>
+      <code><code><a href="#address6">Address6</a></code></code>
+      
+      <span class='force-inline'>
+        
+      </span>
+
+
+
+
+
+
+</section>
+      </div>
+      <div class='section-indent'>
+<section id='address6/getbits'class='mt4 mb4 px2'>
+  <h3 class='regular'>
+    <a class='black' href='#address6/getbits'>
+      <code>
+        getBits<span class='gray'></span>
+      </code>
+    </a>
+  </h3>
+  <p>Return the bits in the given range as a BigInteger</p>
+
+
+
+
+      <h4>Returns</h4>
+      <code><code>BigInteger</code></code>
+      
+      <span class='force-inline'>
+        
+      </span>
+
+
+
+
+
+
+</section>
+      </div>
+      <div class='section-indent'>
+<section id='address6/getbitsbase16'class='mt4 mb4 px2'>
+  <h3 class='regular'>
+    <a class='black' href='#address6/getbitsbase16'>
+      <code>
+        getBitsBase16<span class='gray'></span>
+      </code>
+    </a>
+  </h3>
+  <p>Return the bits in the given range as a base-16 string</p>
+
+
+
+
+      <h4>Returns</h4>
+      <code><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></code></code>
+      
+      <span class='force-inline'>
+        
+      </span>
+
+
+
+
+
+
+</section>
+      </div>
+      <div class='section-indent'>
+<section id='address6/getbitsbase2'class='mt4 mb4 px2'>
+  <h3 class='regular'>
+    <a class='black' href='#address6/getbitsbase2'>
+      <code>
+        getBitsBase2<span class='gray'></span>
+      </code>
+    </a>
+  </h3>
+  <p>Return the bits in the given range as a base-2 string</p>
+
+
+
+
+      <h4>Returns</h4>
+      <code><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></code></code>
+      
+      <span class='force-inline'>
+        
+      </span>
+
+
+
+
+
+
+</section>
+      </div>
+      <div class='section-indent'>
+<section id='address6/getbitspastsubnet'class='mt4 mb4 px2'>
+  <h3 class='regular'>
+    <a class='black' href='#address6/getbitspastsubnet'>
+      <code>
+        getBitsPastSubnet<span class='gray'></span>
+      </code>
+    </a>
+  </h3>
+  <p>Return the bits that are set past the subnet mask length</p>
+
+
+
+
+      <h4>Returns</h4>
+      <code><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></code></code>
+      
+      <span class='force-inline'>
+        
+      </span>
+
+
+
+
+
+
+</section>
+      </div>
+      <div class='section-indent'>
+<section id='address6/getscope'class='mt4 mb4 px2'>
+  <h3 class='regular'>
+    <a class='black' href='#address6/getscope'>
+      <code>
+        getScope<span class='gray'></span>
+      </code>
+    </a>
+  </h3>
+  <p>Return the scope of the address</p>
+
+
+
+
+      <h4>Returns</h4>
+      <code><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></code></code>
+      
+      <span class='force-inline'>
+        
+      </span>
+
+
+
+
+
+
+</section>
+      </div>
+      <div class='section-indent'>
+<section id='address6/gettype'class='mt4 mb4 px2'>
+  <h3 class='regular'>
+    <a class='black' href='#address6/gettype'>
+      <code>
+        getType<span class='gray'></span>
+      </code>
+    </a>
+  </h3>
+  <p>Return the type of the address</p>
+
+
+
+
+      <h4>Returns</h4>
+      <code><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></code></code>
+      
+      <span class='force-inline'>
+        
+      </span>
+
+
+
+
+
+
+</section>
+      </div>
+      <div class='section-indent'>
+<section id='address6/is4'class='mt4 mb4 px2'>
+  <h3 class='regular'>
+    <a class='black' href='#address6/is4'>
+      <code>
+        is4<span class='gray'></span>
+      </code>
+    </a>
+  </h3>
+  <p>Returns true if the address is a v4-in-v6 address, false otherwise</p>
+
+
+
+
+      <h4>Returns</h4>
+      <code><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></code></code>
+      
+      <span class='force-inline'>
+        
+      </span>
+
+
+
+
+
+
+</section>
+      </div>
+      <div class='section-indent'>
+<section id='address6/is6to4'class='mt4 mb4 px2'>
+  <h3 class='regular'>
+    <a class='black' href='#address6/is6to4'>
+      <code>
+        is6to4<span class='gray'></span>
+      </code>
+    </a>
+  </h3>
+  <p>Returns true if the address is a 6to4 address, false otherwise</p>
+
+
+
+
+      <h4>Returns</h4>
+      <code><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></code></code>
+      
+      <span class='force-inline'>
+        
+      </span>
+
+
+
+
+
+
+</section>
+      </div>
+      <div class='section-indent'>
+<section id='address6/iscanonical'class='mt4 mb4 px2'>
+  <h3 class='regular'>
+    <a class='black' href='#address6/iscanonical'>
+      <code>
+        isCanonical<span class='gray'></span>
+      </code>
+    </a>
+  </h3>
+  <p>Returns true if the address is in the canonical form, false otherwise</p>
+
+
+
+
+      <h4>Returns</h4>
+      <code><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></code></code>
+      
+      <span class='force-inline'>
+        
+      </span>
+
+
+
+
+
+
+</section>
+      </div>
+      <div class='section-indent'>
+<section id='address6/iscorrect'class='mt4 mb4 px2'>
+  <h3 class='regular'>
+    <a class='black' href='#address6/iscorrect'>
+      <code>
+        isCorrect<span class='gray'></span>
+      </code>
+    </a>
+  </h3>
+  <p>Returns true if the address is correct, false otherwise</p>
+
+
+
+
+      <h4>Returns</h4>
+      <code><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></code></code>
+      
+      <span class='force-inline'>
+        
+      </span>
+
+
+
+
+
+
+</section>
+      </div>
+      <div class='section-indent'>
+<section id='address6/isinsubnet'class='mt4 mb4 px2'>
+  <h3 class='regular'>
+    <a class='black' href='#address6/isinsubnet'>
+      <code>
+        isInSubnet<span class='gray'></span>
+      </code>
+    </a>
+  </h3>
+  <p>Returns true if the given address is in the subnet of the current address</p>
+
+
+
+
+      <h4>Returns</h4>
+      <code><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></code></code>
+      
+      <span class='force-inline'>
+        
+      </span>
+
+
+
+
+
+
+</section>
+      </div>
+      <div class='section-indent'>
+<section id='address6/islinklocal'class='mt4 mb4 px2'>
+  <h3 class='regular'>
+    <a class='black' href='#address6/islinklocal'>
+      <code>
+        isLinkLocal<span class='gray'></span>
+      </code>
+    </a>
+  </h3>
+  <p>Returns true if the address is a link local address, false otherwise</p>
+
+
+
+
+      <h4>Returns</h4>
+      <code><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></code></code>
+      
+      <span class='force-inline'>
+        
+      </span>
+
+
+
+
+
+
+</section>
+      </div>
+      <div class='section-indent'>
+<section id='address6/isloopback'class='mt4 mb4 px2'>
+  <h3 class='regular'>
+    <a class='black' href='#address6/isloopback'>
+      <code>
+        isLoopback<span class='gray'></span>
+      </code>
+    </a>
+  </h3>
+  <p>Returns true if the address is a loopback address, false otherwise</p>
+
+
+
+
+      <h4>Returns</h4>
+      <code><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></code></code>
+      
+      <span class='force-inline'>
+        
+      </span>
+
+
+
+
+
+
+</section>
+      </div>
+      <div class='section-indent'>
+<section id='address6/ismulticast'class='mt4 mb4 px2'>
+  <h3 class='regular'>
+    <a class='black' href='#address6/ismulticast'>
+      <code>
+        isMulticast<span class='gray'></span>
+      </code>
+    </a>
+  </h3>
+  <p>Returns true if the address is a multicast address, false otherwise</p>
+
+
+
+
+      <h4>Returns</h4>
+      <code><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></code></code>
+      
+      <span class='force-inline'>
+        
+      </span>
+
+
+
+
+
+
+</section>
+      </div>
+      <div class='section-indent'>
+<section id='address6/isteredo'class='mt4 mb4 px2'>
+  <h3 class='regular'>
+    <a class='black' href='#address6/isteredo'>
+      <code>
+        isTeredo<span class='gray'></span>
+      </code>
+    </a>
+  </h3>
+  <p>Returns true if the address is a Teredo address, false otherwise</p>
+
+
+
+
+      <h4>Returns</h4>
+      <code><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></code></code>
+      
+      <span class='force-inline'>
+        
+      </span>
+
+
+
+
+
+
+</section>
+      </div>
+      <div class='section-indent'>
+<section id='address6/isvalid'class='mt4 mb4 px2'>
+  <h3 class='regular'>
+    <a class='black' href='#address6/isvalid'>
+      <code>
+        isValid<span class='gray'></span>
+      </code>
+    </a>
+  </h3>
+  <p>Returns true if the address is valid, false otherwise</p>
+
+
+
+
+      <h4>Returns</h4>
+      <code><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></code></code>
+      
+      <span class='force-inline'>
+        
+      </span>
+
+
+
+
+
+
+</section>
+      </div>
+      <div class='section-indent'>
+<section id='address6/mask'class='mt4 mb4 px2'>
+  <h3 class='regular'>
+    <a class='black' href='#address6/mask'>
+      <code>
+        mask<span class='gray'>([mask])</span>
+      </code>
+    </a>
+  </h3>
+  <p>Return the first n bits of the address, defaulting to the subnet mask</p>
+
+
+    <p>
+      <table class='table-light overflow-hidden bg-cloudy-light'>
+        <thead>
+          <th class='col-3'>parameter</th>
+          <th class='col-3'>type</th>
+          <th class='col-6'>description</th>
+        </thead>
+          <tr>
+            <td>mask</td>
+            <td>
+              <code>[<code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></code>]</code>
+                (default <code>subnet</code>)
+            </td>
+            <td><p>the number of bits to mask</p>
+</td>
+          </tr>
+      </table>
+    </p>
+
+
+      <h4>Returns</h4>
+      <code><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></code></code>
+      
+      <span class='force-inline'>
+        
+      </span>
+
+
+
+
+
+
+</section>
+      </div>
+      <div class='section-indent'>
+<section id='address6/microsofttranscription'class='mt4 mb4 px2'>
+  <h3 class='regular'>
+    <a class='black' href='#address6/microsofttranscription'>
+      <code>
+        microsoftTranscription<span class='gray'></span>
+      </code>
+    </a>
+  </h3>
+  <p>Return the Microsoft UNC transcription of the address</p>
+
+
+
+
+      <h4>Returns</h4>
+      <code><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></code></code>
+      
+      <span class='force-inline'>
+        
+      </span>
+
+
+
+
+
+
+</section>
+      </div>
+      <div class='section-indent'>
+<section id='address6/possiblesubnets'class='mt4 mb4 px2'>
+  <h3 class='regular'>
+    <a class='black' href='#address6/possiblesubnets'>
+      <code>
+        possibleSubnets<span class='gray'>([size])</span>
+      </code>
+    </a>
+  </h3>
+  <p>Return the number of possible subnets of a given size in the address</p>
+
+
+    <p>
+      <table class='table-light overflow-hidden bg-cloudy-light'>
+        <thead>
+          <th class='col-3'>parameter</th>
+          <th class='col-3'>type</th>
+          <th class='col-6'>description</th>
+        </thead>
+          <tr>
+            <td>size</td>
+            <td>
+              <code>[<code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></code>]</code>
+                (default <code>128</code>)
+            </td>
+            <td><p>the subnet size</p>
+</td>
+          </tr>
+      </table>
+    </p>
+
+
+      <h4>Returns</h4>
+      <code><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></code></code>
+      
+      <span class='force-inline'>
+        
+      </span>
+
+
+
+
+
+
+</section>
+      </div>
+      <div class='section-indent'>
+<section id='address6/reverseform'class='mt4 mb4 px2'>
+  <h3 class='regular'>
+    <a class='black' href='#address6/reverseform'>
+      <code>
+        reverseForm<span class='gray'></span>
+      </code>
+    </a>
+  </h3>
+  <p>Return the reversed ip6.arpa form of the address</p>
+
+
+
+
+      <h4>Returns</h4>
+      <code><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></code></code>
+      
+      <span class='force-inline'>
+        
+      </span>
+
+
+
+
+
+
+</section>
+      </div>
+      <div class='section-indent'>
+<section id='address6/six2four'class='mt4 mb4 px2'>
+  <h3 class='regular'>
+    <a class='black' href='#address6/six2four'>
+      <code>
+        six2four<span class='gray'></span>
+      </code>
+    </a>
+  </h3>
+  <p>Return an object containing the 6to4 properties of the address</p>
+
+
+
+
+      <h4>Returns</h4>
+      <code><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a></code></code>
+      
+      <span class='force-inline'>
+        
+      </span>
+
+
+
+
+
+
+</section>
+      </div>
+      <div class='section-indent'>
+<section id='address6/startaddress'class='mt4 mb4 px2'>
+  <h3 class='regular'>
+    <a class='black' href='#address6/startaddress'>
+      <code>
+        startAddress<span class='gray'></span>
+      </code>
+    </a>
+  </h3>
+  <p>The first address in the range given by this address' subnet</p>
+
+
+
+
+      <h4>Returns</h4>
+      <code><code><a href="#address6">Address6</a></code></code>
+      
+      <span class='force-inline'>
+        
+      </span>
+
+
+
+
+
+
+</section>
+      </div>
+      <div class='section-indent'>
+<section id='address6/teredo'class='mt4 mb4 px2'>
+  <h3 class='regular'>
+    <a class='black' href='#address6/teredo'>
+      <code>
+        teredo<span class='gray'></span>
+      </code>
+    </a>
+  </h3>
+  <p>Return an object containing the Teredo properties of the address</p>
+
+
+
+
+      <h4>Returns</h4>
+      <code><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a></code></code>
+      
+      <span class='force-inline'>
+        
+      </span>
+
+
+
+
+
+
+</section>
+      </div>
+      <div class='section-indent'>
+<section id='address6/tobytearray'class='mt4 mb4 px2'>
+  <h3 class='regular'>
+    <a class='black' href='#address6/tobytearray'>
+      <code>
+        toByteArray<span class='gray'></span>
+      </code>
+    </a>
+  </h3>
+  <p>Return a byte array</p>
+
+
+
+
+      <h4>Returns</h4>
+      <code><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a></code></code>
+      
+      <span class='force-inline'>
+        
+      </span>
+
+
+
+
+
+
+</section>
+      </div>
+      <div class='section-indent'>
+<section id='address6/tounsignedbytearray'class='mt4 mb4 px2'>
+  <h3 class='regular'>
+    <a class='black' href='#address6/tounsignedbytearray'>
+      <code>
+        toUnsignedByteArray<span class='gray'></span>
+      </code>
+    </a>
+  </h3>
+  <p>Return an unsigned byte array</p>
+
+
+
+
+      <h4>Returns</h4>
+      <code><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a></code></code>
+      
+      <span class='force-inline'>
+        
+      </span>
+
+
+
+
+
+
+</section>
+      </div>
+      <div class='section-indent'>
+<section id='address6/v4inv6'class='mt4 mb4 px2'>
+  <h3 class='regular'>
+    <a class='black' href='#address6/v4inv6'>
+      <code>
+        v4inv6<span class='gray'></span>
+      </code>
+    </a>
+  </h3>
+  <p>Return the v4-in-v6 form of the address</p>
+
+
+
+
+      <h4>Returns</h4>
+      <code><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></code></code>
+      
+      <span class='force-inline'>
+        
+      </span>
+
+
+
+
+
+
+</section>
+      </div>
+
+
+</section>
+
+          </div>
+        </div>
+      </div>
     </div>
-    <!--[if !IE]><script>fixScale(document);</script><!--<![endif]-->
-  </body>
+  </div>
+</body>
 </html>
