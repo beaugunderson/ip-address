@@ -2,1490 +2,1460 @@
 <head>
   <meta charset='utf-8' />
   <title> </title>
+  <meta name='viewport' content='width=device-width,initial-scale=1'>
+  <link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700|Source+Code+Pro:400,500,700' rel='stylesheet' type='text/css'>
   <link href='assets/bass.css' type='text/css' rel='stylesheet' />
   <link href='assets/style.css' type='text/css' rel='stylesheet' />
   <link href='assets/github.css' type='text/css' rel='stylesheet' />
 </head>
 <body class='documentation'>
-  <div class='px2'>
-    <div class='clearfix flex flex-stretch mxn2'>
-      <div class='documentation-sidebar relative top-0 bottom-0 right-0 px2 py2 col-3 sm-show'>
-        <div class='font-smaller fixed col-3 top-0 bottom-0 left-0 overflow-auto black bg-cloudy'>
+  <div class='container'>
+    <div class='clearfix md-mxn2'>
+      <div class='fixed md-show fix-3 overflow-auto max-height-100'>
+        <div class='px1 py1'>
           <a href='/' class='h5 button block button-transparent'> </a>
           <div class='px2'>
+            <input
+              placeholder='Filter'
+              id='filter-input'
+              class='col12 block field-light'
+              type='text' />
+          </div>
+          <div id='toc' class='px2'>
               <a
                 href='#address4'
-                class='regular block'>
-                <code>Address4</code>
+                class='block bold'>
+                Address4
               </a>
                 <a
                   href='#address4/isvalid'
-                  class='px1 regular block'>
-                  <code>#isValid</code>
+                  class='regular block'>
+                  #isValid
                 </a>
               <a
                 href='#address6'
-                class='regular block'>
-                <code>Address6</code>
+                class='block bold'>
+                Address6
               </a>
                 <a
                   href='#address6/fromaddress4'
-                  class='px1 regular block'>
-                  <code>.fromAddress4</code>
+                  class='regular block'>
+                  .fromAddress4
                 </a>
                 <a
                   href='#address6/frombiginteger'
-                  class='px1 regular block'>
-                  <code>.fromBigInteger</code>
+                  class='regular block'>
+                  .fromBigInteger
                 </a>
                 <a
                   href='#address6/frombytearray'
-                  class='px1 regular block'>
-                  <code>.fromByteArray</code>
+                  class='regular block'>
+                  .fromByteArray
                 </a>
                 <a
                   href='#address6/fromurl'
-                  class='px1 regular block'>
-                  <code>.fromURL</code>
+                  class='regular block'>
+                  .fromURL
                 </a>
                 <a
                   href='#address6/fromunsignedbytearray'
-                  class='px1 regular block'>
-                  <code>.fromUnsignedByteArray</code>
+                  class='regular block'>
+                  .fromUnsignedByteArray
                 </a>
                 <a
                   href='#address6/biginteger'
-                  class='px1 regular block'>
-                  <code>#bigInteger</code>
+                  class='regular block'>
+                  #bigInteger
                 </a>
                 <a
                   href='#address6/binaryzeropad'
-                  class='px1 regular block'>
-                  <code>#binaryZeroPad</code>
+                  class='regular block'>
+                  #binaryZeroPad
                 </a>
                 <a
                   href='#address6/canonicalform'
-                  class='px1 regular block'>
-                  <code>#canonicalForm</code>
+                  class='regular block'>
+                  #canonicalForm
                 </a>
                 <a
                   href='#address6/correctform'
-                  class='px1 regular block'>
-                  <code>#correctForm</code>
+                  class='regular block'>
+                  #correctForm
                 </a>
                 <a
                   href='#address6/decimal'
-                  class='px1 regular block'>
-                  <code>#decimal</code>
+                  class='regular block'>
+                  #decimal
                 </a>
                 <a
                   href='#address6/endaddress'
-                  class='px1 regular block'>
-                  <code>#endAddress</code>
+                  class='regular block'>
+                  #endAddress
                 </a>
                 <a
                   href='#address6/get6to4'
-                  class='px1 regular block'>
-                  <code>#get6to4</code>
+                  class='regular block'>
+                  #get6to4
                 </a>
                 <a
                   href='#address6/getbits'
-                  class='px1 regular block'>
-                  <code>#getBits</code>
+                  class='regular block'>
+                  #getBits
                 </a>
                 <a
                   href='#address6/getbitsbase16'
-                  class='px1 regular block'>
-                  <code>#getBitsBase16</code>
+                  class='regular block'>
+                  #getBitsBase16
                 </a>
                 <a
                   href='#address6/getbitsbase2'
-                  class='px1 regular block'>
-                  <code>#getBitsBase2</code>
+                  class='regular block'>
+                  #getBitsBase2
                 </a>
                 <a
                   href='#address6/getbitspastsubnet'
-                  class='px1 regular block'>
-                  <code>#getBitsPastSubnet</code>
+                  class='regular block'>
+                  #getBitsPastSubnet
                 </a>
                 <a
                   href='#address6/getscope'
-                  class='px1 regular block'>
-                  <code>#getScope</code>
+                  class='regular block'>
+                  #getScope
                 </a>
                 <a
                   href='#address6/gettype'
-                  class='px1 regular block'>
-                  <code>#getType</code>
+                  class='regular block'>
+                  #getType
                 </a>
                 <a
                   href='#address6/is4'
-                  class='px1 regular block'>
-                  <code>#is4</code>
+                  class='regular block'>
+                  #is4
                 </a>
                 <a
                   href='#address6/is6to4'
-                  class='px1 regular block'>
-                  <code>#is6to4</code>
+                  class='regular block'>
+                  #is6to4
                 </a>
                 <a
                   href='#address6/iscanonical'
-                  class='px1 regular block'>
-                  <code>#isCanonical</code>
+                  class='regular block'>
+                  #isCanonical
                 </a>
                 <a
                   href='#address6/iscorrect'
-                  class='px1 regular block'>
-                  <code>#isCorrect</code>
+                  class='regular block'>
+                  #isCorrect
                 </a>
                 <a
                   href='#address6/isinsubnet'
-                  class='px1 regular block'>
-                  <code>#isInSubnet</code>
+                  class='regular block'>
+                  #isInSubnet
                 </a>
                 <a
                   href='#address6/islinklocal'
-                  class='px1 regular block'>
-                  <code>#isLinkLocal</code>
+                  class='regular block'>
+                  #isLinkLocal
                 </a>
                 <a
                   href='#address6/isloopback'
-                  class='px1 regular block'>
-                  <code>#isLoopback</code>
+                  class='regular block'>
+                  #isLoopback
                 </a>
                 <a
                   href='#address6/ismulticast'
-                  class='px1 regular block'>
-                  <code>#isMulticast</code>
+                  class='regular block'>
+                  #isMulticast
                 </a>
                 <a
                   href='#address6/isteredo'
-                  class='px1 regular block'>
-                  <code>#isTeredo</code>
+                  class='regular block'>
+                  #isTeredo
                 </a>
                 <a
                   href='#address6/isvalid'
-                  class='px1 regular block'>
-                  <code>#isValid</code>
+                  class='regular block'>
+                  #isValid
                 </a>
                 <a
                   href='#address6/mask'
-                  class='px1 regular block'>
-                  <code>#mask</code>
+                  class='regular block'>
+                  #mask
                 </a>
                 <a
                   href='#address6/microsofttranscription'
-                  class='px1 regular block'>
-                  <code>#microsoftTranscription</code>
+                  class='regular block'>
+                  #microsoftTranscription
                 </a>
                 <a
                   href='#address6/possiblesubnets'
-                  class='px1 regular block'>
-                  <code>#possibleSubnets</code>
+                  class='regular block'>
+                  #possibleSubnets
+                </a>
+                <a
+                  href='#address6/regularexpression'
+                  class='regular block'>
+                  #regularExpression
+                </a>
+                <a
+                  href='#address6/regularexpressionstring'
+                  class='regular block'>
+                  #regularExpressionString
                 </a>
                 <a
                   href='#address6/reverseform'
-                  class='px1 regular block'>
-                  <code>#reverseForm</code>
+                  class='regular block'>
+                  #reverseForm
                 </a>
                 <a
                   href='#address6/six2four'
-                  class='px1 regular block'>
-                  <code>#six2four</code>
+                  class='regular block'>
+                  #six2four
                 </a>
                 <a
                   href='#address6/startaddress'
-                  class='px1 regular block'>
-                  <code>#startAddress</code>
+                  class='regular block'>
+                  #startAddress
                 </a>
                 <a
                   href='#address6/teredo'
-                  class='px1 regular block'>
-                  <code>#teredo</code>
+                  class='regular block'>
+                  #teredo
                 </a>
                 <a
                   href='#address6/tobytearray'
-                  class='px1 regular block'>
-                  <code>#toByteArray</code>
+                  class='regular block'>
+                  #toByteArray
                 </a>
                 <a
                   href='#address6/tounsignedbytearray'
-                  class='px1 regular block'>
-                  <code>#toUnsignedByteArray</code>
+                  class='regular block'>
+                  #toUnsignedByteArray
+                </a>
+                <a
+                  href='#address6/tov4'
+                  class='regular block'>
+                  #tov4
                 </a>
                 <a
                   href='#address6/v4inv6'
-                  class='px1 regular block'>
-                  <code>#v4inv6</code>
+                  class='regular block'>
+                  #v4inv6
                 </a>
           </div>
         </div>
       </div>
-      <div class='sm-col  lg-col-9  flex flex-column'>
-        <div class='flex-auto full-width'>
-          <div class='px1'>
-<section id='address4'class='mt4 mb4 px2'>
-  <h3 class='regular'>
-    <a class='black' href='#address4'>
-      <code>
-        Address4<span class='gray'>(address)</span>
-      </code>
-    </a>
-  </h3>
+      <div class='fix-margin-3'>
+        <div class='px2'>
+<div class='py1'><section class='py2 clearfix'>
+  <h2 id='address4' class='mt0'>
+    Address4<span class='gray'>(address)</span>
+  </h2>
   <p>Represents an IPv4 address</p>
 
+    <h4>Parameters</h4>
+    <ul class='suppress-p-margin'>
+        <li><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></code> <strong>address</strong>
+          :
+          <span class='force-inline'>
+            <p>An IPv4 address string</p>
 
-    <p>
-      <table class='table-light overflow-hidden bg-cloudy-light'>
-        <thead>
-          <th class='col-3'>parameter</th>
-          <th class='col-3'>type</th>
-          <th class='col-6'>description</th>
-        </thead>
-          <tr>
-            <td>address</td>
-            <td>
-              <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></code>
-            </td>
-            <td><p>An IPv4 address string</p>
-</td>
-          </tr>
-      </table>
-    </p>
+          </span>
+        </li>
+    </ul>
+      <h4>Instance members</h4>
+        <div class='collapsible' id='address4/isvalid'>
+          <a href='#address4/isvalid'>
+            <code>
+              #isValid<span class='gray'></span>
+            </code>
+            <span class='force-inline'>
+              <p>Return true if the address is valid</p>
 
-
-
-
-
-
-      <div class='section-indent'>
-<section id='address4/isvalid'class='mt4 mb4 px2'>
-  <h3 class='regular'>
-    <a class='black' href='#address4/isvalid'>
-      <code>
-        isValid<span class='gray'></span>
-      </code>
-    </a>
-  </h3>
-  <p>Return true if the address is valid</p>
-
-
-
-
-      <h4>Returns</h4>
-      <code><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></code></code>
-      
-      <span class='force-inline'>
-        
-      </span>
-
-
-
-
-
-
+            </span>
+          </a>
+          <div class='collapser border px2'>
+            <section class='py2 clearfix'>
+              <h2 id='address4/isvalid' class='mt0'>
+                isValid<span class='gray'></span>
+              </h2>
+              <p>Return true if the address is valid</p>
+            
+                  <h4>Returns</h4>
+                  <code><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></code></code>
+                  
+                  <span class='force-inline'>
+                    
+                  </span>
+            </section>
+          </div>
+        </div>
 </section>
-      </div>
-
-
-</section>
-<section id='address6'class='mt4 mb4 px2'>
-  <h3 class='regular'>
-    <a class='black' href='#address6'>
-      <code>
-        Address6<span class='gray'>(address, [groups])</span>
-      </code>
-    </a>
-  </h3>
+</div><div class='py1'><section class='py2 clearfix'>
+  <h2 id='address6' class='mt0'>
+    Address6<span class='gray'>(address, [groups])</span>
+  </h2>
   <p>Represents an IPv6 address</p>
 
+    <h4>Parameters</h4>
+    <ul class='suppress-p-margin'>
+        <li><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></code> <strong>address</strong>
+          :
+          <span class='force-inline'>
+            <p>An IPv6 address string</p>
 
-    <p>
-      <table class='table-light overflow-hidden bg-cloudy-light'>
-        <thead>
-          <th class='col-3'>parameter</th>
-          <th class='col-3'>type</th>
-          <th class='col-6'>description</th>
-        </thead>
-          <tr>
-            <td>address</td>
-            <td>
-              <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></code>
-            </td>
-            <td><p>An IPv6 address string</p>
-</td>
-          </tr>
-          <tr>
-            <td>groups</td>
-            <td>
-              <code>[<code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></code>]</code>
-                (default <code>8</code>)
-            </td>
-            <td><p>How many octets to parse</p>
-</td>
-          </tr>
-      </table>
-    </p>
+          </span>
+        </li>
+        <li><code>[<code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></code>]</code> <strong>groups</strong>
+            (default <code>8</code>)
+          :
+          <span class='force-inline'>
+            <p>How many octets to parse</p>
 
-
-
-
+          </span>
+        </li>
+    </ul>
     <h4>Examples</h4>
-<pre><span class="hljs-keyword">var</span> address = <span class="hljs-keyword">new</span> Address6(<span class="hljs-string">'2001::/32'</span>);</pre>
-
-      <div class='section-indent'>
-<section id='address6/fromaddress4'class='mt4 mb4 px2'>
-  <h3 class='regular'>
-    <a class='black' href='#address6/fromaddress4'>
-      <code>
-        fromAddress4<span class='gray'>(address)</span>
-      </code>
-    </a>
-  </h3>
-  <p>Create an IPv6-mapped address given an IPv4 address</p>
-
-
-    <p>
-      <table class='table-light overflow-hidden bg-cloudy-light'>
-        <thead>
-          <th class='col-3'>parameter</th>
-          <th class='col-3'>type</th>
-          <th class='col-6'>description</th>
-        </thead>
-          <tr>
-            <td>address</td>
-            <td>
-              <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></code>
-            </td>
-            <td><p>An IPv4 address string</p>
-</td>
-          </tr>
-      </table>
-    </p>
-
-
-      <h4>Returns</h4>
-      <code><code><a href="#address6">Address6</a></code></code>
-      
-      <span class='force-inline'>
-        
-      </span>
-
-
-
-
-
-
-</section>
-      </div>
-      <div class='section-indent'>
-<section id='address6/frombiginteger'class='mt4 mb4 px2'>
-  <h3 class='regular'>
-    <a class='black' href='#address6/frombiginteger'>
-      <code>
-        fromBigInteger<span class='gray'>(bigInteger)</span>
-      </code>
-    </a>
-  </h3>
-  <p>Convert a BigInteger to a v6 address object</p>
-
-
-    <p>
-      <table class='table-light overflow-hidden bg-cloudy-light'>
-        <thead>
-          <th class='col-3'>parameter</th>
-          <th class='col-3'>type</th>
-          <th class='col-6'>description</th>
-        </thead>
-          <tr>
-            <td>bigInteger</td>
-            <td>
-              <code>BigInteger</code>
-            </td>
-            <td><p>a BigInteger to convert</p>
-</td>
-          </tr>
-      </table>
-    </p>
-
-
-
-
-    <h4>Examples</h4>
-<pre><span class="hljs-keyword">var</span> bigInteger = <span class="hljs-keyword">new</span> BigInteger(<span class="hljs-string">'1000000000000'</span>);
-<span class="hljs-keyword">var</span> address = Address6.fromBigInteger(bigInteger);</pre>
-
-
-
-
-</section>
-      </div>
-      <div class='section-indent'>
-<section id='address6/frombytearray'class='mt4 mb4 px2'>
-  <h3 class='regular'>
-    <a class='black' href='#address6/frombytearray'>
-      <code>
-        fromByteArray<span class='gray'></span>
-      </code>
-    </a>
-  </h3>
-  <p>Convert a byte array to an Address6 object</p>
-
-
-
-
-      <h4>Returns</h4>
-      <code><code><a href="#address6">Address6</a></code></code>
-      
-      <span class='force-inline'>
-        
-      </span>
-
-
-
-
-
-
-</section>
-      </div>
-      <div class='section-indent'>
-<section id='address6/fromurl'class='mt4 mb4 px2'>
-  <h3 class='regular'>
-    <a class='black' href='#address6/fromurl'>
-      <code>
-        fromURL<span class='gray'>(url)</span>
-      </code>
-    </a>
-  </h3>
-  <p>Convert a URL (with optional port number) to an address object</p>
-
-
-    <p>
-      <table class='table-light overflow-hidden bg-cloudy-light'>
-        <thead>
-          <th class='col-3'>parameter</th>
-          <th class='col-3'>type</th>
-          <th class='col-6'>description</th>
-        </thead>
-          <tr>
-            <td>url</td>
-            <td>
-              <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></code>
-            </td>
-            <td><p>a URL with optional port number</p>
-</td>
-          </tr>
-      </table>
-    </p>
-
-
-
-
-    <h4>Examples</h4>
-<pre><span class="hljs-keyword">var</span> address = Address6.fromURL(<span class="hljs-string">'http://[ffff::]:8080/foo/'</span>);</pre>
-
-
-
-
-</section>
-      </div>
-      <div class='section-indent'>
-<section id='address6/fromunsignedbytearray'class='mt4 mb4 px2'>
-  <h3 class='regular'>
-    <a class='black' href='#address6/fromunsignedbytearray'>
-      <code>
-        fromUnsignedByteArray<span class='gray'></span>
-      </code>
-    </a>
-  </h3>
-  <p>Convert an unsigned byte array to an Address6 object</p>
-
-
-
-
-      <h4>Returns</h4>
-      <code><code><a href="#address6">Address6</a></code></code>
-      
-      <span class='force-inline'>
-        
-      </span>
-
-
-
-
-
-
-</section>
-      </div>
-
-      <div class='section-indent'>
-<section id='address6/biginteger'class='mt4 mb4 px2'>
-  <h3 class='regular'>
-    <a class='black' href='#address6/biginteger'>
-      <code>
-        bigInteger<span class='gray'></span>
-      </code>
-    </a>
-  </h3>
-  <p>Return the address as a BigInteger</p>
-
-
-
-
-      <h4>Returns</h4>
-      <code><code>BigInteger</code></code>
-      
-      <span class='force-inline'>
-        
-      </span>
-
-
-
-
-
-
-</section>
-      </div>
-      <div class='section-indent'>
-<section id='address6/binaryzeropad'class='mt4 mb4 px2'>
-  <h3 class='regular'>
-    <a class='black' href='#address6/binaryzeropad'>
-      <code>
-        binaryZeroPad<span class='gray'></span>
-      </code>
-    </a>
-  </h3>
-  <p>Return a zero-padded base-2 string representation of the address</p>
-
-
-
-
-      <h4>Returns</h4>
-      <code><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></code></code>
-      
-      <span class='force-inline'>
-        
-      </span>
-
-
-
-
-
-
-</section>
-      </div>
-      <div class='section-indent'>
-<section id='address6/canonicalform'class='mt4 mb4 px2'>
-  <h3 class='regular'>
-    <a class='black' href='#address6/canonicalform'>
-      <code>
-        canonicalForm<span class='gray'></span>
-      </code>
-    </a>
-  </h3>
-  <p>Return the canonical form of the address</p>
-
-
-
-
-      <h4>Returns</h4>
-      <code><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></code></code>
-      
-      <span class='force-inline'>
-        
-      </span>
-
-
-
-
-
-
-</section>
-      </div>
-      <div class='section-indent'>
-<section id='address6/correctform'class='mt4 mb4 px2'>
-  <h3 class='regular'>
-    <a class='black' href='#address6/correctform'>
-      <code>
-        correctForm<span class='gray'></span>
-      </code>
-    </a>
-  </h3>
-  <p>Return the correct form of the address</p>
-
-
-
-
-      <h4>Returns</h4>
-      <code><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></code></code>
-      
-      <span class='force-inline'>
-        
-      </span>
-
-
-
-
-
-
-</section>
-      </div>
-      <div class='section-indent'>
-<section id='address6/decimal'class='mt4 mb4 px2'>
-  <h3 class='regular'>
-    <a class='black' href='#address6/decimal'>
-      <code>
-        decimal<span class='gray'></span>
-      </code>
-    </a>
-  </h3>
-  <p>Return the decimal form of the address</p>
-
-
-
-
-      <h4>Returns</h4>
-      <code><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></code></code>
-      
-      <span class='force-inline'>
-        
-      </span>
-
-
-
-
-
-
-</section>
-      </div>
-      <div class='section-indent'>
-<section id='address6/endaddress'class='mt4 mb4 px2'>
-  <h3 class='regular'>
-    <a class='black' href='#address6/endaddress'>
-      <code>
-        endAddress<span class='gray'></span>
-      </code>
-    </a>
-  </h3>
-  <p>The last address in the range given by this address' subnet</p>
-
-
-
-
-      <h4>Returns</h4>
-      <code><code><a href="#address6">Address6</a></code></code>
-      
-      <span class='force-inline'>
-        
-      </span>
-
-
-
-
-
-
-</section>
-      </div>
-      <div class='section-indent'>
-<section id='address6/get6to4'class='mt4 mb4 px2'>
-  <h3 class='regular'>
-    <a class='black' href='#address6/get6to4'>
-      <code>
-        get6to4<span class='gray'></span>
-      </code>
-    </a>
-  </h3>
-  <p>Return a v6 6to4 address from a v6 v4inv6 address</p>
-
-
-
-
-      <h4>Returns</h4>
-      <code><code><a href="#address6">Address6</a></code></code>
-      
-      <span class='force-inline'>
-        
-      </span>
-
-
-
-
-
-
-</section>
-      </div>
-      <div class='section-indent'>
-<section id='address6/getbits'class='mt4 mb4 px2'>
-  <h3 class='regular'>
-    <a class='black' href='#address6/getbits'>
-      <code>
-        getBits<span class='gray'></span>
-      </code>
-    </a>
-  </h3>
-  <p>Return the bits in the given range as a BigInteger</p>
-
-
-
-
-      <h4>Returns</h4>
-      <code><code>BigInteger</code></code>
-      
-      <span class='force-inline'>
-        
-      </span>
-
-
-
-
-
-
-</section>
-      </div>
-      <div class='section-indent'>
-<section id='address6/getbitsbase16'class='mt4 mb4 px2'>
-  <h3 class='regular'>
-    <a class='black' href='#address6/getbitsbase16'>
-      <code>
-        getBitsBase16<span class='gray'></span>
-      </code>
-    </a>
-  </h3>
-  <p>Return the bits in the given range as a base-16 string</p>
-
-
-
-
-      <h4>Returns</h4>
-      <code><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></code></code>
-      
-      <span class='force-inline'>
-        
-      </span>
-
-
-
-
-
-
-</section>
-      </div>
-      <div class='section-indent'>
-<section id='address6/getbitsbase2'class='mt4 mb4 px2'>
-  <h3 class='regular'>
-    <a class='black' href='#address6/getbitsbase2'>
-      <code>
-        getBitsBase2<span class='gray'></span>
-      </code>
-    </a>
-  </h3>
-  <p>Return the bits in the given range as a base-2 string</p>
-
-
-
-
-      <h4>Returns</h4>
-      <code><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></code></code>
-      
-      <span class='force-inline'>
-        
-      </span>
-
-
-
-
-
-
-</section>
-      </div>
-      <div class='section-indent'>
-<section id='address6/getbitspastsubnet'class='mt4 mb4 px2'>
-  <h3 class='regular'>
-    <a class='black' href='#address6/getbitspastsubnet'>
-      <code>
-        getBitsPastSubnet<span class='gray'></span>
-      </code>
-    </a>
-  </h3>
-  <p>Return the bits that are set past the subnet mask length</p>
-
-
-
-
-      <h4>Returns</h4>
-      <code><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></code></code>
-      
-      <span class='force-inline'>
-        
-      </span>
-
-
-
-
-
-
-</section>
-      </div>
-      <div class='section-indent'>
-<section id='address6/getscope'class='mt4 mb4 px2'>
-  <h3 class='regular'>
-    <a class='black' href='#address6/getscope'>
-      <code>
-        getScope<span class='gray'></span>
-      </code>
-    </a>
-  </h3>
-  <p>Return the scope of the address</p>
-
-
-
-
-      <h4>Returns</h4>
-      <code><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></code></code>
-      
-      <span class='force-inline'>
-        
-      </span>
-
-
-
-
-
-
-</section>
-      </div>
-      <div class='section-indent'>
-<section id='address6/gettype'class='mt4 mb4 px2'>
-  <h3 class='regular'>
-    <a class='black' href='#address6/gettype'>
-      <code>
-        getType<span class='gray'></span>
-      </code>
-    </a>
-  </h3>
-  <p>Return the type of the address</p>
-
-
-
-
-      <h4>Returns</h4>
-      <code><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></code></code>
-      
-      <span class='force-inline'>
-        
-      </span>
-
-
-
-
-
-
-</section>
-      </div>
-      <div class='section-indent'>
-<section id='address6/is4'class='mt4 mb4 px2'>
-  <h3 class='regular'>
-    <a class='black' href='#address6/is4'>
-      <code>
-        is4<span class='gray'></span>
-      </code>
-    </a>
-  </h3>
-  <p>Returns true if the address is a v4-in-v6 address, false otherwise</p>
-
-
-
-
-      <h4>Returns</h4>
-      <code><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></code></code>
-      
-      <span class='force-inline'>
-        
-      </span>
-
-
-
-
-
-
-</section>
-      </div>
-      <div class='section-indent'>
-<section id='address6/is6to4'class='mt4 mb4 px2'>
-  <h3 class='regular'>
-    <a class='black' href='#address6/is6to4'>
-      <code>
-        is6to4<span class='gray'></span>
-      </code>
-    </a>
-  </h3>
-  <p>Returns true if the address is a 6to4 address, false otherwise</p>
-
-
-
-
-      <h4>Returns</h4>
-      <code><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></code></code>
-      
-      <span class='force-inline'>
-        
-      </span>
-
-
-
-
-
-
-</section>
-      </div>
-      <div class='section-indent'>
-<section id='address6/iscanonical'class='mt4 mb4 px2'>
-  <h3 class='regular'>
-    <a class='black' href='#address6/iscanonical'>
-      <code>
-        isCanonical<span class='gray'></span>
-      </code>
-    </a>
-  </h3>
-  <p>Returns true if the address is in the canonical form, false otherwise</p>
-
-
-
-
-      <h4>Returns</h4>
-      <code><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></code></code>
-      
-      <span class='force-inline'>
-        
-      </span>
-
-
-
-
-
-
-</section>
-      </div>
-      <div class='section-indent'>
-<section id='address6/iscorrect'class='mt4 mb4 px2'>
-  <h3 class='regular'>
-    <a class='black' href='#address6/iscorrect'>
-      <code>
-        isCorrect<span class='gray'></span>
-      </code>
-    </a>
-  </h3>
-  <p>Returns true if the address is correct, false otherwise</p>
-
-
-
-
-      <h4>Returns</h4>
-      <code><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></code></code>
-      
-      <span class='force-inline'>
-        
-      </span>
-
-
-
-
-
-
-</section>
-      </div>
-      <div class='section-indent'>
-<section id='address6/isinsubnet'class='mt4 mb4 px2'>
-  <h3 class='regular'>
-    <a class='black' href='#address6/isinsubnet'>
-      <code>
-        isInSubnet<span class='gray'></span>
-      </code>
-    </a>
-  </h3>
-  <p>Returns true if the given address is in the subnet of the current address</p>
-
-
-
-
-      <h4>Returns</h4>
-      <code><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></code></code>
-      
-      <span class='force-inline'>
-        
-      </span>
-
-
-
-
-
-
-</section>
-      </div>
-      <div class='section-indent'>
-<section id='address6/islinklocal'class='mt4 mb4 px2'>
-  <h3 class='regular'>
-    <a class='black' href='#address6/islinklocal'>
-      <code>
-        isLinkLocal<span class='gray'></span>
-      </code>
-    </a>
-  </h3>
-  <p>Returns true if the address is a link local address, false otherwise</p>
-
-
-
-
-      <h4>Returns</h4>
-      <code><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></code></code>
-      
-      <span class='force-inline'>
-        
-      </span>
-
-
-
-
-
-
-</section>
-      </div>
-      <div class='section-indent'>
-<section id='address6/isloopback'class='mt4 mb4 px2'>
-  <h3 class='regular'>
-    <a class='black' href='#address6/isloopback'>
-      <code>
-        isLoopback<span class='gray'></span>
-      </code>
-    </a>
-  </h3>
-  <p>Returns true if the address is a loopback address, false otherwise</p>
-
-
-
-
-      <h4>Returns</h4>
-      <code><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></code></code>
-      
-      <span class='force-inline'>
-        
-      </span>
-
-
-
-
-
-
-</section>
-      </div>
-      <div class='section-indent'>
-<section id='address6/ismulticast'class='mt4 mb4 px2'>
-  <h3 class='regular'>
-    <a class='black' href='#address6/ismulticast'>
-      <code>
-        isMulticast<span class='gray'></span>
-      </code>
-    </a>
-  </h3>
-  <p>Returns true if the address is a multicast address, false otherwise</p>
-
-
-
-
-      <h4>Returns</h4>
-      <code><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></code></code>
-      
-      <span class='force-inline'>
-        
-      </span>
-
-
-
-
-
-
-</section>
-      </div>
-      <div class='section-indent'>
-<section id='address6/isteredo'class='mt4 mb4 px2'>
-  <h3 class='regular'>
-    <a class='black' href='#address6/isteredo'>
-      <code>
-        isTeredo<span class='gray'></span>
-      </code>
-    </a>
-  </h3>
-  <p>Returns true if the address is a Teredo address, false otherwise</p>
-
-
-
-
-      <h4>Returns</h4>
-      <code><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></code></code>
-      
-      <span class='force-inline'>
-        
-      </span>
-
-
-
-
-
-
-</section>
-      </div>
-      <div class='section-indent'>
-<section id='address6/isvalid'class='mt4 mb4 px2'>
-  <h3 class='regular'>
-    <a class='black' href='#address6/isvalid'>
-      <code>
-        isValid<span class='gray'></span>
-      </code>
-    </a>
-  </h3>
-  <p>Returns true if the address is valid, false otherwise</p>
-
-
-
-
-      <h4>Returns</h4>
-      <code><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></code></code>
-      
-      <span class='force-inline'>
-        
-      </span>
-
-
-
-
-
-
-</section>
-      </div>
-      <div class='section-indent'>
-<section id='address6/mask'class='mt4 mb4 px2'>
-  <h3 class='regular'>
-    <a class='black' href='#address6/mask'>
-      <code>
-        mask<span class='gray'>([mask])</span>
-      </code>
-    </a>
-  </h3>
-  <p>Return the first n bits of the address, defaulting to the subnet mask</p>
-
-
-    <p>
-      <table class='table-light overflow-hidden bg-cloudy-light'>
-        <thead>
-          <th class='col-3'>parameter</th>
-          <th class='col-3'>type</th>
-          <th class='col-6'>description</th>
-        </thead>
-          <tr>
-            <td>mask</td>
-            <td>
-              <code>[<code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></code>]</code>
-                (default <code>subnet</code>)
-            </td>
-            <td><p>the number of bits to mask</p>
-</td>
-          </tr>
-      </table>
-    </p>
-
-
-      <h4>Returns</h4>
-      <code><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></code></code>
-      
-      <span class='force-inline'>
-        
-      </span>
-
-
-
-
-
-
-</section>
-      </div>
-      <div class='section-indent'>
-<section id='address6/microsofttranscription'class='mt4 mb4 px2'>
-  <h3 class='regular'>
-    <a class='black' href='#address6/microsofttranscription'>
-      <code>
-        microsoftTranscription<span class='gray'></span>
-      </code>
-    </a>
-  </h3>
-  <p>Return the Microsoft UNC transcription of the address</p>
-
-
-
-
-      <h4>Returns</h4>
-      <code><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></code></code>
-      
-      <span class='force-inline'>
-        
-      </span>
-
-
-
-
-
-
-</section>
-      </div>
-      <div class='section-indent'>
-<section id='address6/possiblesubnets'class='mt4 mb4 px2'>
-  <h3 class='regular'>
-    <a class='black' href='#address6/possiblesubnets'>
-      <code>
-        possibleSubnets<span class='gray'>([size])</span>
-      </code>
-    </a>
-  </h3>
-  <p>Return the number of possible subnets of a given size in the address</p>
-
-
-    <p>
-      <table class='table-light overflow-hidden bg-cloudy-light'>
-        <thead>
-          <th class='col-3'>parameter</th>
-          <th class='col-3'>type</th>
-          <th class='col-6'>description</th>
-        </thead>
-          <tr>
-            <td>size</td>
-            <td>
-              <code>[<code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></code>]</code>
-                (default <code>128</code>)
-            </td>
-            <td><p>the subnet size</p>
-</td>
-          </tr>
-      </table>
-    </p>
-
-
-      <h4>Returns</h4>
-      <code><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></code></code>
-      
-      <span class='force-inline'>
-        
-      </span>
-
-
-
-
-
-
-</section>
-      </div>
-      <div class='section-indent'>
-<section id='address6/reverseform'class='mt4 mb4 px2'>
-  <h3 class='regular'>
-    <a class='black' href='#address6/reverseform'>
-      <code>
-        reverseForm<span class='gray'></span>
-      </code>
-    </a>
-  </h3>
-  <p>Return the reversed ip6.arpa form of the address</p>
-
-
-
-
-      <h4>Returns</h4>
-      <code><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></code></code>
-      
-      <span class='force-inline'>
-        
-      </span>
-
-
-
-
-
-
-</section>
-      </div>
-      <div class='section-indent'>
-<section id='address6/six2four'class='mt4 mb4 px2'>
-  <h3 class='regular'>
-    <a class='black' href='#address6/six2four'>
-      <code>
-        six2four<span class='gray'></span>
-      </code>
-    </a>
-  </h3>
-  <p>Return an object containing the 6to4 properties of the address</p>
-
-
-
-
-      <h4>Returns</h4>
-      <code><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a></code></code>
-      
-      <span class='force-inline'>
-        
-      </span>
-
-
-
-
-
-
-</section>
-      </div>
-      <div class='section-indent'>
-<section id='address6/startaddress'class='mt4 mb4 px2'>
-  <h3 class='regular'>
-    <a class='black' href='#address6/startaddress'>
-      <code>
-        startAddress<span class='gray'></span>
-      </code>
-    </a>
-  </h3>
-  <p>The first address in the range given by this address' subnet</p>
-
-
-
-
-      <h4>Returns</h4>
-      <code><code><a href="#address6">Address6</a></code></code>
-      
-      <span class='force-inline'>
-        
-      </span>
-
-
-
-
-
-
-</section>
-      </div>
-      <div class='section-indent'>
-<section id='address6/teredo'class='mt4 mb4 px2'>
-  <h3 class='regular'>
-    <a class='black' href='#address6/teredo'>
-      <code>
-        teredo<span class='gray'></span>
-      </code>
-    </a>
-  </h3>
-  <p>Return an object containing the Teredo properties of the address</p>
-
-
-
-
-      <h4>Returns</h4>
-      <code><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a></code></code>
-      
-      <span class='force-inline'>
-        
-      </span>
-
-
-
-
-
-
-</section>
-      </div>
-      <div class='section-indent'>
-<section id='address6/tobytearray'class='mt4 mb4 px2'>
-  <h3 class='regular'>
-    <a class='black' href='#address6/tobytearray'>
-      <code>
-        toByteArray<span class='gray'></span>
-      </code>
-    </a>
-  </h3>
-  <p>Return a byte array</p>
-
-
-
-
-      <h4>Returns</h4>
-      <code><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a></code></code>
-      
-      <span class='force-inline'>
-        
-      </span>
-
-
-
-
-
-
-</section>
-      </div>
-      <div class='section-indent'>
-<section id='address6/tounsignedbytearray'class='mt4 mb4 px2'>
-  <h3 class='regular'>
-    <a class='black' href='#address6/tounsignedbytearray'>
-      <code>
-        toUnsignedByteArray<span class='gray'></span>
-      </code>
-    </a>
-  </h3>
-  <p>Return an unsigned byte array</p>
-
-
-
-
-      <h4>Returns</h4>
-      <code><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a></code></code>
-      
-      <span class='force-inline'>
-        
-      </span>
-
-
-
-
-
-
-</section>
-      </div>
-      <div class='section-indent'>
-<section id='address6/v4inv6'class='mt4 mb4 px2'>
-  <h3 class='regular'>
-    <a class='black' href='#address6/v4inv6'>
-      <code>
-        v4inv6<span class='gray'></span>
-      </code>
-    </a>
-  </h3>
-  <p>Return the v4-in-v6 form of the address</p>
-
-
-
-
-      <h4>Returns</h4>
-      <code><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></code></code>
-      
-      <span class='force-inline'>
-        
-      </span>
-
-
-
-
-
-
-</section>
-      </div>
-
-
-</section>
-
+<pre class='overflow-auto'><span class="hljs-keyword">var</span> address = <span class="hljs-keyword">new</span> Address6(<span class="hljs-string">'2001::/32'</span>);</pre>
+      <h4>Static members</h4>
+        <div class='collapsible' id='address6/fromaddress4'>
+          <a href='#address6/fromaddress4'>
+            <code>
+              .fromAddress4<span class='gray'>(address)</span>
+            </code>
+            <span class='force-inline'>
+              <p>Create an IPv6-mapped address given an IPv4 address</p>
+
+            </span>
+          </a>
+          <div class='collapser border px2 m2'>
+            <section class='py2 clearfix'>
+              <h2 id='address6/fromaddress4' class='mt0'>
+                fromAddress4<span class='gray'>(address)</span>
+              </h2>
+              <p>Create an IPv6-mapped address given an IPv4 address</p>
+            
+                <h4>Parameters</h4>
+                <ul class='suppress-p-margin'>
+                    <li><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></code> <strong>address</strong>
+                      :
+                      <span class='force-inline'>
+                        <p>An IPv4 address string</p>
+            
+                      </span>
+                    </li>
+                </ul>
+                  <h4>Returns</h4>
+                  <code><code><a href="#address6">Address6</a></code></code>
+                  
+                  <span class='force-inline'>
+                    
+                  </span>
+                <h4>Examples</h4>
+            <pre class='overflow-auto'><span class="hljs-keyword">var</span> address = Address6.fromAddress4(<span class="hljs-string">'192.168.0.1'</span>);
+            address.correctForm(); <span class="hljs-comment">// '::ffff:c0a8:1'</span>
+            address.v4inv6(); <span class="hljs-comment">// '::ffff:192.168.0.1'</span></pre>
+            </section>
           </div>
+        </div>
+        <div class='collapsible' id='address6/frombiginteger'>
+          <a href='#address6/frombiginteger'>
+            <code>
+              .fromBigInteger<span class='gray'>(bigInteger)</span>
+            </code>
+            <span class='force-inline'>
+              <p>Convert a BigInteger to a v6 address object</p>
+
+            </span>
+          </a>
+          <div class='collapser border px2 m2'>
+            <section class='py2 clearfix'>
+              <h2 id='address6/frombiginteger' class='mt0'>
+                fromBigInteger<span class='gray'>(bigInteger)</span>
+              </h2>
+              <p>Convert a BigInteger to a v6 address object</p>
+            
+                <h4>Parameters</h4>
+                <ul class='suppress-p-margin'>
+                    <li><code>BigInteger</code> <strong>bigInteger</strong>
+                      :
+                      <span class='force-inline'>
+                        <p>a BigInteger to convert</p>
+            
+                      </span>
+                    </li>
+                </ul>
+                <h4>Examples</h4>
+            <pre class='overflow-auto'><span class="hljs-keyword">var</span> bigInteger = <span class="hljs-keyword">new</span> BigInteger(<span class="hljs-string">'1000000000000'</span>);
+            <span class="hljs-keyword">var</span> address = Address6.fromBigInteger(bigInteger);
+            address.correctForm(); <span class="hljs-comment">// '::e8:d4a5:1000'</span></pre>
+            </section>
+          </div>
+        </div>
+        <div class='collapsible' id='address6/frombytearray'>
+          <a href='#address6/frombytearray'>
+            <code>
+              .fromByteArray<span class='gray'></span>
+            </code>
+            <span class='force-inline'>
+              <p>Convert a byte array to an Address6 object</p>
+
+            </span>
+          </a>
+          <div class='collapser border px2 m2'>
+            <section class='py2 clearfix'>
+              <h2 id='address6/frombytearray' class='mt0'>
+                fromByteArray<span class='gray'></span>
+              </h2>
+              <p>Convert a byte array to an Address6 object</p>
+            
+                  <h4>Returns</h4>
+                  <code><code><a href="#address6">Address6</a></code></code>
+                  
+                  <span class='force-inline'>
+                    
+                  </span>
+            </section>
+          </div>
+        </div>
+        <div class='collapsible' id='address6/fromurl'>
+          <a href='#address6/fromurl'>
+            <code>
+              .fromURL<span class='gray'>(url)</span>
+            </code>
+            <span class='force-inline'>
+              <p>Convert a URL (with optional port number) to an address object</p>
+
+            </span>
+          </a>
+          <div class='collapser border px2 m2'>
+            <section class='py2 clearfix'>
+              <h2 id='address6/fromurl' class='mt0'>
+                fromURL<span class='gray'>(url)</span>
+              </h2>
+              <p>Convert a URL (with optional port number) to an address object</p>
+            
+                <h4>Parameters</h4>
+                <ul class='suppress-p-margin'>
+                    <li><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></code> <strong>url</strong>
+                      :
+                      <span class='force-inline'>
+                        <p>a URL with optional port number</p>
+            
+                      </span>
+                    </li>
+                </ul>
+                <h4>Examples</h4>
+            <pre class='overflow-auto'><span class="hljs-keyword">var</span> addressAndPort = Address6.fromURL(<span class="hljs-string">'http://[ffff::]:8080/foo/'</span>);
+            addressAndPort.address.correctForm(); <span class="hljs-comment">// 'ffff::'</span>
+            addressAndPort.port; <span class="hljs-comment">// 8080</span></pre>
+            </section>
+          </div>
+        </div>
+        <div class='collapsible' id='address6/fromunsignedbytearray'>
+          <a href='#address6/fromunsignedbytearray'>
+            <code>
+              .fromUnsignedByteArray<span class='gray'></span>
+            </code>
+            <span class='force-inline'>
+              <p>Convert an unsigned byte array to an Address6 object</p>
+
+            </span>
+          </a>
+          <div class='collapser border px2 m2'>
+            <section class='py2 clearfix'>
+              <h2 id='address6/fromunsignedbytearray' class='mt0'>
+                fromUnsignedByteArray<span class='gray'></span>
+              </h2>
+              <p>Convert an unsigned byte array to an Address6 object</p>
+            
+                  <h4>Returns</h4>
+                  <code><code><a href="#address6">Address6</a></code></code>
+                  
+                  <span class='force-inline'>
+                    
+                  </span>
+            </section>
+          </div>
+        </div>
+      <h4>Instance members</h4>
+        <div class='collapsible' id='address6/biginteger'>
+          <a href='#address6/biginteger'>
+            <code>
+              #bigInteger<span class='gray'></span>
+            </code>
+            <span class='force-inline'>
+              <p>Return the address as a BigInteger</p>
+
+            </span>
+          </a>
+          <div class='collapser border px2'>
+            <section class='py2 clearfix'>
+              <h2 id='address6/biginteger' class='mt0'>
+                bigInteger<span class='gray'></span>
+              </h2>
+              <p>Return the address as a BigInteger</p>
+            
+                  <h4>Returns</h4>
+                  <code><code>BigInteger</code></code>
+                  
+                  <span class='force-inline'>
+                    
+                  </span>
+            </section>
+          </div>
+        </div>
+        <div class='collapsible' id='address6/binaryzeropad'>
+          <a href='#address6/binaryzeropad'>
+            <code>
+              #binaryZeroPad<span class='gray'></span>
+            </code>
+            <span class='force-inline'>
+              <p>Return a zero-padded base-2 string representation of the address</p>
+
+            </span>
+          </a>
+          <div class='collapser border px2'>
+            <section class='py2 clearfix'>
+              <h2 id='address6/binaryzeropad' class='mt0'>
+                binaryZeroPad<span class='gray'></span>
+              </h2>
+              <p>Return a zero-padded base-2 string representation of the address</p>
+            
+                  <h4>Returns</h4>
+                  <code><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></code></code>
+                  
+                  <span class='force-inline'>
+                    
+                  </span>
+                <h4>Examples</h4>
+            <pre class='overflow-auto'><span class="hljs-keyword">var</span> address = <span class="hljs-keyword">new</span> Address6(<span class="hljs-string">'2001:4860:4001:803::1011'</span>);
+            address.binaryZeroPad();
+            <span class="hljs-comment">// '0010000000000001010010000110000001000000000000010000100000000011</span>
+            <span class="hljs-comment">//  0000000000000000000000000000000000000000000000000001000000010001'</span></pre>
+            </section>
+          </div>
+        </div>
+        <div class='collapsible' id='address6/canonicalform'>
+          <a href='#address6/canonicalform'>
+            <code>
+              #canonicalForm<span class='gray'></span>
+            </code>
+            <span class='force-inline'>
+              <p>Return the canonical form of the address</p>
+
+            </span>
+          </a>
+          <div class='collapser border px2'>
+            <section class='py2 clearfix'>
+              <h2 id='address6/canonicalform' class='mt0'>
+                canonicalForm<span class='gray'></span>
+              </h2>
+              <p>Return the canonical form of the address</p>
+            
+                  <h4>Returns</h4>
+                  <code><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></code></code>
+                  
+                  <span class='force-inline'>
+                    
+                  </span>
+            </section>
+          </div>
+        </div>
+        <div class='collapsible' id='address6/correctform'>
+          <a href='#address6/correctform'>
+            <code>
+              #correctForm<span class='gray'></span>
+            </code>
+            <span class='force-inline'>
+              <p>Return the correct form of the address</p>
+
+            </span>
+          </a>
+          <div class='collapser border px2'>
+            <section class='py2 clearfix'>
+              <h2 id='address6/correctform' class='mt0'>
+                correctForm<span class='gray'></span>
+              </h2>
+              <p>Return the correct form of the address</p>
+            
+                  <h4>Returns</h4>
+                  <code><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></code></code>
+                  
+                  <span class='force-inline'>
+                    
+                  </span>
+            </section>
+          </div>
+        </div>
+        <div class='collapsible' id='address6/decimal'>
+          <a href='#address6/decimal'>
+            <code>
+              #decimal<span class='gray'></span>
+            </code>
+            <span class='force-inline'>
+              <p>Return the decimal form of the address</p>
+
+            </span>
+          </a>
+          <div class='collapser border px2'>
+            <section class='py2 clearfix'>
+              <h2 id='address6/decimal' class='mt0'>
+                decimal<span class='gray'></span>
+              </h2>
+              <p>Return the decimal form of the address</p>
+            
+                  <h4>Returns</h4>
+                  <code><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></code></code>
+                  
+                  <span class='force-inline'>
+                    
+                  </span>
+            </section>
+          </div>
+        </div>
+        <div class='collapsible' id='address6/endaddress'>
+          <a href='#address6/endaddress'>
+            <code>
+              #endAddress<span class='gray'></span>
+            </code>
+            <span class='force-inline'>
+              <p>The last address in the range given by this address' subnet</p>
+
+            </span>
+          </a>
+          <div class='collapser border px2'>
+            <section class='py2 clearfix'>
+              <h2 id='address6/endaddress' class='mt0'>
+                endAddress<span class='gray'></span>
+              </h2>
+              <p>The last address in the range given by this address' subnet</p>
+            
+                  <h4>Returns</h4>
+                  <code><code><a href="#address6">Address6</a></code></code>
+                  
+                  <span class='force-inline'>
+                    
+                  </span>
+            </section>
+          </div>
+        </div>
+        <div class='collapsible' id='address6/get6to4'>
+          <a href='#address6/get6to4'>
+            <code>
+              #get6to4<span class='gray'></span>
+            </code>
+            <span class='force-inline'>
+              <p>Return a v6 6to4 address from a v6 v4inv6 address</p>
+
+            </span>
+          </a>
+          <div class='collapser border px2'>
+            <section class='py2 clearfix'>
+              <h2 id='address6/get6to4' class='mt0'>
+                get6to4<span class='gray'></span>
+              </h2>
+              <p>Return a v6 6to4 address from a v6 v4inv6 address</p>
+            
+                  <h4>Returns</h4>
+                  <code><code><a href="#address6">Address6</a></code></code>
+                  
+                  <span class='force-inline'>
+                    
+                  </span>
+            </section>
+          </div>
+        </div>
+        <div class='collapsible' id='address6/getbits'>
+          <a href='#address6/getbits'>
+            <code>
+              #getBits<span class='gray'></span>
+            </code>
+            <span class='force-inline'>
+              <p>Return the bits in the given range as a BigInteger</p>
+
+            </span>
+          </a>
+          <div class='collapser border px2'>
+            <section class='py2 clearfix'>
+              <h2 id='address6/getbits' class='mt0'>
+                getBits<span class='gray'></span>
+              </h2>
+              <p>Return the bits in the given range as a BigInteger</p>
+            
+                  <h4>Returns</h4>
+                  <code><code>BigInteger</code></code>
+                  
+                  <span class='force-inline'>
+                    
+                  </span>
+            </section>
+          </div>
+        </div>
+        <div class='collapsible' id='address6/getbitsbase16'>
+          <a href='#address6/getbitsbase16'>
+            <code>
+              #getBitsBase16<span class='gray'></span>
+            </code>
+            <span class='force-inline'>
+              <p>Return the bits in the given range as a base-16 string</p>
+
+            </span>
+          </a>
+          <div class='collapser border px2'>
+            <section class='py2 clearfix'>
+              <h2 id='address6/getbitsbase16' class='mt0'>
+                getBitsBase16<span class='gray'></span>
+              </h2>
+              <p>Return the bits in the given range as a base-16 string</p>
+            
+                  <h4>Returns</h4>
+                  <code><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></code></code>
+                  
+                  <span class='force-inline'>
+                    
+                  </span>
+            </section>
+          </div>
+        </div>
+        <div class='collapsible' id='address6/getbitsbase2'>
+          <a href='#address6/getbitsbase2'>
+            <code>
+              #getBitsBase2<span class='gray'></span>
+            </code>
+            <span class='force-inline'>
+              <p>Return the bits in the given range as a base-2 string</p>
+
+            </span>
+          </a>
+          <div class='collapser border px2'>
+            <section class='py2 clearfix'>
+              <h2 id='address6/getbitsbase2' class='mt0'>
+                getBitsBase2<span class='gray'></span>
+              </h2>
+              <p>Return the bits in the given range as a base-2 string</p>
+            
+                  <h4>Returns</h4>
+                  <code><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></code></code>
+                  
+                  <span class='force-inline'>
+                    
+                  </span>
+            </section>
+          </div>
+        </div>
+        <div class='collapsible' id='address6/getbitspastsubnet'>
+          <a href='#address6/getbitspastsubnet'>
+            <code>
+              #getBitsPastSubnet<span class='gray'></span>
+            </code>
+            <span class='force-inline'>
+              <p>Return the bits that are set past the subnet mask length</p>
+
+            </span>
+          </a>
+          <div class='collapser border px2'>
+            <section class='py2 clearfix'>
+              <h2 id='address6/getbitspastsubnet' class='mt0'>
+                getBitsPastSubnet<span class='gray'></span>
+              </h2>
+              <p>Return the bits that are set past the subnet mask length</p>
+            
+                  <h4>Returns</h4>
+                  <code><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></code></code>
+                  
+                  <span class='force-inline'>
+                    
+                  </span>
+            </section>
+          </div>
+        </div>
+        <div class='collapsible' id='address6/getscope'>
+          <a href='#address6/getscope'>
+            <code>
+              #getScope<span class='gray'></span>
+            </code>
+            <span class='force-inline'>
+              <p>Return the scope of the address</p>
+
+            </span>
+          </a>
+          <div class='collapser border px2'>
+            <section class='py2 clearfix'>
+              <h2 id='address6/getscope' class='mt0'>
+                getScope<span class='gray'></span>
+              </h2>
+              <p>Return the scope of the address</p>
+            
+                  <h4>Returns</h4>
+                  <code><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></code></code>
+                  
+                  <span class='force-inline'>
+                    
+                  </span>
+            </section>
+          </div>
+        </div>
+        <div class='collapsible' id='address6/gettype'>
+          <a href='#address6/gettype'>
+            <code>
+              #getType<span class='gray'></span>
+            </code>
+            <span class='force-inline'>
+              <p>Return the type of the address</p>
+
+            </span>
+          </a>
+          <div class='collapser border px2'>
+            <section class='py2 clearfix'>
+              <h2 id='address6/gettype' class='mt0'>
+                getType<span class='gray'></span>
+              </h2>
+              <p>Return the type of the address</p>
+            
+                  <h4>Returns</h4>
+                  <code><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></code></code>
+                  
+                  <span class='force-inline'>
+                    
+                  </span>
+            </section>
+          </div>
+        </div>
+        <div class='collapsible' id='address6/is4'>
+          <a href='#address6/is4'>
+            <code>
+              #is4<span class='gray'></span>
+            </code>
+            <span class='force-inline'>
+              <p>Returns true if the address is a v4-in-v6 address, false otherwise</p>
+
+            </span>
+          </a>
+          <div class='collapser border px2'>
+            <section class='py2 clearfix'>
+              <h2 id='address6/is4' class='mt0'>
+                is4<span class='gray'></span>
+              </h2>
+              <p>Returns true if the address is a v4-in-v6 address, false otherwise</p>
+            
+                  <h4>Returns</h4>
+                  <code><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></code></code>
+                  
+                  <span class='force-inline'>
+                    
+                  </span>
+            </section>
+          </div>
+        </div>
+        <div class='collapsible' id='address6/is6to4'>
+          <a href='#address6/is6to4'>
+            <code>
+              #is6to4<span class='gray'></span>
+            </code>
+            <span class='force-inline'>
+              <p>Returns true if the address is a 6to4 address, false otherwise</p>
+
+            </span>
+          </a>
+          <div class='collapser border px2'>
+            <section class='py2 clearfix'>
+              <h2 id='address6/is6to4' class='mt0'>
+                is6to4<span class='gray'></span>
+              </h2>
+              <p>Returns true if the address is a 6to4 address, false otherwise</p>
+            
+                  <h4>Returns</h4>
+                  <code><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></code></code>
+                  
+                  <span class='force-inline'>
+                    
+                  </span>
+            </section>
+          </div>
+        </div>
+        <div class='collapsible' id='address6/iscanonical'>
+          <a href='#address6/iscanonical'>
+            <code>
+              #isCanonical<span class='gray'></span>
+            </code>
+            <span class='force-inline'>
+              <p>Returns true if the address is in the canonical form, false otherwise</p>
+
+            </span>
+          </a>
+          <div class='collapser border px2'>
+            <section class='py2 clearfix'>
+              <h2 id='address6/iscanonical' class='mt0'>
+                isCanonical<span class='gray'></span>
+              </h2>
+              <p>Returns true if the address is in the canonical form, false otherwise</p>
+            
+                  <h4>Returns</h4>
+                  <code><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></code></code>
+                  
+                  <span class='force-inline'>
+                    
+                  </span>
+            </section>
+          </div>
+        </div>
+        <div class='collapsible' id='address6/iscorrect'>
+          <a href='#address6/iscorrect'>
+            <code>
+              #isCorrect<span class='gray'></span>
+            </code>
+            <span class='force-inline'>
+              <p>Returns true if the address is correct, false otherwise</p>
+
+            </span>
+          </a>
+          <div class='collapser border px2'>
+            <section class='py2 clearfix'>
+              <h2 id='address6/iscorrect' class='mt0'>
+                isCorrect<span class='gray'></span>
+              </h2>
+              <p>Returns true if the address is correct, false otherwise</p>
+            
+                  <h4>Returns</h4>
+                  <code><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></code></code>
+                  
+                  <span class='force-inline'>
+                    
+                  </span>
+            </section>
+          </div>
+        </div>
+        <div class='collapsible' id='address6/isinsubnet'>
+          <a href='#address6/isinsubnet'>
+            <code>
+              #isInSubnet<span class='gray'></span>
+            </code>
+            <span class='force-inline'>
+              <p>Returns true if the given address is in the subnet of the current address</p>
+
+            </span>
+          </a>
+          <div class='collapser border px2'>
+            <section class='py2 clearfix'>
+              <h2 id='address6/isinsubnet' class='mt0'>
+                isInSubnet<span class='gray'></span>
+              </h2>
+              <p>Returns true if the given address is in the subnet of the current address</p>
+            
+                  <h4>Returns</h4>
+                  <code><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></code></code>
+                  
+                  <span class='force-inline'>
+                    
+                  </span>
+            </section>
+          </div>
+        </div>
+        <div class='collapsible' id='address6/islinklocal'>
+          <a href='#address6/islinklocal'>
+            <code>
+              #isLinkLocal<span class='gray'></span>
+            </code>
+            <span class='force-inline'>
+              <p>Returns true if the address is a link local address, false otherwise</p>
+
+            </span>
+          </a>
+          <div class='collapser border px2'>
+            <section class='py2 clearfix'>
+              <h2 id='address6/islinklocal' class='mt0'>
+                isLinkLocal<span class='gray'></span>
+              </h2>
+              <p>Returns true if the address is a link local address, false otherwise</p>
+            
+                  <h4>Returns</h4>
+                  <code><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></code></code>
+                  
+                  <span class='force-inline'>
+                    
+                  </span>
+            </section>
+          </div>
+        </div>
+        <div class='collapsible' id='address6/isloopback'>
+          <a href='#address6/isloopback'>
+            <code>
+              #isLoopback<span class='gray'></span>
+            </code>
+            <span class='force-inline'>
+              <p>Returns true if the address is a loopback address, false otherwise</p>
+
+            </span>
+          </a>
+          <div class='collapser border px2'>
+            <section class='py2 clearfix'>
+              <h2 id='address6/isloopback' class='mt0'>
+                isLoopback<span class='gray'></span>
+              </h2>
+              <p>Returns true if the address is a loopback address, false otherwise</p>
+            
+                  <h4>Returns</h4>
+                  <code><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></code></code>
+                  
+                  <span class='force-inline'>
+                    
+                  </span>
+            </section>
+          </div>
+        </div>
+        <div class='collapsible' id='address6/ismulticast'>
+          <a href='#address6/ismulticast'>
+            <code>
+              #isMulticast<span class='gray'></span>
+            </code>
+            <span class='force-inline'>
+              <p>Returns true if the address is a multicast address, false otherwise</p>
+
+            </span>
+          </a>
+          <div class='collapser border px2'>
+            <section class='py2 clearfix'>
+              <h2 id='address6/ismulticast' class='mt0'>
+                isMulticast<span class='gray'></span>
+              </h2>
+              <p>Returns true if the address is a multicast address, false otherwise</p>
+            
+                  <h4>Returns</h4>
+                  <code><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></code></code>
+                  
+                  <span class='force-inline'>
+                    
+                  </span>
+            </section>
+          </div>
+        </div>
+        <div class='collapsible' id='address6/isteredo'>
+          <a href='#address6/isteredo'>
+            <code>
+              #isTeredo<span class='gray'></span>
+            </code>
+            <span class='force-inline'>
+              <p>Returns true if the address is a Teredo address, false otherwise</p>
+
+            </span>
+          </a>
+          <div class='collapser border px2'>
+            <section class='py2 clearfix'>
+              <h2 id='address6/isteredo' class='mt0'>
+                isTeredo<span class='gray'></span>
+              </h2>
+              <p>Returns true if the address is a Teredo address, false otherwise</p>
+            
+                  <h4>Returns</h4>
+                  <code><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></code></code>
+                  
+                  <span class='force-inline'>
+                    
+                  </span>
+            </section>
+          </div>
+        </div>
+        <div class='collapsible' id='address6/isvalid'>
+          <a href='#address6/isvalid'>
+            <code>
+              #isValid<span class='gray'></span>
+            </code>
+            <span class='force-inline'>
+              <p>Returns true if the address is valid, false otherwise</p>
+
+            </span>
+          </a>
+          <div class='collapser border px2'>
+            <section class='py2 clearfix'>
+              <h2 id='address6/isvalid' class='mt0'>
+                isValid<span class='gray'></span>
+              </h2>
+              <p>Returns true if the address is valid, false otherwise</p>
+            
+                  <h4>Returns</h4>
+                  <code><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></code></code>
+                  
+                  <span class='force-inline'>
+                    
+                  </span>
+            </section>
+          </div>
+        </div>
+        <div class='collapsible' id='address6/mask'>
+          <a href='#address6/mask'>
+            <code>
+              #mask<span class='gray'>([mask])</span>
+            </code>
+            <span class='force-inline'>
+              <p>Return the first n bits of the address, defaulting to the subnet mask</p>
+
+            </span>
+          </a>
+          <div class='collapser border px2'>
+            <section class='py2 clearfix'>
+              <h2 id='address6/mask' class='mt0'>
+                mask<span class='gray'>([mask])</span>
+              </h2>
+              <p>Return the first n bits of the address, defaulting to the subnet mask</p>
+            
+                <h4>Parameters</h4>
+                <ul class='suppress-p-margin'>
+                    <li><code>[<code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></code>]</code> <strong>mask</strong>
+                        (default <code>subnet</code>)
+                      :
+                      <span class='force-inline'>
+                        <p>the number of bits to mask</p>
+            
+                      </span>
+                    </li>
+                </ul>
+                  <h4>Returns</h4>
+                  <code><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></code></code>
+                  
+                  <span class='force-inline'>
+                    
+                  </span>
+            </section>
+          </div>
+        </div>
+        <div class='collapsible' id='address6/microsofttranscription'>
+          <a href='#address6/microsofttranscription'>
+            <code>
+              #microsoftTranscription<span class='gray'></span>
+            </code>
+            <span class='force-inline'>
+              <p>Return the Microsoft UNC transcription of the address</p>
+
+            </span>
+          </a>
+          <div class='collapser border px2'>
+            <section class='py2 clearfix'>
+              <h2 id='address6/microsofttranscription' class='mt0'>
+                microsoftTranscription<span class='gray'></span>
+              </h2>
+              <p>Return the Microsoft UNC transcription of the address</p>
+            
+                  <h4>Returns</h4>
+                  <code><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></code></code>
+                  
+                  <span class='force-inline'>
+                    
+                  </span>
+            </section>
+          </div>
+        </div>
+        <div class='collapsible' id='address6/possiblesubnets'>
+          <a href='#address6/possiblesubnets'>
+            <code>
+              #possibleSubnets<span class='gray'>([size])</span>
+            </code>
+            <span class='force-inline'>
+              <p>Return the number of possible subnets of a given size in the address</p>
+
+            </span>
+          </a>
+          <div class='collapser border px2'>
+            <section class='py2 clearfix'>
+              <h2 id='address6/possiblesubnets' class='mt0'>
+                possibleSubnets<span class='gray'>([size])</span>
+              </h2>
+              <p>Return the number of possible subnets of a given size in the address</p>
+            
+                <h4>Parameters</h4>
+                <ul class='suppress-p-margin'>
+                    <li><code>[<code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></code>]</code> <strong>size</strong>
+                        (default <code>128</code>)
+                      :
+                      <span class='force-inline'>
+                        <p>the subnet size</p>
+            
+                      </span>
+                    </li>
+                </ul>
+                  <h4>Returns</h4>
+                  <code><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></code></code>
+                  
+                  <span class='force-inline'>
+                    
+                  </span>
+            </section>
+          </div>
+        </div>
+        <div class='collapsible' id='address6/regularexpression'>
+          <a href='#address6/regularexpression'>
+            <code>
+              #regularExpression<span class='gray'></span>
+            </code>
+            <span class='force-inline'>
+              <p>Generate a regular expression that can be used to find or validate all
+variations of this address.</p>
+
+            </span>
+          </a>
+          <div class='collapser border px2'>
+            <section class='py2 clearfix'>
+              <h2 id='address6/regularexpression' class='mt0'>
+                regularExpression<span class='gray'></span>
+              </h2>
+              <p>Generate a regular expression that can be used to find or validate all
+            variations of this address.</p>
+            
+                  <h4>Returns</h4>
+                  <code><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RegExp">RegExp</a></code></code>
+                  
+                  <span class='force-inline'>
+                    
+                  </span>
+            </section>
+          </div>
+        </div>
+        <div class='collapsible' id='address6/regularexpressionstring'>
+          <a href='#address6/regularexpressionstring'>
+            <code>
+              #regularExpressionString<span class='gray'></span>
+            </code>
+            <span class='force-inline'>
+              <p>Generate a regular expression string that can be used to find or validate
+all variations of this address.</p>
+
+            </span>
+          </a>
+          <div class='collapser border px2'>
+            <section class='py2 clearfix'>
+              <h2 id='address6/regularexpressionstring' class='mt0'>
+                regularExpressionString<span class='gray'></span>
+              </h2>
+              <p>Generate a regular expression string that can be used to find or validate
+            all variations of this address.</p>
+            
+                  <h4>Returns</h4>
+                  <code><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></code></code>
+                  
+                  <span class='force-inline'>
+                    
+                  </span>
+            </section>
+          </div>
+        </div>
+        <div class='collapsible' id='address6/reverseform'>
+          <a href='#address6/reverseform'>
+            <code>
+              #reverseForm<span class='gray'></span>
+            </code>
+            <span class='force-inline'>
+              <p>Return the reversed ip6.arpa form of the address</p>
+
+            </span>
+          </a>
+          <div class='collapser border px2'>
+            <section class='py2 clearfix'>
+              <h2 id='address6/reverseform' class='mt0'>
+                reverseForm<span class='gray'></span>
+              </h2>
+              <p>Return the reversed ip6.arpa form of the address</p>
+            
+                  <h4>Returns</h4>
+                  <code><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></code></code>
+                  
+                  <span class='force-inline'>
+                    
+                  </span>
+            </section>
+          </div>
+        </div>
+        <div class='collapsible' id='address6/six2four'>
+          <a href='#address6/six2four'>
+            <code>
+              #six2four<span class='gray'></span>
+            </code>
+            <span class='force-inline'>
+              <p>Return an object containing the 6to4 properties of the address</p>
+
+            </span>
+          </a>
+          <div class='collapser border px2'>
+            <section class='py2 clearfix'>
+              <h2 id='address6/six2four' class='mt0'>
+                six2four<span class='gray'></span>
+              </h2>
+              <p>Return an object containing the 6to4 properties of the address</p>
+            
+                  <h4>Returns</h4>
+                  <code><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a></code></code>
+                  
+                  <span class='force-inline'>
+                    
+                  </span>
+            </section>
+          </div>
+        </div>
+        <div class='collapsible' id='address6/startaddress'>
+          <a href='#address6/startaddress'>
+            <code>
+              #startAddress<span class='gray'></span>
+            </code>
+            <span class='force-inline'>
+              <p>The first address in the range given by this address' subnet</p>
+
+            </span>
+          </a>
+          <div class='collapser border px2'>
+            <section class='py2 clearfix'>
+              <h2 id='address6/startaddress' class='mt0'>
+                startAddress<span class='gray'></span>
+              </h2>
+              <p>The first address in the range given by this address' subnet</p>
+            
+                  <h4>Returns</h4>
+                  <code><code><a href="#address6">Address6</a></code></code>
+                  
+                  <span class='force-inline'>
+                    
+                  </span>
+            </section>
+          </div>
+        </div>
+        <div class='collapsible' id='address6/teredo'>
+          <a href='#address6/teredo'>
+            <code>
+              #teredo<span class='gray'></span>
+            </code>
+            <span class='force-inline'>
+              <p>Return an object containing the Teredo properties of the address</p>
+
+            </span>
+          </a>
+          <div class='collapser border px2'>
+            <section class='py2 clearfix'>
+              <h2 id='address6/teredo' class='mt0'>
+                teredo<span class='gray'></span>
+              </h2>
+              <p>Return an object containing the Teredo properties of the address</p>
+            
+                  <h4>Returns</h4>
+                  <code><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a></code></code>
+                  
+                  <span class='force-inline'>
+                    
+                  </span>
+            </section>
+          </div>
+        </div>
+        <div class='collapsible' id='address6/tobytearray'>
+          <a href='#address6/tobytearray'>
+            <code>
+              #toByteArray<span class='gray'></span>
+            </code>
+            <span class='force-inline'>
+              <p>Return a byte array</p>
+
+            </span>
+          </a>
+          <div class='collapser border px2'>
+            <section class='py2 clearfix'>
+              <h2 id='address6/tobytearray' class='mt0'>
+                toByteArray<span class='gray'></span>
+              </h2>
+              <p>Return a byte array</p>
+            
+                  <h4>Returns</h4>
+                  <code><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a></code></code>
+                  
+                  <span class='force-inline'>
+                    
+                  </span>
+            </section>
+          </div>
+        </div>
+        <div class='collapsible' id='address6/tounsignedbytearray'>
+          <a href='#address6/tounsignedbytearray'>
+            <code>
+              #toUnsignedByteArray<span class='gray'></span>
+            </code>
+            <span class='force-inline'>
+              <p>Return an unsigned byte array</p>
+
+            </span>
+          </a>
+          <div class='collapser border px2'>
+            <section class='py2 clearfix'>
+              <h2 id='address6/tounsignedbytearray' class='mt0'>
+                toUnsignedByteArray<span class='gray'></span>
+              </h2>
+              <p>Return an unsigned byte array</p>
+            
+                  <h4>Returns</h4>
+                  <code><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a></code></code>
+                  
+                  <span class='force-inline'>
+                    
+                  </span>
+            </section>
+          </div>
+        </div>
+        <div class='collapsible' id='address6/tov4'>
+          <a href='#address6/tov4'>
+            <code>
+              #tov4<span class='gray'></span>
+            </code>
+            <span class='force-inline'>
+              <p>Return the last two groups of this address as an IPv4 address string</p>
+
+            </span>
+          </a>
+          <div class='collapser border px2'>
+            <section class='py2 clearfix'>
+              <h2 id='address6/tov4' class='mt0'>
+                tov4<span class='gray'></span>
+              </h2>
+              <p>Return the last two groups of this address as an IPv4 address string</p>
+            
+                  <h4>Returns</h4>
+                  <code><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">String</a></code></code>
+                  
+                  <span class='force-inline'>
+                    
+                  </span>
+                <h4>Examples</h4>
+            <pre class='overflow-auto'><span class="hljs-keyword">var</span> address = <span class="hljs-keyword">new</span> Address6(<span class="hljs-string">'2001:4860:4001::1825:bf11'</span>);
+            address.tov4(); <span class="hljs-comment">// '24.37.191.17'</span></pre>
+            </section>
+          </div>
+        </div>
+        <div class='collapsible' id='address6/v4inv6'>
+          <a href='#address6/v4inv6'>
+            <code>
+              #v4inv6<span class='gray'></span>
+            </code>
+            <span class='force-inline'>
+              <p>Return the v4-in-v6 form of the address</p>
+
+            </span>
+          </a>
+          <div class='collapser border px2'>
+            <section class='py2 clearfix'>
+              <h2 id='address6/v4inv6' class='mt0'>
+                v4inv6<span class='gray'></span>
+              </h2>
+              <p>Return the v4-in-v6 form of the address</p>
+            
+                  <h4>Returns</h4>
+                  <code><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></code></code>
+                  
+                  <span class='force-inline'>
+                    
+                  </span>
+            </section>
+          </div>
+        </div>
+</section>
+</div>
         </div>
       </div>
     </div>
   </div>
+  <script src='assets/anchor.js'></script>
+  <script src='assets/site.js'></script>
 </body>
 </html>
