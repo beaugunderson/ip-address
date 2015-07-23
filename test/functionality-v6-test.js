@@ -72,6 +72,20 @@ describe('v6', function () {
       should.equal(topic.correctForm(), 'a:b:c:d:e:f:0:1');
     });
 
+    it('converts to and from a signed byte array', function () {
+      var bytes = topic.toByteArray();
+      var address = v6.Address.fromByteArray(bytes);
+
+      address.correctForm().should.equal(topic.correctForm());
+    });
+
+    it('converts to and from an unsigned byte array', function () {
+      var unsignedBytes = topic.toUnsignedByteArray();
+      var address = v6.Address.fromUnsignedByteArray(unsignedBytes);
+
+      address.correctForm().should.equal(topic.correctForm());
+    });
+
     it('gets the correct type', function () {
       topic.getType().should.equal('Global unicast');
 
