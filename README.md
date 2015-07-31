@@ -1,4 +1,12 @@
-[![Build Status](https://secure.travis-ci.org/beaugunderson/ip-address.png?branch=master)](http://travis-ci.org/beaugunderson/ip-address) [![Coverage Status](https://img.shields.io/coveralls/beaugunderson/ip-address.svg)](https://coveralls.io/r/beaugunderson/ip-address?branch=master)
+[![travis]](http://travis-ci.org/beaugunderson/ip-address)
+[![coverage]](https://coveralls.io/r/beaugunderson/ip-address?branch=master)
+[![downloads]](https://www.npmjs.com/package/ip-address)
+[![version]](https://www.npmjs.com/package/ip-address)
+
+[travis]: https://img.shields.io/travis/beaugunderson/ip-address.svg
+[coverage]: https://img.shields.io/coveralls/beaugunderson/ip-address.svg
+[downloads]: https://img.shields.io/npm/dm/ip-address.svg
+[version]: https://img.shields.io/npm/v/npm.svg
 
 ## ip-address
 
