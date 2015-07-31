@@ -19,18 +19,16 @@ addresses in JavaScript.
 
 ### Examples
 
-For node:
-
 ```js
 var Address6 = require('ip-address').Address6;
 
 var address = new Address6('2001:0:ce49:7601:e866:efff:62c3:fffe');
 
-console.log(address.isValid()); // Prints "true"
+address.isValid(); // true
 
 var teredo = address.teredo();
 
-console.log(teredo.client4);    // Prints "157.60.0.1"
+teredo.client4;    // '157.60.0.1'
 ```
 
 ### Features
