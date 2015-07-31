@@ -6,7 +6,7 @@
 [travis]: https://img.shields.io/travis/beaugunderson/ip-address.svg
 [coverage]: https://img.shields.io/coveralls/beaugunderson/ip-address.svg
 [downloads]: https://img.shields.io/npm/dm/ip-address.svg
-[version]: https://img.shields.io/npm/v/npm.svg
+[version]: https://img.shields.io/npm/v/ip-address.svg
 
 ## ip-address
 
