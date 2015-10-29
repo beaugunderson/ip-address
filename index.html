@@ -28,15 +28,120 @@
                 Address4
               </a>
                 <a
+                  href='#address4/frombiginteger'
+                  class='regular block'>
+                  .fromBigInteger
+                </a>
+                <a
+                  href='#address4/fromhex'
+                  class='regular block'>
+                  .fromHex
+                </a>
+                <a
+                  href='#address4/frominteger'
+                  class='regular block'>
+                  .fromInteger
+                </a>
+                <a
+                  href='#address4/biginteger'
+                  class='regular block'>
+                  #bigInteger
+                </a>
+                <a
+                  href='#address4/binaryzeropad'
+                  class='regular block'>
+                  #binaryZeroPad
+                </a>
+                <a
+                  href='#address4/correctform'
+                  class='regular block'>
+                  #correctForm
+                </a>
+                <a
+                  href='#address4/endaddress'
+                  class='regular block'>
+                  #endAddress
+                </a>
+                <a
+                  href='#address4/getbitsbase2'
+                  class='regular block'>
+                  #getBitsBase2
+                </a>
+                <a
+                  href='#address4/iscorrect'
+                  class='regular block'>
+                  #isCorrect
+                </a>
+                <a
+                  href='#address4/isinsubnet'
+                  class='regular block'>
+                  #isInSubnet
+                </a>
+                <a
                   href='#address4/isvalid'
                   class='regular block'>
                   #isValid
+                </a>
+                <a
+                  href='#address4/mask'
+                  class='regular block'>
+                  #mask
+                </a>
+                <a
+                  href='#address4/startaddress'
+                  class='regular block'>
+                  #startAddress
+                </a>
+                <a
+                  href='#address4/toarray'
+                  class='regular block'>
+                  #toArray
+                </a>
+                <a
+                  href='#address4/togroup6'
+                  class='regular block'>
+                  #toGroup6
+                </a>
+                <a
+                  href='#address4/tohex'
+                  class='regular block'>
+                  #toHex
                 </a>
               <a
                 href='#address6'
                 class='block bold'>
                 Address6
               </a>
+                <a
+                  href='#address6/re-bad-address'
+                  class='regular block'>
+                  .RE_BAD_ADDRESS
+                </a>
+                <a
+                  href='#address6/re-bad-characters'
+                  class='regular block'>
+                  .RE_BAD_CHARACTERS
+                </a>
+                <a
+                  href='#address6/re-subnet-string'
+                  class='regular block'>
+                  .RE_SUBNET_STRING
+                </a>
+                <a
+                  href='#address6/re-zone-string'
+                  class='regular block'>
+                  .RE_ZONE_STRING
+                </a>
+                <a
+                  href='#address6/scopes'
+                  class='regular block'>
+                  .SCOPES
+                </a>
+                <a
+                  href='#address6/types'
+                  class='regular block'>
+                  .TYPES
+                </a>
                 <a
                   href='#address6/fromaddress4'
                   class='regular block'>
@@ -93,11 +198,6 @@
                   #endAddress
                 </a>
                 <a
-                  href='#address6/get6to4'
-                  class='regular block'>
-                  #get6to4
-                </a>
-                <a
                   href='#address6/getbits'
                   class='regular block'>
                   #getBits
@@ -126,6 +226,16 @@
                   href='#address6/gettype'
                   class='regular block'>
                   #getType
+                </a>
+                <a
+                  href='#address6/inspect6to4'
+                  class='regular block'>
+                  #inspect6to4
+                </a>
+                <a
+                  href='#address6/inspectteredo'
+                  class='regular block'>
+                  #inspectTeredo
                 </a>
                 <a
                   href='#address6/is4'
@@ -208,19 +318,24 @@
                   #reverseForm
                 </a>
                 <a
-                  href='#address6/six2four'
-                  class='regular block'>
-                  #six2four
-                </a>
-                <a
                   href='#address6/startaddress'
                   class='regular block'>
                   #startAddress
                 </a>
                 <a
-                  href='#address6/teredo'
+                  href='#address6/to4'
                   class='regular block'>
-                  #teredo
+                  #to4
+                </a>
+                <a
+                  href='#address6/to4in6'
+                  class='regular block'>
+                  #to4in6
+                </a>
+                <a
+                  href='#address6/to6to4'
+                  class='regular block'>
+                  #to6to4
                 </a>
                 <a
                   href='#address6/tobytearray'
@@ -232,22 +347,50 @@
                   class='regular block'>
                   #toUnsignedByteArray
                 </a>
-                <a
-                  href='#address6/tov4'
-                  class='regular block'>
-                  #tov4
-                </a>
-                <a
-                  href='#address6/v4inv6'
-                  class='regular block'>
-                  #v4inv6
-                </a>
+              <a
+                href='#group'
+                class='block bold'>
+                group
+              </a>
+              <a
+                href='#href'
+                class='block bold'>
+                href
+              </a>
+              <a
+                href='#link'
+                class='block bold'>
+                link
+              </a>
+              <a
+                href='#simplegroup'
+                class='block bold'>
+                simpleGroup
+              </a>
+              <a
+                href='#spanall'
+                class='block bold'>
+                spanAll
+              </a>
+              <a
+                href='#spanleadingzeroes'
+                class='block bold'>
+                spanLeadingZeroes
+              </a>
+              <a
+                href='#spanallzeroes'
+                class='block bold'>
+                spanAllZeroes
+              </a>
           </div>
         </div>
       </div>
       <div class='fix-margin-3'>
         <div class='px2'>
 <div class='py1'><section class='py2 clearfix'>
+    <div class='right py2'>
+      <a class='fade font-smaller' href='https://github.com/beaugunderson/ip-address/blob/a051a163ca595da9718e96e61ff3e53633b2a1cf/lib/ipv4.js#L14-L44'><code>lib/ipv4.js</code></a>
+    </div>
   <h2 id='address4' class='mt0'>
     Address4<span class='gray'>(address)</span>
   </h2>
@@ -263,7 +406,345 @@
           </span>
         </li>
     </ul>
+      <h4>Static members</h4>
+        <div class='collapsible' id='address4/frombiginteger'>
+          <a href='#address4/frombiginteger'>
+            <code>
+              .fromBigInteger<span class='gray'>(bigInteger)</span>
+            </code>
+            <span class='force-inline'>
+              <p>Converts a BigInteger to a v4 address object</p>
+
+            </span>
+          </a>
+          <div class='collapser border px2 m2'>
+            <section class='py2 clearfix'>
+                <div class='right py2'>
+                  <a class='fade font-smaller' href='https://github.com/beaugunderson/ip-address/blob/a051a163ca595da9718e96e61ff3e53633b2a1cf/lib/ipv4.js#L223-L225'><code>lib/ipv4.js</code></a>
+                </div>
+              <h2 id='address4/frombiginteger' class='mt0'>
+                fromBigInteger<span class='gray'>(bigInteger)</span>
+              </h2>
+              <p>Converts a BigInteger to a v4 address object</p>
+            
+                <h4>Parameters</h4>
+                <ul class='suppress-p-margin'>
+                    <li><code>BigInteger</code> <strong>bigInteger</strong>
+                      :
+                      <span class='force-inline'>
+                        <p>a BigInteger to convert</p>
+            
+                      </span>
+                    </li>
+                </ul>
+                  <h4>Returns</h4>
+                  <code><code><a href="#address4">Address4</a></code></code>
+                  
+                  <span class='force-inline'>
+                    
+                  </span>
+            </section>
+          </div>
+        </div>
+        <div class='collapsible' id='address4/fromhex'>
+          <a href='#address4/fromhex'>
+            <code>
+              .fromHex<span class='gray'>(hex)</span>
+            </code>
+            <span class='force-inline'>
+              <p>Converts a hex string to an IPv4 address object</p>
+
+            </span>
+          </a>
+          <div class='collapser border px2 m2'>
+            <section class='py2 clearfix'>
+                <div class='right py2'>
+                  <a class='fade font-smaller' href='https://github.com/beaugunderson/ip-address/blob/a051a163ca595da9718e96e61ff3e53633b2a1cf/lib/ipv4.js#L98-L110'><code>lib/ipv4.js</code></a>
+                </div>
+              <h2 id='address4/fromhex' class='mt0'>
+                fromHex<span class='gray'>(hex)</span>
+              </h2>
+              <p>Converts a hex string to an IPv4 address object</p>
+            
+                <h4>Parameters</h4>
+                <ul class='suppress-p-margin'>
+                    <li><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></code> <strong>hex</strong>
+                      :
+                      <span class='force-inline'>
+                        <p>a hex string to convert</p>
+            
+                      </span>
+                    </li>
+                </ul>
+                  <h4>Returns</h4>
+                  <code><code><a href="#address4">Address4</a></code></code>
+                  
+                  <span class='force-inline'>
+                    
+                  </span>
+            </section>
+          </div>
+        </div>
+        <div class='collapsible' id='address4/frominteger'>
+          <a href='#address4/frominteger'>
+            <code>
+              .fromInteger<span class='gray'>(integer)</span>
+            </code>
+            <span class='force-inline'>
+              <p>Converts an integer into a IPv4 address object</p>
+
+            </span>
+          </a>
+          <div class='collapser border px2 m2'>
+            <section class='py2 clearfix'>
+                <div class='right py2'>
+                  <a class='fade font-smaller' href='https://github.com/beaugunderson/ip-address/blob/a051a163ca595da9718e96e61ff3e53633b2a1cf/lib/ipv4.js#L119-L121'><code>lib/ipv4.js</code></a>
+                </div>
+              <h2 id='address4/frominteger' class='mt0'>
+                fromInteger<span class='gray'>(integer)</span>
+              </h2>
+              <p>Converts an integer into a IPv4 address object</p>
+            
+                <h4>Parameters</h4>
+                <ul class='suppress-p-margin'>
+                    <li><code>integer</code> <strong>integer</strong>
+                      :
+                      <span class='force-inline'>
+                        <p>a number to convert</p>
+            
+                      </span>
+                    </li>
+                </ul>
+                  <h4>Returns</h4>
+                  <code><code><a href="#address4">Address4</a></code></code>
+                  
+                  <span class='force-inline'>
+                    
+                  </span>
+            </section>
+          </div>
+        </div>
       <h4>Instance members</h4>
+        <div class='collapsible' id='address4/biginteger'>
+          <a href='#address4/biginteger'>
+            <code>
+              #bigInteger<span class='gray'></span>
+            </code>
+            <span class='force-inline'>
+              <p>Returns the address as a BigInteger</p>
+
+            </span>
+          </a>
+          <div class='collapser border px2'>
+            <section class='py2 clearfix'>
+                <div class='right py2'>
+                  <a class='fade font-smaller' href='https://github.com/beaugunderson/ip-address/blob/a051a163ca595da9718e96e61ff3e53633b2a1cf/lib/ipv4.js#L178-L186'><code>lib/ipv4.js</code></a>
+                </div>
+              <h2 id='address4/biginteger' class='mt0'>
+                bigInteger<span class='gray'></span>
+              </h2>
+              <p>Returns the address as a BigInteger</p>
+            
+                  <h4>Returns</h4>
+                  <code><code>BigInteger</code></code>
+                  
+                  <span class='force-inline'>
+                    
+                  </span>
+            </section>
+          </div>
+        </div>
+        <div class='collapsible' id='address4/binaryzeropad'>
+          <a href='#address4/binaryzeropad'>
+            <code>
+              #binaryZeroPad<span class='gray'></span>
+            </code>
+            <span class='force-inline'>
+              <p>Returns a zero-padded base-2 string representation of the address</p>
+
+            </span>
+          </a>
+          <div class='collapser border px2'>
+            <section class='py2 clearfix'>
+                <div class='right py2'>
+                  <a class='fade font-smaller' href='https://github.com/beaugunderson/ip-address/blob/a051a163ca595da9718e96e61ff3e53633b2a1cf/lib/ipv4.js#L266-L268'><code>lib/ipv4.js</code></a>
+                </div>
+              <h2 id='address4/binaryzeropad' class='mt0'>
+                binaryZeroPad<span class='gray'></span>
+              </h2>
+              <p>Returns a zero-padded base-2 string representation of the address</p>
+            
+                  <h4>Returns</h4>
+                  <code><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></code></code>
+                  
+                  <span class='force-inline'>
+                    
+                  </span>
+            </section>
+          </div>
+        </div>
+        <div class='collapsible' id='address4/correctform'>
+          <a href='#address4/correctform'>
+            <code>
+              #correctForm<span class='gray'></span>
+            </code>
+            <span class='force-inline'>
+              <p>Returns the correct form of an address</p>
+
+            </span>
+          </a>
+          <div class='collapser border px2'>
+            <section class='py2 clearfix'>
+                <div class='right py2'>
+                  <a class='fade font-smaller' href='https://github.com/beaugunderson/ip-address/blob/a051a163ca595da9718e96e61ff3e53633b2a1cf/lib/ipv4.js#L77-L81'><code>lib/ipv4.js</code></a>
+                </div>
+              <h2 id='address4/correctform' class='mt0'>
+                correctForm<span class='gray'></span>
+              </h2>
+              <p>Returns the correct form of an address</p>
+            
+                  <h4>Returns</h4>
+                  <code><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">String</a></code></code>
+                  
+                  <span class='force-inline'>
+                    
+                  </span>
+            </section>
+          </div>
+        </div>
+        <div class='collapsible' id='address4/endaddress'>
+          <a href='#address4/endaddress'>
+            <code>
+              #endAddress<span class='gray'></span>
+            </code>
+            <span class='force-inline'>
+              <p>The last address in the range given by this address&apos; subnet
+Often referred to as the Broadcast</p>
+
+            </span>
+          </a>
+          <div class='collapser border px2'>
+            <section class='py2 clearfix'>
+                <div class='right py2'>
+                  <a class='fade font-smaller' href='https://github.com/beaugunderson/ip-address/blob/a051a163ca595da9718e96e61ff3e53633b2a1cf/lib/ipv4.js#L209-L214'><code>lib/ipv4.js</code></a>
+                </div>
+              <h2 id='address4/endaddress' class='mt0'>
+                endAddress<span class='gray'></span>
+              </h2>
+              <p>The last address in the range given by this address&apos; subnet
+            Often referred to as the Broadcast</p>
+            
+                  <h4>Returns</h4>
+                  <code><code><a href="#address4">Address4</a></code></code>
+                  
+                  <span class='force-inline'>
+                    
+                  </span>
+            </section>
+          </div>
+        </div>
+        <div class='collapsible' id='address4/getbitsbase2'>
+          <a href='#address4/getbitsbase2'>
+            <code>
+              #getBitsBase2<span class='gray'>(start, end)</span>
+            </code>
+            <span class='force-inline'>
+              <p>Returns the bits in the given range as a base-2 string</p>
+
+            </span>
+          </a>
+          <div class='collapser border px2'>
+            <section class='py2 clearfix'>
+                <div class='right py2'>
+                  <a class='fade font-smaller' href='https://github.com/beaugunderson/ip-address/blob/a051a163ca595da9718e96e61ff3e53633b2a1cf/lib/ipv4.js#L248-L250'><code>lib/ipv4.js</code></a>
+                </div>
+              <h2 id='address4/getbitsbase2' class='mt0'>
+                getBitsBase2<span class='gray'>(start, end)</span>
+              </h2>
+              <p>Returns the bits in the given range as a base-2 string</p>
+            
+                <h4>Parameters</h4>
+                <ul class='suppress-p-margin'>
+                    <li> <strong>start</strong>
+                      :
+                      <span class='force-inline'>
+                        
+                      </span>
+                    </li>
+                    <li> <strong>end</strong>
+                      :
+                      <span class='force-inline'>
+                        
+                      </span>
+                    </li>
+                </ul>
+                  <h4>Returns</h4>
+                  <code><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></code></code>
+                  
+                  <span class='force-inline'>
+                    
+                  </span>
+            </section>
+          </div>
+        </div>
+        <div class='collapsible' id='address4/iscorrect'>
+          <a href='#address4/iscorrect'>
+            <code>
+              #isCorrect<span class='gray'></span>
+            </code>
+            <span class='force-inline'>
+              <p>Returns true if the address is correct, false otherwise</p>
+
+            </span>
+          </a>
+          <div class='collapser border px2'>
+            <section class='py2 clearfix'>
+                <div class='right py2'>
+                  <a class='fade font-smaller' href='https://github.com/beaugunderson/ip-address/blob/a051a163ca595da9718e96e61ff3e53633b2a1cf/lib/ipv4.js#L89-L89'><code>lib/ipv4.js</code></a>
+                </div>
+              <h2 id='address4/iscorrect' class='mt0'>
+                isCorrect<span class='gray'></span>
+              </h2>
+              <p>Returns true if the address is correct, false otherwise</p>
+            
+                  <h4>Returns</h4>
+                  <code><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">Boolean</a></code></code>
+                  
+                  <span class='force-inline'>
+                    
+                  </span>
+            </section>
+          </div>
+        </div>
+        <div class='collapsible' id='address4/isinsubnet'>
+          <a href='#address4/isinsubnet'>
+            <code>
+              #isInSubnet<span class='gray'></span>
+            </code>
+            <span class='force-inline'>
+              <p>Returns true if the given address is in the subnet of the current address</p>
+
+            </span>
+          </a>
+          <div class='collapser border px2'>
+            <section class='py2 clearfix'>
+                <div class='right py2'>
+                  <a class='fade font-smaller' href='https://github.com/beaugunderson/ip-address/blob/a051a163ca595da9718e96e61ff3e53633b2a1cf/lib/ipv4.js#L258-L258'><code>lib/ipv4.js</code></a>
+                </div>
+              <h2 id='address4/isinsubnet' class='mt0'>
+                isInSubnet<span class='gray'></span>
+              </h2>
+              <p>Returns true if the given address is in the subnet of the current address</p>
+            
+                  <h4>Returns</h4>
+                  <code><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></code></code>
+                  
+                  <span class='force-inline'>
+                    
+                  </span>
+            </section>
+          </div>
+        </div>
         <div class='collapsible' id='address4/isvalid'>
           <a href='#address4/isvalid'>
             <code>
@@ -276,13 +757,174 @@
           </a>
           <div class='collapser border px2'>
             <section class='py2 clearfix'>
+                <div class='right py2'>
+                  <a class='fade font-smaller' href='https://github.com/beaugunderson/ip-address/blob/a051a163ca595da9718e96e61ff3e53633b2a1cf/lib/ipv4.js#L67-L69'><code>lib/ipv4.js</code></a>
+                </div>
               <h2 id='address4/isvalid' class='mt0'>
                 isValid<span class='gray'></span>
               </h2>
               <p>Return true if the address is valid</p>
             
                   <h4>Returns</h4>
-                  <code><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></code></code>
+                  <code><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">Boolean</a></code></code>
+                  
+                  <span class='force-inline'>
+                    
+                  </span>
+            </section>
+          </div>
+        </div>
+        <div class='collapsible' id='address4/mask'>
+          <a href='#address4/mask'>
+            <code>
+              #mask<span class='gray'>(optionalMask)</span>
+            </code>
+            <span class='force-inline'>
+              <p>Returns the first n bits of the address, defaulting to the
+subnet mask</p>
+
+            </span>
+          </a>
+          <div class='collapser border px2'>
+            <section class='py2 clearfix'>
+                <div class='right py2'>
+                  <a class='fade font-smaller' href='https://github.com/beaugunderson/ip-address/blob/a051a163ca595da9718e96e61ff3e53633b2a1cf/lib/ipv4.js#L234-L240'><code>lib/ipv4.js</code></a>
+                </div>
+              <h2 id='address4/mask' class='mt0'>
+                mask<span class='gray'>(optionalMask)</span>
+              </h2>
+              <p>Returns the first n bits of the address, defaulting to the
+            subnet mask</p>
+            
+                <h4>Parameters</h4>
+                <ul class='suppress-p-margin'>
+                    <li> <strong>optionalMask</strong>
+                      :
+                      <span class='force-inline'>
+                        
+                      </span>
+                    </li>
+                </ul>
+                  <h4>Returns</h4>
+                  <code><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">String</a></code></code>
+                  
+                  <span class='force-inline'>
+                    
+                  </span>
+            </section>
+          </div>
+        </div>
+        <div class='collapsible' id='address4/startaddress'>
+          <a href='#address4/startaddress'>
+            <code>
+              #startAddress<span class='gray'></span>
+            </code>
+            <span class='force-inline'>
+              <p>The first address in the range given by this address&apos; subnet.
+Often referred to as the Network Address.</p>
+
+            </span>
+          </a>
+          <div class='collapser border px2'>
+            <section class='py2 clearfix'>
+                <div class='right py2'>
+                  <a class='fade font-smaller' href='https://github.com/beaugunderson/ip-address/blob/a051a163ca595da9718e96e61ff3e53633b2a1cf/lib/ipv4.js#L195-L200'><code>lib/ipv4.js</code></a>
+                </div>
+              <h2 id='address4/startaddress' class='mt0'>
+                startAddress<span class='gray'></span>
+              </h2>
+              <p>The first address in the range given by this address&apos; subnet.
+            Often referred to as the Network Address.</p>
+            
+                  <h4>Returns</h4>
+                  <code><code><a href="#address4">Address4</a></code></code>
+                  
+                  <span class='force-inline'>
+                    
+                  </span>
+            </section>
+          </div>
+        </div>
+        <div class='collapsible' id='address4/toarray'>
+          <a href='#address4/toarray'>
+            <code>
+              #toArray<span class='gray'></span>
+            </code>
+            <span class='force-inline'>
+              <p>Converts an IPv4 address object to an array of bytes</p>
+
+            </span>
+          </a>
+          <div class='collapser border px2'>
+            <section class='py2 clearfix'>
+                <div class='right py2'>
+                  <a class='fade font-smaller' href='https://github.com/beaugunderson/ip-address/blob/a051a163ca595da9718e96e61ff3e53633b2a1cf/lib/ipv4.js#L141-L145'><code>lib/ipv4.js</code></a>
+                </div>
+              <h2 id='address4/toarray' class='mt0'>
+                toArray<span class='gray'></span>
+              </h2>
+              <p>Converts an IPv4 address object to an array of bytes</p>
+            
+                  <h4>Returns</h4>
+                  <code><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a></code></code>
+                  
+                  <span class='force-inline'>
+                    
+                  </span>
+            </section>
+          </div>
+        </div>
+        <div class='collapsible' id='address4/togroup6'>
+          <a href='#address4/togroup6'>
+            <code>
+              #toGroup6<span class='gray'></span>
+            </code>
+            <span class='force-inline'>
+              <p>Converts an IPv4 address object to an IPv6 address group</p>
+
+            </span>
+          </a>
+          <div class='collapser border px2'>
+            <section class='py2 clearfix'>
+                <div class='right py2'>
+                  <a class='fade font-smaller' href='https://github.com/beaugunderson/ip-address/blob/a051a163ca595da9718e96e61ff3e53633b2a1cf/lib/ipv4.js#L153-L166'><code>lib/ipv4.js</code></a>
+                </div>
+              <h2 id='address4/togroup6' class='mt0'>
+                toGroup6<span class='gray'></span>
+              </h2>
+              <p>Converts an IPv4 address object to an IPv6 address group</p>
+            
+                  <h4>Returns</h4>
+                  <code><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">String</a></code></code>
+                  
+                  <span class='force-inline'>
+                    
+                  </span>
+            </section>
+          </div>
+        </div>
+        <div class='collapsible' id='address4/tohex'>
+          <a href='#address4/tohex'>
+            <code>
+              #toHex<span class='gray'></span>
+            </code>
+            <span class='force-inline'>
+              <p>Converts an IPv4 address object to a hex string</p>
+
+            </span>
+          </a>
+          <div class='collapser border px2'>
+            <section class='py2 clearfix'>
+                <div class='right py2'>
+                  <a class='fade font-smaller' href='https://github.com/beaugunderson/ip-address/blob/a051a163ca595da9718e96e61ff3e53633b2a1cf/lib/ipv4.js#L129-L133'><code>lib/ipv4.js</code></a>
+                </div>
+              <h2 id='address4/tohex' class='mt0'>
+                toHex<span class='gray'></span>
+              </h2>
+              <p>Converts an IPv4 address object to a hex string</p>
+            
+                  <h4>Returns</h4>
+                  <code><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">String</a></code></code>
                   
                   <span class='force-inline'>
                     
@@ -292,8 +934,11 @@
         </div>
 </section>
 </div><div class='py1'><section class='py2 clearfix'>
+    <div class='right py2'>
+      <a class='fade font-smaller' href='https://github.com/beaugunderson/ip-address/blob/a051a163ca595da9718e96e61ff3e53633b2a1cf/lib/ipv6.js#L40-L91'><code>lib/ipv6.js</code></a>
+    </div>
   <h2 id='address6' class='mt0'>
-    Address6<span class='gray'>(address, [groups])</span>
+    Address6<span class='gray'>(address, [groups], optionalGroups)</span>
   </h2>
   <p>Represents an IPv6 address</p>
 
@@ -314,14 +959,158 @@
 
           </span>
         </li>
+        <li> <strong>optionalGroups</strong>
+          :
+          <span class='force-inline'>
+            
+          </span>
+        </li>
     </ul>
     <h4>Examples</h4>
 <pre class='overflow-auto'><span class="hljs-keyword">var</span> address = <span class="hljs-keyword">new</span> Address6(<span class="hljs-string">'2001::/32'</span>);</pre>
       <h4>Static members</h4>
+        <div class='collapsible' id='address6/re-bad-address'>
+          <a href='#address6/re-bad-address'>
+            <code>
+              .RE_BAD_ADDRESS<span class='gray'></span>
+            </code>
+            <span class='force-inline'>
+              <p>A regular expression that matches an incorrect IPv6 address</p>
+
+            </span>
+          </a>
+          <div class='collapser border px2 m2'>
+            <section class='py2 clearfix'>
+                <div class='right py2'>
+                  <a class='fade font-smaller' href='https://github.com/beaugunderson/ip-address/blob/a051a163ca595da9718e96e61ff3e53633b2a1cf/lib/v6/constants.js#L62-L62'><code>lib/v6/constants.js</code></a>
+                </div>
+              <h2 id='address6/re-bad-address' class='mt0'>
+                RE_BAD_ADDRESS<span class='gray'></span>
+              </h2>
+              <p>A regular expression that matches an incorrect IPv6 address</p>
+            
+            </section>
+          </div>
+        </div>
+        <div class='collapsible' id='address6/re-bad-characters'>
+          <a href='#address6/re-bad-characters'>
+            <code>
+              .RE_BAD_CHARACTERS<span class='gray'></span>
+            </code>
+            <span class='force-inline'>
+              <p>A regular expression that matches bad characters in an IPv6 address</p>
+
+            </span>
+          </a>
+          <div class='collapser border px2 m2'>
+            <section class='py2 clearfix'>
+                <div class='right py2'>
+                  <a class='fade font-smaller' href='https://github.com/beaugunderson/ip-address/blob/a051a163ca595da9718e96e61ff3e53633b2a1cf/lib/v6/constants.js#L55-L55'><code>lib/v6/constants.js</code></a>
+                </div>
+              <h2 id='address6/re-bad-characters' class='mt0'>
+                RE_BAD_CHARACTERS<span class='gray'></span>
+              </h2>
+              <p>A regular expression that matches bad characters in an IPv6 address</p>
+            
+            </section>
+          </div>
+        </div>
+        <div class='collapsible' id='address6/re-subnet-string'>
+          <a href='#address6/re-subnet-string'>
+            <code>
+              .RE_SUBNET_STRING<span class='gray'></span>
+            </code>
+            <span class='force-inline'>
+              <p>A regular expression that matches an IPv6 subnet</p>
+
+            </span>
+          </a>
+          <div class='collapser border px2 m2'>
+            <section class='py2 clearfix'>
+                <div class='right py2'>
+                  <a class='fade font-smaller' href='https://github.com/beaugunderson/ip-address/blob/a051a163ca595da9718e96e61ff3e53633b2a1cf/lib/v6/constants.js#L69-L69'><code>lib/v6/constants.js</code></a>
+                </div>
+              <h2 id='address6/re-subnet-string' class='mt0'>
+                RE_SUBNET_STRING<span class='gray'></span>
+              </h2>
+              <p>A regular expression that matches an IPv6 subnet</p>
+            
+            </section>
+          </div>
+        </div>
+        <div class='collapsible' id='address6/re-zone-string'>
+          <a href='#address6/re-zone-string'>
+            <code>
+              .RE_ZONE_STRING<span class='gray'></span>
+            </code>
+            <span class='force-inline'>
+              <p>A regular expression that matches an IPv6 zone</p>
+
+            </span>
+          </a>
+          <div class='collapser border px2 m2'>
+            <section class='py2 clearfix'>
+                <div class='right py2'>
+                  <a class='fade font-smaller' href='https://github.com/beaugunderson/ip-address/blob/a051a163ca595da9718e96e61ff3e53633b2a1cf/lib/v6/constants.js#L76-L76'><code>lib/v6/constants.js</code></a>
+                </div>
+              <h2 id='address6/re-zone-string' class='mt0'>
+                RE_ZONE_STRING<span class='gray'></span>
+              </h2>
+              <p>A regular expression that matches an IPv6 zone</p>
+            
+            </section>
+          </div>
+        </div>
+        <div class='collapsible' id='address6/scopes'>
+          <a href='#address6/scopes'>
+            <code>
+              .SCOPES<span class='gray'></span>
+            </code>
+            <span class='force-inline'>
+              <p>Represents IPv6 address scopes</p>
+
+            </span>
+          </a>
+          <div class='collapser border px2 m2'>
+            <section class='py2 clearfix'>
+                <div class='right py2'>
+                  <a class='fade font-smaller' href='https://github.com/beaugunderson/ip-address/blob/a051a163ca595da9718e96e61ff3e53633b2a1cf/lib/v6/constants.js#L9-L18'><code>lib/v6/constants.js</code></a>
+                </div>
+              <h2 id='address6/scopes' class='mt0'>
+                SCOPES<span class='gray'></span>
+              </h2>
+              <p>Represents IPv6 address scopes</p>
+            
+            </section>
+          </div>
+        </div>
+        <div class='collapsible' id='address6/types'>
+          <a href='#address6/types'>
+            <code>
+              .TYPES<span class='gray'></span>
+            </code>
+            <span class='force-inline'>
+              <p>Represents IPv6 address types</p>
+
+            </span>
+          </a>
+          <div class='collapser border px2 m2'>
+            <section class='py2 clearfix'>
+                <div class='right py2'>
+                  <a class='fade font-smaller' href='https://github.com/beaugunderson/ip-address/blob/a051a163ca595da9718e96e61ff3e53633b2a1cf/lib/v6/constants.js#L25-L48'><code>lib/v6/constants.js</code></a>
+                </div>
+              <h2 id='address6/types' class='mt0'>
+                TYPES<span class='gray'></span>
+              </h2>
+              <p>Represents IPv6 address types</p>
+            
+            </section>
+          </div>
+        </div>
         <div class='collapsible' id='address6/fromaddress4'>
           <a href='#address6/fromaddress4'>
             <code>
-              .fromAddress4<span class='gray'>(address)</span>
+              .fromAddress4<span class='gray'>(address, address4)</span>
             </code>
             <span class='force-inline'>
               <p>Create an IPv6-mapped address given an IPv4 address</p>
@@ -330,8 +1119,11 @@
           </a>
           <div class='collapser border px2 m2'>
             <section class='py2 clearfix'>
+                <div class='right py2'>
+                  <a class='fade font-smaller' href='https://github.com/beaugunderson/ip-address/blob/a051a163ca595da9718e96e61ff3e53633b2a1cf/lib/ipv6.js#L202-L204'><code>lib/ipv6.js</code></a>
+                </div>
               <h2 id='address6/fromaddress4' class='mt0'>
-                fromAddress4<span class='gray'>(address)</span>
+                fromAddress4<span class='gray'>(address, address4)</span>
               </h2>
               <p>Create an IPv6-mapped address given an IPv4 address</p>
             
@@ -344,6 +1136,12 @@
             
                       </span>
                     </li>
+                    <li> <strong>address4</strong>
+                      :
+                      <span class='force-inline'>
+                        
+                      </span>
+                    </li>
                 </ul>
                   <h4>Returns</h4>
                   <code><code><a href="#address6">Address6</a></code></code>
@@ -354,7 +1152,7 @@
                 <h4>Examples</h4>
             <pre class='overflow-auto'><span class="hljs-keyword">var</span> address = Address6.fromAddress4(<span class="hljs-string">'192.168.0.1'</span>);
             address.correctForm(); <span class="hljs-comment">// '::ffff:c0a8:1'</span>
-            address.v4inv6(); <span class="hljs-comment">// '::ffff:192.168.0.1'</span></pre>
+            address.to4in6(); <span class="hljs-comment">// '::ffff:192.168.0.1'</span></pre>
             </section>
           </div>
         </div>
@@ -370,6 +1168,9 @@
           </a>
           <div class='collapser border px2 m2'>
             <section class='py2 clearfix'>
+                <div class='right py2'>
+                  <a class='fade font-smaller' href='https://github.com/beaugunderson/ip-address/blob/a051a163ca595da9718e96e61ff3e53633b2a1cf/lib/ipv6.js#L108-L118'><code>lib/ipv6.js</code></a>
+                </div>
               <h2 id='address6/frombiginteger' class='mt0'>
                 fromBigInteger<span class='gray'>(bigInteger)</span>
               </h2>
@@ -385,6 +1186,12 @@
                       </span>
                     </li>
                 </ul>
+                  <h4>Returns</h4>
+                  <code><code><a href="#address6">Address6</a></code></code>
+                  
+                  <span class='force-inline'>
+                    
+                  </span>
                 <h4>Examples</h4>
             <pre class='overflow-auto'><span class="hljs-keyword">var</span> bigInteger = <span class="hljs-keyword">new</span> BigInteger(<span class="hljs-string">'1000000000000'</span>);
             <span class="hljs-keyword">var</span> address = Address6.fromBigInteger(bigInteger);
@@ -395,7 +1202,7 @@
         <div class='collapsible' id='address6/frombytearray'>
           <a href='#address6/frombytearray'>
             <code>
-              .fromByteArray<span class='gray'></span>
+              .fromByteArray<span class='gray'>(bytes)</span>
             </code>
             <span class='force-inline'>
               <p>Convert a byte array to an Address6 object</p>
@@ -404,11 +1211,23 @@
           </a>
           <div class='collapser border px2 m2'>
             <section class='py2 clearfix'>
+                <div class='right py2'>
+                  <a class='fade font-smaller' href='https://github.com/beaugunderson/ip-address/blob/a051a163ca595da9718e96e61ff3e53633b2a1cf/lib/ipv6.js#L872-L874'><code>lib/ipv6.js</code></a>
+                </div>
               <h2 id='address6/frombytearray' class='mt0'>
-                fromByteArray<span class='gray'></span>
+                fromByteArray<span class='gray'>(bytes)</span>
               </h2>
               <p>Convert a byte array to an Address6 object</p>
             
+                <h4>Parameters</h4>
+                <ul class='suppress-p-margin'>
+                    <li> <strong>bytes</strong>
+                      :
+                      <span class='force-inline'>
+                        
+                      </span>
+                    </li>
+                </ul>
                   <h4>Returns</h4>
                   <code><code><a href="#address6">Address6</a></code></code>
                   
@@ -430,6 +1249,9 @@
           </a>
           <div class='collapser border px2 m2'>
             <section class='py2 clearfix'>
+                <div class='right py2'>
+                  <a class='fade font-smaller' href='https://github.com/beaugunderson/ip-address/blob/a051a163ca595da9718e96e61ff3e53633b2a1cf/lib/ipv6.js#L131-L189'><code>lib/ipv6.js</code></a>
+                </div>
               <h2 id='address6/fromurl' class='mt0'>
                 fromURL<span class='gray'>(url)</span>
               </h2>
@@ -445,6 +1267,12 @@
                       </span>
                     </li>
                 </ul>
+                  <h4>Returns</h4>
+                  <code><code><a href="#address6">Address6</a></code></code>
+                  
+                  <span class='force-inline'>
+                    
+                  </span>
                 <h4>Examples</h4>
             <pre class='overflow-auto'><span class="hljs-keyword">var</span> addressAndPort = Address6.fromURL(<span class="hljs-string">'http://[ffff::]:8080/foo/'</span>);
             addressAndPort.address.correctForm(); <span class="hljs-comment">// 'ffff::'</span>
@@ -455,7 +1283,7 @@
         <div class='collapsible' id='address6/fromunsignedbytearray'>
           <a href='#address6/fromunsignedbytearray'>
             <code>
-              .fromUnsignedByteArray<span class='gray'></span>
+              .fromUnsignedByteArray<span class='gray'>(bytes)</span>
             </code>
             <span class='force-inline'>
               <p>Convert an unsigned byte array to an Address6 object</p>
@@ -464,11 +1292,23 @@
           </a>
           <div class='collapser border px2 m2'>
             <section class='py2 clearfix'>
+                <div class='right py2'>
+                  <a class='fade font-smaller' href='https://github.com/beaugunderson/ip-address/blob/a051a163ca595da9718e96e61ff3e53633b2a1cf/lib/ipv6.js#L882-L895'><code>lib/ipv6.js</code></a>
+                </div>
               <h2 id='address6/fromunsignedbytearray' class='mt0'>
-                fromUnsignedByteArray<span class='gray'></span>
+                fromUnsignedByteArray<span class='gray'>(bytes)</span>
               </h2>
               <p>Convert an unsigned byte array to an Address6 object</p>
             
+                <h4>Parameters</h4>
+                <ul class='suppress-p-margin'>
+                    <li> <strong>bytes</strong>
+                      :
+                      <span class='force-inline'>
+                        
+                      </span>
+                    </li>
+                </ul>
                   <h4>Returns</h4>
                   <code><code><a href="#address6">Address6</a></code></code>
                   
@@ -491,6 +1331,9 @@
           </a>
           <div class='collapser border px2'>
             <section class='py2 clearfix'>
+                <div class='right py2'>
+                  <a class='fade font-smaller' href='https://github.com/beaugunderson/ip-address/blob/a051a163ca595da9718e96e61ff3e53633b2a1cf/lib/ipv6.js#L671-L677'><code>lib/ipv6.js</code></a>
+                </div>
               <h2 id='address6/biginteger' class='mt0'>
                 bigInteger<span class='gray'></span>
               </h2>
@@ -517,13 +1360,16 @@
           </a>
           <div class='collapser border px2'>
             <section class='py2 clearfix'>
+                <div class='right py2'>
+                  <a class='fade font-smaller' href='https://github.com/beaugunderson/ip-address/blob/a051a163ca595da9718e96e61ff3e53633b2a1cf/lib/ipv6.js#L492-L494'><code>lib/ipv6.js</code></a>
+                </div>
               <h2 id='address6/binaryzeropad' class='mt0'>
                 binaryZeroPad<span class='gray'></span>
               </h2>
               <p>Return a zero-padded base-2 string representation of the address</p>
             
                   <h4>Returns</h4>
-                  <code><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></code></code>
+                  <code><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">String</a></code></code>
                   
                   <span class='force-inline'>
                     
@@ -548,13 +1394,16 @@
           </a>
           <div class='collapser border px2'>
             <section class='py2 clearfix'>
+                <div class='right py2'>
+                  <a class='fade font-smaller' href='https://github.com/beaugunderson/ip-address/blob/a051a163ca595da9718e96e61ff3e53633b2a1cf/lib/ipv6.js#L641-L647'><code>lib/ipv6.js</code></a>
+                </div>
               <h2 id='address6/canonicalform' class='mt0'>
                 canonicalForm<span class='gray'></span>
               </h2>
               <p>Return the canonical form of the address</p>
             
                   <h4>Returns</h4>
-                  <code><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></code></code>
+                  <code><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">String</a></code></code>
                   
                   <span class='force-inline'>
                     
@@ -574,13 +1423,16 @@
           </a>
           <div class='collapser border px2'>
             <section class='py2 clearfix'>
+                <div class='right py2'>
+                  <a class='fade font-smaller' href='https://github.com/beaugunderson/ip-address/blob/a051a163ca595da9718e96e61ff3e53633b2a1cf/lib/ipv6.js#L419-L479'><code>lib/ipv6.js</code></a>
+                </div>
               <h2 id='address6/correctform' class='mt0'>
                 correctForm<span class='gray'></span>
               </h2>
               <p>Return the correct form of the address</p>
             
                   <h4>Returns</h4>
-                  <code><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></code></code>
+                  <code><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">String</a></code></code>
                   
                   <span class='force-inline'>
                     
@@ -600,13 +1452,16 @@
           </a>
           <div class='collapser border px2'>
             <section class='py2 clearfix'>
+                <div class='right py2'>
+                  <a class='fade font-smaller' href='https://github.com/beaugunderson/ip-address/blob/a051a163ca595da9718e96e61ff3e53633b2a1cf/lib/ipv6.js#L655-L663'><code>lib/ipv6.js</code></a>
+                </div>
               <h2 id='address6/decimal' class='mt0'>
                 decimal<span class='gray'></span>
               </h2>
               <p>Return the decimal form of the address</p>
             
                   <h4>Returns</h4>
-                  <code><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></code></code>
+                  <code><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">String</a></code></code>
                   
                   <span class='force-inline'>
                     
@@ -620,42 +1475,19 @@
               #endAddress<span class='gray'></span>
             </code>
             <span class='force-inline'>
-              <p>The last address in the range given by this address' subnet</p>
+              <p>The last address in the range given by this address&apos; subnet</p>
 
             </span>
           </a>
           <div class='collapser border px2'>
             <section class='py2 clearfix'>
+                <div class='right py2'>
+                  <a class='fade font-smaller' href='https://github.com/beaugunderson/ip-address/blob/a051a163ca595da9718e96e61ff3e53633b2a1cf/lib/ipv6.js#L294-L299'><code>lib/ipv6.js</code></a>
+                </div>
               <h2 id='address6/endaddress' class='mt0'>
                 endAddress<span class='gray'></span>
               </h2>
-              <p>The last address in the range given by this address' subnet</p>
-            
-                  <h4>Returns</h4>
-                  <code><code><a href="#address6">Address6</a></code></code>
-                  
-                  <span class='force-inline'>
-                    
-                  </span>
-            </section>
-          </div>
-        </div>
-        <div class='collapsible' id='address6/get6to4'>
-          <a href='#address6/get6to4'>
-            <code>
-              #get6to4<span class='gray'></span>
-            </code>
-            <span class='force-inline'>
-              <p>Return a v6 6to4 address from a v6 v4inv6 address</p>
-
-            </span>
-          </a>
-          <div class='collapser border px2'>
-            <section class='py2 clearfix'>
-              <h2 id='address6/get6to4' class='mt0'>
-                get6to4<span class='gray'></span>
-              </h2>
-              <p>Return a v6 6to4 address from a v6 v4inv6 address</p>
+              <p>The last address in the range given by this address&apos; subnet</p>
             
                   <h4>Returns</h4>
                   <code><code><a href="#address6">Address6</a></code></code>
@@ -669,7 +1501,7 @@
         <div class='collapsible' id='address6/getbits'>
           <a href='#address6/getbits'>
             <code>
-              #getBits<span class='gray'></span>
+              #getBits<span class='gray'>(start, end)</span>
             </code>
             <span class='force-inline'>
               <p>Return the bits in the given range as a BigInteger</p>
@@ -678,11 +1510,29 @@
           </a>
           <div class='collapser border px2'>
             <section class='py2 clearfix'>
+                <div class='right py2'>
+                  <a class='fade font-smaller' href='https://github.com/beaugunderson/ip-address/blob/a051a163ca595da9718e96e61ff3e53633b2a1cf/lib/ipv6.js#L340-L342'><code>lib/ipv6.js</code></a>
+                </div>
               <h2 id='address6/getbits' class='mt0'>
-                getBits<span class='gray'></span>
+                getBits<span class='gray'>(start, end)</span>
               </h2>
               <p>Return the bits in the given range as a BigInteger</p>
             
+                <h4>Parameters</h4>
+                <ul class='suppress-p-margin'>
+                    <li> <strong>start</strong>
+                      :
+                      <span class='force-inline'>
+                        
+                      </span>
+                    </li>
+                    <li> <strong>end</strong>
+                      :
+                      <span class='force-inline'>
+                        
+                      </span>
+                    </li>
+                </ul>
                   <h4>Returns</h4>
                   <code><code>BigInteger</code></code>
                   
@@ -695,7 +1545,7 @@
         <div class='collapsible' id='address6/getbitsbase16'>
           <a href='#address6/getbitsbase16'>
             <code>
-              #getBitsBase16<span class='gray'></span>
+              #getBitsBase16<span class='gray'>(start, end)</span>
             </code>
             <span class='force-inline'>
               <p>Return the bits in the given range as a base-16 string</p>
@@ -704,13 +1554,31 @@
           </a>
           <div class='collapser border px2'>
             <section class='py2 clearfix'>
+                <div class='right py2'>
+                  <a class='fade font-smaller' href='https://github.com/beaugunderson/ip-address/blob/a051a163ca595da9718e96e61ff3e53633b2a1cf/lib/ipv6.js#L360-L368'><code>lib/ipv6.js</code></a>
+                </div>
               <h2 id='address6/getbitsbase16' class='mt0'>
-                getBitsBase16<span class='gray'></span>
+                getBitsBase16<span class='gray'>(start, end)</span>
               </h2>
               <p>Return the bits in the given range as a base-16 string</p>
             
+                <h4>Parameters</h4>
+                <ul class='suppress-p-margin'>
+                    <li> <strong>start</strong>
+                      :
+                      <span class='force-inline'>
+                        
+                      </span>
+                    </li>
+                    <li> <strong>end</strong>
+                      :
+                      <span class='force-inline'>
+                        
+                      </span>
+                    </li>
+                </ul>
                   <h4>Returns</h4>
-                  <code><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></code></code>
+                  <code><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">String</a></code></code>
                   
                   <span class='force-inline'>
                     
@@ -721,7 +1589,7 @@
         <div class='collapsible' id='address6/getbitsbase2'>
           <a href='#address6/getbitsbase2'>
             <code>
-              #getBitsBase2<span class='gray'></span>
+              #getBitsBase2<span class='gray'>(start, end)</span>
             </code>
             <span class='force-inline'>
               <p>Return the bits in the given range as a base-2 string</p>
@@ -730,13 +1598,31 @@
           </a>
           <div class='collapser border px2'>
             <section class='py2 clearfix'>
+                <div class='right py2'>
+                  <a class='fade font-smaller' href='https://github.com/beaugunderson/ip-address/blob/a051a163ca595da9718e96e61ff3e53633b2a1cf/lib/ipv6.js#L350-L352'><code>lib/ipv6.js</code></a>
+                </div>
               <h2 id='address6/getbitsbase2' class='mt0'>
-                getBitsBase2<span class='gray'></span>
+                getBitsBase2<span class='gray'>(start, end)</span>
               </h2>
               <p>Return the bits in the given range as a base-2 string</p>
             
+                <h4>Parameters</h4>
+                <ul class='suppress-p-margin'>
+                    <li> <strong>start</strong>
+                      :
+                      <span class='force-inline'>
+                        
+                      </span>
+                    </li>
+                    <li> <strong>end</strong>
+                      :
+                      <span class='force-inline'>
+                        
+                      </span>
+                    </li>
+                </ul>
                   <h4>Returns</h4>
-                  <code><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></code></code>
+                  <code><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">String</a></code></code>
                   
                   <span class='force-inline'>
                     
@@ -756,13 +1642,16 @@
           </a>
           <div class='collapser border px2'>
             <section class='py2 clearfix'>
+                <div class='right py2'>
+                  <a class='fade font-smaller' href='https://github.com/beaugunderson/ip-address/blob/a051a163ca595da9718e96e61ff3e53633b2a1cf/lib/ipv6.js#L376-L378'><code>lib/ipv6.js</code></a>
+                </div>
               <h2 id='address6/getbitspastsubnet' class='mt0'>
                 getBitsPastSubnet<span class='gray'></span>
               </h2>
               <p>Return the bits that are set past the subnet mask length</p>
             
                   <h4>Returns</h4>
-                  <code><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></code></code>
+                  <code><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">String</a></code></code>
                   
                   <span class='force-inline'>
                     
@@ -782,13 +1671,16 @@
           </a>
           <div class='collapser border px2'>
             <section class='py2 clearfix'>
+                <div class='right py2'>
+                  <a class='fade font-smaller' href='https://github.com/beaugunderson/ip-address/blob/a051a163ca595da9718e96e61ff3e53633b2a1cf/lib/ipv6.js#L307-L316'><code>lib/ipv6.js</code></a>
+                </div>
               <h2 id='address6/getscope' class='mt0'>
                 getScope<span class='gray'></span>
               </h2>
               <p>Return the scope of the address</p>
             
                   <h4>Returns</h4>
-                  <code><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></code></code>
+                  <code><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">String</a></code></code>
                   
                   <span class='force-inline'>
                     
@@ -808,13 +1700,74 @@
           </a>
           <div class='collapser border px2'>
             <section class='py2 clearfix'>
+                <div class='right py2'>
+                  <a class='fade font-smaller' href='https://github.com/beaugunderson/ip-address/blob/a051a163ca595da9718e96e61ff3e53633b2a1cf/lib/ipv6.js#L324-L332'><code>lib/ipv6.js</code></a>
+                </div>
               <h2 id='address6/gettype' class='mt0'>
                 getType<span class='gray'></span>
               </h2>
               <p>Return the type of the address</p>
             
                   <h4>Returns</h4>
-                  <code><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></code></code>
+                  <code><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">String</a></code></code>
+                  
+                  <span class='force-inline'>
+                    
+                  </span>
+            </section>
+          </div>
+        </div>
+        <div class='collapsible' id='address6/inspect6to4'>
+          <a href='#address6/inspect6to4'>
+            <code>
+              #inspect6to4<span class='gray'></span>
+            </code>
+            <span class='force-inline'>
+              <p>Return an object containing the 6to4 properties of the address</p>
+
+            </span>
+          </a>
+          <div class='collapser border px2'>
+            <section class='py2 clearfix'>
+                <div class='right py2'>
+                  <a class='fade font-smaller' href='https://github.com/beaugunderson/ip-address/blob/a051a163ca595da9718e96e61ff3e53633b2a1cf/lib/ipv6.js#L796-L810'><code>lib/ipv6.js</code></a>
+                </div>
+              <h2 id='address6/inspect6to4' class='mt0'>
+                inspect6to4<span class='gray'></span>
+              </h2>
+              <p>Return an object containing the 6to4 properties of the address</p>
+            
+                  <h4>Returns</h4>
+                  <code><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a></code></code>
+                  
+                  <span class='force-inline'>
+                    
+                  </span>
+            </section>
+          </div>
+        </div>
+        <div class='collapsible' id='address6/inspectteredo'>
+          <a href='#address6/inspectteredo'>
+            <code>
+              #inspectTeredo<span class='gray'></span>
+            </code>
+            <span class='force-inline'>
+              <p>Return an object containing the Teredo properties of the address</p>
+
+            </span>
+          </a>
+          <div class='collapser border px2'>
+            <section class='py2 clearfix'>
+                <div class='right py2'>
+                  <a class='fade font-smaller' href='https://github.com/beaugunderson/ip-address/blob/a051a163ca595da9718e96e61ff3e53633b2a1cf/lib/ipv6.js#L730-L784'><code>lib/ipv6.js</code></a>
+                </div>
+              <h2 id='address6/inspectteredo' class='mt0'>
+                inspectTeredo<span class='gray'></span>
+              </h2>
+              <p>Return an object containing the Teredo properties of the address</p>
+            
+                  <h4>Returns</h4>
+                  <code><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a></code></code>
                   
                   <span class='force-inline'>
                     
@@ -834,6 +1787,9 @@
           </a>
           <div class='collapser border px2'>
             <section class='py2 clearfix'>
+                <div class='right py2'>
+                  <a class='fade font-smaller' href='https://github.com/beaugunderson/ip-address/blob/a051a163ca595da9718e96e61ff3e53633b2a1cf/lib/v6/attributes.js#L74-L76'><code>lib/v6/attributes.js</code></a>
+                </div>
               <h2 id='address6/is4' class='mt0'>
                 is4<span class='gray'></span>
               </h2>
@@ -860,6 +1816,9 @@
           </a>
           <div class='collapser border px2'>
             <section class='py2 clearfix'>
+                <div class='right py2'>
+                  <a class='fade font-smaller' href='https://github.com/beaugunderson/ip-address/blob/a051a163ca595da9718e96e61ff3e53633b2a1cf/lib/v6/attributes.js#L94-L96'><code>lib/v6/attributes.js</code></a>
+                </div>
               <h2 id='address6/is6to4' class='mt0'>
                 is6to4<span class='gray'></span>
               </h2>
@@ -886,6 +1845,9 @@
           </a>
           <div class='collapser border px2'>
             <section class='py2 clearfix'>
+                <div class='right py2'>
+                  <a class='fade font-smaller' href='https://github.com/beaugunderson/ip-address/blob/a051a163ca595da9718e96e61ff3e53633b2a1cf/lib/v6/attributes.js#L38-L40'><code>lib/v6/attributes.js</code></a>
+                </div>
               <h2 id='address6/iscanonical' class='mt0'>
                 isCanonical<span class='gray'></span>
               </h2>
@@ -912,6 +1874,9 @@
           </a>
           <div class='collapser border px2'>
             <section class='py2 clearfix'>
+                <div class='right py2'>
+                  <a class='fade font-smaller' href='https://github.com/beaugunderson/ip-address/blob/a051a163ca595da9718e96e61ff3e53633b2a1cf/lib/v6/attributes.js#L30-L30'><code>lib/v6/attributes.js</code></a>
+                </div>
               <h2 id='address6/iscorrect' class='mt0'>
                 isCorrect<span class='gray'></span>
               </h2>
@@ -938,6 +1903,9 @@
           </a>
           <div class='collapser border px2'>
             <section class='py2 clearfix'>
+                <div class='right py2'>
+                  <a class='fade font-smaller' href='https://github.com/beaugunderson/ip-address/blob/a051a163ca595da9718e96e61ff3e53633b2a1cf/lib/v6/attributes.js#L22-L22'><code>lib/v6/attributes.js</code></a>
+                </div>
               <h2 id='address6/isinsubnet' class='mt0'>
                 isInSubnet<span class='gray'></span>
               </h2>
@@ -964,6 +1932,9 @@
           </a>
           <div class='collapser border px2'>
             <section class='py2 clearfix'>
+                <div class='right py2'>
+                  <a class='fade font-smaller' href='https://github.com/beaugunderson/ip-address/blob/a051a163ca595da9718e96e61ff3e53633b2a1cf/lib/v6/attributes.js#L48-L56'><code>lib/v6/attributes.js</code></a>
+                </div>
               <h2 id='address6/islinklocal' class='mt0'>
                 isLinkLocal<span class='gray'></span>
               </h2>
@@ -990,6 +1961,9 @@
           </a>
           <div class='collapser border px2'>
             <section class='py2 clearfix'>
+                <div class='right py2'>
+                  <a class='fade font-smaller' href='https://github.com/beaugunderson/ip-address/blob/a051a163ca595da9718e96e61ff3e53633b2a1cf/lib/v6/attributes.js#L104-L106'><code>lib/v6/attributes.js</code></a>
+                </div>
               <h2 id='address6/isloopback' class='mt0'>
                 isLoopback<span class='gray'></span>
               </h2>
@@ -1016,6 +1990,9 @@
           </a>
           <div class='collapser border px2'>
             <section class='py2 clearfix'>
+                <div class='right py2'>
+                  <a class='fade font-smaller' href='https://github.com/beaugunderson/ip-address/blob/a051a163ca595da9718e96e61ff3e53633b2a1cf/lib/v6/attributes.js#L64-L66'><code>lib/v6/attributes.js</code></a>
+                </div>
               <h2 id='address6/ismulticast' class='mt0'>
                 isMulticast<span class='gray'></span>
               </h2>
@@ -1042,6 +2019,9 @@
           </a>
           <div class='collapser border px2'>
             <section class='py2 clearfix'>
+                <div class='right py2'>
+                  <a class='fade font-smaller' href='https://github.com/beaugunderson/ip-address/blob/a051a163ca595da9718e96e61ff3e53633b2a1cf/lib/v6/attributes.js#L84-L86'><code>lib/v6/attributes.js</code></a>
+                </div>
               <h2 id='address6/isteredo' class='mt0'>
                 isTeredo<span class='gray'></span>
               </h2>
@@ -1068,6 +2048,9 @@
           </a>
           <div class='collapser border px2'>
             <section class='py2 clearfix'>
+                <div class='right py2'>
+                  <a class='fade font-smaller' href='https://github.com/beaugunderson/ip-address/blob/a051a163ca595da9718e96e61ff3e53633b2a1cf/lib/v6/attributes.js#L12-L14'><code>lib/v6/attributes.js</code></a>
+                </div>
               <h2 id='address6/isvalid' class='mt0'>
                 isValid<span class='gray'></span>
               </h2>
@@ -1085,7 +2068,7 @@
         <div class='collapsible' id='address6/mask'>
           <a href='#address6/mask'>
             <code>
-              #mask<span class='gray'>([mask])</span>
+              #mask<span class='gray'>([mask], optionalMask)</span>
             </code>
             <span class='force-inline'>
               <p>Return the first n bits of the address, defaulting to the subnet mask</p>
@@ -1094,8 +2077,11 @@
           </a>
           <div class='collapser border px2'>
             <section class='py2 clearfix'>
+                <div class='right py2'>
+                  <a class='fade font-smaller' href='https://github.com/beaugunderson/ip-address/blob/a051a163ca595da9718e96e61ff3e53633b2a1cf/lib/ipv6.js#L243-L249'><code>lib/ipv6.js</code></a>
+                </div>
               <h2 id='address6/mask' class='mt0'>
-                mask<span class='gray'>([mask])</span>
+                mask<span class='gray'>([mask], optionalMask)</span>
               </h2>
               <p>Return the first n bits of the address, defaulting to the subnet mask</p>
             
@@ -1109,12 +2095,19 @@
             
                       </span>
                     </li>
+                    <li> <strong>optionalMask</strong>
+                      :
+                      <span class='force-inline'>
+                        
+                      </span>
+                    </li>
                 </ul>
                   <h4>Returns</h4>
-                  <code><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></code></code>
-                  
+                  <code><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">String</a></code></code>
+                  :
                   <span class='force-inline'>
-                    
+                    <p>the first n bits of the address as a string</p>
+            
                   </span>
             </section>
           </div>
@@ -1131,16 +2124,20 @@
           </a>
           <div class='collapser border px2'>
             <section class='py2 clearfix'>
+                <div class='right py2'>
+                  <a class='fade font-smaller' href='https://github.com/beaugunderson/ip-address/blob/a051a163ca595da9718e96e61ff3e53633b2a1cf/lib/ipv6.js#L231-L234'><code>lib/ipv6.js</code></a>
+                </div>
               <h2 id='address6/microsofttranscription' class='mt0'>
                 microsoftTranscription<span class='gray'></span>
               </h2>
               <p>Return the Microsoft UNC transcription of the address</p>
             
                   <h4>Returns</h4>
-                  <code><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></code></code>
-                  
+                  <code><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">String</a></code></code>
+                  :
                   <span class='force-inline'>
-                    
+                    <p>the Microsoft UNC transcription of the address</p>
+            
                   </span>
             </section>
           </div>
@@ -1148,7 +2145,7 @@
         <div class='collapsible' id='address6/possiblesubnets'>
           <a href='#address6/possiblesubnets'>
             <code>
-              #possibleSubnets<span class='gray'>([size])</span>
+              #possibleSubnets<span class='gray'>([size], optionalSubnetSize)</span>
             </code>
             <span class='force-inline'>
               <p>Return the number of possible subnets of a given size in the address</p>
@@ -1157,8 +2154,11 @@
           </a>
           <div class='collapser border px2'>
             <section class='py2 clearfix'>
+                <div class='right py2'>
+                  <a class='fade font-smaller' href='https://github.com/beaugunderson/ip-address/blob/a051a163ca595da9718e96e61ff3e53633b2a1cf/lib/ipv6.js#L259-L273'><code>lib/ipv6.js</code></a>
+                </div>
               <h2 id='address6/possiblesubnets' class='mt0'>
-                possibleSubnets<span class='gray'>([size])</span>
+                possibleSubnets<span class='gray'>([size], optionalSubnetSize)</span>
               </h2>
               <p>Return the number of possible subnets of a given size in the address</p>
             
@@ -1172,9 +2172,15 @@
             
                       </span>
                     </li>
+                    <li> <strong>optionalSubnetSize</strong>
+                      :
+                      <span class='force-inline'>
+                        
+                      </span>
+                    </li>
                 </ul>
                   <h4>Returns</h4>
-                  <code><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></code></code>
+                  <code><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">String</a></code></code>
                   
                   <span class='force-inline'>
                     
@@ -1185,7 +2191,7 @@
         <div class='collapsible' id='address6/regularexpression'>
           <a href='#address6/regularexpression'>
             <code>
-              #regularExpression<span class='gray'></span>
+              #regularExpression<span class='gray'>(optionalSubString, optionalSubstring)</span>
             </code>
             <span class='force-inline'>
               <p>Generate a regular expression that can be used to find or validate all
@@ -1195,12 +2201,30 @@ variations of this address.</p>
           </a>
           <div class='collapser border px2'>
             <section class='py2 clearfix'>
+                <div class='right py2'>
+                  <a class='fade font-smaller' href='https://github.com/beaugunderson/ip-address/blob/a051a163ca595da9718e96e61ff3e53633b2a1cf/lib/v6/regular-expressions.js#L150-L152'><code>lib/v6/regular-expressions.js</code></a>
+                </div>
               <h2 id='address6/regularexpression' class='mt0'>
-                regularExpression<span class='gray'></span>
+                regularExpression<span class='gray'>(optionalSubString, optionalSubstring)</span>
               </h2>
               <p>Generate a regular expression that can be used to find or validate all
             variations of this address.</p>
             
+                <h4>Parameters</h4>
+                <ul class='suppress-p-margin'>
+                    <li><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></code> <strong>optionalSubString</strong>
+                      :
+                      <span class='force-inline'>
+                        
+                      </span>
+                    </li>
+                    <li> <strong>optionalSubstring</strong>
+                      :
+                      <span class='force-inline'>
+                        
+                      </span>
+                    </li>
+                </ul>
                   <h4>Returns</h4>
                   <code><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RegExp">RegExp</a></code></code>
                   
@@ -1213,22 +2237,34 @@ variations of this address.</p>
         <div class='collapsible' id='address6/regularexpressionstring'>
           <a href='#address6/regularexpressionstring'>
             <code>
-              #regularExpressionString<span class='gray'></span>
+              #regularExpressionString<span class='gray'>(optionalSubString)</span>
             </code>
             <span class='force-inline'>
               <p>Generate a regular expression string that can be used to find or validate
-all variations of this address.</p>
+all variations of this address</p>
 
             </span>
           </a>
           <div class='collapser border px2'>
             <section class='py2 clearfix'>
+                <div class='right py2'>
+                  <a class='fade font-smaller' href='https://github.com/beaugunderson/ip-address/blob/a051a163ca595da9718e96e61ff3e53633b2a1cf/lib/v6/regular-expressions.js#L100-L140'><code>lib/v6/regular-expressions.js</code></a>
+                </div>
               <h2 id='address6/regularexpressionstring' class='mt0'>
-                regularExpressionString<span class='gray'></span>
+                regularExpressionString<span class='gray'>(optionalSubString)</span>
               </h2>
               <p>Generate a regular expression string that can be used to find or validate
-            all variations of this address.</p>
+            all variations of this address</p>
             
+                <h4>Parameters</h4>
+                <ul class='suppress-p-margin'>
+                    <li><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></code> <strong>optionalSubString</strong>
+                      :
+                      <span class='force-inline'>
+                        
+                      </span>
+                    </li>
+                </ul>
                   <h4>Returns</h4>
                   <code><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></code></code>
                   
@@ -1241,7 +2277,7 @@ all variations of this address.</p>
         <div class='collapsible' id='address6/reverseform'>
           <a href='#address6/reverseform'>
             <code>
-              #reverseForm<span class='gray'></span>
+              #reverseForm<span class='gray'>(options)</span>
             </code>
             <span class='force-inline'>
               <p>Return the reversed ip6.arpa form of the address</p>
@@ -1250,39 +2286,30 @@ all variations of this address.</p>
           </a>
           <div class='collapser border px2'>
             <section class='py2 clearfix'>
+                <div class='right py2'>
+                  <a class='fade font-smaller' href='https://github.com/beaugunderson/ip-address/blob/a051a163ca595da9718e96e61ff3e53633b2a1cf/lib/ipv6.js#L388-L411'><code>lib/ipv6.js</code></a>
+                </div>
               <h2 id='address6/reverseform' class='mt0'>
-                reverseForm<span class='gray'></span>
+                reverseForm<span class='gray'>(options)</span>
               </h2>
               <p>Return the reversed ip6.arpa form of the address</p>
             
+                <h4>Parameters</h4>
+                <ul class='suppress-p-margin'>
+                    <li><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a></code> <strong>options</strong>
+                      :
+                      <span class='force-inline'>
+                        
+                      </span>
+                    </li>
+                      <ul>
+                          <li><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></code> options.omitSuffix
+                            <p>omit the &quot;ip6.arpa&quot; suffix</p>
+            </li>
+                      </ul>
+                </ul>
                   <h4>Returns</h4>
-                  <code><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></code></code>
-                  
-                  <span class='force-inline'>
-                    
-                  </span>
-            </section>
-          </div>
-        </div>
-        <div class='collapsible' id='address6/six2four'>
-          <a href='#address6/six2four'>
-            <code>
-              #six2four<span class='gray'></span>
-            </code>
-            <span class='force-inline'>
-              <p>Return an object containing the 6to4 properties of the address</p>
-
-            </span>
-          </a>
-          <div class='collapser border px2'>
-            <section class='py2 clearfix'>
-              <h2 id='address6/six2four' class='mt0'>
-                six2four<span class='gray'></span>
-              </h2>
-              <p>Return an object containing the 6to4 properties of the address</p>
-            
-                  <h4>Returns</h4>
-                  <code><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a></code></code>
+                  <code><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">String</a></code></code>
                   
                   <span class='force-inline'>
                     
@@ -1296,16 +2323,19 @@ all variations of this address.</p>
               #startAddress<span class='gray'></span>
             </code>
             <span class='force-inline'>
-              <p>The first address in the range given by this address' subnet</p>
+              <p>The first address in the range given by this address&apos; subnet</p>
 
             </span>
           </a>
           <div class='collapser border px2'>
             <section class='py2 clearfix'>
+                <div class='right py2'>
+                  <a class='fade font-smaller' href='https://github.com/beaugunderson/ip-address/blob/a051a163ca595da9718e96e61ff3e53633b2a1cf/lib/ipv6.js#L281-L286'><code>lib/ipv6.js</code></a>
+                </div>
               <h2 id='address6/startaddress' class='mt0'>
                 startAddress<span class='gray'></span>
               </h2>
-              <p>The first address in the range given by this address' subnet</p>
+              <p>The first address in the range given by this address&apos; subnet</p>
             
                   <h4>Returns</h4>
                   <code><code><a href="#address6">Address6</a></code></code>
@@ -1316,25 +2346,89 @@ all variations of this address.</p>
             </section>
           </div>
         </div>
-        <div class='collapsible' id='address6/teredo'>
-          <a href='#address6/teredo'>
+        <div class='collapsible' id='address6/to4'>
+          <a href='#address6/to4'>
             <code>
-              #teredo<span class='gray'></span>
+              #to4<span class='gray'></span>
             </code>
             <span class='force-inline'>
-              <p>Return an object containing the Teredo properties of the address</p>
+              <p>Return the last two groups of this address as an IPv4 address string</p>
 
             </span>
           </a>
           <div class='collapser border px2'>
             <section class='py2 clearfix'>
-              <h2 id='address6/teredo' class='mt0'>
-                teredo<span class='gray'></span>
+                <div class='right py2'>
+                  <a class='fade font-smaller' href='https://github.com/beaugunderson/ip-address/blob/a051a163ca595da9718e96e61ff3e53633b2a1cf/lib/ipv6.js#L688-L693'><code>lib/ipv6.js</code></a>
+                </div>
+              <h2 id='address6/to4' class='mt0'>
+                to4<span class='gray'></span>
               </h2>
-              <p>Return an object containing the Teredo properties of the address</p>
+              <p>Return the last two groups of this address as an IPv4 address string</p>
             
                   <h4>Returns</h4>
-                  <code><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a></code></code>
+                  <code><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">String</a></code></code>
+                  
+                  <span class='force-inline'>
+                    
+                  </span>
+                <h4>Examples</h4>
+            <pre class='overflow-auto'><span class="hljs-keyword">var</span> address = <span class="hljs-keyword">new</span> Address6(<span class="hljs-string">'2001:4860:4001::1825:bf11'</span>);
+            address.to4(); <span class="hljs-comment">// '24.37.191.17'</span></pre>
+            </section>
+          </div>
+        </div>
+        <div class='collapsible' id='address6/to4in6'>
+          <a href='#address6/to4in6'>
+            <code>
+              #to4in6<span class='gray'></span>
+            </code>
+            <span class='force-inline'>
+              <p>Return the v4-in-v6 form of the address</p>
+
+            </span>
+          </a>
+          <div class='collapser border px2'>
+            <section class='py2 clearfix'>
+                <div class='right py2'>
+                  <a class='fade font-smaller' href='https://github.com/beaugunderson/ip-address/blob/a051a163ca595da9718e96e61ff3e53633b2a1cf/lib/ipv6.js#L705-L718'><code>lib/ipv6.js</code></a>
+                </div>
+              <h2 id='address6/to4in6' class='mt0'>
+                to4in6<span class='gray'></span>
+              </h2>
+              <p>Return the v4-in-v6 form of the address</p>
+            
+                  <h4>Returns</h4>
+                  <code><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">String</a></code></code>
+                  
+                  <span class='force-inline'>
+                    
+                  </span>
+            </section>
+          </div>
+        </div>
+        <div class='collapsible' id='address6/to6to4'>
+          <a href='#address6/to6to4'>
+            <code>
+              #to6to4<span class='gray'></span>
+            </code>
+            <span class='force-inline'>
+              <p>Return a v6 6to4 address from a v6 v4inv6 address</p>
+
+            </span>
+          </a>
+          <div class='collapser border px2'>
+            <section class='py2 clearfix'>
+                <div class='right py2'>
+                  <a class='fade font-smaller' href='https://github.com/beaugunderson/ip-address/blob/a051a163ca595da9718e96e61ff3e53633b2a1cf/lib/ipv6.js#L822-L836'><code>lib/ipv6.js</code></a>
+                </div>
+              <h2 id='address6/to6to4' class='mt0'>
+                to6to4<span class='gray'></span>
+              </h2>
+              <p>Return a v6 6to4 address from a v6 v4inv6 address</p>
+            
+                  <h4>Returns</h4>
+                  <code><code><a href="#address6">Address6</a></code></code>
                   
                   <span class='force-inline'>
                     
@@ -1354,6 +2448,9 @@ all variations of this address.</p>
           </a>
           <div class='collapser border px2'>
             <section class='py2 clearfix'>
+                <div class='right py2'>
+                  <a class='fade font-smaller' href='https://github.com/beaugunderson/ip-address/blob/a051a163ca595da9718e96e61ff3e53633b2a1cf/lib/ipv6.js#L848-L850'><code>lib/ipv6.js</code></a>
+                </div>
               <h2 id='address6/tobytearray' class='mt0'>
                 toByteArray<span class='gray'></span>
               </h2>
@@ -1380,6 +2477,9 @@ all variations of this address.</p>
           </a>
           <div class='collapser border px2'>
             <section class='py2 clearfix'>
+                <div class='right py2'>
+                  <a class='fade font-smaller' href='https://github.com/beaugunderson/ip-address/blob/a051a163ca595da9718e96e61ff3e53633b2a1cf/lib/ipv6.js#L862-L864'><code>lib/ipv6.js</code></a>
+                </div>
               <h2 id='address6/tounsignedbytearray' class='mt0'>
                 toUnsignedByteArray<span class='gray'></span>
               </h2>
@@ -1394,61 +2494,185 @@ all variations of this address.</p>
             </section>
           </div>
         </div>
-        <div class='collapsible' id='address6/tov4'>
-          <a href='#address6/tov4'>
-            <code>
-              #tov4<span class='gray'></span>
-            </code>
-            <span class='force-inline'>
-              <p>Return the last two groups of this address as an IPv4 address string</p>
+</section>
+</div><div class='py1'><section class='py2 clearfix'>
+    <div class='right py2'>
+      <a class='fade font-smaller' href='https://github.com/beaugunderson/ip-address/blob/a051a163ca595da9718e96e61ff3e53633b2a1cf/lib/v6/html.js#L59-L107'><code>lib/v6/html.js</code></a>
+    </div>
+  <h2 id='group' class='mt0'>
+    group<span class='gray'></span>
+  </h2>
+  <p>Groups an address</p>
 
-            </span>
-          </a>
-          <div class='collapser border px2'>
-            <section class='py2 clearfix'>
-              <h2 id='address6/tov4' class='mt0'>
-                tov4<span class='gray'></span>
-              </h2>
-              <p>Return the last two groups of this address as an IPv4 address string</p>
+      <h4>Returns</h4>
+      <code><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">String</a></code></code>
+      
+      <span class='force-inline'>
+        
+      </span>
+</section>
+</div><div class='py1'><section class='py2 clearfix'>
+    <div class='right py2'>
+      <a class='fade font-smaller' href='https://github.com/beaugunderson/ip-address/blob/a051a163ca595da9718e96e61ff3e53633b2a1cf/lib/v6/html.js#L10-L18'><code>lib/v6/html.js</code></a>
+    </div>
+  <h2 id='href' class='mt0'>
+    href<span class='gray'>(optionalPort)</span>
+  </h2>
+  
+    <h4>Parameters</h4>
+    <ul class='suppress-p-margin'>
+        <li> <strong>optionalPort</strong>
+          :
+          <span class='force-inline'>
             
-                  <h4>Returns</h4>
-                  <code><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">String</a></code></code>
-                  
-                  <span class='force-inline'>
-                    
-                  </span>
-                <h4>Examples</h4>
-            <pre class='overflow-auto'><span class="hljs-keyword">var</span> address = <span class="hljs-keyword">new</span> Address6(<span class="hljs-string">'2001:4860:4001::1825:bf11'</span>);
-            address.tov4(); <span class="hljs-comment">// '24.37.191.17'</span></pre>
-            </section>
-          </div>
-        </div>
-        <div class='collapsible' id='address6/v4inv6'>
-          <a href='#address6/v4inv6'>
-            <code>
-              #v4inv6<span class='gray'></span>
-            </code>
-            <span class='force-inline'>
-              <p>Return the v4-in-v6 form of the address</p>
+          </span>
+        </li>
+    </ul>
+      <h4>Returns</h4>
+      <code><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">String</a></code></code>
+      :
+      <span class='force-inline'>
+        <p>the address in link form with a default port of 80</p>
 
-            </span>
-          </a>
-          <div class='collapser border px2'>
-            <section class='py2 clearfix'>
-              <h2 id='address6/v4inv6' class='mt0'>
-                v4inv6<span class='gray'></span>
-              </h2>
-              <p>Return the v4-in-v6 form of the address</p>
+      </span>
+</section>
+</div><div class='py1'><section class='py2 clearfix'>
+    <div class='right py2'>
+      <a class='fade font-smaller' href='https://github.com/beaugunderson/ip-address/blob/a051a163ca595da9718e96e61ff3e53633b2a1cf/lib/v6/html.js#L23-L53'><code>lib/v6/html.js</code></a>
+    </div>
+  <h2 id='link' class='mt0'>
+    link<span class='gray'>(options)</span>
+  </h2>
+  
+    <h4>Parameters</h4>
+    <ul class='suppress-p-margin'>
+        <li> <strong>options</strong>
+          :
+          <span class='force-inline'>
             
-                  <h4>Returns</h4>
-                  <code><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></code></code>
-                  
-                  <span class='force-inline'>
-                    
-                  </span>
-            </section>
-          </div>
-        </div>
+          </span>
+        </li>
+    </ul>
+      <h4>Returns</h4>
+      <code><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">String</a></code></code>
+      :
+      <span class='force-inline'>
+        <p>a link suitable for conveying the address via a URL hash</p>
+
+      </span>
+</section>
+</div><div class='py1'><section class='py2 clearfix'>
+    <div class='right py2'>
+      <a class='fade font-smaller' href='https://github.com/beaugunderson/ip-address/blob/a051a163ca595da9718e96e61ff3e53633b2a1cf/lib/v6/helpers.js#L48-L64'><code>lib/v6/helpers.js</code></a>
+    </div>
+  <h2 id='simplegroup' class='mt0'>
+    simpleGroup<span class='gray'>(addressString, offset)</span>
+  </h2>
+  <p>Groups an address</p>
+
+    <h4>Parameters</h4>
+    <ul class='suppress-p-margin'>
+        <li> <strong>addressString</strong>
+          :
+          <span class='force-inline'>
+            
+          </span>
+        </li>
+        <li> <strong>offset</strong>
+          :
+          <span class='force-inline'>
+            
+          </span>
+        </li>
+    </ul>
+      <h4>Returns</h4>
+      <code><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">String</a></code></code>
+      :
+      <span class='force-inline'>
+        <p>a grouped address</p>
+
+      </span>
+</section>
+</div><div class='py1'><section class='py2 clearfix'>
+    <div class='right py2'>
+      <a class='fade font-smaller' href='https://github.com/beaugunderson/ip-address/blob/a051a163ca595da9718e96e61ff3e53633b2a1cf/lib/v6/helpers.js#L15-L27'><code>lib/v6/helpers.js</code></a>
+    </div>
+  <h2 id='spanall' class='mt0'>
+    spanAll<span class='gray'>(s, optionalOffset)</span>
+  </h2>
+  
+    <h4>Parameters</h4>
+    <ul class='suppress-p-margin'>
+        <li> <strong>s</strong>
+          :
+          <span class='force-inline'>
+            
+          </span>
+        </li>
+        <li> <strong>optionalOffset</strong>
+          :
+          <span class='force-inline'>
+            
+          </span>
+        </li>
+    </ul>
+      <h4>Returns</h4>
+      <code><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">String</a></code></code>
+      :
+      <span class='force-inline'>
+        <p>the string with each character contained in a <span></p>
+
+      </span>
+</section>
+</div><div class='py1'><section class='py2 clearfix'>
+    <div class='right py2'>
+      <a class='fade font-smaller' href='https://github.com/beaugunderson/ip-address/blob/a051a163ca595da9718e96e61ff3e53633b2a1cf/lib/v6/helpers.js#L36-L42'><code>lib/v6/helpers.js</code></a>
+    </div>
+  <h2 id='spanleadingzeroes' class='mt0'>
+    spanLeadingZeroes<span class='gray'>(address)</span>
+  </h2>
+  
+    <h4>Parameters</h4>
+    <ul class='suppress-p-margin'>
+        <li> <strong>address</strong>
+          :
+          <span class='force-inline'>
+            
+          </span>
+        </li>
+    </ul>
+      <h4>Returns</h4>
+      <code><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">String</a></code></code>
+      :
+      <span class='force-inline'>
+        <p>the string with leading zeroes contained in a <span></p>
+
+      </span>
+</section>
+</div><div class='py1'><section class='py2 clearfix'>
+    <div class='right py2'>
+      <a class='fade font-smaller' href='https://github.com/beaugunderson/ip-address/blob/a051a163ca595da9718e96e61ff3e53633b2a1cf/lib/v6/helpers.js#L8-L10'><code>lib/v6/helpers.js</code></a>
+    </div>
+  <h2 id='spanallzeroes' class='mt0'>
+    spanAllZeroes<span class='gray'>(s)</span>
+  </h2>
+  
+    <h4>Parameters</h4>
+    <ul class='suppress-p-margin'>
+        <li> <strong>s</strong>
+          :
+          <span class='force-inline'>
+            
+          </span>
+        </li>
+    </ul>
+      <h4>Returns</h4>
+      <code><code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">String</a></code></code>
+      :
+      <span class='force-inline'>
+        <p>the string with all zeroes contained in a <span></p>
+
+      </span>
 </section>
 </div>
         </div>
