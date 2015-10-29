@@ -34,7 +34,7 @@ describe('v6', function () {
       should.equal(topic.canonicalForm(), null);
       should.equal(topic.decimal(), null);
       should.equal(topic.bigInteger(), null);
-      should.equal(topic.get6to4(), null);
+      should.equal(topic.to6to4(), null);
 
       topic.isTeredo().should.equal(false);
     });
@@ -253,7 +253,7 @@ describe('v6', function () {
     });
 
     it('contains valid Teredo information', function () {
-      var teredo = topic.teredo();
+      var teredo = topic.inspectTeredo();
 
       should.equal(teredo.prefix, '2001:0000');
       should.equal(teredo.server4, '206.73.118.1');
@@ -271,10 +271,10 @@ describe('v6', function () {
     });
 
     it('contains valid 6to4 information', function () {
-      var six2four = topic.six2four();
+      var sixToFourProperties = topic.inspect6to4();
 
-      should.equal(six2four.prefix, '2002');
-      should.equal(six2four.gateway, '206.73.118.1');
+      should.equal(sixToFourProperties.prefix, '2002');
+      should.equal(sixToFourProperties.gateway, '206.73.118.1');
     });
   });
 
@@ -298,7 +298,7 @@ describe('v6', function () {
         should.equal(topic.correctForm(), '2001:db8::1:0:0:1');
         should.equal(topic.canonicalForm(),
           '2001:0db8:0000:0000:0001:0000:0000:0001');
-        should.equal(topic.v4inv6(), '2001:db8::1:0:0.0.0.1');
+        should.equal(topic.to4in6(), '2001:db8::1:0:0.0.0.1');
         should.equal(topic.decimal(),
           '08193:03512:00000:00000:00001:00000:00000:00001');
         should.equal(topic.binaryZeroPad(),
@@ -314,15 +314,15 @@ describe('v6', function () {
     it('should parse correctly', function () {
       expect(obj.valid).to.equal(true);
       expect(obj.correctForm()).to.equal('::ffff:c0a8:1');
-      expect(obj.v4inv6()).to.equal('::ffff:192.168.0.1');
+      expect(obj.to4in6()).to.equal('::ffff:192.168.0.1');
     });
 
     it('should generate a 6to4 address', function () {
-      expect(obj.get6to4().correctForm()).to.equal('2002:c0a8:1::');
+      expect(obj.to6to4().correctForm()).to.equal('2002:c0a8:1::');
     });
 
     it('should generate a v4 address', function () {
-      expect(obj.tov4().correctForm()).to.equal('192.168.0.1');
+      expect(obj.to4().correctForm()).to.equal('192.168.0.1');
     });
   });
 
