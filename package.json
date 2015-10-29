@@ -7,13 +7,13 @@
     "browser",
     "validation"
   ],
-  "version": "4.2.0",
+  "version": "5.0.0",
   "author": "Beau Gunderson <beau@beaugunderson.com> (https://beaugunderson.com/)",
   "license": "MIT",
   "main": "index.js",
   "scripts": {
     "test": "mocha -R spec",
-    "docs": "documentation --output docs --format html ./index.js"
+    "docs": "documentation --github --output docs --format html ./index.js"
   },
   "bin": {
     "ipv6": "bin/ipv6.js",
