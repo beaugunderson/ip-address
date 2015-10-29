@@ -25,7 +25,7 @@ addresses in JavaScript.
 
 Deprecation warnings are in place for all of these methods.
 
-### Documentations
+### Documentation
 
 Documentation is available at [ip-address.js.org](http://ip-address.js.org/).
 
