@@ -1,5 +1,5 @@
 [![travis]](http://travis-ci.org/beaugunderson/ip-address)
-[![coverage]](https://coveralls.io/r/beaugunderson/ip-address?branch=master)
+[![codecov.io](https://codecov.io/github/beaugunderson/ip-address/coverage.svg?branch=master)](https://codecov.io/github/beaugunderson/ip-address?branch=master)
 [![downloads]](https://www.npmjs.com/package/ip-address)
 [![version]](https://www.npmjs.com/package/ip-address)
 
