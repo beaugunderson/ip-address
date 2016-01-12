@@ -44,6 +44,7 @@ describe('v6', function () {
     var topic = new Address6('::/0');
 
     it('gets the correct reverse from', function () {
+      topic.reverseForm({omitSuffix: true}).should.equal('');
       topic.reverseForm().should.equal('ip6.arpa.');
     });
   });
@@ -98,6 +99,9 @@ describe('v6', function () {
     });
 
     it('gets the correct reverse from', function () {
+      topic.reverseForm({omitSuffix: true})
+        .should.equal('d.0.0.0.c.0.0.0.b.0.0.0.a.0.0.0');
+
       topic.reverseForm()
         .should.equal('d.0.0.0.c.0.0.0.b.0.0.0.a.0.0.0.ip6.arpa.');
     });
