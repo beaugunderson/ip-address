@@ -312,6 +312,16 @@ describe('v6', function () {
     });
   });
 
+  describe('to4in6', function () {
+    it('should produce a valid 4in6 address', function () {
+      var topic1 = new Address6('1:2:3:4:5:6:7:8');
+      var topic2 = new Address6('1:2:3:4::7:8');
+
+      topic1.to4in6().should.equal('1:2:3:4:5:6:0.7.0.8');
+      topic2.to4in6().should.equal('1:2:3:4::0.7.0.8');
+    });
+  });
+
   describe('Address from an IPv4 address', function () {
     var obj = Address6.fromAddress4('192.168.0.1');
 
@@ -530,6 +540,22 @@ describe('v6', function () {
                         '<span class="digit value-0 position-4">' +
                           '<span class="zero">0</span></span>' +
                         '<span class="digit value-0 position-5">' +
+                          '<span class="zero">0</span></span>');
+      });
+
+      it('should span leading zeroes with offset', function () {
+        var topic = v6.helpers.spanAll('001100', 1);
+
+        topic
+          .should.equal('<span class="digit value-0 position-1">' +
+                          '<span class="zero">0</span></span>' +
+                        '<span class="digit value-0 position-2">' +
+                          '<span class="zero">0</span></span>' +
+                        '<span class="digit value-1 position-3">1</span>' +
+                        '<span class="digit value-1 position-4">1</span>' +
+                        '<span class="digit value-0 position-5">' +
+                          '<span class="zero">0</span></span>' +
+                        '<span class="digit value-0 position-6">' +
                           '<span class="zero">0</span></span>');
       });
     });
