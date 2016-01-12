@@ -1,6 +1,6 @@
 'use strict';
 
-var sprintf = require('sprintf').sprintf;
+var sprintf = require('sprintf-js').sprintf;
 var should = require('chai').should();
 
 var Address4 = require('../lib/ipv4.js');

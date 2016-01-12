@@ -4,7 +4,7 @@
 
 var v6 = require('..').v6;
 
-var sprintf = require('sprintf').sprintf;
+var sprintf = require('sprintf-js').sprintf;
 var cli = require('cli');
 var cliff = require('cliff');
 

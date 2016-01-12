@@ -32,7 +32,7 @@
     "jsbn": "0.0.0",
     "lodash.find": "^3.2.1",
     "lodash.merge": "^3.3.2",
-    "sprintf": "0.1.x"
+    "sprintf-js": "^1.0.3"
   },
   "devDependencies": {
     "chai": "^3.3.0",
