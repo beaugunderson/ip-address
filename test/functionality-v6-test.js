@@ -5,7 +5,7 @@ var chai = require('chai');
 var expect = chai.expect;
 var should = chai.should();
 
-var BigInteger = require('jsbn');
+var BigInteger = require('jsbn').BigInteger;
 var sprintf = require('sprintf-js').sprintf;
 
 var Address6 = require('../lib/ipv6.js');
