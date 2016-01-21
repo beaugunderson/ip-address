@@ -7,7 +7,7 @@
     "browser",
     "validation"
   ],
-  "version": "5.4.1",
+  "version": "5.5.0",
   "author": "Beau Gunderson <beau@beaugunderson.com> (https://beaugunderson.com/)",
   "license": "MIT",
   "main": "index.js",
