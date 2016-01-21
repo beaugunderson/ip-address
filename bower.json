@@ -5,7 +5,7 @@
   "dependencies": {
     "sprintf": "~1.0.3",
     "jsbn-amd": "",
-    "bower": "4.0.0-amd"
+    "lodash": "4.0.0-amd"
   },
   "authors": [
     "Beau Gunderson <beau@beaugunderson.com> (https://beaugunderson.com/)"
