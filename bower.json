@@ -1,0 +1,28 @@
+{
+  "name": "ip-address",
+  "description": "A library for parsing IPv6 and IPv4 IP addresses in node and the browser.",
+  "main": "index.js",
+  "dependencies": {
+    "sprintf": "~1.0.3",
+    "jsbn-amd": ""
+  },
+  "authors": [
+    "Beau Gunderson <beau@beaugunderson.com> (https://beaugunderson.com/)"
+  ],
+  "license": "MIT",
+  "keywords": [
+    "ipv6",
+    "ipv4",
+    "browser",
+    "validation"
+  ],
+  "homepage": "https://github.com/beaugunderson/ip-address",
+  "moduleType": [],
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
