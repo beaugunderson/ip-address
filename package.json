@@ -10,10 +10,11 @@
   "version": "5.6.0",
   "author": "Beau Gunderson <beau@beaugunderson.com> (https://beaugunderson.com/)",
   "license": "MIT",
-  "main": "index.js",
+  "main": "ip-address.js",
   "scripts": {
     "test": "mocha -R spec",
-    "docs": "documentation --github --output docs --format html ./index.js"
+    "docs": "documentation --github --output docs --format html ./ip-address.js",
+    "prepublish": "browserify ./ip-address-globals.js > ./dist/ip-address-globals.js"
   },
   "bin": {
     "ipv6": "bin/ipv6.js",
@@ -36,6 +37,7 @@
     "sprintf-js": "^1.0.3"
   },
   "devDependencies": {
+    "browserify": "^13.0.0",
     "chai": "^3.4.1",
     "codecov.io": "^0.1.6",
     "documentation": "^3.0.4",
