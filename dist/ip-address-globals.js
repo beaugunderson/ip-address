@@ -21,21 +21,6 @@ exports.v6 = {
 },{"./lib/ipv4.js":4,"./lib/ipv6.js":5,"./lib/v6/helpers.js":9}],3:[function(require,module,exports){
 'use strict';
 
-var repeatString = exports.repeatString = function (s, n) {
-  var result = '';
-  var i;
-
-  for (i = 0; i < n; i++) {
-    result += s;
-  }
-
-  return result;
-};
-
-exports.zeroPad = function (s, n) {
-  return String(repeatString(0, n) + s).slice(n * -1);
-};
-
 // A wrapper function that returns false if the address is not valid; used to
 // avoid boilerplate checks for `if (!this.valid) { return false; }`
 var falseIfInvalid = exports.falseIfInvalid = function (fn) {
@@ -79,6 +64,8 @@ exports.isCorrect = function (defaultBits) {
 
 var BigInteger = require('jsbn').BigInteger;
 var common = require('./common.js');
+var padStart = require('lodash.padstart');
+var repeat = require('lodash.repeat');
 var sprintf = require('sprintf-js').sprintf;
 var util = require('util');
 
@@ -174,7 +161,7 @@ Address4.prototype.isCorrect = common.isCorrect(constants.BITS);
  * @returns {Address4}
  */
 Address4.fromHex = function (hex) {
-  var padded = common.zeroPad(hex.replace(/:/g, ''), 8);
+  var padded = padStart(hex.replace(/:/g, ''), 8, '0');
   var groups = [];
   var i;
 
@@ -272,7 +259,7 @@ Address4.prototype.bigInteger = function () {
  */
 Address4.prototype.startAddress = function () {
   var startAddress = new BigInteger(this.mask() +
-    common.repeatString(0, constants.BITS - this.subnetMask), 2);
+    repeat(0, constants.BITS - this.subnetMask), 2);
 
   return Address4.fromBigInteger(startAddress);
 };
@@ -286,7 +273,7 @@ Address4.prototype.startAddress = function () {
  */
 Address4.prototype.endAddress = function () {
   var endAddress = new BigInteger(this.mask() +
-    common.repeatString(1, constants.BITS - this.subnetMask), 2);
+    repeat(1, constants.BITS - this.subnetMask), 2);
 
   return Address4.fromBigInteger(endAddress);
 };
@@ -342,19 +329,20 @@ Address4.prototype.isInSubnet = common.isInSubnet;
  * @returns {string}
  */
 Address4.prototype.binaryZeroPad = function () {
-  return common.zeroPad(this.bigInteger().toString(2), constants.BITS);
+  return padStart(this.bigInteger().toString(2), constants.BITS, '0');
 };
 
 module.exports = Address4;
 
-},{"./common.js":3,"./v4/constants.js":6,"jsbn":13,"sprintf-js":36,"util":38}],5:[function(require,module,exports){
+},{"./common.js":3,"./v4/constants.js":6,"jsbn":13,"lodash.padstart":33,"lodash.repeat":34,"sprintf-js":38,"util":40}],5:[function(require,module,exports){
 'use strict';
 
 var BigInteger = require('jsbn').BigInteger;
-var common = require('./common.js');
 var find = require('lodash.find');
 var max = require('lodash.max');
 var merge = require('lodash.merge');
+var padStart = require('lodash.padstart');
+var repeat = require('lodash.repeat');
 var sprintf = require('sprintf-js').sprintf;
 var util = require('util');
 
@@ -457,7 +445,7 @@ merge(Address6.prototype, require('./v6/regular-expressions.js'));
  * address.correctForm(); // '::e8:d4a5:1000'
  */
 Address6.fromBigInteger = function (bigInteger) {
-  var hex = common.zeroPad(bigInteger.toString(16), 32);
+  var hex = padStart(bigInteger.toString(16), 32, '0');
   var groups = [];
   var i;
 
@@ -631,7 +619,7 @@ Address6.prototype.possibleSubnets = function (optionalSubnetSize) {
  */
 Address6.prototype.startAddress = function () {
   var startAddress = new BigInteger(this.mask() +
-    common.repeatString(0, constants6.BITS - this.subnetMask), 2);
+    repeat(0, constants6.BITS - this.subnetMask), 2);
 
   return Address6.fromBigInteger(startAddress);
 };
@@ -644,7 +632,7 @@ Address6.prototype.startAddress = function () {
  */
 Address6.prototype.endAddress = function () {
   var endAddress = new BigInteger(this.mask() +
-    common.repeatString(1, constants6.BITS - this.subnetMask), 2);
+    repeat(1, constants6.BITS - this.subnetMask), 2);
 
   return Address6.fromBigInteger(endAddress);
 };
@@ -715,7 +703,7 @@ Address6.prototype.getBitsBase16 = function (start, end) {
     return null;
   }
 
-  return common.zeroPad(this.getBits(start, end).toString(16), length / 4);
+  return padStart(this.getBits(start, end).toString(16), length / 4, '0');
 };
 
 /**
@@ -843,7 +831,7 @@ Address6.prototype.correctForm = function () {
  * //  0000000000000000000000000000000000000000000000000001000000010001'
  */
 Address6.prototype.binaryZeroPad = function () {
-  return common.zeroPad(this.bigInteger().toString(2), constants6.BITS);
+  return padStart(this.bigInteger().toString(2), constants6.BITS, '0');
 };
 
 // TODO: Improve the semantics of this helper function
@@ -1249,7 +1237,7 @@ Address6.fromUnsignedByteArray = function (bytes) {
 
 module.exports = Address6;
 
-},{"./common.js":3,"./ipv4.js":4,"./v4/constants.js":6,"./v6/attributes.js":7,"./v6/constants.js":8,"./v6/html.js":10,"./v6/regular-expressions.js":11,"jsbn":13,"lodash.find":25,"lodash.max":31,"lodash.merge":32,"sprintf-js":36,"util":38}],6:[function(require,module,exports){
+},{"./ipv4.js":4,"./v4/constants.js":6,"./v6/attributes.js":7,"./v6/constants.js":8,"./v6/html.js":10,"./v6/regular-expressions.js":11,"jsbn":13,"lodash.find":25,"lodash.max":31,"lodash.merge":32,"lodash.padstart":33,"lodash.repeat":34,"sprintf-js":38,"util":40}],6:[function(require,module,exports){
 exports.BITS = 32;
 exports.GROUPS = 4;
 
@@ -1512,7 +1500,7 @@ exports.simpleGroup = function (addressString, offset) {
   }).join(':');
 };
 
-},{"sprintf-js":36}],10:[function(require,module,exports){
+},{"sprintf-js":38}],10:[function(require,module,exports){
 'use strict';
 
 var constants4 = require('../v4/constants.js');
@@ -1621,7 +1609,7 @@ exports.group = function () {
   return output.join(':');
 };
 
-},{"../v4/constants.js":6,"./helpers.js":9,"sprintf-js":36}],11:[function(require,module,exports){
+},{"../v4/constants.js":6,"./helpers.js":9,"sprintf-js":38}],11:[function(require,module,exports){
 'use strict';
 
 var sprintf = require('sprintf-js').sprintf;
@@ -1775,7 +1763,7 @@ exports.regularExpression = function (optionalSubstring) {
   return new RegExp(this.regularExpressionString(optionalSubstring), 'i');
 };
 
-},{"./constants.js":8,"sprintf-js":36}],12:[function(require,module,exports){
+},{"./constants.js":8,"sprintf-js":38}],12:[function(require,module,exports){
 if (typeof Object.create === 'function') {
   // implementation from standard node.js 'util' module
   module.exports = function inherits(ctor, superCtor) {
@@ -5639,7 +5627,7 @@ function property(path) {
 module.exports = find;
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"lodash._baseeach":16,"lodash._basefind":17,"lodash._basefindindex":18,"lodash._baseisequal":20,"lodash._baseismatch":21,"lodash.get":26,"lodash.hasin":27,"lodash.topairs":34}],26:[function(require,module,exports){
+},{"lodash._baseeach":16,"lodash._basefind":17,"lodash._basefindindex":18,"lodash._baseisequal":20,"lodash._baseismatch":21,"lodash.get":26,"lodash.hasin":27,"lodash.topairs":36}],26:[function(require,module,exports){
 (function (global){
 /**
  * lodash 4.0.0 (Custom Build) <https://lodash.com/>
@@ -8725,7 +8713,699 @@ var merge = createAssigner(function(object, source) {
 module.exports = merge;
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"lodash._arrayeach":14,"lodash._basefor":19,"lodash._stack":24,"lodash.isplainobject":28,"lodash.keys":29,"lodash.keysin":30,"lodash.rest":33}],33:[function(require,module,exports){
+},{"lodash._arrayeach":14,"lodash._basefor":19,"lodash._stack":24,"lodash.isplainobject":28,"lodash.keys":29,"lodash.keysin":30,"lodash.rest":35}],33:[function(require,module,exports){
+(function (global){
+/**
+ * lodash 4.0.1 (Custom Build) <https://lodash.com/>
+ * Build: `lodash modularize exports="npm" -o ./`
+ * Copyright 2012-2016 The Dojo Foundation <http://dojofoundation.org/>
+ * Based on Underscore.js 1.8.3 <http://underscorejs.org/LICENSE>
+ * Copyright 2009-2016 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
+ * Available under MIT license <https://lodash.com/license>
+ */
+var repeat = require('lodash.repeat');
+
+/** Used as references for various `Number` constants. */
+var INFINITY = 1 / 0,
+    MAX_INTEGER = 1.7976931348623157e+308,
+    NAN = 0 / 0;
+
+/** `Object#toString` result references. */
+var funcTag = '[object Function]',
+    genTag = '[object GeneratorFunction]',
+    symbolTag = '[object Symbol]';
+
+/** Used to match leading and trailing whitespace. */
+var reTrim = /^\s+|\s+$/g;
+
+/** Used to detect bad signed hexadecimal string values. */
+var reIsBadHex = /^[-+]0x[0-9a-f]+$/i;
+
+/** Used to detect binary string values. */
+var reIsBinary = /^0b[01]+$/i;
+
+/** Used to detect octal string values. */
+var reIsOctal = /^0o[0-7]+$/i;
+
+/** Used to compose unicode character classes. */
+var rsAstralRange = '\\ud800-\\udfff',
+    rsComboMarksRange = '\\u0300-\\u036f\\ufe20-\\ufe23',
+    rsComboSymbolsRange = '\\u20d0-\\u20f0',
+    rsVarRange = '\\ufe0e\\ufe0f';
+
+/** Used to compose unicode capture groups. */
+var rsAstral = '[' + rsAstralRange + ']',
+    rsCombo = '[' + rsComboMarksRange + rsComboSymbolsRange + ']',
+    rsFitz = '\\ud83c[\\udffb-\\udfff]',
+    rsModifier = '(?:' + rsCombo + '|' + rsFitz + ')',
+    rsNonAstral = '[^' + rsAstralRange + ']',
+    rsRegional = '(?:\\ud83c[\\udde6-\\uddff]){2}',
+    rsSurrPair = '[\\ud800-\\udbff][\\udc00-\\udfff]',
+    rsZWJ = '\\u200d';
+
+/** Used to compose unicode regexes. */
+var reOptMod = rsModifier + '?',
+    rsOptVar = '[' + rsVarRange + ']?',
+    rsOptJoin = '(?:' + rsZWJ + '(?:' + [rsNonAstral, rsRegional, rsSurrPair].join('|') + ')' + rsOptVar + reOptMod + ')*',
+    rsSeq = rsOptVar + reOptMod + rsOptJoin,
+    rsSymbol = '(?:' + [rsNonAstral + rsCombo + '?', rsCombo, rsRegional, rsSurrPair, rsAstral].join('|') + ')';
+
+/** Used to match [string symbols](https://mathiasbynens.be/notes/javascript-unicode). */
+var reComplexSymbol = RegExp(rsFitz + '(?=' + rsFitz + ')|' + rsSymbol + rsSeq, 'g');
+
+/** Used to detect strings with [zero-width joiners or code points from the astral planes](http://eev.ee/blog/2015/09/12/dark-corners-of-unicode/). */
+var reHasComplexSymbol = RegExp('[' + rsZWJ + rsAstralRange  + rsComboMarksRange + rsComboSymbolsRange + rsVarRange + ']');
+
+/** Built-in method references without a dependency on `global`. */
+var freeParseInt = parseInt;
+
+/**
+ * Gets the number of symbols in `string`.
+ *
+ * @private
+ * @param {string} string The string to inspect.
+ * @returns {number} Returns the string size.
+ */
+function stringSize(string) {
+  if (!(string && reHasComplexSymbol.test(string))) {
+    return string.length;
+  }
+  var result = reComplexSymbol.lastIndex = 0;
+  while (reComplexSymbol.test(string)) {
+    result++;
+  }
+  return result;
+}
+
+/**
+ * Converts `string` to an array.
+ *
+ * @private
+ * @param {string} string The string to convert.
+ * @returns {Array} Returns the converted array.
+ */
+function stringToArray(string) {
+  return string.match(reComplexSymbol);
+}
+
+/** Used for built-in method references. */
+var objectProto = global.Object.prototype;
+
+/**
+ * Used to resolve the [`toStringTag`](http://ecma-international.org/ecma-262/6.0/#sec-object.prototype.tostring)
+ * of values.
+ */
+var objectToString = objectProto.toString;
+
+/** Built-in value references. */
+var Symbol = global.Symbol;
+
+/* Built-in method references for those with the same name as other `lodash` methods. */
+var nativeCeil = Math.ceil;
+
+/** Used to convert symbols to primitives and strings. */
+var symbolProto = Symbol ? Symbol.prototype : undefined,
+    symbolToString = Symbol ? symbolProto.toString : undefined;
+
+/**
+ * Creates the padding for `string` based on `length`. The `chars` string
+ * is truncated if the number of characters exceeds `length`.
+ *
+ * @private
+ * @param {string} string The string to create padding for.
+ * @param {number} [length=0] The padding length.
+ * @param {string} [chars=' '] The string used as padding.
+ * @returns {string} Returns the padding for `string`.
+ */
+function createPadding(string, length, chars) {
+  length = toInteger(length);
+
+  var strLength = stringSize(string);
+  if (!length || strLength >= length) {
+    return '';
+  }
+  var padLength = length - strLength;
+  chars = chars === undefined ? ' ' : (chars + '');
+
+  var result = repeat(chars, nativeCeil(padLength / stringSize(chars)));
+  return reHasComplexSymbol.test(chars)
+    ? stringToArray(result).slice(0, padLength).join('')
+    : result.slice(0, padLength);
+}
+
+/**
+ * Checks if `value` is classified as a `Function` object.
+ *
+ * @static
+ * @memberOf _
+ * @category Lang
+ * @param {*} value The value to check.
+ * @returns {boolean} Returns `true` if `value` is correctly classified, else `false`.
+ * @example
+ *
+ * _.isFunction(_);
+ * // => true
+ *
+ * _.isFunction(/abc/);
+ * // => false
+ */
+function isFunction(value) {
+  // The use of `Object#toString` avoids issues with the `typeof` operator
+  // in Safari 8 which returns 'object' for typed array constructors, and
+  // PhantomJS 1.9 which returns 'function' for `NodeList` instances.
+  var tag = isObject(value) ? objectToString.call(value) : '';
+  return tag == funcTag || tag == genTag;
+}
+
+/**
+ * Checks if `value` is the [language type](https://es5.github.io/#x8) of `Object`.
+ * (e.g. arrays, functions, objects, regexes, `new Number(0)`, and `new String('')`)
+ *
+ * @static
+ * @memberOf _
+ * @category Lang
+ * @param {*} value The value to check.
+ * @returns {boolean} Returns `true` if `value` is an object, else `false`.
+ * @example
+ *
+ * _.isObject({});
+ * // => true
+ *
+ * _.isObject([1, 2, 3]);
+ * // => true
+ *
+ * _.isObject(_.noop);
+ * // => true
+ *
+ * _.isObject(null);
+ * // => false
+ */
+function isObject(value) {
+  // Avoid a V8 JIT bug in Chrome 19-20.
+  // See https://code.google.com/p/v8/issues/detail?id=2291 for more details.
+  var type = typeof value;
+  return !!value && (type == 'object' || type == 'function');
+}
+
+/**
+ * Checks if `value` is object-like. A value is object-like if it's not `null`
+ * and has a `typeof` result of "object".
+ *
+ * @static
+ * @memberOf _
+ * @category Lang
+ * @param {*} value The value to check.
+ * @returns {boolean} Returns `true` if `value` is object-like, else `false`.
+ * @example
+ *
+ * _.isObjectLike({});
+ * // => true
+ *
+ * _.isObjectLike([1, 2, 3]);
+ * // => true
+ *
+ * _.isObjectLike(_.noop);
+ * // => false
+ *
+ * _.isObjectLike(null);
+ * // => false
+ */
+function isObjectLike(value) {
+  return !!value && typeof value == 'object';
+}
+
+/**
+ * Checks if `value` is classified as a `Symbol` primitive or object.
+ *
+ * @static
+ * @memberOf _
+ * @category Lang
+ * @param {*} value The value to check.
+ * @returns {boolean} Returns `true` if `value` is correctly classified, else `false`.
+ * @example
+ *
+ * _.isSymbol(Symbol.iterator);
+ * // => true
+ *
+ * _.isSymbol('abc');
+ * // => false
+ */
+function isSymbol(value) {
+  return typeof value == 'symbol' ||
+    (isObjectLike(value) && objectToString.call(value) == symbolTag);
+}
+
+/**
+ * Converts `value` to an integer.
+ *
+ * **Note:** This function is loosely based on [`ToInteger`](http://www.ecma-international.org/ecma-262/6.0/#sec-tointeger).
+ *
+ * @static
+ * @memberOf _
+ * @category Lang
+ * @param {*} value The value to convert.
+ * @returns {number} Returns the converted integer.
+ * @example
+ *
+ * _.toInteger(3);
+ * // => 3
+ *
+ * _.toInteger(Number.MIN_VALUE);
+ * // => 0
+ *
+ * _.toInteger(Infinity);
+ * // => 1.7976931348623157e+308
+ *
+ * _.toInteger('3');
+ * // => 3
+ */
+function toInteger(value) {
+  if (!value) {
+    return value === 0 ? value : 0;
+  }
+  value = toNumber(value);
+  if (value === INFINITY || value === -INFINITY) {
+    var sign = (value < 0 ? -1 : 1);
+    return sign * MAX_INTEGER;
+  }
+  var remainder = value % 1;
+  return value === value ? (remainder ? value - remainder : value) : 0;
+}
+
+/**
+ * Converts `value` to a number.
+ *
+ * @static
+ * @memberOf _
+ * @category Lang
+ * @param {*} value The value to process.
+ * @returns {number} Returns the number.
+ * @example
+ *
+ * _.toNumber(3);
+ * // => 3
+ *
+ * _.toNumber(Number.MIN_VALUE);
+ * // => 5e-324
+ *
+ * _.toNumber(Infinity);
+ * // => Infinity
+ *
+ * _.toNumber('3');
+ * // => 3
+ */
+function toNumber(value) {
+  if (isObject(value)) {
+    var other = isFunction(value.valueOf) ? value.valueOf() : value;
+    value = isObject(other) ? (other + '') : other;
+  }
+  if (typeof value != 'string') {
+    return value === 0 ? value : +value;
+  }
+  value = value.replace(reTrim, '');
+  var isBinary = reIsBinary.test(value);
+  return (isBinary || reIsOctal.test(value))
+    ? freeParseInt(value.slice(2), isBinary ? 2 : 8)
+    : (reIsBadHex.test(value) ? NAN : +value);
+}
+
+/**
+ * Converts `value` to a string if it's not one. An empty string is returned
+ * for `null` and `undefined` values. The sign of `-0` is preserved.
+ *
+ * @static
+ * @memberOf _
+ * @category Lang
+ * @param {*} value The value to process.
+ * @returns {string} Returns the string.
+ * @example
+ *
+ * _.toString(null);
+ * // => ''
+ *
+ * _.toString(-0);
+ * // => '-0'
+ *
+ * _.toString([1, 2, 3]);
+ * // => '1,2,3'
+ */
+function toString(value) {
+  // Exit early for strings to avoid a performance hit in some environments.
+  if (typeof value == 'string') {
+    return value;
+  }
+  if (value == null) {
+    return '';
+  }
+  if (isSymbol(value)) {
+    return Symbol ? symbolToString.call(value) : '';
+  }
+  var result = (value + '');
+  return (result == '0' && (1 / value) == -INFINITY) ? '-0' : result;
+}
+
+/**
+ * Pads `string` on the left side if it's shorter than `length`. Padding
+ * characters are truncated if they exceed `length`.
+ *
+ * @static
+ * @memberOf _
+ * @category String
+ * @param {string} [string=''] The string to pad.
+ * @param {number} [length=0] The padding length.
+ * @param {string} [chars=' '] The string used as padding.
+ * @returns {string} Returns the padded string.
+ * @example
+ *
+ * _.padStart('abc', 6);
+ * // => '   abc'
+ *
+ * _.padStart('abc', 6, '_-');
+ * // => '_-_abc'
+ *
+ * _.padStart('abc', 3);
+ * // => 'abc'
+ */
+function padStart(string, length, chars) {
+  string = toString(string);
+  return createPadding(string, length, chars) + string;
+}
+
+module.exports = padStart;
+
+}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
+},{"lodash.repeat":34}],34:[function(require,module,exports){
+(function (global){
+/**
+ * lodash 3.1.1 (Custom Build) <https://lodash.com/>
+ * Build: `lodash modularize exports="npm" -o ./`
+ * Copyright 2012-2016 The Dojo Foundation <http://dojofoundation.org/>
+ * Based on Underscore.js 1.8.3 <http://underscorejs.org/LICENSE>
+ * Copyright 2009-2016 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
+ * Available under MIT license <https://lodash.com/license>
+ */
+
+/** Used as references for various `Number` constants. */
+var INFINITY = 1 / 0,
+    MAX_SAFE_INTEGER = 9007199254740991,
+    MAX_INTEGER = 1.7976931348623157e+308,
+    NAN = 0 / 0;
+
+/** `Object#toString` result references. */
+var funcTag = '[object Function]',
+    genTag = '[object GeneratorFunction]',
+    symbolTag = '[object Symbol]';
+
+/** Used to match leading and trailing whitespace. */
+var reTrim = /^\s+|\s+$/g;
+
+/** Used to detect bad signed hexadecimal string values. */
+var reIsBadHex = /^[-+]0x[0-9a-f]+$/i;
+
+/** Used to detect binary string values. */
+var reIsBinary = /^0b[01]+$/i;
+
+/** Used to detect octal string values. */
+var reIsOctal = /^0o[0-7]+$/i;
+
+/** Built-in method references without a dependency on `global`. */
+var freeParseInt = parseInt;
+
+/** Used for built-in method references. */
+var objectProto = global.Object.prototype;
+
+/**
+ * Used to resolve the [`toStringTag`](http://ecma-international.org/ecma-262/6.0/#sec-object.prototype.tostring)
+ * of values.
+ */
+var objectToString = objectProto.toString;
+
+/** Built-in value references. */
+var Symbol = global.Symbol;
+
+/* Built-in method references for those with the same name as other `lodash` methods. */
+var nativeFloor = Math.floor;
+
+/** Used to convert symbols to primitives and strings. */
+var symbolProto = Symbol ? Symbol.prototype : undefined,
+    symbolToString = Symbol ? symbolProto.toString : undefined;
+
+/**
+ * Checks if `value` is classified as a `Function` object.
+ *
+ * @static
+ * @memberOf _
+ * @category Lang
+ * @param {*} value The value to check.
+ * @returns {boolean} Returns `true` if `value` is correctly classified, else `false`.
+ * @example
+ *
+ * _.isFunction(_);
+ * // => true
+ *
+ * _.isFunction(/abc/);
+ * // => false
+ */
+function isFunction(value) {
+  // The use of `Object#toString` avoids issues with the `typeof` operator
+  // in Safari 8 which returns 'object' for typed array constructors, and
+  // PhantomJS 1.9 which returns 'function' for `NodeList` instances.
+  var tag = isObject(value) ? objectToString.call(value) : '';
+  return tag == funcTag || tag == genTag;
+}
+
+/**
+ * Checks if `value` is the [language type](https://es5.github.io/#x8) of `Object`.
+ * (e.g. arrays, functions, objects, regexes, `new Number(0)`, and `new String('')`)
+ *
+ * @static
+ * @memberOf _
+ * @category Lang
+ * @param {*} value The value to check.
+ * @returns {boolean} Returns `true` if `value` is an object, else `false`.
+ * @example
+ *
+ * _.isObject({});
+ * // => true
+ *
+ * _.isObject([1, 2, 3]);
+ * // => true
+ *
+ * _.isObject(_.noop);
+ * // => true
+ *
+ * _.isObject(null);
+ * // => false
+ */
+function isObject(value) {
+  // Avoid a V8 JIT bug in Chrome 19-20.
+  // See https://code.google.com/p/v8/issues/detail?id=2291 for more details.
+  var type = typeof value;
+  return !!value && (type == 'object' || type == 'function');
+}
+
+/**
+ * Checks if `value` is object-like. A value is object-like if it's not `null`
+ * and has a `typeof` result of "object".
+ *
+ * @static
+ * @memberOf _
+ * @category Lang
+ * @param {*} value The value to check.
+ * @returns {boolean} Returns `true` if `value` is object-like, else `false`.
+ * @example
+ *
+ * _.isObjectLike({});
+ * // => true
+ *
+ * _.isObjectLike([1, 2, 3]);
+ * // => true
+ *
+ * _.isObjectLike(_.noop);
+ * // => false
+ *
+ * _.isObjectLike(null);
+ * // => false
+ */
+function isObjectLike(value) {
+  return !!value && typeof value == 'object';
+}
+
+/**
+ * Checks if `value` is classified as a `Symbol` primitive or object.
+ *
+ * @static
+ * @memberOf _
+ * @category Lang
+ * @param {*} value The value to check.
+ * @returns {boolean} Returns `true` if `value` is correctly classified, else `false`.
+ * @example
+ *
+ * _.isSymbol(Symbol.iterator);
+ * // => true
+ *
+ * _.isSymbol('abc');
+ * // => false
+ */
+function isSymbol(value) {
+  return typeof value == 'symbol' ||
+    (isObjectLike(value) && objectToString.call(value) == symbolTag);
+}
+
+/**
+ * Converts `value` to an integer.
+ *
+ * **Note:** This function is loosely based on [`ToInteger`](http://www.ecma-international.org/ecma-262/6.0/#sec-tointeger).
+ *
+ * @static
+ * @memberOf _
+ * @category Lang
+ * @param {*} value The value to convert.
+ * @returns {number} Returns the converted integer.
+ * @example
+ *
+ * _.toInteger(3);
+ * // => 3
+ *
+ * _.toInteger(Number.MIN_VALUE);
+ * // => 0
+ *
+ * _.toInteger(Infinity);
+ * // => 1.7976931348623157e+308
+ *
+ * _.toInteger('3');
+ * // => 3
+ */
+function toInteger(value) {
+  if (!value) {
+    return value === 0 ? value : 0;
+  }
+  value = toNumber(value);
+  if (value === INFINITY || value === -INFINITY) {
+    var sign = (value < 0 ? -1 : 1);
+    return sign * MAX_INTEGER;
+  }
+  var remainder = value % 1;
+  return value === value ? (remainder ? value - remainder : value) : 0;
+}
+
+/**
+ * Converts `value` to a number.
+ *
+ * @static
+ * @memberOf _
+ * @category Lang
+ * @param {*} value The value to process.
+ * @returns {number} Returns the number.
+ * @example
+ *
+ * _.toNumber(3);
+ * // => 3
+ *
+ * _.toNumber(Number.MIN_VALUE);
+ * // => 5e-324
+ *
+ * _.toNumber(Infinity);
+ * // => Infinity
+ *
+ * _.toNumber('3');
+ * // => 3
+ */
+function toNumber(value) {
+  if (isObject(value)) {
+    var other = isFunction(value.valueOf) ? value.valueOf() : value;
+    value = isObject(other) ? (other + '') : other;
+  }
+  if (typeof value != 'string') {
+    return value === 0 ? value : +value;
+  }
+  value = value.replace(reTrim, '');
+  var isBinary = reIsBinary.test(value);
+  return (isBinary || reIsOctal.test(value))
+    ? freeParseInt(value.slice(2), isBinary ? 2 : 8)
+    : (reIsBadHex.test(value) ? NAN : +value);
+}
+
+/**
+ * Converts `value` to a string if it's not one. An empty string is returned
+ * for `null` and `undefined` values. The sign of `-0` is preserved.
+ *
+ * @static
+ * @memberOf _
+ * @category Lang
+ * @param {*} value The value to process.
+ * @returns {string} Returns the string.
+ * @example
+ *
+ * _.toString(null);
+ * // => ''
+ *
+ * _.toString(-0);
+ * // => '-0'
+ *
+ * _.toString([1, 2, 3]);
+ * // => '1,2,3'
+ */
+function toString(value) {
+  // Exit early for strings to avoid a performance hit in some environments.
+  if (typeof value == 'string') {
+    return value;
+  }
+  if (value == null) {
+    return '';
+  }
+  if (isSymbol(value)) {
+    return Symbol ? symbolToString.call(value) : '';
+  }
+  var result = (value + '');
+  return (result == '0' && (1 / value) == -INFINITY) ? '-0' : result;
+}
+
+/**
+ * Repeats the given string `n` times.
+ *
+ * @static
+ * @memberOf _
+ * @category String
+ * @param {string} [string=''] The string to repeat.
+ * @param {number} [n=0] The number of times to repeat the string.
+ * @returns {string} Returns the repeated string.
+ * @example
+ *
+ * _.repeat('*', 3);
+ * // => '***'
+ *
+ * _.repeat('abc', 2);
+ * // => 'abcabc'
+ *
+ * _.repeat('abc', 0);
+ * // => ''
+ */
+function repeat(string, n) {
+  string = toString(string);
+  n = toInteger(n);
+
+  var result = '';
+  if (!string || n < 1 || n > MAX_SAFE_INTEGER) {
+    return result;
+  }
+  // Leverage the exponentiation by squaring algorithm for a faster repeat.
+  // See https://en.wikipedia.org/wiki/Exponentiation_by_squaring for more details.
+  do {
+    if (n % 2) {
+      result += string;
+    }
+    n = nativeFloor(n / 2);
+    string += string;
+  } while (n);
+
+  return result;
+}
+
+module.exports = repeat;
+
+}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
+},{}],35:[function(require,module,exports){
 (function (global){
 /**
  * lodash 4.0.0 (Custom Build) <https://lodash.com/>
@@ -8978,7 +9658,7 @@ function toNumber(value) {
 module.exports = rest;
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],34:[function(require,module,exports){
+},{}],36:[function(require,module,exports){
 /**
  * lodash 4.0.0 (Custom Build) <https://lodash.com/>
  * Build: `lodash modularize exports="npm" -o ./`
@@ -9031,7 +9711,7 @@ function toPairs(object) {
 
 module.exports = toPairs;
 
-},{"lodash._arraymap":15,"lodash.keys":29}],35:[function(require,module,exports){
+},{"lodash._arraymap":15,"lodash.keys":29}],37:[function(require,module,exports){
 // shim for using process in browser
 
 var process = module.exports = {};
@@ -9124,7 +9804,7 @@ process.chdir = function (dir) {
 };
 process.umask = function() { return 0; };
 
-},{}],36:[function(require,module,exports){
+},{}],38:[function(require,module,exports){
 (function(window) {
     var re = {
         not_string: /[^s]/,
@@ -9334,14 +10014,14 @@ process.umask = function() { return 0; };
     }
 })(typeof window === "undefined" ? this : window);
 
-},{}],37:[function(require,module,exports){
+},{}],39:[function(require,module,exports){
 module.exports = function isBuffer(arg) {
   return arg && typeof arg === 'object'
     && typeof arg.copy === 'function'
     && typeof arg.fill === 'function'
     && typeof arg.readUInt8 === 'function';
 }
-},{}],38:[function(require,module,exports){
+},{}],40:[function(require,module,exports){
 (function (process,global){
 // Copyright Joyent, Inc. and other Node contributors.
 //
@@ -9931,4 +10611,4 @@ function hasOwnProperty(obj, prop) {
 }
 
 }).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./support/isBuffer":37,"_process":35,"inherits":12}]},{},[1]);
+},{"./support/isBuffer":39,"_process":37,"inherits":12}]},{},[1]);
