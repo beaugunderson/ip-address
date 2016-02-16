@@ -72,10 +72,13 @@ teredo.client4;    // '157.60.0.1'
 - [contrail-web-core](https://github.com/Juniper/contrail-web-core): part of
   Contrail, a network virtualization solution made by Juniper Networks
 - [dhcpjs](https://github.com/apaprocki/node-dhcpjs): a DHCP client and server
+- [epochtalk](https://github.com/epochtalk/epochtalk): next generation forum
+  software
 - [geoip-web](https://github.com/tfrce/node-geoip-web): a server for
   quickly geolocating IP addresses
 - [hexabus](https://github.com/mysmartgrid/hexabus): an IPv6-based home
   automation bus
+- [hubot-deploy](https://github.com/atmos/hubot-deploy): GitHub Flow via hubot
 - [heroku-portscanner](https://github.com/robison/heroku-portscanner): nmap
   hosted on Heroku
 - [ipfs-swarm](https://github.com/diasdavid/node-ipfs-swarm): a swarm
@@ -98,6 +101,6 @@ teredo.client4;    // '157.60.0.1'
   University of Portsmouth
 - [SwitchyOmega](https://github.com/FelisCatus/SwitchyOmega): a [Chrome
   extension](https://chrome.google.com/webstore/detail/padekgcemlokbadohgkifijomclgjgif)
-  for switching between multiple proxies with ~260k users!
+  for switching between multiple proxies with ~311k users!
 - [swiz](https://github.com/racker/node-swiz): a serialization framework built
   and used by [Rackspace](http://www.rackspace.com/)
