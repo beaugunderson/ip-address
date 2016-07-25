@@ -31,20 +31,20 @@
     "cli": "0.11.x",
     "cliff": "0.1.x",
     "jsbn": "0.1.0",
-    "lodash.find": "^4.0.0",
-    "lodash.max": "^4.0.0",
-    "lodash.merge": "^4.0.1",
-    "lodash.padstart": "^4.0.1",
-    "lodash.repeat": "^3.1.1",
+    "lodash.find": "^4.5.0",
+    "lodash.max": "^4.0.1",
+    "lodash.merge": "^4.5.0",
+    "lodash.padstart": "^4.6.0",
+    "lodash.repeat": "^4.0.4",
     "sprintf-js": "^1.0.3",
     "util-deprecate": "^1.0.2"
   },
   "devDependencies": {
-    "browserify": "^13.0.0",
-    "chai": "^3.4.1",
+    "browserify": "^13.1.0",
+    "chai": "^3.5.0",
     "codecov.io": "^0.1.6",
-    "documentation": "^3.0.4",
-    "istanbul": "^0.4.2",
-    "mocha": "^2.3.4"
+    "documentation": "^4.0.0-beta9",
+    "istanbul": "^0.4.4",
+    "mocha": "^2.5.3"
   }
 }
