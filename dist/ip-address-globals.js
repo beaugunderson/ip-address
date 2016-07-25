@@ -334,7 +334,7 @@ Address4.prototype.binaryZeroPad = function () {
 
 module.exports = Address4;
 
-},{"./common.js":3,"./v4/constants.js":6,"jsbn":12,"lodash.padstart":17,"lodash.repeat":18,"sprintf-js":19,"util-deprecate":20}],5:[function(require,module,exports){
+},{"./common.js":3,"./v4/constants.js":6,"jsbn":12,"lodash.padstart":16,"lodash.repeat":17,"sprintf-js":18,"util-deprecate":19}],5:[function(require,module,exports){
 'use strict';
 
 var BigInteger = require('jsbn').BigInteger;
@@ -1237,7 +1237,7 @@ Address6.fromUnsignedByteArray = function (bytes) {
 
 module.exports = Address6;
 
-},{"./ipv4.js":4,"./v4/constants.js":6,"./v6/attributes.js":7,"./v6/constants.js":8,"./v6/html.js":10,"./v6/regular-expressions.js":11,"jsbn":12,"lodash.find":14,"lodash.max":15,"lodash.merge":16,"lodash.padstart":17,"lodash.repeat":18,"sprintf-js":19,"util-deprecate":20}],6:[function(require,module,exports){
+},{"./ipv4.js":4,"./v4/constants.js":6,"./v6/attributes.js":7,"./v6/constants.js":8,"./v6/html.js":10,"./v6/regular-expressions.js":11,"jsbn":12,"lodash.find":13,"lodash.max":14,"lodash.merge":15,"lodash.padstart":16,"lodash.repeat":17,"sprintf-js":18,"util-deprecate":19}],6:[function(require,module,exports){
 exports.BITS = 32;
 exports.GROUPS = 4;
 
@@ -1500,7 +1500,7 @@ exports.simpleGroup = function (addressString, offset) {
   }).join(':');
 };
 
-},{"sprintf-js":19}],10:[function(require,module,exports){
+},{"sprintf-js":18}],10:[function(require,module,exports){
 'use strict';
 
 var constants4 = require('../v4/constants.js');
@@ -1609,7 +1609,7 @@ exports.group = function () {
   return output.join(':');
 };
 
-},{"../v4/constants.js":6,"./helpers.js":9,"sprintf-js":19}],11:[function(require,module,exports){
+},{"../v4/constants.js":6,"./helpers.js":9,"sprintf-js":18}],11:[function(require,module,exports){
 'use strict';
 
 var sprintf = require('sprintf-js').sprintf;
@@ -1763,7 +1763,7 @@ exports.regularExpression = function (optionalSubstring) {
   return new RegExp(this.regularExpressionString(optionalSubstring), 'i');
 };
 
-},{"./constants.js":8,"sprintf-js":19}],12:[function(require,module,exports){
+},{"./constants.js":8,"sprintf-js":18}],12:[function(require,module,exports){
 (function(){
 
     // Copyright (c) 2005  Tom Wu
@@ -3124,69 +3124,6 @@ exports.regularExpression = function (optionalSubstring) {
 }).call(this);
 
 },{}],13:[function(require,module,exports){
-(function (global){
-/**
- * lodash 3.0.1 (Custom Build) <https://lodash.com/>
- * Build: `lodash modularize exports="npm" -o ./`
- * Copyright 2012-2016 The Dojo Foundation <http://dojofoundation.org/>
- * Based on Underscore.js 1.8.3 <http://underscorejs.org/LICENSE>
- * Copyright 2009-2016 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
- * Available under MIT license <https://lodash.com/license>
- */
-
-/** Used to determine if values are of the language type `Object`. */
-var objectTypes = {
-  'function': true,
-  'object': true
-};
-
-/** Detect free variable `exports`. */
-var freeExports = (objectTypes[typeof exports] && exports && !exports.nodeType)
-  ? exports
-  : undefined;
-
-/** Detect free variable `module`. */
-var freeModule = (objectTypes[typeof module] && module && !module.nodeType)
-  ? module
-  : undefined;
-
-/** Detect free variable `global` from Node.js. */
-var freeGlobal = checkGlobal(freeExports && freeModule && typeof global == 'object' && global);
-
-/** Detect free variable `self`. */
-var freeSelf = checkGlobal(objectTypes[typeof self] && self);
-
-/** Detect free variable `window`. */
-var freeWindow = checkGlobal(objectTypes[typeof window] && window);
-
-/** Detect `this` as the global object. */
-var thisGlobal = checkGlobal(objectTypes[typeof this] && this);
-
-/**
- * Used as a reference to the global object.
- *
- * The `this` value is used if it's the global object to avoid Greasemonkey's
- * restricted `window` object, otherwise the `window` object is used.
- */
-var root = freeGlobal ||
-  ((freeWindow !== (thisGlobal && thisGlobal.window)) && freeWindow) ||
-    freeSelf || thisGlobal || Function('return this')();
-
-/**
- * Checks if `value` is a global object.
- *
- * @private
- * @param {*} value The value to check.
- * @returns {null|Object} Returns `value` if it's a global object, else `null`.
- */
-function checkGlobal(value) {
-  return (value && value.Object === Object) ? value : null;
-}
-
-module.exports = root;
-
-}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],14:[function(require,module,exports){
 (function (global){
 /**
  * lodash (Custom Build) <https://lodash.com/>
@@ -5694,7 +5631,7 @@ function property(path) {
 module.exports = find;
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],15:[function(require,module,exports){
+},{}],14:[function(require,module,exports){
 /**
  * lodash (Custom Build) <https://lodash.com/>
  * Build: `lodash modularize exports="npm" -o ./`
@@ -5856,7 +5793,7 @@ function max(array) {
 
 module.exports = max;
 
-},{}],16:[function(require,module,exports){
+},{}],15:[function(require,module,exports){
 (function (global){
 /**
  * lodash (Custom Build) <https://lodash.com/>
@@ -8161,7 +8098,7 @@ function stubFalse() {
 module.exports = merge;
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],17:[function(require,module,exports){
+},{}],16:[function(require,module,exports){
 (function (global){
 /**
  * lodash (Custom Build) <https://lodash.com/>
@@ -8679,16 +8616,16 @@ function padStart(string, length, chars) {
 module.exports = padStart;
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],18:[function(require,module,exports){
+},{}],17:[function(require,module,exports){
+(function (global){
 /**
- * lodash 3.2.0 (Custom Build) <https://lodash.com/>
+ * lodash (Custom Build) <https://lodash.com/>
  * Build: `lodash modularize exports="npm" -o ./`
- * Copyright 2012-2016 The Dojo Foundation <http://dojofoundation.org/>
+ * Copyright jQuery Foundation and other contributors <https://jquery.org/>
+ * Released under MIT license <https://lodash.com/license>
  * Based on Underscore.js 1.8.3 <http://underscorejs.org/LICENSE>
- * Copyright 2009-2016 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
- * Available under MIT license <https://lodash.com/license>
+ * Copyright Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
  */
-var root = require('lodash._root');
 
 /** Used as references for various `Number` constants. */
 var INFINITY = 1 / 0,
@@ -8713,14 +8650,40 @@ var reIsBinary = /^0b[01]+$/i;
 /** Used to detect octal string values. */
 var reIsOctal = /^0o[0-7]+$/i;
 
+/** Used to detect unsigned integer values. */
+var reIsUint = /^(?:0|[1-9]\d*)$/;
+
 /** Built-in method references without a dependency on `root`. */
 var freeParseInt = parseInt;
+
+/** Detect free variable `global` from Node.js. */
+var freeGlobal = typeof global == 'object' && global && global.Object === Object && global;
+
+/** Detect free variable `self`. */
+var freeSelf = typeof self == 'object' && self && self.Object === Object && self;
+
+/** Used as a reference to the global object. */
+var root = freeGlobal || freeSelf || Function('return this')();
+
+/**
+ * The base implementation of `_.property` without support for deep paths.
+ *
+ * @private
+ * @param {string} key The key of the property to get.
+ * @returns {Function} Returns the new accessor function.
+ */
+function baseProperty(key) {
+  return function(object) {
+    return object == null ? undefined : object[key];
+  };
+}
 
 /** Used for built-in method references. */
 var objectProto = Object.prototype;
 
 /**
- * Used to resolve the [`toStringTag`](http://ecma-international.org/ecma-262/6.0/#sec-object.prototype.tostring)
+ * Used to resolve the
+ * [`toStringTag`](http://ecma-international.org/ecma-262/6.0/#sec-object.prototype.tostring)
  * of values.
  */
 var objectToString = objectProto.toString;
@@ -8733,16 +8696,182 @@ var nativeFloor = Math.floor;
 
 /** Used to convert symbols to primitives and strings. */
 var symbolProto = Symbol ? Symbol.prototype : undefined,
-    symbolToString = Symbol ? symbolProto.toString : undefined;
+    symbolToString = symbolProto ? symbolProto.toString : undefined;
+
+/**
+ * The base implementation of `_.repeat` which doesn't coerce arguments.
+ *
+ * @private
+ * @param {string} string The string to repeat.
+ * @param {number} n The number of times to repeat the string.
+ * @returns {string} Returns the repeated string.
+ */
+function baseRepeat(string, n) {
+  var result = '';
+  if (!string || n < 1 || n > MAX_SAFE_INTEGER) {
+    return result;
+  }
+  // Leverage the exponentiation by squaring algorithm for a faster repeat.
+  // See https://en.wikipedia.org/wiki/Exponentiation_by_squaring for more details.
+  do {
+    if (n % 2) {
+      result += string;
+    }
+    n = nativeFloor(n / 2);
+    if (n) {
+      string += string;
+    }
+  } while (n);
+
+  return result;
+}
+
+/**
+ * The base implementation of `_.toString` which doesn't convert nullish
+ * values to empty strings.
+ *
+ * @private
+ * @param {*} value The value to process.
+ * @returns {string} Returns the string.
+ */
+function baseToString(value) {
+  // Exit early for strings to avoid a performance hit in some environments.
+  if (typeof value == 'string') {
+    return value;
+  }
+  if (isSymbol(value)) {
+    return symbolToString ? symbolToString.call(value) : '';
+  }
+  var result = (value + '');
+  return (result == '0' && (1 / value) == -INFINITY) ? '-0' : result;
+}
+
+/**
+ * Gets the "length" property value of `object`.
+ *
+ * **Note:** This function is used to avoid a
+ * [JIT bug](https://bugs.webkit.org/show_bug.cgi?id=142792) that affects
+ * Safari on at least iOS 8.1-8.3 ARM64.
+ *
+ * @private
+ * @param {Object} object The object to query.
+ * @returns {*} Returns the "length" value.
+ */
+var getLength = baseProperty('length');
+
+/**
+ * Checks if `value` is a valid array-like index.
+ *
+ * @private
+ * @param {*} value The value to check.
+ * @param {number} [length=MAX_SAFE_INTEGER] The upper bounds of a valid index.
+ * @returns {boolean} Returns `true` if `value` is a valid index, else `false`.
+ */
+function isIndex(value, length) {
+  length = length == null ? MAX_SAFE_INTEGER : length;
+  return !!length &&
+    (typeof value == 'number' || reIsUint.test(value)) &&
+    (value > -1 && value % 1 == 0 && value < length);
+}
+
+/**
+ * Checks if the given arguments are from an iteratee call.
+ *
+ * @private
+ * @param {*} value The potential iteratee value argument.
+ * @param {*} index The potential iteratee index or key argument.
+ * @param {*} object The potential iteratee object argument.
+ * @returns {boolean} Returns `true` if the arguments are from an iteratee call,
+ *  else `false`.
+ */
+function isIterateeCall(value, index, object) {
+  if (!isObject(object)) {
+    return false;
+  }
+  var type = typeof index;
+  if (type == 'number'
+        ? (isArrayLike(object) && isIndex(index, object.length))
+        : (type == 'string' && index in object)
+      ) {
+    return eq(object[index], value);
+  }
+  return false;
+}
+
+/**
+ * Performs a
+ * [`SameValueZero`](http://ecma-international.org/ecma-262/6.0/#sec-samevaluezero)
+ * comparison between two values to determine if they are equivalent.
+ *
+ * @static
+ * @memberOf _
+ * @since 4.0.0
+ * @category Lang
+ * @param {*} value The value to compare.
+ * @param {*} other The other value to compare.
+ * @returns {boolean} Returns `true` if the values are equivalent, else `false`.
+ * @example
+ *
+ * var object = { 'a': 1 };
+ * var other = { 'a': 1 };
+ *
+ * _.eq(object, object);
+ * // => true
+ *
+ * _.eq(object, other);
+ * // => false
+ *
+ * _.eq('a', 'a');
+ * // => true
+ *
+ * _.eq('a', Object('a'));
+ * // => false
+ *
+ * _.eq(NaN, NaN);
+ * // => true
+ */
+function eq(value, other) {
+  return value === other || (value !== value && other !== other);
+}
+
+/**
+ * Checks if `value` is array-like. A value is considered array-like if it's
+ * not a function and has a `value.length` that's an integer greater than or
+ * equal to `0` and less than or equal to `Number.MAX_SAFE_INTEGER`.
+ *
+ * @static
+ * @memberOf _
+ * @since 4.0.0
+ * @category Lang
+ * @param {*} value The value to check.
+ * @returns {boolean} Returns `true` if `value` is array-like, else `false`.
+ * @example
+ *
+ * _.isArrayLike([1, 2, 3]);
+ * // => true
+ *
+ * _.isArrayLike(document.body.children);
+ * // => true
+ *
+ * _.isArrayLike('abc');
+ * // => true
+ *
+ * _.isArrayLike(_.noop);
+ * // => false
+ */
+function isArrayLike(value) {
+  return value != null && isLength(getLength(value)) && !isFunction(value);
+}
 
 /**
  * Checks if `value` is classified as a `Function` object.
  *
  * @static
  * @memberOf _
+ * @since 0.1.0
  * @category Lang
  * @param {*} value The value to check.
- * @returns {boolean} Returns `true` if `value` is correctly classified, else `false`.
+ * @returns {boolean} Returns `true` if `value` is a function, else `false`.
  * @example
  *
  * _.isFunction(_);
@@ -8753,18 +8882,52 @@ var symbolProto = Symbol ? Symbol.prototype : undefined,
  */
 function isFunction(value) {
   // The use of `Object#toString` avoids issues with the `typeof` operator
-  // in Safari 8 which returns 'object' for typed array constructors, and
-  // PhantomJS 1.9 which returns 'function' for `NodeList` instances.
+  // in Safari 8 which returns 'object' for typed array and weak map constructors,
+  // and PhantomJS 1.9 which returns 'function' for `NodeList` instances.
   var tag = isObject(value) ? objectToString.call(value) : '';
   return tag == funcTag || tag == genTag;
 }
 
 /**
- * Checks if `value` is the [language type](https://es5.github.io/#x8) of `Object`.
- * (e.g. arrays, functions, objects, regexes, `new Number(0)`, and `new String('')`)
+ * Checks if `value` is a valid array-like length.
+ *
+ * **Note:** This function is loosely based on
+ * [`ToLength`](http://ecma-international.org/ecma-262/6.0/#sec-tolength).
  *
  * @static
  * @memberOf _
+ * @since 4.0.0
+ * @category Lang
+ * @param {*} value The value to check.
+ * @returns {boolean} Returns `true` if `value` is a valid length,
+ *  else `false`.
+ * @example
+ *
+ * _.isLength(3);
+ * // => true
+ *
+ * _.isLength(Number.MIN_VALUE);
+ * // => false
+ *
+ * _.isLength(Infinity);
+ * // => false
+ *
+ * _.isLength('3');
+ * // => false
+ */
+function isLength(value) {
+  return typeof value == 'number' &&
+    value > -1 && value % 1 == 0 && value <= MAX_SAFE_INTEGER;
+}
+
+/**
+ * Checks if `value` is the
+ * [language type](http://www.ecma-international.org/ecma-262/6.0/#sec-ecmascript-language-types)
+ * of `Object`. (e.g. arrays, functions, objects, regexes, `new Number(0)`, and `new String('')`)
+ *
+ * @static
+ * @memberOf _
+ * @since 0.1.0
  * @category Lang
  * @param {*} value The value to check.
  * @returns {boolean} Returns `true` if `value` is an object, else `false`.
@@ -8793,6 +8956,7 @@ function isObject(value) {
  *
  * @static
  * @memberOf _
+ * @since 4.0.0
  * @category Lang
  * @param {*} value The value to check.
  * @returns {boolean} Returns `true` if `value` is object-like, else `false`.
@@ -8819,9 +8983,10 @@ function isObjectLike(value) {
  *
  * @static
  * @memberOf _
+ * @since 4.0.0
  * @category Lang
  * @param {*} value The value to check.
- * @returns {boolean} Returns `true` if `value` is correctly classified, else `false`.
+ * @returns {boolean} Returns `true` if `value` is a symbol, else `false`.
  * @example
  *
  * _.isSymbol(Symbol.iterator);
@@ -8836,30 +9001,29 @@ function isSymbol(value) {
 }
 
 /**
- * Converts `value` to an integer.
- *
- * **Note:** This function is loosely based on [`ToInteger`](http://www.ecma-international.org/ecma-262/6.0/#sec-tointeger).
+ * Converts `value` to a finite number.
  *
  * @static
  * @memberOf _
+ * @since 4.12.0
  * @category Lang
  * @param {*} value The value to convert.
- * @returns {number} Returns the converted integer.
+ * @returns {number} Returns the converted number.
  * @example
  *
- * _.toInteger(3);
- * // => 3
+ * _.toFinite(3.2);
+ * // => 3.2
  *
- * _.toInteger(Number.MIN_VALUE);
- * // => 0
+ * _.toFinite(Number.MIN_VALUE);
+ * // => 5e-324
  *
- * _.toInteger(Infinity);
+ * _.toFinite(Infinity);
  * // => 1.7976931348623157e+308
  *
- * _.toInteger('3');
- * // => 3
+ * _.toFinite('3.2');
+ * // => 3.2
  */
-function toInteger(value) {
+function toFinite(value) {
   if (!value) {
     return value === 0 ? value : 0;
   }
@@ -8868,8 +9032,40 @@ function toInteger(value) {
     var sign = (value < 0 ? -1 : 1);
     return sign * MAX_INTEGER;
   }
-  var remainder = value % 1;
-  return value === value ? (remainder ? value - remainder : value) : 0;
+  return value === value ? value : 0;
+}
+
+/**
+ * Converts `value` to an integer.
+ *
+ * **Note:** This method is loosely based on
+ * [`ToInteger`](http://www.ecma-international.org/ecma-262/6.0/#sec-tointeger).
+ *
+ * @static
+ * @memberOf _
+ * @since 4.0.0
+ * @category Lang
+ * @param {*} value The value to convert.
+ * @returns {number} Returns the converted integer.
+ * @example
+ *
+ * _.toInteger(3.2);
+ * // => 3
+ *
+ * _.toInteger(Number.MIN_VALUE);
+ * // => 0
+ *
+ * _.toInteger(Infinity);
+ * // => 1.7976931348623157e+308
+ *
+ * _.toInteger('3.2');
+ * // => 3
+ */
+function toInteger(value) {
+  var result = toFinite(value),
+      remainder = result % 1;
+
+  return result === result ? (remainder ? result - remainder : result) : 0;
 }
 
 /**
@@ -8877,13 +9073,14 @@ function toInteger(value) {
  *
  * @static
  * @memberOf _
+ * @since 4.0.0
  * @category Lang
  * @param {*} value The value to process.
  * @returns {number} Returns the number.
  * @example
  *
- * _.toNumber(3);
- * // => 3
+ * _.toNumber(3.2);
+ * // => 3.2
  *
  * _.toNumber(Number.MIN_VALUE);
  * // => 5e-324
@@ -8891,10 +9088,16 @@ function toInteger(value) {
  * _.toNumber(Infinity);
  * // => Infinity
  *
- * _.toNumber('3');
- * // => 3
+ * _.toNumber('3.2');
+ * // => 3.2
  */
 function toNumber(value) {
+  if (typeof value == 'number') {
+    return value;
+  }
+  if (isSymbol(value)) {
+    return NAN;
+  }
   if (isObject(value)) {
     var other = isFunction(value.valueOf) ? value.valueOf() : value;
     value = isObject(other) ? (other + '') : other;
@@ -8910,11 +9113,12 @@ function toNumber(value) {
 }
 
 /**
- * Converts `value` to a string if it's not one. An empty string is returned
- * for `null` and `undefined` values. The sign of `-0` is preserved.
+ * Converts `value` to a string. An empty string is returned for `null`
+ * and `undefined` values. The sign of `-0` is preserved.
  *
  * @static
  * @memberOf _
+ * @since 4.0.0
  * @category Lang
  * @param {*} value The value to process.
  * @returns {string} Returns the string.
@@ -8930,18 +9134,7 @@ function toNumber(value) {
  * // => '1,2,3'
  */
 function toString(value) {
-  // Exit early for strings to avoid a performance hit in some environments.
-  if (typeof value == 'string') {
-    return value;
-  }
-  if (value == null) {
-    return '';
-  }
-  if (isSymbol(value)) {
-    return Symbol ? symbolToString.call(value) : '';
-  }
-  var result = (value + '');
-  return (result == '0' && (1 / value) == -INFINITY) ? '-0' : result;
+  return value == null ? '' : baseToString(value);
 }
 
 /**
@@ -8949,9 +9142,11 @@ function toString(value) {
  *
  * @static
  * @memberOf _
+ * @since 3.0.0
  * @category String
  * @param {string} [string=''] The string to repeat.
- * @param {number} [n=0] The number of times to repeat the string.
+ * @param {number} [n=1] The number of times to repeat the string.
+ * @param- {Object} [guard] Enables use as an iteratee for methods like `_.map`.
  * @returns {string} Returns the repeated string.
  * @example
  *
@@ -8964,30 +9159,19 @@ function toString(value) {
  * _.repeat('abc', 0);
  * // => ''
  */
-function repeat(string, n) {
-  string = toString(string);
-  n = toInteger(n);
-
-  var result = '';
-  if (!string || n < 1 || n > MAX_SAFE_INTEGER) {
-    return result;
+function repeat(string, n, guard) {
+  if ((guard ? isIterateeCall(string, n, guard) : n === undefined)) {
+    n = 1;
+  } else {
+    n = toInteger(n);
   }
-  // Leverage the exponentiation by squaring algorithm for a faster repeat.
-  // See https://en.wikipedia.org/wiki/Exponentiation_by_squaring for more details.
-  do {
-    if (n % 2) {
-      result += string;
-    }
-    n = nativeFloor(n / 2);
-    string += string;
-  } while (n);
-
-  return result;
+  return baseRepeat(toString(string), n);
 }
 
 module.exports = repeat;
 
-},{"lodash._root":13}],19:[function(require,module,exports){
+}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
+},{}],18:[function(require,module,exports){
 (function(window) {
     var re = {
         not_string: /[^s]/,
@@ -9197,7 +9381,7 @@ module.exports = repeat;
     }
 })(typeof window === "undefined" ? this : window);
 
-},{}],20:[function(require,module,exports){
+},{}],19:[function(require,module,exports){
 (function (global){
 
 /**
