@@ -7,6 +7,12 @@ var ip = require('..');
 var Address4 = ip.Address4;
 var Address6 = ip.Address6;
 
+var valid4 = require('./data/valid-ipv4-addresses.json');
+var valid6 = require('./data/valid-ipv6-addresses.json');
+
+var invalid4 = require('./data/invalid-ipv4-addresses.json');
+var invalid6 = require('./data/invalid-ipv6-addresses.json');
+
 function addressIs(addressString, descriptors) {
   var address4 = new Address4(addressString);
   var address6 = new Address6(addressString);
@@ -145,10 +151,7 @@ function addressIs(addressString, descriptors) {
   });
 }
 
-function loadJsonBatch(file, classes, noMerge) {
-  // Load the list of test addresses
-  var addresses = require(file);
-
+function loadJsonBatch(addresses, classes, noMerge) {
   addresses.forEach(function (address) {
     if (address.conditions === undefined ||
       !address.conditions.length || noMerge) {
@@ -162,19 +165,19 @@ function loadJsonBatch(file, classes, noMerge) {
 }
 
 describe('Valid IPv4 addresses', function () {
-  loadJsonBatch('./data/valid-ipv4-addresses.json', ['valid-ipv4']);
-  loadJsonBatch('./data/valid-ipv4-addresses.json', ['invalid-ipv6'], true);
+  loadJsonBatch(valid4, ['valid-ipv4']);
+  loadJsonBatch(valid4, ['invalid-ipv6'], true);
 });
 
 describe('Valid IPv6 addresses', function () {
-  loadJsonBatch('./data/valid-ipv6-addresses.json', ['valid-ipv6']);
-  loadJsonBatch('./data/valid-ipv6-addresses.json', ['invalid-ipv4'], true);
+  loadJsonBatch(valid6, ['valid-ipv6']);
+  loadJsonBatch(valid6, ['invalid-ipv4'], true);
 });
 
 describe('Invalid IPv4 addresses', function () {
-  loadJsonBatch('./data/invalid-ipv4-addresses.json', ['invalid-ipv4']);
+  loadJsonBatch(invalid4, ['invalid-ipv4']);
 });
 
 describe('Invalid IPv6 addresses', function () {
-  loadJsonBatch('./data/invalid-ipv6-addresses.json', ['invalid-ipv6']);
+  loadJsonBatch(invalid6, ['invalid-ipv6']);
 });

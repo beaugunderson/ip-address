@@ -1,6 +1,6 @@
 {
   "name": "ip-address",
-  "description": "A library for parsing IPv6 and IPv4 IP addresses in node and the browser.",
+  "description": "A library for parsing IPv4 and IPv6 IP addresses in node and the browser.",
   "keywords": [
     "ipv6",
     "ipv4",
@@ -45,6 +45,7 @@
     "codecov.io": "^0.1.6",
     "documentation": "^4.0.0-beta9",
     "istanbul": "^0.4.4",
-    "mocha": "^2.5.3"
+    "mocha": "^2.5.3",
+    "mochify": "^2.18.1"
   }
 }

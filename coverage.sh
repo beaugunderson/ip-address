@@ -4,4 +4,5 @@
   -- -R spec && \
   cat ./coverage/coverage.json |\
   ./node_modules/codecov.io/bin/codecov.io.js && \
-  rm -rf .coverage
+  rm -rf .coverage && \
+  ./node_modules/.bin/mochify -R spec
