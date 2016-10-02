@@ -340,6 +340,26 @@ describe('v6', function () {
     });
   });
 
+  describe('Address given in ap6.arpa form', function() {
+    var obj = Address6.fromArpa('e.f.f.f.3.c.2.6.f.f.f.e.6.6.8.e.1.0.6.7.9.4.e.c.0.0.0.0.1.0.0.2.ip6.arpa.');
+
+    it('should return an Address6 object', function() {
+      expect(obj instanceof Address6).to.equal(true);
+    });
+
+    it('should generate a valid v6 address', function() {
+      expect(obj.correctForm()).to.equal('2001:0:ce49:7601:e866:efff:62c3:fffe')
+    });
+
+    it('should fail with an invalid ip6.arpa length', function() {
+      var obj = Address6.fromArpa('e.f.f.f.3.c.2.6.f.f.f.e.6.6.8.0.6.7.9.4.e.c.0.0.0.0.1.0.0.2.ip6.arpa.');
+
+      expect(obj.error).to.equal("Not Valid 'ip6.arpa' form");
+      expect(obj.address).to.equal(null);
+    });
+  });
+
+
   describe('Address inside a URL or inside a URL with a port', function () {
     it('should work with a host address', function () {
       var obj = Address6.fromURL('2001:db8::5');
