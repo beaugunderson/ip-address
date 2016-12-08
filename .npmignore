@@ -1,0 +1,5 @@
+coverage.sh
+dist/
+ip-address-globals.js
+test/
+tmp/
