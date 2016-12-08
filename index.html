@@ -168,6 +168,11 @@
                   .fromUnsignedByteArray
                 </a>
                 <a
+                  href='#address6/fromarpa'
+                  class='regular block'>
+                  .fromArpa
+                </a>
+                <a
                   href='#address6/biginteger'
                   class='regular block'>
                   #bigInteger
@@ -1315,6 +1320,48 @@ Often referred to as the Network Address.</p>
                   <span class='force-inline'>
                     
                   </span>
+            </section>
+          </div>
+        </div>
+        <div class='collapsible' id='address6/fromarpa'>
+          <a href='#address6/fromarpa'>
+            <code>
+              .fromArpa<span class='gray'>(ip6.arpa)</span>
+            </code>
+            <span class='force-inline'>
+              <p>Convert an ip6.arpa address to an Address6 object</p>
+
+            </span>
+          </a>
+          <div class='collapser border px2 m2'>
+            <section class='py2 clearfix'>
+                <div class='right py2'>
+                  <a class='fade font-smaller' href='https://github.com/beaugunderson/ip-address/blob/a051a163ca595da9718e96e61ff3e53633b2a1cf/lib/ipv6.js#L882-L895'><code>lib/ipv6.js</code></a>
+                </div>
+              <h2 id='address6/fromarpa' class='mt0'>
+                fromArpa<span class='gray'>(ip6.arpa)</span>
+              </h2>
+              <p>Convert an ip6.arpa address to an Address6 object</p>
+            
+                <h4>Parameters</h4>
+                <ul class='suppress-p-margin'>
+                    <li> <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></code> <strong>ip6.arpa address</strong>
+                      :
+                      <span class='force-inline'>
+                        
+                      </span>
+                    </li>
+                </ul>
+                  <h4>Returns</h4>
+                  <code><code><a href="#address6">Address6</a></code></code>
+                  
+                  <span class='force-inline'>
+                    
+                  </span>
+               <h4>Examples</h4>
+              <pre class='overflow-auto'><span class="hljs-keyword">var</span> address= Address6.fromArpa(<span class="hljs-string">'e.f.f.f.3.c.2.6.f.f.f.e.6.6.8.e.1.0.6.7.9.4.e.c.0.0.0.0.1.0.0.2.ip6.arpa.'</span>);
+                address.correctForm(); <span class="hljs-comment">// '2001:0:ce49:7601:e866:efff:62c3:fffe'</span>
+              </pre>
             </section>
           </div>
         </div>
