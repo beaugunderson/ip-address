@@ -16,10 +16,6 @@
     "docs": "documentation --github --output docs --format html ./ip-address.js",
     "prepublish": "browserify ./ip-address-globals.js > ./dist/ip-address-globals.js"
   },
-  "bin": {
-    "ipv6": "bin/ipv6.js",
-    "ipv6grep": "bin/ipv6grep.js"
-  },
   "engines": {
     "node": ">= 0.10"
   },
