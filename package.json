@@ -11,6 +11,7 @@
   "author": "Beau Gunderson <beau@beaugunderson.com> (https://beaugunderson.com/)",
   "license": "MIT",
   "main": "ip-address.js",
+  "types": "ip-address.d.ts",
   "scripts": {
     "test": "mocha -R spec",
     "docs": "documentation --github --output docs --format html ./ip-address.js",
