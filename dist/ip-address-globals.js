@@ -1222,7 +1222,14 @@ Address6.prototype.get6to4 =
  * @returns {Array}
  */
 Address6.prototype.toByteArray = function () {
-  return this.bigInteger().toByteArray();
+  var byteArray = this.bigInteger().toByteArray();
+
+  // work around issue where `toByteArray` returns a leading 0 element
+  if (byteArray.length === 17 && byteArray[0] === 0) {
+    return byteArray.slice(1);
+  }
+
+  return byteArray;
 };
 
 function unsignByte(b) {
