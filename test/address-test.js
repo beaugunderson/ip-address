@@ -85,6 +85,26 @@ function addressIs(addressString, descriptors) {
           reSubstring.test('abc ' + addressString + ' def')
             .should.equal(true);
         });
+
+        it('converts to a byte array and back', function () {
+          var byteArray = address6.toByteArray();
+
+          byteArray.length.should.be.at.most(16);
+
+          var converted = Address6.fromByteArray(byteArray);
+
+          address6.correctForm().should.equal(converted.correctForm());
+        });
+
+        it('converts to an unsigned byte array and back', function () {
+          var byteArray = address6.toUnsignedByteArray();
+
+          byteArray.length.should.be.at.most(16);
+
+          var converted = Address6.fromUnsignedByteArray(byteArray);
+
+          address6.correctForm().should.equal(converted.correctForm());
+        });
       }
 
       if (descriptor === 'invalid-ipv4') {
