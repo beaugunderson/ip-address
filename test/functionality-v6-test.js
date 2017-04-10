@@ -323,12 +323,13 @@ describe('v6', function () {
   });
 
   describe('Address from an IPv4 address', function () {
-    var obj = Address6.fromAddress4('192.168.0.1');
+    var obj = Address6.fromAddress4('192.168.0.1/30');
 
     it('should parse correctly', function () {
       expect(obj.valid).to.equal(true);
       expect(obj.correctForm()).to.equal('::ffff:c0a8:1');
       expect(obj.to4in6()).to.equal('::ffff:192.168.0.1');
+      expect(obj.subnetMask).to.equal(126);
     });
 
     it('should generate a 6to4 address', function () {
