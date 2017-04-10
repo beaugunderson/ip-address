@@ -539,7 +539,11 @@ Address6.fromURL = function (url) {
  * address.to4in6(); // '::ffff:192.168.0.1'
  */
 Address6.fromAddress4 = function (address4) {
-  return new Address6('::ffff:' + address4);
+  var address4 = new Address4(address4);
+
+  var mask6 = constants6.BITS - (constants4.BITS - address4.subnetMask);
+
+  return new Address6('::ffff:' + address4.correctForm() + '/' + mask6);
 };
 
 /**
