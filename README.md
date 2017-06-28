@@ -1,16 +1,16 @@
 [![travis]](http://travis-ci.org/beaugunderson/ip-address)
-[![codecov.io](https://codecov.io/github/beaugunderson/ip-address/coverage.svg?branch=master)](https://codecov.io/github/beaugunderson/ip-address?branch=master)
+[![codecov]](https://codecov.io/github/beaugunderson/ip-address?branch=master)
 [![downloads]](https://www.npmjs.com/package/ip-address)
-[![version]](https://www.npmjs.com/package/ip-address)
+[![npm]](https://www.npmjs.com/package/ip-address)
+[![greenkeeper]](https://greenkeeper.io/)
 
-[travis]: https://img.shields.io/travis/beaugunderson/ip-address.svg
-[coverage]: https://img.shields.io/coveralls/beaugunderson/ip-address.svg
+[codecov]: https://codecov.io/github/beaugunderson/ip-address/coverage.svg?branch=master
 [downloads]: https://img.shields.io/npm/dm/ip-address.svg
-[version]: https://img.shields.io/npm/v/ip-address.svg
+[greenkeeper]: https://badges.greenkeeper.io/beaugunderson/ip-address.svg
+[npm]: https://img.shields.io/npm/v/ip-address.svg
+[travis]: https://img.shields.io/travis/beaugunderson/ip-address.svg
 
 ## ip-address
-
-[![Greenkeeper badge](https://badges.greenkeeper.io/beaugunderson/ip-address.svg)](https://greenkeeper.io/)
 
 `ip-address` is a library for validating and manipulating IPv4 and IPv6
 addresses in JavaScript.
