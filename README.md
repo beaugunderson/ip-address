@@ -10,6 +10,8 @@
 
 ## ip-address
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/beaugunderson/ip-address.svg)](https://greenkeeper.io/)
+
 `ip-address` is a library for validating and manipulating IPv4 and IPv6
 addresses in JavaScript.
 
