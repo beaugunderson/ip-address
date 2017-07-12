@@ -15,18 +15,6 @@
 `ip-address` is a library for validating and manipulating IPv4 and IPv6
 addresses in JavaScript.
 
-### Upgrading to 5.0
-
-- `v4.Address` and `v6.Address` have been renamed `Address4` and `Address6`
-- `Address4#toV6Group` has been renamed `Address4#toGroup6`
-- `Address6#get6to4` has been renamed `Address6#to6to4`
-- `Address6#six2four` has been renamed `Address6#inspect6to4`
-- `Address6#teredo` has been renamed `Address6#inspectTeredo`
-- `Address6#tov4` has been renamed `Address6#to4`
-- `Address6#v4inv6` has been renamed `Address6#to4in6`
-
-Deprecation warnings are in place for all of these methods.
-
 ### Documentation
 
 Documentation is available at [ip-address.js.org](http://ip-address.js.org/).
