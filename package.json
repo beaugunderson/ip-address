@@ -14,7 +14,7 @@
   "scripts": {
     "test": "mocha -R spec",
     "docs": "documentation --github --output docs --format html ./ip-address.js",
-    "prepublish": "browserify ./ip-address-globals.js > ./dist/ip-address-globals.js"
+    "prepublishOnly": "browserify ./ip-address-globals.js > ./dist/ip-address-globals.js"
   },
   "engines": {
     "node": ">= 0.10"
