@@ -67,7 +67,6 @@ var common = require('./common.js');
 var padStart = require('lodash.padstart');
 var repeat = require('lodash.repeat');
 var sprintf = require('sprintf-js').sprintf;
-var deprecate = require('util-deprecate');
 
 var constants = require('./v4/constants.js');
 
@@ -230,10 +229,6 @@ Address4.prototype.toGroup6 = function () {
   return output.join(':');
 };
 
-Address4.prototype.toV6Group =
-  deprecate(Address4.prototype.toGroup6,
-    'deprecated: `toV6Group` has been renamed to `toGroup6`');
-
 /**
  * Returns the address as a BigInteger
  * @memberof Address4
@@ -334,7 +329,7 @@ Address4.prototype.binaryZeroPad = function () {
 
 module.exports = Address4;
 
-},{"./common.js":3,"./v4/constants.js":6,"jsbn":12,"lodash.padstart":16,"lodash.repeat":17,"sprintf-js":18,"util-deprecate":19}],5:[function(require,module,exports){
+},{"./common.js":3,"./v4/constants.js":6,"jsbn":12,"lodash.padstart":16,"lodash.repeat":17,"sprintf-js":18}],5:[function(require,module,exports){
 'use strict';
 
 var BigInteger = require('jsbn').BigInteger;
@@ -344,7 +339,6 @@ var merge = require('lodash.merge');
 var padStart = require('lodash.padstart');
 var repeat = require('lodash.repeat');
 var sprintf = require('sprintf-js').sprintf;
-var deprecate = require('util-deprecate');
 
 var constants4 = require('./v4/constants.js');
 var constants6 = require('./v6/constants.js');
@@ -1072,10 +1066,6 @@ Address6.prototype.to4 = function () {
     .join(''), 2).toString(16));
 };
 
-Address6.prototype.tov4 =
-  deprecate(Address6.prototype.to4,
-    'deprecated: `tov4` has been renamed to `to4`');
-
 /**
  * Return the v4-in-v6 form of the address
  * @memberof Address6
@@ -1096,10 +1086,6 @@ Address6.prototype.to4in6 = function () {
 
   return address6.correctForm() + infix + address4.address;
 };
-
-Address6.prototype.v4inv6 =
-  deprecate(Address6.prototype.to4in6,
-    'deprecated: `v4inv6` has been renamed to `to4in6`');
 
 /**
  * Return an object containing the Teredo properties of the address
@@ -1163,10 +1149,6 @@ Address6.prototype.inspectTeredo = function () {
   };
 };
 
-Address6.prototype.teredo =
-  deprecate(Address6.prototype.inspectTeredo,
-    'deprecated: `teredo` has been renamed to `inspectTeredo`');
-
 /**
  * Return an object containing the 6to4 properties of the address
  * @memberof Address6
@@ -1189,10 +1171,6 @@ Address6.prototype.inspect6to4 = function () {
   };
 };
 
-Address6.prototype.six2four =
-  deprecate(Address6.prototype.inspect6to4,
-    'deprecated: `six2four` has been renamed to `inspect6to4`');
-
 /**
  * Return a v6 6to4 address from a v6 v4inv6 address
  * @memberof Address6
@@ -1214,10 +1192,6 @@ Address6.prototype.to6to4 = function () {
 
   return new Address6(addr6to4);
 };
-
-Address6.prototype.get6to4 =
-  deprecate(Address6.prototype.to6to4,
-    'deprecated: `get6to4` has been renamed to `to6to4`');
 
 /**
  * Return a byte array
@@ -1283,7 +1257,7 @@ Address6.fromUnsignedByteArray = function (bytes) {
 
 module.exports = Address6;
 
-},{"./ipv4.js":4,"./v4/constants.js":6,"./v6/attributes.js":7,"./v6/constants.js":8,"./v6/html.js":10,"./v6/regular-expressions.js":11,"jsbn":12,"lodash.find":13,"lodash.max":14,"lodash.merge":15,"lodash.padstart":16,"lodash.repeat":17,"sprintf-js":18,"util-deprecate":19}],6:[function(require,module,exports){
+},{"./ipv4.js":4,"./v4/constants.js":6,"./v6/attributes.js":7,"./v6/constants.js":8,"./v6/html.js":10,"./v6/regular-expressions.js":11,"jsbn":12,"lodash.find":13,"lodash.max":14,"lodash.merge":15,"lodash.padstart":16,"lodash.repeat":17,"sprintf-js":18}],6:[function(require,module,exports){
 exports.BITS = 32;
 exports.GROUPS = 4;
 
@@ -2462,7 +2436,7 @@ exports.regularExpression = function (optionalSubstring) {
         if(a < 2) this.fromInt(1);
         else {
           this.fromNumber(a,c);
-          if(!this.testBit(a-1))	// force MSB set
+          if(!this.testBit(a-1))    // force MSB set
             this.bitwiseTo(BigInteger.ONE.shiftLeft(a-1),op_or,this);
           if(this.isEven()) this.dAddOffset(1,0); // force odd
           while(!this.isProbablePrime(b)) {
@@ -2823,7 +2797,7 @@ exports.regularExpression = function (optionalSubstring) {
         n = k;
         while((w&1) == 0) { w >>= 1; --n; }
         if((i -= n) < 0) { i += this.DB; --j; }
-        if(is1) {	// ret == 1, don't bother squaring or multiplying it
+        if(is1) {    // ret == 1, don't bother squaring or multiplying it
           g[w].copyTo(r);
           is1 = false;
         }
@@ -3033,138 +3007,141 @@ exports.regularExpression = function (optionalSubstring) {
     // long longValue()
     // static BigInteger valueOf(long val)
 
-	// Random number generator - requires a PRNG backend, e.g. prng4.js
+    // Random number generator - requires a PRNG backend, e.g. prng4.js
 
-	// For best results, put code like
-	// <body onClick='rng_seed_time();' onKeyPress='rng_seed_time();'>
-	// in your main HTML document.
+    // For best results, put code like
+    // <body onClick='rng_seed_time();' onKeyPress='rng_seed_time();'>
+    // in your main HTML document.
 
-	var rng_state;
-	var rng_pool;
-	var rng_pptr;
+    var rng_state;
+    var rng_pool;
+    var rng_pptr;
 
-	// Mix in a 32-bit integer into the pool
-	function rng_seed_int(x) {
-	  rng_pool[rng_pptr++] ^= x & 255;
-	  rng_pool[rng_pptr++] ^= (x >> 8) & 255;
-	  rng_pool[rng_pptr++] ^= (x >> 16) & 255;
-	  rng_pool[rng_pptr++] ^= (x >> 24) & 255;
-	  if(rng_pptr >= rng_psize) rng_pptr -= rng_psize;
-	}
+    // Mix in a 32-bit integer into the pool
+    function rng_seed_int(x) {
+      rng_pool[rng_pptr++] ^= x & 255;
+      rng_pool[rng_pptr++] ^= (x >> 8) & 255;
+      rng_pool[rng_pptr++] ^= (x >> 16) & 255;
+      rng_pool[rng_pptr++] ^= (x >> 24) & 255;
+      if(rng_pptr >= rng_psize) rng_pptr -= rng_psize;
+    }
 
-	// Mix in the current time (w/milliseconds) into the pool
-	function rng_seed_time() {
-	  rng_seed_int(new Date().getTime());
-	}
+    // Mix in the current time (w/milliseconds) into the pool
+    function rng_seed_time() {
+      rng_seed_int(new Date().getTime());
+    }
 
-	// Initialize the pool with junk if needed.
-	if(rng_pool == null) {
-	  rng_pool = new Array();
-	  rng_pptr = 0;
-	  var t;
-	  if(typeof window !== "undefined" && window.crypto) {
-		if (window.crypto.getRandomValues) {
-		  // Use webcrypto if available
-		  var ua = new Uint8Array(32);
-		  window.crypto.getRandomValues(ua);
-		  for(t = 0; t < 32; ++t)
-			rng_pool[rng_pptr++] = ua[t];
-		}
-		else if(navigator.appName == "Netscape" && navigator.appVersion < "5") {
-		  // Extract entropy (256 bits) from NS4 RNG if available
-		  var z = window.crypto.random(32);
-		  for(t = 0; t < z.length; ++t)
-			rng_pool[rng_pptr++] = z.charCodeAt(t) & 255;
-		}
-	  }
-	  while(rng_pptr < rng_psize) {  // extract some randomness from Math.random()
-		t = Math.floor(65536 * Math.random());
-		rng_pool[rng_pptr++] = t >>> 8;
-		rng_pool[rng_pptr++] = t & 255;
-	  }
-	  rng_pptr = 0;
-	  rng_seed_time();
-	  //rng_seed_int(window.screenX);
-	  //rng_seed_int(window.screenY);
-	}
+    // Initialize the pool with junk if needed.
+    if(rng_pool == null) {
+      rng_pool = new Array();
+      rng_pptr = 0;
+      var t;
+      if(typeof window !== "undefined" && window.crypto) {
+        if (window.crypto.getRandomValues) {
+          // Use webcrypto if available
+          var ua = new Uint8Array(32);
+          window.crypto.getRandomValues(ua);
+          for(t = 0; t < 32; ++t)
+            rng_pool[rng_pptr++] = ua[t];
+        }
+        else if(navigator.appName == "Netscape" && navigator.appVersion < "5") {
+          // Extract entropy (256 bits) from NS4 RNG if available
+          var z = window.crypto.random(32);
+          for(t = 0; t < z.length; ++t)
+            rng_pool[rng_pptr++] = z.charCodeAt(t) & 255;
+        }
+      }
+      while(rng_pptr < rng_psize) {  // extract some randomness from Math.random()
+        t = Math.floor(65536 * Math.random());
+        rng_pool[rng_pptr++] = t >>> 8;
+        rng_pool[rng_pptr++] = t & 255;
+      }
+      rng_pptr = 0;
+      rng_seed_time();
+      //rng_seed_int(window.screenX);
+      //rng_seed_int(window.screenY);
+    }
 
-	function rng_get_byte() {
-	  if(rng_state == null) {
-		rng_seed_time();
-		rng_state = prng_newstate();
-		rng_state.init(rng_pool);
-		for(rng_pptr = 0; rng_pptr < rng_pool.length; ++rng_pptr)
-		  rng_pool[rng_pptr] = 0;
-		rng_pptr = 0;
-		//rng_pool = null;
-	  }
-	  // TODO: allow reseeding after first request
-	  return rng_state.next();
-	}
+    function rng_get_byte() {
+      if(rng_state == null) {
+        rng_seed_time();
+        rng_state = prng_newstate();
+        rng_state.init(rng_pool);
+        for(rng_pptr = 0; rng_pptr < rng_pool.length; ++rng_pptr)
+          rng_pool[rng_pptr] = 0;
+        rng_pptr = 0;
+        //rng_pool = null;
+      }
+      // TODO: allow reseeding after first request
+      return rng_state.next();
+    }
 
-	function rng_get_bytes(ba) {
-	  var i;
-	  for(i = 0; i < ba.length; ++i) ba[i] = rng_get_byte();
-	}
+    function rng_get_bytes(ba) {
+      var i;
+      for(i = 0; i < ba.length; ++i) ba[i] = rng_get_byte();
+    }
 
-	function SecureRandom() {}
+    function SecureRandom() {}
 
-	SecureRandom.prototype.nextBytes = rng_get_bytes;
+    SecureRandom.prototype.nextBytes = rng_get_bytes;
 
-	// prng4.js - uses Arcfour as a PRNG
+    // prng4.js - uses Arcfour as a PRNG
 
-	function Arcfour() {
-	  this.i = 0;
-	  this.j = 0;
-	  this.S = new Array();
-	}
+    function Arcfour() {
+      this.i = 0;
+      this.j = 0;
+      this.S = new Array();
+    }
 
-	// Initialize arcfour context from key, an array of ints, each from [0..255]
-	function ARC4init(key) {
-	  var i, j, t;
-	  for(i = 0; i < 256; ++i)
-		this.S[i] = i;
-	  j = 0;
-	  for(i = 0; i < 256; ++i) {
-		j = (j + this.S[i] + key[i % key.length]) & 255;
-		t = this.S[i];
-		this.S[i] = this.S[j];
-		this.S[j] = t;
-	  }
-	  this.i = 0;
-	  this.j = 0;
-	}
+    // Initialize arcfour context from key, an array of ints, each from [0..255]
+    function ARC4init(key) {
+      var i, j, t;
+      for(i = 0; i < 256; ++i)
+        this.S[i] = i;
+      j = 0;
+      for(i = 0; i < 256; ++i) {
+        j = (j + this.S[i] + key[i % key.length]) & 255;
+        t = this.S[i];
+        this.S[i] = this.S[j];
+        this.S[j] = t;
+      }
+      this.i = 0;
+      this.j = 0;
+    }
 
-	function ARC4next() {
-	  var t;
-	  this.i = (this.i + 1) & 255;
-	  this.j = (this.j + this.S[this.i]) & 255;
-	  t = this.S[this.i];
-	  this.S[this.i] = this.S[this.j];
-	  this.S[this.j] = t;
-	  return this.S[(t + this.S[this.i]) & 255];
-	}
+    function ARC4next() {
+      var t;
+      this.i = (this.i + 1) & 255;
+      this.j = (this.j + this.S[this.i]) & 255;
+      t = this.S[this.i];
+      this.S[this.i] = this.S[this.j];
+      this.S[this.j] = t;
+      return this.S[(t + this.S[this.i]) & 255];
+    }
 
-	Arcfour.prototype.init = ARC4init;
-	Arcfour.prototype.next = ARC4next;
+    Arcfour.prototype.init = ARC4init;
+    Arcfour.prototype.next = ARC4next;
 
-	// Plug in your RNG constructor here
-	function prng_newstate() {
-	  return new Arcfour();
-	}
+    // Plug in your RNG constructor here
+    function prng_newstate() {
+      return new Arcfour();
+    }
 
-	// Pool size must be a multiple of 4 and greater than 32.
-	// An array of bytes the size of the pool will be passed to init()
-	var rng_psize = 256;
+    // Pool size must be a multiple of 4 and greater than 32.
+    // An array of bytes the size of the pool will be passed to init()
+    var rng_psize = 256;
 
     if (typeof exports !== 'undefined') {
         exports = module.exports = {
-			BigInteger: BigInteger,
-			SecureRandom: SecureRandom,
-		};
+            default: BigInteger,
+            BigInteger: BigInteger,
+            SecureRandom: SecureRandom,
+        };
     } else {
-        this.BigInteger = BigInteger;
-        this.SecureRandom = SecureRandom;
+        this.jsbn = {
+          BigInteger: BigInteger,
+          SecureRandom: SecureRandom
+        };
     }
 
 }).call(this);
@@ -9085,15 +9062,23 @@ module.exports = repeat;
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 },{}],18:[function(require,module,exports){
+/* globals window, exports, define */
+
 (function(window) {
+    'use strict'
+
     var re = {
         not_string: /[^s]/,
+        not_bool: /[^t]/,
+        not_type: /[^T]/,
+        not_primitive: /[^v]/,
         number: /[diefg]/,
+        numeric_arg: /[bcdiefguxX]/,
         json: /[j]/,
         not_json: /[^j]/,
         text: /^[^\x25]+/,
         modulo: /^\x25{2}/,
-        placeholder: /^\x25(?:([1-9]\d*)\$|\(([^\)]+)\))?(\+)?(0|'[^$])?(-)?(\d+)?(?:\.(\d+))?([b-gijosuxX])/,
+        placeholder: /^\x25(?:([1-9]\d*)\$|\(([^\)]+)\))?(\+)?(0|'[^$])?(-)?(\d+)?(?:\.(\d+))?([b-gijostTuvxX])/,
         key: /^([a-z_][a-z_\d]*)/i,
         key_access: /^\.([a-z_][a-z_\d]*)/i,
         index_access: /^\[(\d+)\]/,
@@ -9102,26 +9087,26 @@ module.exports = repeat;
 
     function sprintf() {
         var key = arguments[0], cache = sprintf.cache
-        if (!(cache[key] && cache.hasOwnProperty(key))) {
+        if (!(cache[key])) {
             cache[key] = sprintf.parse(key)
         }
         return sprintf.format.call(null, cache[key], arguments)
     }
 
     sprintf.format = function(parse_tree, argv) {
-        var cursor = 1, tree_length = parse_tree.length, node_type = "", arg, output = [], i, k, match, pad, pad_character, pad_length, is_positive = true, sign = ""
+        var cursor = 1, tree_length = parse_tree.length, node_type = '', arg, output = [], i, k, match, pad, pad_character, pad_length, is_positive = true, sign = ''
         for (i = 0; i < tree_length; i++) {
             node_type = get_type(parse_tree[i])
-            if (node_type === "string") {
+            if (node_type === 'string') {
                 output[output.length] = parse_tree[i]
             }
-            else if (node_type === "array") {
+            else if (node_type === 'array') {
                 match = parse_tree[i] // convenience purposes only
                 if (match[2]) { // keyword argument
                     arg = argv[cursor]
                     for (k = 0; k < match[2].length; k++) {
                         if (!arg.hasOwnProperty(match[2][k])) {
-                            throw new Error(sprintf("[sprintf] property '%s' does not exist", match[2][k]))
+                            throw new Error(sprintf('[sprintf] property "%s" does not exist', match[2][k]))
                         }
                         arg = arg[match[2][k]]
                     }
@@ -9133,11 +9118,11 @@ module.exports = repeat;
                     arg = argv[cursor++]
                 }
 
-                if (get_type(arg) == "function") {
+                if (re.not_type.test(match[8]) && re.not_primitive.test(match[8]) && get_type(arg) == 'function') {
                     arg = arg()
                 }
 
-                if (re.not_string.test(match[8]) && re.not_json.test(match[8]) && (get_type(arg) != "number" && isNaN(arg))) {
+                if (re.numeric_arg.test(match[8]) && (get_type(arg) != 'number' && isNaN(arg))) {
                     throw new TypeError(sprintf("[sprintf] expecting number but found %s", get_type(arg)))
                 }
 
@@ -9146,42 +9131,55 @@ module.exports = repeat;
                 }
 
                 switch (match[8]) {
-                    case "b":
-                        arg = arg.toString(2)
+                    case 'b':
+                        arg = parseInt(arg, 10).toString(2)
                     break
-                    case "c":
-                        arg = String.fromCharCode(arg)
+                    case 'c':
+                        arg = String.fromCharCode(parseInt(arg, 10))
                     break
-                    case "d":
-                    case "i":
+                    case 'd':
+                    case 'i':
                         arg = parseInt(arg, 10)
                     break
-                    case "j":
+                    case 'j':
                         arg = JSON.stringify(arg, null, match[6] ? parseInt(match[6]) : 0)
                     break
-                    case "e":
-                        arg = match[7] ? arg.toExponential(match[7]) : arg.toExponential()
+                    case 'e':
+                        arg = match[7] ? parseFloat(arg).toExponential(match[7]) : parseFloat(arg).toExponential()
                     break
-                    case "f":
+                    case 'f':
                         arg = match[7] ? parseFloat(arg).toFixed(match[7]) : parseFloat(arg)
                     break
-                    case "g":
+                    case 'g':
                         arg = match[7] ? parseFloat(arg).toPrecision(match[7]) : parseFloat(arg)
                     break
-                    case "o":
+                    case 'o':
                         arg = arg.toString(8)
                     break
-                    case "s":
-                        arg = ((arg = String(arg)) && match[7] ? arg.substring(0, match[7]) : arg)
+                    case 's':
+                        arg = String(arg)
+                        arg = (match[7] ? arg.substring(0, match[7]) : arg)
                     break
-                    case "u":
-                        arg = arg >>> 0
+                    case 't':
+                        arg = String(!!arg)
+                        arg = (match[7] ? arg.substring(0, match[7]) : arg)
                     break
-                    case "x":
-                        arg = arg.toString(16)
+                    case 'T':
+                        arg = get_type(arg)
+                        arg = (match[7] ? arg.substring(0, match[7]) : arg)
                     break
-                    case "X":
-                        arg = arg.toString(16).toUpperCase()
+                    case 'u':
+                        arg = parseInt(arg, 10) >>> 0
+                    break
+                    case 'v':
+                        arg = arg.valueOf()
+                        arg = (match[7] ? arg.substring(0, match[7]) : arg)
+                    break
+                    case 'x':
+                        arg = parseInt(arg, 10).toString(16)
+                    break
+                    case 'X':
+                        arg = parseInt(arg, 10).toString(16).toUpperCase()
                     break
                 }
                 if (re.json.test(match[8])) {
@@ -9189,23 +9187,23 @@ module.exports = repeat;
                 }
                 else {
                     if (re.number.test(match[8]) && (!is_positive || match[3])) {
-                        sign = is_positive ? "+" : "-"
-                        arg = arg.toString().replace(re.sign, "")
+                        sign = is_positive ? '+' : '-'
+                        arg = arg.toString().replace(re.sign, '')
                     }
                     else {
-                        sign = ""
+                        sign = ''
                     }
-                    pad_character = match[4] ? match[4] === "0" ? "0" : match[4].charAt(1) : " "
+                    pad_character = match[4] ? match[4] === '0' ? '0' : match[4].charAt(1) : ' '
                     pad_length = match[6] - (sign + arg).length
-                    pad = match[6] ? (pad_length > 0 ? str_repeat(pad_character, pad_length) : "") : ""
-                    output[output.length] = match[5] ? sign + arg + pad : (pad_character === "0" ? sign + pad + arg : pad + sign + arg)
+                    pad = match[6] ? (pad_length > 0 ? str_repeat(pad_character, pad_length) : '') : ''
+                    output[output.length] = match[5] ? sign + arg + pad : (pad_character === '0' ? sign + pad + arg : pad + sign + arg)
                 }
             }
         }
-        return output.join("")
+        return output.join('')
     }
 
-    sprintf.cache = {}
+    sprintf.cache = Object.create(null)
 
     sprintf.parse = function(fmt) {
         var _fmt = fmt, match = [], parse_tree = [], arg_names = 0
@@ -9214,7 +9212,7 @@ module.exports = repeat;
                 parse_tree[parse_tree.length] = match[0]
             }
             else if ((match = re.modulo.exec(_fmt)) !== null) {
-                parse_tree[parse_tree.length] = "%"
+                parse_tree[parse_tree.length] = '%'
             }
             else if ((match = re.placeholder.exec(_fmt)) !== null) {
                 if (match[2]) {
@@ -9222,7 +9220,7 @@ module.exports = repeat;
                     var field_list = [], replacement_field = match[2], field_match = []
                     if ((field_match = re.key.exec(replacement_field)) !== null) {
                         field_list[field_list.length] = field_match[1]
-                        while ((replacement_field = replacement_field.substring(field_match[0].length)) !== "") {
+                        while ((replacement_field = replacement_field.substring(field_match[0].length)) !== '') {
                             if ((field_match = re.key_access.exec(replacement_field)) !== null) {
                                 field_list[field_list.length] = field_match[1]
                             }
@@ -9265,25 +9263,41 @@ module.exports = repeat;
      * helpers
      */
     function get_type(variable) {
-        return Object.prototype.toString.call(variable).slice(8, -1).toLowerCase()
+        if (typeof variable === 'number') {
+            return 'number'
+        }
+        else if (typeof variable === 'string') {
+            return 'string'
+        }
+        else {
+            return Object.prototype.toString.call(variable).slice(8, -1).toLowerCase()
+        }
     }
 
+    var preformattedPadding = {
+        '0': ['', '0', '00', '000', '0000', '00000', '000000', '0000000'],
+        ' ': ['', ' ', '  ', '   ', '    ', '     ', '      ', '       '],
+        '_': ['', '_', '__', '___', '____', '_____', '______', '_______'],
+    }
     function str_repeat(input, multiplier) {
+        if (multiplier >= 0 && multiplier <= 7 && preformattedPadding[input]) {
+            return preformattedPadding[input][multiplier]
+        }
         return Array(multiplier + 1).join(input)
     }
 
     /**
      * export to either browser or node.js
      */
-    if (typeof exports !== "undefined") {
+    if (typeof exports !== 'undefined') {
         exports.sprintf = sprintf
         exports.vsprintf = vsprintf
     }
-    else {
+    if (typeof window !== 'undefined') {
         window.sprintf = sprintf
         window.vsprintf = vsprintf
 
-        if (typeof define === "function" && define.amd) {
+        if (typeof define === 'function' && define.amd) {
             define(function() {
                 return {
                     sprintf: sprintf,
@@ -9292,77 +9306,6 @@ module.exports = repeat;
             })
         }
     }
-})(typeof window === "undefined" ? this : window);
+})(typeof window === 'undefined' ? this : window);
 
-},{}],19:[function(require,module,exports){
-(function (global){
-
-/**
- * Module exports.
- */
-
-module.exports = deprecate;
-
-/**
- * Mark that a method should not be used.
- * Returns a modified function which warns once by default.
- *
- * If `localStorage.noDeprecation = true` is set, then it is a no-op.
- *
- * If `localStorage.throwDeprecation = true` is set, then deprecated functions
- * will throw an Error when invoked.
- *
- * If `localStorage.traceDeprecation = true` is set, then deprecated functions
- * will invoke `console.trace()` instead of `console.error()`.
- *
- * @param {Function} fn - the function to deprecate
- * @param {String} msg - the string to print to the console when `fn` is invoked
- * @returns {Function} a new "deprecated" version of `fn`
- * @api public
- */
-
-function deprecate (fn, msg) {
-  if (config('noDeprecation')) {
-    return fn;
-  }
-
-  var warned = false;
-  function deprecated() {
-    if (!warned) {
-      if (config('throwDeprecation')) {
-        throw new Error(msg);
-      } else if (config('traceDeprecation')) {
-        console.trace(msg);
-      } else {
-        console.warn(msg);
-      }
-      warned = true;
-    }
-    return fn.apply(this, arguments);
-  }
-
-  return deprecated;
-}
-
-/**
- * Checks `localStorage` for boolean values for the given `name`.
- *
- * @param {String} name
- * @returns {Boolean}
- * @api private
- */
-
-function config (name) {
-  // accessing global.localStorage can trigger a DOMException in sandboxed iframes
-  try {
-    if (!global.localStorage) return false;
-  } catch (_) {
-    return false;
-  }
-  var val = global.localStorage[name];
-  if (null == val) return false;
-  return String(val).toLowerCase() === 'true';
-}
-
-}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 },{}]},{},[1]);

@@ -30,8 +30,7 @@
     "lodash.merge": "^4.6.0",
     "lodash.padstart": "^4.6.1",
     "lodash.repeat": "^4.1.0",
-    "sprintf-js": "1.1.0",
-    "util-deprecate": "^1.0.2"
+    "sprintf-js": "1.1.0"
   },
   "devDependencies": {
     "browserify": "^14.4.0",
