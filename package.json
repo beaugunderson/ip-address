@@ -34,7 +34,7 @@
   },
   "devDependencies": {
     "browserify": "^14.4.0",
-    "chai": "^4.0.2",
+    "chai": "^4.1.0",
     "codecov.io": "^0.1.6",
     "documentation": "^4.0.0-rc.1",
     "istanbul": "^0.4.5",
