@@ -1389,8 +1389,8 @@ exports.SCOPES = {
   4: 'Admin local',
   5: 'Site local',
   8: 'Organization local',
-  15: 'Global',
-  16: 'Reserved'
+  14: 'Global',
+  15: 'Reserved'
 };
 
 /**
