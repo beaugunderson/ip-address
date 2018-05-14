@@ -36,7 +36,7 @@
     "browserify": "^16.2.0",
     "chai": "^4.1.2",
     "codecov.io": "^0.1.6",
-    "documentation": "^4.0.0",
+    "documentation": "^6.3.3",
     "istanbul": "^0.4.5",
     "mocha": "^5.1.1",
     "mochify": "^5.6.1"
