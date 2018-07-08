@@ -150,9 +150,18 @@ describe('v6', function () {
       should.equal(topic.startAddress().correctForm(), 'ffff::');
     });
 
+    it('has a correct start address hosts only', function () {
+        should.equal(topic.startAddressExclusive().correctForm(), 'ffff::1');
+    });
+
     it('has a correct end address', function () {
       should.equal(topic.endAddress().correctForm(),
         'ffff::ffff:ffff:ffff:ffff');
+    });
+
+    it('has a correct end address hosts only', function () {
+        should.equal(topic.endAddressExclusive().correctForm(),
+                     'ffff::ffff:ffff:ffff:fffe');
     });
 
     it('calculates and formats the subnet size', function () {

@@ -117,8 +117,16 @@ describe('v4', function () {
       should.equal(topic.startAddress().correctForm(), '127.0.0.0');
     });
 
+    it('has a correct start address hosts only', function () {
+        should.equal(topic.startAddressExclusive().correctForm(), '127.0.0.1');
+    });
+
     it('has a correct end address', function () {
       should.equal(topic.endAddress().correctForm(), '127.0.255.255');
+    });
+
+    it('has a correct end address hosts only', function () {
+      should.equal(topic.endAddressExclusive().correctForm(), '127.0.255.254');
     });
 
     it('is in its own subnet', function () {
