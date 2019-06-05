@@ -13,7 +13,7 @@
   "main": "ip-address.js",
   "scripts": {
     "test": "mocha -R spec",
-    "docs": "documentation --github --output docs --format html ./ip-address.js",
+    "docs": "documentation build --github --output docs --format html ./ip-address.js",
     "prepublishOnly": "browserify ./ip-address-globals.js > ./dist/ip-address-globals.js"
   },
   "engines": {
@@ -25,20 +25,16 @@
   },
   "dependencies": {
     "jsbn": "1.1.0",
-    "lodash.find": "^4.6.0",
-    "lodash.max": "^4.0.1",
-    "lodash.merge": "^4.6.1",
-    "lodash.padstart": "^4.6.1",
-    "lodash.repeat": "^4.1.0",
-    "sprintf-js": "1.1.1"
+    "lodash": "^4.17.11",
+    "sprintf-js": "1.1.2"
   },
   "devDependencies": {
-    "browserify": "^16.2.0",
-    "chai": "^4.1.2",
+    "browserify": "^16.2.3",
+    "chai": "^4.2.0",
     "codecov.io": "^0.1.6",
-    "documentation": "^4.0.0",
+    "documentation": "^11.0.0",
     "istanbul": "^0.4.5",
-    "mocha": "^5.1.1",
-    "mochify": "^5.6.1"
+    "mocha": "^6.1.4",
+    "mochify": "^6.2.0"
   }
 }
