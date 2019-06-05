@@ -252,7 +252,7 @@ Address4.prototype.bigInteger = function () {
  */
 Address4.prototype._startAddress = function () {
   return new BigInteger(
-    this.mask() + _.repeat(0, constants.BITS - this.subnetMask), 2
+    this.mask() + _.repeat('0', constants.BITS - this.subnetMask), 2
   );
 };
 
@@ -287,7 +287,7 @@ Address4.prototype.startAddressExclusive = function () {
  */
 Address4.prototype._endAddress = function () {
   return new BigInteger(
-    this.mask() + _.repeat(1, constants.BITS - this.subnetMask), 2
+    this.mask() + _.repeat('1', constants.BITS - this.subnetMask), 2
   );
 };
 
@@ -689,7 +689,7 @@ Address6.prototype.possibleSubnets = function (optionalSubnetSize) {
  */
 Address6.prototype._startAddress = function () {
   return new BigInteger(
-    this.mask() + _.repeat(0, constants6.BITS - this.subnetMask), 2
+    this.mask() + _.repeat('0', constants6.BITS - this.subnetMask), 2
   );
 };
 
@@ -724,7 +724,7 @@ Address6.prototype.startAddressExclusive = function () {
  */
 Address6.prototype._endAddress = function () {
   return new BigInteger(
-    this.mask() + _.repeat(1, constants6.BITS - this.subnetMask), 2
+    this.mask() + _.repeat('1', constants6.BITS - this.subnetMask), 2
   );
 };
 
