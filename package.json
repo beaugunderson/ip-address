@@ -25,7 +25,7 @@
   },
   "dependencies": {
     "jsbn": "1.1.0",
-    "lodash": "^4.17.11",
+    "lodash": "^4.17.15",
     "sprintf-js": "1.1.2"
   },
   "devDependencies": {
