@@ -13,12 +13,16 @@
   "main": "ip-address.js",
   "scripts": {
     "test": "mocha -R spec",
-    "docs": "documentation build --github --output docs --format html ./ip-address.js",
-    "prepublishOnly": "browserify ./ip-address-globals.js > ./dist/ip-address-globals.js"
+    "docs": "documentation build --github --output docs --format html ./ip-address.js"
   },
   "engines": {
     "node": ">= 0.10"
   },
+  "files": [
+    "ip-address.js",
+    "ip-address-globals.js",
+    "lib/**/*"
+  ],
   "repository": {
     "type": "git",
     "url": "git://github.com/beaugunderson/ip-address.git"
