@@ -48,10 +48,10 @@ describe('v4', function () {
 
     it('is contained by an identical address with an identical subnet',
       function () {
-      var same = new Address4('127.0.0.1/16');
+        var same = new Address4('127.0.0.1/16');
 
-      topic.isInSubnet(same).should.equal(true);
-    });
+        topic.isInSubnet(same).should.equal(true);
+      });
   });
 
   describe('A small subnet', function () {
@@ -118,7 +118,7 @@ describe('v4', function () {
     });
 
     it('has a correct start address hosts only', function () {
-        should.equal(topic.startAddressExclusive().correctForm(), '127.0.0.1');
+      should.equal(topic.startAddressExclusive().correctForm(), '127.0.0.1');
     });
 
     it('has a correct end address', function () {
@@ -202,6 +202,60 @@ describe('v4', function () {
       addresses.forEach(function (topic) {
         should.equal(topic.correctForm(), '127.0.0.1');
         should.equal(topic.subnetMask, 32);
+      });
+    });
+  });
+
+  describe('A multicast address', function () {
+    var multicastAddresses = notationsToAddresseses([
+      '224.0.1.0',
+      '224.0.1.255',
+      '224.0.2.0',
+      '224.0.255.255',
+      '224.3.0.0',
+      '224.4.255.255',
+      '232.0.0.0',
+      '232.255.255.255',
+      '233.0.0.0',
+      '233.251.255.255',
+      '233.252.0.0',
+      '233.255.255.255',
+      '234.0.0.0',
+      '234.255.255.255',
+      '239.0.0.0',
+      '239.255.255.255'
+    ]);
+
+    it('is detected as multicast', function () {
+      multicastAddresses.forEach(function (topic) {
+        should.equal(topic.isMulticast(), true);
+      });
+    });
+  });
+
+  describe('A unicast address', function () {
+    var unicastAddresses = notationsToAddresseses([
+      '124.0.1.0',
+      '124.0.1.255',
+      '124.0.2.0',
+      '124.0.255.255',
+      '124.3.0.0',
+      '124.4.255.255',
+      '132.0.0.0',
+      '132.255.255.255',
+      '133.0.0.0',
+      '133.251.255.255',
+      '133.252.0.0',
+      '133.255.255.255',
+      '134.0.0.0',
+      '134.255.255.255',
+      '139.0.0.0',
+      '139.255.255.255'
+    ]);
+
+    it('is not detected as multicast', function () {
+      unicastAddresses.forEach(function (topic) {
+        should.equal(topic.isMulticast(), false);
       });
     });
   });
