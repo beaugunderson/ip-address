@@ -259,4 +259,12 @@ describe('v4', function () {
       });
     });
   });
+
+  describe('An IP with CIDR notation', function () {
+    var topic = new Address4('127.0.0.2/20');
+
+    it('should generate IP representation of subnet mask correctly', function () {
+      topic.subnetMaskIP().should.equal('255.255.240.0');
+    });
+  });
 });
