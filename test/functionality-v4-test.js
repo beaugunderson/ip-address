@@ -18,6 +18,21 @@ function notationsToAddresseses(notations) {
 }
 
 describe('v4', function () {
+  describe('An non-string input', function () {
+    var topic = new Address4(undefined);
+
+    it('is invalid', function () {
+      topic.error.should.equal('Invalid IPv4 address.');
+
+      topic.valid.should.equal(false);
+
+      topic.isCorrect().should.equal(false);
+
+      should.equal(topic.bigInteger(), null);
+    });
+
+  });
+
   describe('An invalid address', function () {
     var topic = new Address4('127.0.0');
 

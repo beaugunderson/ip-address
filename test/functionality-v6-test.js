@@ -21,6 +21,25 @@ function notationsToAddresseses(notations) {
 }
 
 describe('v6', function () {
+  describe('An non-string address', function () {
+    var topic = new Address6(undefined);
+
+    it('is invalid', function () {
+      topic.error.should.equal('Invalid IPv6 address.');
+
+      topic.valid.should.equal(false);
+
+      topic.isCorrect().should.equal(false);
+
+      should.equal(topic.canonicalForm(), null);
+      should.equal(topic.decimal(), null);
+      should.equal(topic.bigInteger(), null);
+      should.equal(topic.to6to4(), null);
+
+      topic.isTeredo().should.equal(false);
+    });
+  });
+
   describe('An invalid address', function () {
     var topic = new Address6('a:abcde::');
 
