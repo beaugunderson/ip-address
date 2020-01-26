@@ -42,7 +42,7 @@
     "codecov.io": "^0.1.6",
     "documentation": "^12.0.3",
     "istanbul": "^0.4.5",
-    "mocha": "^6.2.0",
+    "mocha": "^7.0.1",
     "mochify": "^6.3.0"
   }
 }
