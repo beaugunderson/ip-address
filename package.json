@@ -16,7 +16,7 @@
     "docs": "documentation build --github --output docs --format html ./ip-address.js"
   },
   "engines": {
-    "node": ">= 0.10"
+    "node": ">= 8.0.0"
   },
   "files": [
     "ip-address.js",
@@ -29,11 +29,6 @@
   },
   "dependencies": {
     "jsbn": "1.1.0",
-    "lodash.find": "4.6.0",
-    "lodash.max": "4.0.1",
-    "lodash.merge": "4.6.2",
-    "lodash.padstart": "4.6.1",
-    "lodash.repeat": "4.1.0",
     "sprintf-js": "1.1.2"
   },
   "devDependencies": {
