@@ -25,7 +25,7 @@ describe('v6', function () {
     var topic = new Address6(undefined);
 
     it('is invalid', function () {
-      topic.error.should.equal('Invalid IPv6 address.');
+      topic.error.should.equal('Invalid argument, address should be a stirng');
 
       topic.valid.should.equal(false);
 

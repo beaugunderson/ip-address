@@ -22,7 +22,7 @@ describe('v4', function () {
     var topic = new Address4(undefined);
 
     it('is invalid', function () {
-      topic.error.should.equal('Invalid IPv4 address.');
+      topic.error.should.equal('Invalid argument, address should be a stirng');
 
       topic.valid.should.equal(false);
 
