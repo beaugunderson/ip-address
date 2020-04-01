@@ -37,12 +37,12 @@
     "sprintf-js": "1.1.2"
   },
   "devDependencies": {
-    "browserify": "^16.3.0",
+    "browserify": "^16.5.1",
     "chai": "^4.2.0",
     "codecov.io": "^0.1.6",
-    "documentation": "^12.0.3",
+    "documentation": "^12.2.0",
     "istanbul": "^0.4.5",
-    "mocha": "^6.2.0",
-    "mochify": "^6.3.0"
+    "mocha": "^7.1.1",
+    "mochify": "^6.6.0"
   }
 }
