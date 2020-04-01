@@ -12,8 +12,9 @@
   "license": "MIT",
   "main": "ip-address.js",
   "scripts": {
-    "test": "mocha -R spec",
-    "docs": "documentation build --github --output docs --format html ./ip-address.js"
+    "docs": "documentation build --github --output docs --format html ./ip-address.js",
+    "release": "release-it",
+    "test": "mocha -R spec"
   },
   "engines": {
     "node": ">= 0.10"
@@ -43,6 +44,7 @@
     "documentation": "^12.2.0",
     "istanbul": "^0.4.5",
     "mocha": "^7.1.1",
-    "mochify": "^6.6.0"
+    "mochify": "^6.6.0",
+    "release-it": "^13.5.1"
   }
 }
