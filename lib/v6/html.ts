@@ -1,5 +1,3 @@
-'use strict';
-
 var constants4 = require('../v4/constants.js');
 var helpers = require('./helpers.js');
 var sprintf = require('sprintf-js').sprintf;
