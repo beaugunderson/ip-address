@@ -59,7 +59,7 @@ export const isLinkLocal = common.falseIfInvalid(function (this: Address6) {
  * @instance
  * @returns {boolean}
  */
-export const sMulticast = common.falseIfInvalid(function () {
+export const isMulticast = common.falseIfInvalid(function () {
   return this.getType() === 'Multicast';
 });
 
