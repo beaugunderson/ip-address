@@ -70,7 +70,7 @@ export class Address6 {
   elidedGroups?: number;
   elisionBegin?: number;
   elisionEnd?: number;
-  error: string = '';
+  error?: string;
   groups: number;
   parsedAddress: any;
   parsedSubnet: string = '';
