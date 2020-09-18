@@ -1,14 +1,12 @@
-'use strict';
+import { Address6 } from '../ipv6';
+import { sprintf } from 'sprintf-js';
+import * as v6 from './constants';
 
-var sprintf = require('sprintf-js').sprintf;
-
-var v6 = require('./constants.js');
-
-function groupPossibilities(possibilities) {
+function groupPossibilities(possibilities: string[]): string {
   return sprintf('(%s)', possibilities.join('|'));
 }
 
-function padGroup(group) {
+function padGroup(group: string): string {
   if (group.length < 4) {
     return sprintf('0{0,%d}%s', 4 - group.length, group);
   }
@@ -18,8 +16,8 @@ function padGroup(group) {
 
 var ADDRESS_BOUNDARY = '[^A-Fa-f0-9:]';
 
-function simpleRegularExpression(groups) {
-  var zeroIndexes = [];
+function simpleRegularExpression(groups: string[]) {
+  var zeroIndexes: number[] = [];
 
   groups.forEach(function (group, i) {
     var groupInteger = parseInt(group, 16);
@@ -49,7 +47,7 @@ function simpleRegularExpression(groups) {
   return groupPossibilities(possibilities);
 }
 
-function possibleElisions(elidedGroups, moreLeft, moreRight) {
+function possibleElisions(elidedGroups: number, moreLeft?: boolean, moreRight?: boolean): string {
   var left = moreLeft ? '' : ':';
   var right = moreRight ? '' : ':';
 
@@ -99,15 +97,11 @@ function possibleElisions(elidedGroups, moreLeft, moreRight) {
  * @param {string} optionalSubString
  * @returns {string}
  */
-exports.regularExpressionString = function (optionalSubString) {
-  if (optionalSubString === undefined) {
-    optionalSubString = false;
-  }
-
-  var output = [];
+export function regularExpressionString(this: Address6, optionalSubString: string = ''): string {
+  var output: string[] = [];
 
   // TODO: revisit why this is necessary
-  var address6 = new this.constructor(this.correctForm());
+  var address6 = new Address6(this.correctForm());
 
   if (address6.elidedGroups === 0) {
     // The simple case
@@ -135,12 +129,13 @@ exports.regularExpressionString = function (optionalSubString) {
   }
 
   if (!optionalSubString) {
-    output = [].concat(
+    output = [
       '(?=^|',
       ADDRESS_BOUNDARY,
-      '|[^\\w\\:])(', output, ')(?=[^\\w\\:]|',
+      '|[^\\w\\:])(', ...output, ')(?=[^\\w\\:]|',
       ADDRESS_BOUNDARY,
-      '|$)');
+      '|$)'
+    ]
   }
 
   return output.join('');
@@ -154,6 +149,6 @@ exports.regularExpressionString = function (optionalSubString) {
  * @param {string} optionalSubString
  * @returns {RegExp}
  */
-exports.regularExpression = function (optionalSubstring) {
+export const regularExpression = function (this: Address6, optionalSubstring?: string): RegExp {
   return new RegExp(this.regularExpressionString(optionalSubstring), 'i');
 };

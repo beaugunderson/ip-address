@@ -1,7 +1,5 @@
-'use strict';
-
-var common = require('../common.js');
-var v6 = require('./constants.js');
+import * as common from '../common';
+import * as v6 from './constants';
 
 /**
  * Returns true if the address is valid, false otherwise
@@ -9,7 +7,7 @@ var v6 = require('./constants.js');
  * @instance
  * @returns {boolean}
  */
-exports.isValid = function () {
+export const isValid = function (this: Address6) {
   return this.valid;
 };
 
@@ -19,7 +17,7 @@ exports.isValid = function () {
  * @instance
  * @returns {boolean}
  */
-exports.isInSubnet = common.isInSubnet;
+export const isInSubnet = common.isInSubnet;
 
 /**
  * Returns true if the address is correct, false otherwise
@@ -27,7 +25,7 @@ exports.isInSubnet = common.isInSubnet;
  * @instance
  * @returns {boolean}
  */
-exports.isCorrect = common.isCorrect(v6.BITS);
+export const isCorrect = common.isCorrect(v6.BITS);
 
 /**
  * Returns true if the address is in the canonical form, false otherwise
@@ -35,7 +33,7 @@ exports.isCorrect = common.isCorrect(v6.BITS);
  * @instance
  * @returns {boolean}
  */
-exports.isCanonical = common.falseIfInvalid(function () {
+export const isCanonical = common.falseIfInvalid(function () {
   return this.addressMinusSuffix === this.canonicalForm();
 });
 
@@ -45,7 +43,7 @@ exports.isCanonical = common.falseIfInvalid(function () {
  * @instance
  * @returns {boolean}
  */
-exports.isLinkLocal = common.falseIfInvalid(function () {
+export const isLinkLocal = common.falseIfInvalid(function (this: Address6) {
   // Zeroes are required, i.e. we can't check isInSubnet with 'fe80::/10'
   if (this.getBitsBase2(0, 64) ===
     '1111111010000000000000000000000000000000000000000000000000000000') {
@@ -61,7 +59,7 @@ exports.isLinkLocal = common.falseIfInvalid(function () {
  * @instance
  * @returns {boolean}
  */
-exports.isMulticast = common.falseIfInvalid(function () {
+export const sMulticast = common.falseIfInvalid(function () {
   return this.getType() === 'Multicast';
 });
 
@@ -71,7 +69,7 @@ exports.isMulticast = common.falseIfInvalid(function () {
  * @instance
  * @returns {boolean}
  */
-exports.is4 = common.falseIfInvalid(function () {
+export const is4 = common.falseIfInvalid(function () {
   return this.v4;
 });
 
@@ -81,7 +79,7 @@ exports.is4 = common.falseIfInvalid(function () {
  * @instance
  * @returns {boolean}
  */
-exports.isTeredo = common.falseIfInvalid(function () {
+export const isTeredo = common.falseIfInvalid(function () {
   return this.isInSubnet(new this.constructor('2001::/32'));
 });
 
@@ -91,7 +89,7 @@ exports.isTeredo = common.falseIfInvalid(function () {
  * @instance
  * @returns {boolean}
  */
-exports.is6to4 = common.falseIfInvalid(function () {
+export const is6to4 = common.falseIfInvalid(function () {
   return this.isInSubnet(new this.constructor('2002::/16'));
 });
 
@@ -101,6 +99,6 @@ exports.is6to4 = common.falseIfInvalid(function () {
  * @instance
  * @returns {boolean}
  */
-exports.isLoopback = common.falseIfInvalid(function () {
+export const isLoopback = common.falseIfInvalid(function () {
   return this.getType() === 'Loopback';
 });

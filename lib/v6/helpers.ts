@@ -1,39 +1,33 @@
-'use strict';
-
-var sprintf = require('sprintf-js').sprintf;
+import { sprintf } from 'sprintf-js';
 
 /**
  * @returns {String} the string with all zeroes contained in a <span>
  */
-var spanAllZeroes = exports.spanAllZeroes = function (s) {
+export const spanAllZeroes = function (s: string): string {
   return s.replace(/(0+)/g, '<span class="zero">$1</span>');
 };
 
 /**
  * @returns {String} the string with each character contained in a <span>
  */
-exports.spanAll = function (s, optionalOffset) {
-  if (optionalOffset === undefined) {
-    optionalOffset = 0;
-  }
-
+export const spanAll = function (s: string, offset: number = 0): string {
   var letters = s.split('');
 
   return letters.map(function (n, i) {
     return sprintf('<span class="digit value-%s position-%d">%s</span>', n,
-      i + optionalOffset,
+      i + offset,
       spanAllZeroes(n)); // XXX Use #base-2 .value-0 instead?
   }).join('');
 };
 
-function spanLeadingZeroesSimple(group) {
+function spanLeadingZeroesSimple(group: string): string {
   return group.replace(/^(0+)/, '<span class="zero">$1</span>');
 }
 
 /**
  * @returns {String} the string with leading zeroes contained in a <span>
  */
-exports.spanLeadingZeroes = function (address) {
+export const spanLeadingZeroes = function (address: string): string {
   var groups = address.split(':');
 
   return groups.map(function (g) {
@@ -45,12 +39,8 @@ exports.spanLeadingZeroes = function (address) {
  * Groups an address
  * @returns {String} a grouped address
  */
-exports.simpleGroup = function (addressString, offset) {
+export const simpleGroup = function (addressString: string, offset: number = 0): string {
   var groups = addressString.split(':');
-
-  if (!offset) {
-    offset = 0;
-  }
 
   return groups.map(function (g, i) {
     if (/group-v4/.test(g)) {

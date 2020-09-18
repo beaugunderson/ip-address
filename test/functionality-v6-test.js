@@ -1,5 +1,3 @@
-'use strict';
-
 var chai = require('chai');
 
 var expect = chai.expect;
@@ -8,9 +6,9 @@ var should = chai.should();
 var BigInteger = require('jsbn').BigInteger;
 var sprintf = require('sprintf-js').sprintf;
 
-var Address6 = require('../lib/ipv6.js');
+var { Address6 } = require('../dist/lib/ipv6');
 
-var v6 = require('..').v6;
+var v6 = require('../dist/ip-address').v6;
 
 // A convenience function to convert a list of IPv6 address notations
 // to Address6 instances
@@ -141,17 +139,17 @@ describe('v6', function () {
 
     it('is contained by an identical address with an identical subnet',
       function () {
-      var same = new Address6('ffff::/64');
+        var same = new Address6('ffff::/64');
 
-      topic.isInSubnet(same).should.equal(true);
-    });
+        topic.isInSubnet(same).should.equal(true);
+      });
 
     it('has a correct start address', function () {
       should.equal(topic.startAddress().correctForm(), 'ffff::');
     });
 
     it('has a correct start address hosts only', function () {
-        should.equal(topic.startAddressExclusive().correctForm(), 'ffff::1');
+      should.equal(topic.startAddressExclusive().correctForm(), 'ffff::1');
     });
 
     it('has a correct end address', function () {
@@ -160,8 +158,8 @@ describe('v6', function () {
     });
 
     it('has a correct end address hosts only', function () {
-        should.equal(topic.endAddressExclusive().correctForm(),
-                     'ffff::ffff:ffff:ffff:fffe');
+      should.equal(topic.endAddressExclusive().correctForm(),
+        'ffff::ffff:ffff:ffff:fffe');
     });
 
     it('calculates and formats the subnet size', function () {
@@ -358,7 +356,7 @@ describe('v6', function () {
     });
 
     it('should generate a valid v6 address', function() {
-      expect(obj.correctForm()).to.equal('2001:0:ce49:7601:e866:efff:62c3:fffe')
+      expect(obj.correctForm()).to.equal('2001:0:ce49:7601:e866:efff:62c3:fffe');
     });
 
     it('should fail with an invalid ip6.arpa length', function() {
@@ -445,11 +443,11 @@ describe('v6', function () {
 
     it('should fail with an invalid address and not return a port',
       function () {
-      var obj = Address6.fromURL('[2001:db8:z:5]:65536');
+        var obj = Address6.fromURL('[2001:db8:z:5]:65536');
 
-      expect(obj.error).to.equal('failed to parse address with port');
-      expect(obj.port).to.equal(null);
-    });
+        expect(obj.error).to.equal('failed to parse address with port');
+        expect(obj.port).to.equal(null);
+      });
   });
 
   describe('An address from a BigInteger', function () {

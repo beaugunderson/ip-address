@@ -1,8 +1,6 @@
-'use strict';
-
 var should = require('chai').should();
 
-var ip = require('..');
+var ip = require('../dist/ip-address');
 
 var Address4 = ip.Address4;
 var Address6 = ip.Address6;

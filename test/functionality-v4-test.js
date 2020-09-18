@@ -1,9 +1,7 @@
-'use strict';
-
 var sprintf = require('sprintf-js').sprintf;
 var should = require('chai').should();
 
-var Address4 = require('../lib/ipv4.js');
+var { Address4 } = require('../dist/lib/ipv4');
 
 // A convenience function to convert a list of IPv4 address notations
 // to Address4 instances

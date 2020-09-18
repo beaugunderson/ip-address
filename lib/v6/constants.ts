@@ -1,12 +1,12 @@
-exports.BITS = 128;
-exports.GROUPS = 8;
+export const BITS = 128;
+export const GROUPS = 8;
 
 /**
  * Represents IPv6 address scopes
  * @memberof Address6
  * @static
  */
-exports.SCOPES = {
+export const SCOPES = {
   0: 'Reserved',
   1: 'Interface local',
   2: 'Link local',
@@ -22,7 +22,7 @@ exports.SCOPES = {
  * @memberof Address6
  * @static
  */
-exports.TYPES = {
+export const TYPES = {
   'ff01::1/128': 'Multicast (All nodes on this interface)',
   'ff01::2/128': 'Multicast (All routers on this interface)',
   'ff02::1/128': 'Multicast (All nodes on this link)',
@@ -52,28 +52,28 @@ exports.TYPES = {
  * @memberof Address6
  * @static
  */
-exports.RE_BAD_CHARACTERS = /([^0-9a-f:\/%])/ig;
+export const RE_BAD_CHARACTERS = /([^0-9a-f:\/%])/ig;
 
 /**
  * A regular expression that matches an incorrect IPv6 address
  * @memberof Address6
  * @static
  */
-exports.RE_BAD_ADDRESS = /([0-9a-f]{5,}|:{3,}|[^:]:$|^:[^:]|\/$)/ig;
+export const RE_BAD_ADDRESS = /([0-9a-f]{5,}|:{3,}|[^:]:$|^:[^:]|\/$)/ig;
 
 /**
  * A regular expression that matches an IPv6 subnet
  * @memberof Address6
  * @static
  */
-exports.RE_SUBNET_STRING = /\/\d{1,3}(?=%|$)/;
+export const RE_SUBNET_STRING = /\/\d{1,3}(?=%|$)/;
 
 /**
  * A regular expression that matches an IPv6 zone
  * @memberof Address6
  * @static
  */
-exports.RE_ZONE_STRING = /%.*$/;
+export const RE_ZONE_STRING = /%.*$/;
 
-exports.RE_URL = new RegExp(/^\[{0,1}([0-9a-f:]+)\]{0,1}/);
-exports.RE_URL_WITH_PORT = new RegExp(/\[([0-9a-f:]+)\]:([0-9]{1,5})/);
+export const RE_URL = new RegExp(/^\[{0,1}([0-9a-f:]+)\]{0,1}/);
+export const RE_URL_WITH_PORT = new RegExp(/\[([0-9a-f:]+)\]:([0-9]{1,5})/);
