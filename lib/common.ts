@@ -3,13 +3,13 @@ import { Address6 } from "./ipv6";
 
 // A wrapper function that returns false if the address is not valid; used to
 // avoid boilerplate checks for `if (!this.valid) { return false; }`
-export const falseIfInvalid = function (fn: Function) {
-  return function (this: Address4 | Address6) {
+export function falseIfInvalid<F extends (...args: any[]) => any>(fn: F) {
+  return <F>function (this: Address4 | Address6, ...args: any[]) {
     if (!this.valid) {
       return false;
     }
 
-    return fn.apply(this, arguments);
+    return fn.apply(this, args);
   };
 };
 

@@ -9,8 +9,11 @@ import max from 'lodash.max';
 
 import * as constants4 from './v4/constants';
 import * as constants6 from './v6/constants';
+import * as common from './common';
+import * as helpers from './v6/helpers';
 
 import { Address4 } from './ipv4';
+import { simpleRegularExpression, possibleElisions, ADDRESS_BOUNDARY } from './v6/regular-expressions';
 
 function addCommas(number: string): string {
   var r = /(\d+)(\d{3})/;
@@ -72,6 +75,7 @@ export class Address6 {
   elisionEnd?: number;
   error?: string;
   groups: number;
+  parseError?: string;
   parsedAddress: any;
   parsedSubnet: string = '';
   subnet: string = '/128';
@@ -154,13 +158,12 @@ export class Address6 {
    * @memberof Address6
    * @static
    * @param {string} url - a URL with optional port number
-   * @returns {Address6}
    * @example
    * var addressAndPort = Address6.fromURL('http://[ffff::]:8080/foo/');
    * addressAndPort.address.correctForm(); // 'ffff::'
    * addressAndPort.port; // 8080
    */
-  static fromURL(url: string): Address6 {
+  static fromURL(url: string) {
     var host;
     var port;
     var result;
@@ -259,17 +262,17 @@ export class Address6 {
       return {
         error: "Not Valid 'ip6.arpa' form",
         address: null
-      };
+      } as Address6;
     }
 
-    address = address.split('.').reverse();
+    const parts = address.split('.').reverse();
 
     for (var i = semicolonAmount; i > 0; i--) {
       var insertIndex = i * 4;
-      address.splice(insertIndex, 0, ':');
+      parts.splice(insertIndex, 0, ':');
     }
 
-    address = address.join('');
+    address = parts.join('');
 
     return new Address6(address);
   };
@@ -280,7 +283,7 @@ export class Address6 {
    * @instance
    * @returns {String} the Microsoft UNC transcription of the address
    */
-  microsoftTranscription() {
+  microsoftTranscription(): string {
     return sprintf('%s.ipv6-literal.net',
       this.correctForm().replace(/:/g, '-'));
   };
@@ -292,7 +295,7 @@ export class Address6 {
    * @param {number} [mask=subnet] - the number of bits to mask
    * @returns {String} the first n bits of the address as a string
    */
-  mask(mask?: number = this.subnetMask) {
+  mask(mask: number = this.subnetMask): string {
     return this.getBitsBase2(0, mask);
   };
 
@@ -304,7 +307,7 @@ export class Address6 {
    * @returns {String}
    */
   // TODO: probably useful to have a numeric version of this too
-  possibleSubnets(subnetSize?: number = 128) {
+  possibleSubnets(subnetSize: number = 128): string {
     var availableBits = constants6.BITS - this.subnetMask;
     var subnetBits = Math.abs(subnetSize - constants6.BITS);
     var subnetPowers = availableBits - subnetBits;
@@ -322,7 +325,7 @@ export class Address6 {
    * @instance
    * @returns {BigInteger}
    */
-  _startAddress() {
+  _startAddress(): BigInteger {
     return new BigInteger(
       this.mask() + repeat('0', constants6.BITS - this.subnetMask), 2
     );
@@ -370,7 +373,7 @@ export class Address6 {
    * @instance
    * @returns {Address6}
    */
-  endAddress() {
+  endAddress(): Address6 {
     return Address6.fromBigInteger(this._endAddress());
   };
 
@@ -393,7 +396,7 @@ export class Address6 {
    * @returns {String}
    */
   getScope(): string {
-    var scope = constants6.SCOPES[this.getBits(12, 16)];
+    var scope = constants6.SCOPES[this.getBits(12, 16).intValue()];
 
     if (this.getType() === 'Global unicast' &&
         scope !== 'Link local') {
@@ -409,7 +412,7 @@ export class Address6 {
    * @instance
    * @returns {String}
    */
-  getType() {
+  getType(): string {
     var self = this;
 
     function isType(name: string, type) {
@@ -461,7 +464,7 @@ export class Address6 {
    * @instance
    * @returns {String}
    */
-  getBitsPastSubnet() {
+  getBitsPastSubnet(): string {
     return this.getBitsBase2(this.subnetMask, constants6.BITS);
   };
 
@@ -508,7 +511,7 @@ export class Address6 {
    * @instance
    * @returns {String}
    */
-  correctForm(): ?string {
+  correctForm(): string {
     if (!this.parsedAddress) {
       return null;
     }
@@ -724,7 +727,7 @@ export class Address6 {
    * @instance
    * @returns {String}
    */
-  canonicalForm() {
+  canonicalForm(): string {
     if (!this.valid) {
       return null;
     }
@@ -738,7 +741,7 @@ export class Address6 {
    * @instance
    * @returns {String}
    */
-  decimal() {
+  decimal(): string {
     if (!this.valid) {
       return null;
     }
@@ -754,7 +757,7 @@ export class Address6 {
    * @instance
    * @returns {BigInteger}
    */
-  bigInteger() {
+  bigInteger(): BigInteger {
     if (!this.valid) {
       return null;
     }
@@ -771,7 +774,7 @@ export class Address6 {
    * var address = new Address6('2001:4860:4001::1825:bf11');
    * address.to4().correctForm(); // '24.37.191.17'
    */
-  to4() {
+  to4(): Address4 {
     var binary = this.binaryZeroPad().split('');
 
     return Address4.fromHex(new BigInteger(binary.slice(96, 128)
@@ -784,7 +787,7 @@ export class Address6 {
    * @instance
    * @returns {String}
    */
-  to4in6() {
+  to4in6(): string {
     var address4 = this.to4();
     var address6 = new Address6(this.parsedAddress.slice(0, 6).join(':'), 6);
 
@@ -805,7 +808,7 @@ export class Address6 {
    * @instance
    * @returns {Object}
    */
-  inspectTeredo() {
+  inspectTeredo(): object {
     /*
     - Bits 0 to 31 are set to the Teredo prefix (normally 2001:0000::/32).
     - Bits 32 to 63 embed the primary IPv4 address of the Teredo server that
@@ -867,7 +870,7 @@ export class Address6 {
    * @instance
    * @returns {Object}
    */
-  inspect6to4() {
+  inspect6to4(): object {
     /*
     - Bits 0 to 15 are set to the 6to4 prefix (2002::/16).
     - Bits 16 to 48 embed the IPv4 address of the 6to4 gateway that is used.
@@ -889,7 +892,7 @@ export class Address6 {
    * @instance
    * @returns {Address6}
    */
-  to6to4() {
+  to6to4(): Address6 {
     if (!this.is4()) {
       return null;
     }
@@ -911,7 +914,7 @@ export class Address6 {
    * @instance
    * @returns {Array}
    */
-  toByteArray() {
+  toByteArray(): Array<any> {
     var byteArray = this.bigInteger().toByteArray();
 
     // work around issue where `toByteArray` returns a leading 0 element
@@ -928,7 +931,7 @@ export class Address6 {
    * @instance
    * @returns {Array}
    */
-  toUnsignedByteArray() {
+  toUnsignedByteArray(): Array<any> {
     return this.toByteArray().map(unsignByte);
   };
 
@@ -962,8 +965,278 @@ export class Address6 {
 
     return Address6.fromBigInteger(result);
   };
-}
 
-merge(Address6.prototype, require('./v6/attributes.js'));
-merge(Address6.prototype, require('./v6/html.js'));
-merge(Address6.prototype, require('./v6/regular-expressions.js'));
+  //#region Attributes
+  /**
+   * Returns true if the address is valid, false otherwise
+   * @memberof Address6
+   * @instance
+   * @returns {boolean}
+   */
+  isValid(this: Address6): boolean {
+    return this.valid;
+  };
+
+  /**
+   * Returns true if the given address is in the subnet of the current address
+   * @memberof Address6
+   * @instance
+   * @returns {boolean}
+   */
+  isInSubnet = common.isInSubnet;
+
+  /**
+   * Returns true if the address is correct, false otherwise
+   * @memberof Address6
+   * @instance
+   * @returns {boolean}
+   */
+  isCorrect = common.isCorrect(constants6.BITS);
+
+  /**
+   * Returns true if the address is in the canonical form, false otherwise
+   * @memberof Address6
+   * @instance
+   * @returns {boolean}
+   */
+  isCanonical = common.falseIfInvalid(function () {
+    return this.addressMinusSuffix === this.canonicalForm();
+  });
+
+  /**
+   * Returns true if the address is a link local address, false otherwise
+   * @memberof Address6
+   * @instance
+   * @returns {boolean}
+   */
+  isLinkLocal = common.falseIfInvalid(function (this: Address6) {
+    // Zeroes are required, i.e. we can't check isInSubnet with 'fe80::/10'
+    if (this.getBitsBase2(0, 64) ===
+      '1111111010000000000000000000000000000000000000000000000000000000') {
+      return true;
+    }
+
+    return false;
+  });
+
+  /**
+   * Returns true if the address is a multicast address, false otherwise
+   * @memberof Address6
+   * @instance
+   * @returns {boolean}
+   */
+  isMulticast = common.falseIfInvalid(function () {
+    return this.getType() === 'Multicast';
+  });
+
+  /**
+   * Returns true if the address is a v4-in-v6 address, false otherwise
+   * @memberof Address6
+   * @instance
+   * @returns {boolean}
+   */
+  is4 = common.falseIfInvalid(function () {
+    return this.v4;
+  });
+
+  /**
+   * Returns true if the address is a Teredo address, false otherwise
+   * @memberof Address6
+   * @instance
+   * @returns {boolean}
+   */
+  isTeredo = common.falseIfInvalid(function () {
+    return this.isInSubnet(new this.constructor('2001::/32'));
+  });
+
+  /**
+   * Returns true if the address is a 6to4 address, false otherwise
+   * @memberof Address6
+   * @instance
+   * @returns {boolean}
+   */
+  is6to4 = common.falseIfInvalid(function () {
+    return this.isInSubnet(new this.constructor('2002::/16'));
+  });
+
+  /**
+   * Returns true if the address is a loopback address, false otherwise
+   * @memberof Address6
+   * @instance
+   * @returns {boolean}
+   */
+  isLoopback = common.falseIfInvalid(function () {
+    return this.getType() === 'Loopback';
+  });
+  //#endregion
+
+  //#region HTML
+  /**
+   * @returns {String} the address in link form with a default port of 80
+   */
+  href(optionalPort?: string): string {
+    if (optionalPort === undefined) {
+      optionalPort = '';
+    } else {
+      optionalPort = sprintf(':%s', optionalPort);
+    }
+
+    return sprintf('http://[%s]%s/', this.correctForm(), optionalPort);
+  };
+
+  /**
+   * @returns {String} a link suitable for conveying the address via a URL hash
+   */
+  link(options: { className?: string; prefix?: string; v4?: boolean; }): string {
+    if (!options) {
+      options = {};
+    }
+
+    if (options.className === undefined) {
+      options.className = '';
+    }
+
+    if (options.prefix === undefined) {
+      options.prefix = '/#address=';
+    }
+
+    if (options.v4 === undefined) {
+      options.v4 = false;
+    }
+
+    var formFunction = this.correctForm;
+
+    if (options.v4) {
+      formFunction = this.to4in6;
+    }
+
+    if (options.className) {
+      return sprintf('<a href="%1$s%2$s" class="%3$s">%2$s</a>',
+        options.prefix, formFunction.call(this), options.className);
+    }
+
+    return sprintf('<a href="%1$s%2$s">%2$s</a>', options.prefix,
+      formFunction.call(this));
+  };
+
+  /**
+   * Groups an address
+   * @returns {String}
+   */
+  group(): string {
+    var address4 = this.address.match(constants4.RE_ADDRESS);
+    var i;
+
+    if (address4) {
+      // The IPv4 case
+      var segments = address4[0].split('.');
+
+      this.address = this.address.replace(constants4.RE_ADDRESS,
+        sprintf('<span class="hover-group group-v4 group-6">%s</span>' +
+          '.' +
+          '<span class="hover-group group-v4 group-7">%s</span>',
+          segments.slice(0, 2).join('.'),
+          segments.slice(2, 4).join('.')));
+    }
+
+    if (this.elidedGroups === 0) {
+      // The simple case
+      return helpers.simpleGroup(this.address);
+    }
+
+    // The elided case
+    var output = [];
+
+    var halves = this.address.split('::');
+
+    if (halves[0].length) {
+      output.push(helpers.simpleGroup(halves[0]));
+    } else {
+      output.push('');
+    }
+
+    var classes = ['hover-group'];
+
+    for (i = this.elisionBegin;
+         i < this.elisionBegin + this.elidedGroups; i++) {
+      classes.push(sprintf('group-%d', i));
+    }
+
+    output.push(sprintf('<span class="%s"></span>', classes.join(' ')));
+
+    if (halves[1].length) {
+      output.push(helpers.simpleGroup(halves[1], this.elisionEnd));
+    } else {
+      output.push('');
+    }
+
+    return output.join(':');
+  };
+  //#endregion
+
+  //#region Regular expressions
+  /**
+   * Generate a regular expression string that can be used to find or validate
+   * all variations of this address
+   * @memberof Address6
+   * @instance
+   * @param {string} optionalSubString
+   * @returns {string}
+   */
+  regularExpressionString(this: Address6, optionalSubString: string = ''): string {
+    var output: string[] = [];
+
+    // TODO: revisit why this is necessary
+    var address6 = new Address6(this.correctForm());
+
+    if (address6.elidedGroups === 0) {
+      // The simple case
+      output.push(simpleRegularExpression(address6.parsedAddress));
+    } else if (address6.elidedGroups === constants6.GROUPS) {
+      // A completely elided address
+      output.push(possibleElisions(constants6.GROUPS));
+    } else {
+      // A partially elided address
+      var halves = address6.address.split('::');
+
+      if (halves[0].length) {
+        output.push(simpleRegularExpression(halves[0].split(':')));
+      }
+
+      output.push(possibleElisions(address6.elidedGroups,
+        halves[0].length !== 0,
+        halves[1].length !== 0));
+
+      if (halves[1].length) {
+        output.push(simpleRegularExpression(halves[1].split(':')));
+      }
+
+      output = [output.join(':')];
+    }
+
+    if (!optionalSubString) {
+      output = [
+        '(?=^|',
+        ADDRESS_BOUNDARY,
+        '|[^\\w\\:])(', ...output, ')(?=[^\\w\\:]|',
+        ADDRESS_BOUNDARY,
+        '|$)'
+      ]
+    }
+
+    return output.join('');
+  };
+
+  /**
+   * Generate a regular expression that can be used to find or validate all
+   * variations of this address.
+   * @memberof Address6
+   * @instance
+   * @param {string} optionalSubString
+   * @returns {RegExp}
+   */
+  regularExpression(this: Address6, optionalSubstring?: string): RegExp {
+    return new RegExp(this.regularExpressionString(optionalSubstring), 'i');
+  };
+  //#endregion
+}

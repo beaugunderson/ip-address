@@ -2,11 +2,11 @@ import { Address6 } from '../ipv6';
 import { sprintf } from 'sprintf-js';
 import * as v6 from './constants';
 
-function groupPossibilities(possibilities: string[]): string {
+export function groupPossibilities(possibilities: string[]): string {
   return sprintf('(%s)', possibilities.join('|'));
 }
 
-function padGroup(group: string): string {
+export function padGroup(group: string): string {
   if (group.length < 4) {
     return sprintf('0{0,%d}%s', 4 - group.length, group);
   }
@@ -14,9 +14,9 @@ function padGroup(group: string): string {
   return group;
 }
 
-var ADDRESS_BOUNDARY = '[^A-Fa-f0-9:]';
+export var ADDRESS_BOUNDARY = '[^A-Fa-f0-9:]';
 
-function simpleRegularExpression(groups: string[]) {
+export function simpleRegularExpression(groups: string[]) {
   var zeroIndexes: number[] = [];
 
   groups.forEach(function (group, i) {
@@ -47,7 +47,7 @@ function simpleRegularExpression(groups: string[]) {
   return groupPossibilities(possibilities);
 }
 
-function possibleElisions(elidedGroups: number, moreLeft?: boolean, moreRight?: boolean): string {
+export function possibleElisions(elidedGroups: number, moreLeft?: boolean, moreRight?: boolean): string {
   var left = moreLeft ? '' : ':';
   var right = moreRight ? '' : ':';
 
@@ -88,67 +88,3 @@ function possibleElisions(elidedGroups: number, moreLeft?: boolean, moreRight?: 
 
   return groupPossibilities(possibilities);
 }
-
-/**
- * Generate a regular expression string that can be used to find or validate
- * all variations of this address
- * @memberof Address6
- * @instance
- * @param {string} optionalSubString
- * @returns {string}
- */
-export function regularExpressionString(this: Address6, optionalSubString: string = ''): string {
-  var output: string[] = [];
-
-  // TODO: revisit why this is necessary
-  var address6 = new Address6(this.correctForm());
-
-  if (address6.elidedGroups === 0) {
-    // The simple case
-    output.push(simpleRegularExpression(address6.parsedAddress));
-  } else if (address6.elidedGroups === v6.GROUPS) {
-    // A completely elided address
-    output.push(possibleElisions(v6.GROUPS));
-  } else {
-    // A partially elided address
-    var halves = address6.address.split('::');
-
-    if (halves[0].length) {
-      output.push(simpleRegularExpression(halves[0].split(':')));
-    }
-
-    output.push(possibleElisions(address6.elidedGroups,
-      halves[0].length !== 0,
-      halves[1].length !== 0));
-
-    if (halves[1].length) {
-      output.push(simpleRegularExpression(halves[1].split(':')));
-    }
-
-    output = [output.join(':')];
-  }
-
-  if (!optionalSubString) {
-    output = [
-      '(?=^|',
-      ADDRESS_BOUNDARY,
-      '|[^\\w\\:])(', ...output, ')(?=[^\\w\\:]|',
-      ADDRESS_BOUNDARY,
-      '|$)'
-    ]
-  }
-
-  return output.join('');
-};
-
-/**
- * Generate a regular expression that can be used to find or validate all
- * variations of this address.
- * @memberof Address6
- * @instance
- * @param {string} optionalSubString
- * @returns {RegExp}
- */
-export const regularExpression = function (this: Address6, optionalSubstring?: string): RegExp {
-  return new RegExp(this.regularExpressionString(optionalSubstring), 'i');
-};
