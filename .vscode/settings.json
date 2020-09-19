@@ -1,0 +1,18 @@
+{
+    "typescript.tsdk": "node_modules/typescript/lib",
+
+    "eslint.options": {
+        "configFile": "./.eslintrc.js"
+    },
+
+    "files.exclude": {
+        "**/.git": true,
+        "**/.DS_Store": true,
+        "coverage/**": true,
+        "node_modules/**": true,
+        "dist/**": true,
+        "build/**": true,
+        "assets/**": true,
+        "tmp/**": true
+    }
+}
