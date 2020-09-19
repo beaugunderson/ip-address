@@ -1,5 +1,5 @@
-import { Address4 } from "./ipv4";
-import { Address6 } from "./ipv6";
+import { Address4 } from './ipv4';
+import { Address6 } from './ipv6';
 
 // A wrapper function that returns false if the address is not valid; used to
 // avoid boilerplate checks for `if (!this.valid) { return false; }`
@@ -11,9 +11,12 @@ export function falseIfInvalid<F extends (...args: any[]) => any>(fn: F) {
 
     return fn.apply(this, args);
   };
-};
+}
 
-export const isInSubnet = falseIfInvalid(function (this: Address4 | Address6, address: Address4 | Address6) {
+export const isInSubnet = falseIfInvalid(function (
+  this: Address4 | Address6,
+  address: Address4 | Address6
+) {
   if (this.subnetMask < address.subnetMask) {
     return false;
   }
@@ -26,7 +29,7 @@ export const isInSubnet = falseIfInvalid(function (this: Address4 | Address6, ad
 });
 
 export const isCorrect = function (defaultBits: number) {
-  return falseIfInvalid(function (this: Address4 | Address6, ) {
+  return falseIfInvalid(function (this: Address4 | Address6) {
     if (this.addressMinusSuffix !== this.correctForm()) {
       return false;
     }

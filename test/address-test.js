@@ -1,24 +1,22 @@
-var should = require('chai').should();
+/* eslint-disable no-param-reassign */
 
-var ip = require('../dist/ip-address');
+const should = require('chai').should();
+const { Address4, Address6 } = require('../dist/ip-address');
 
-var Address4 = ip.Address4;
-var Address6 = ip.Address6;
+const invalid4 = require('./data/invalid-ipv4-addresses.json');
+const invalid6 = require('./data/invalid-ipv6-addresses.json');
 
-var valid4 = require('./data/valid-ipv4-addresses.json');
-var valid6 = require('./data/valid-ipv6-addresses.json');
-
-var invalid4 = require('./data/invalid-ipv4-addresses.json');
-var invalid6 = require('./data/invalid-ipv6-addresses.json');
+const valid4 = require('./data/valid-ipv4-addresses.json');
+const valid6 = require('./data/valid-ipv6-addresses.json');
 
 function addressIs(addressString, descriptors) {
-  var address4 = new Address4(addressString);
-  var address6 = new Address6(addressString);
+  const address4 = new Address4(addressString);
+  const address6 = new Address6(addressString);
 
-  describe(addressString, function () {
-    descriptors.forEach(function (descriptor) {
+  describe(addressString, () => {
+    descriptors.forEach((descriptor) => {
       if (descriptor === 'valid-ipv4') {
-        it('is valid', function () {
+        it('is valid', () => {
           address4.should.be.an('object');
 
           address4.parsedAddress.should.be.an.instanceOf(Array);
@@ -37,7 +35,7 @@ function addressIs(addressString, descriptors) {
       }
 
       if (descriptor === 'valid-ipv6') {
-        it('is valid', function () {
+        it('is valid', () => {
           address6.should.be.an('object');
 
           address6.zone.should.be.a('string');
@@ -58,55 +56,52 @@ function addressIs(addressString, descriptors) {
           address6.isValid().should.equal(true);
         });
 
-        var re = address6.regularExpression();
-        var reSubstring = address6.regularExpression(true);
+        const re = address6.regularExpression();
+        const reSubstring = address6.regularExpression(true);
 
-        it('matches the correct form via regex', function () {
+        it('matches the correct form via regex', () => {
           re.test(address6.correctForm()).should.equal(true);
-          reSubstring.test('abc ' + address6.correctForm() + ' def')
-            .should.equal(true);
+          reSubstring.test(`abc ${address6.correctForm()} def`).should.equal(true);
         });
 
-        it('matches the canonical form via regex', function () {
+        it('matches the canonical form via regex', () => {
           re.test(address6.canonicalForm()).should.equal(true);
-          reSubstring.test('abc ' + address6.canonicalForm() + ' def')
-            .should.equal(true);
+          reSubstring.test(`abc ${address6.canonicalForm()} def`).should.equal(true);
         });
 
-        it('matches the given form via regex', function () {
+        it('matches the given form via regex', () => {
           // We can't match addresses like ::192.168.0.1 yet
           if (address6.is4()) {
             return;
           }
 
           re.test(addressString).should.equal(true);
-          reSubstring.test('abc ' + addressString + ' def')
-            .should.equal(true);
+          reSubstring.test(`abc ${addressString} def`).should.equal(true);
         });
 
-        it('converts to a byte array and back', function () {
-          var byteArray = address6.toByteArray();
+        it('converts to a byte array and back', () => {
+          const byteArray = address6.toByteArray();
 
           byteArray.length.should.be.at.most(16);
 
-          var converted = Address6.fromByteArray(byteArray);
+          const converted = Address6.fromByteArray(byteArray);
 
           address6.correctForm().should.equal(converted.correctForm());
         });
 
-        it('converts to an unsigned byte array and back', function () {
-          var byteArray = address6.toUnsignedByteArray();
+        it('converts to an unsigned byte array and back', () => {
+          const byteArray = address6.toUnsignedByteArray();
 
           byteArray.length.should.be.at.most(16);
 
-          var converted = Address6.fromUnsignedByteArray(byteArray);
+          const converted = Address6.fromUnsignedByteArray(byteArray);
 
           address6.correctForm().should.equal(converted.correctForm());
         });
       }
 
       if (descriptor === 'invalid-ipv4') {
-        it('is invalid as parsed by v4', function () {
+        it('is invalid as parsed by v4', () => {
           address4.error.should.be.a('string');
 
           address4.isValid().should.equal(false);
@@ -114,7 +109,7 @@ function addressIs(addressString, descriptors) {
       }
 
       if (descriptor === 'invalid-ipv6') {
-        it('is invalid as parsed by v6', function () {
+        it('is invalid as parsed by v6', () => {
           address6.error.should.be.a('string');
 
           address6.isValid().should.equal(false);
@@ -123,7 +118,7 @@ function addressIs(addressString, descriptors) {
       }
 
       if (descriptor === 'canonical') {
-        it('is canonical', function () {
+        it('is canonical', () => {
           address6.isCanonical().should.equal(true);
 
           should.equal(address6.addressMinusSuffix.length, 39);
@@ -131,37 +126,37 @@ function addressIs(addressString, descriptors) {
       }
 
       if (descriptor === 'correct') {
-        it('is correct', function () {
+        it('is correct', () => {
           address6.isCorrect().should.equal(true);
         });
       }
 
       if (descriptor === 'correct-ipv4') {
-        it('is correct', function () {
+        it('is correct', () => {
           address4.isCorrect().should.equal(true);
         });
       }
 
       if (descriptor === 'incorrect') {
-        it('is incorrect', function () {
+        it('is incorrect', () => {
           address6.isCorrect().should.equal(false);
         });
       }
 
       if (descriptor === 'incorrect-ipv4') {
-        it('is incorrect', function () {
+        it('is incorrect', () => {
           address4.isCorrect().should.equal(false);
         });
       }
 
       if (descriptor === 'has-subnet') {
-        it('parses the subnet', function () {
+        it('parses the subnet', () => {
           address6.subnet.should.match(/^\/\d{1,3}/);
         });
       }
 
       if (descriptor === 'v4-in-v6') {
-        it('is an ipv4-in-ipv6 address', function () {
+        it('is an ipv4-in-ipv6 address', () => {
           address6.is4().should.equal(true);
         });
       }
@@ -170,9 +165,8 @@ function addressIs(addressString, descriptors) {
 }
 
 function loadJsonBatch(addresses, classes, noMerge) {
-  addresses.forEach(function (address) {
-    if (address.conditions === undefined ||
-      !address.conditions.length || noMerge) {
+  addresses.forEach((address) => {
+    if (address.conditions === undefined || !address.conditions.length || noMerge) {
       address.conditions = classes;
     } else {
       address.conditions = address.conditions.concat(classes);
@@ -182,20 +176,20 @@ function loadJsonBatch(addresses, classes, noMerge) {
   });
 }
 
-describe('Valid IPv4 addresses', function () {
+describe('Valid IPv4 addresses', () => {
   loadJsonBatch(valid4, ['valid-ipv4']);
   loadJsonBatch(valid4, ['invalid-ipv6'], true);
 });
 
-describe('Valid IPv6 addresses', function () {
+describe('Valid IPv6 addresses', () => {
   loadJsonBatch(valid6, ['valid-ipv6']);
   loadJsonBatch(valid6, ['invalid-ipv4'], true);
 });
 
-describe('Invalid IPv4 addresses', function () {
+describe('Invalid IPv4 addresses', () => {
   loadJsonBatch(invalid4, ['invalid-ipv4']);
 });
 
-describe('Invalid IPv6 addresses', function () {
+describe('Invalid IPv6 addresses', () => {
   loadJsonBatch(invalid6, ['invalid-ipv6']);
 });

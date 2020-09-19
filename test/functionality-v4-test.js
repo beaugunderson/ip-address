@@ -1,25 +1,24 @@
-var sprintf = require('sprintf-js').sprintf;
-var should = require('chai').should();
-
-var { Address4 } = require('../dist/lib/ipv4');
+const should = require('chai').should();
+const { Address4 } = require('../dist/lib/ipv4');
+const { sprintf } = require('sprintf-js');
 
 // A convenience function to convert a list of IPv4 address notations
 // to Address4 instances
 function notationsToAddresseses(notations) {
-  var addresses = [];
+  const addresses = [];
 
-  notations.forEach(function (notation) {
+  notations.forEach((notation) => {
     addresses.push(new Address4(notation));
   });
 
   return addresses;
 }
 
-describe('v4', function () {
-  describe('An invalid address', function () {
-    var topic = new Address4('127.0.0');
+describe('v4', () => {
+  describe('An invalid address', () => {
+    const topic = new Address4('127.0.0');
 
-    it('is invalid', function () {
+    it('is invalid', () => {
       topic.error.should.equal('Invalid IPv4 address.');
 
       topic.valid.should.equal(false);
@@ -28,70 +27,68 @@ describe('v4', function () {
 
       should.equal(topic.bigInteger(), null);
     });
-
   });
 
-  describe('A correct address', function () {
-    var topic = new Address4('127.0.0.1');
+  describe('A correct address', () => {
+    const topic = new Address4('127.0.0.1');
 
-    it('validates as correct', function () {
+    it('validates as correct', () => {
       topic.isCorrect().should.equal(true);
 
       should.equal(topic.correctForm(), '127.0.0.1');
     });
   });
 
-  describe('An address with a subnet', function () {
-    var topic = new Address4('127.0.0.1/16');
+  describe('An address with a subnet', () => {
+    const topic = new Address4('127.0.0.1/16');
 
-    it('is contained by an identical address with an identical subnet',
-      function () {
-        var same = new Address4('127.0.0.1/16');
+    it('is contained by an identical address with an identical subnet', () => {
+      const same = new Address4('127.0.0.1/16');
 
-        topic.isInSubnet(same).should.equal(true);
-      });
+      topic.isInSubnet(same).should.equal(true);
+    });
   });
 
-  describe('A small subnet', function () {
-    var topic = new Address4('127.0.0.1/16');
+  describe('A small subnet', () => {
+    const topic = new Address4('127.0.0.1/16');
 
-    it('is contained by larger subnets', function () {
-      for (var i = 15; i > 0; i--) {
-        var larger = new Address4(sprintf('127.0.0.1/%d', i));
+    it('is contained by larger subnets', () => {
+      for (let i = 15; i > 0; i--) {
+        const larger = new Address4(sprintf('127.0.0.1/%d', i));
 
         topic.isInSubnet(larger).should.equal(true);
       }
     });
   });
 
-  describe('A large subnet', function () {
-    var topic = new Address4('127.0.0.1/8');
+  describe('A large subnet', () => {
+    const topic = new Address4('127.0.0.1/8');
 
-    it('is not contained by smaller subnets', function () {
-      for (var i = 9; i <= 32; i++) {
-        var smaller = new Address4(sprintf('127.0.0.1/%d', i));
+    it('is not contained by smaller subnets', () => {
+      for (let i = 9; i <= 32; i++) {
+        const smaller = new Address4(sprintf('127.0.0.1/%d', i));
 
         topic.isInSubnet(smaller).should.equal(false);
       }
     });
   });
 
-  describe('An integer v4 address', function () {
-    var topic = Address4.fromInteger(432432423);
+  describe('An integer v4 address', () => {
+    const topic = Address4.fromInteger(432432423);
 
-    it('validates', function () {
+    it('validates', () => {
       topic.isValid().should.equal(true);
     });
 
-    it('parses correctly', function () {
+    it('parses correctly', () => {
       topic.address.should.equal('25.198.101.39');
 
       topic.subnet.should.equal('/32');
       topic.subnetMask.should.equal(32);
     });
 
-    it('should match an address from its hex representation', function () {
-      var hex = Address4.fromHex('19c66527');
+    it('should match an address from its hex representation', () => {
+      const hex = Address4.fromHex('19c66527');
 
       hex.address.should.equal('25.198.101.39');
 
@@ -100,81 +97,81 @@ describe('v4', function () {
     });
   });
 
-  describe('An address with a subnet', function () {
-    var topic = new Address4('127.0.0.1/16');
+  describe('An address with a subnet', () => {
+    const topic = new Address4('127.0.0.1/16');
 
-    it('validates', function () {
+    it('validates', () => {
       topic.isValid().should.equal(true);
     });
 
-    it('parses the subnet', function () {
+    it('parses the subnet', () => {
       should.equal(topic.subnet, '/16');
     });
 
-    it('has a correct start address', function () {
+    it('has a correct start address', () => {
       should.equal(topic.startAddress().correctForm(), '127.0.0.0');
     });
 
-    it('has a correct start address hosts only', function () {
+    it('has a correct start address hosts only', () => {
       should.equal(topic.startAddressExclusive().correctForm(), '127.0.0.1');
     });
 
-    it('has a correct end address', function () {
+    it('has a correct end address', () => {
       should.equal(topic.endAddress().correctForm(), '127.0.255.255');
     });
 
-    it('has a correct end address hosts only', function () {
+    it('has a correct end address hosts only', () => {
       should.equal(topic.endAddressExclusive().correctForm(), '127.0.255.254');
     });
 
-    it('is in its own subnet', function () {
+    it('is in its own subnet', () => {
       topic.isInSubnet(new Address4('127.0.0.1/16')).should.equal(true);
     });
 
-    it('is not in another subnet', function () {
+    it('is not in another subnet', () => {
       topic.isInSubnet(new Address4('192.168.0.1/16')).should.equal(false);
     });
   });
 
-  describe('Creating an address from a BigInteger', function () {
-    var topic = Address4.fromBigInteger(2130706433);
+  describe('Creating an address from a BigInteger', () => {
+    const topic = Address4.fromBigInteger(2130706433);
 
-    it('should parse correctly', function () {
+    it('should parse correctly', () => {
       topic.isValid().should.equal(true);
       topic.correctForm().should.equal('127.0.0.1');
     });
   });
 
-  describe('Converting an address to a BigInteger', function () {
-    var topic = new Address4('127.0.0.1');
+  describe('Converting an address to a BigInteger', () => {
+    const topic = new Address4('127.0.0.1');
 
-    it('should convert properly', function () {
+    it('should convert properly', () => {
       topic.bigInteger().intValue().should.equal(2130706433);
     });
   });
 
-  describe('Creating an address from hex', function () {
-    var topic = Address4.fromHex('7f:00:00:01');
+  describe('Creating an address from hex', () => {
+    const topic = Address4.fromHex('7f:00:00:01');
 
-    it('should parse correctly', function () {
+    it('should parse correctly', () => {
       topic.isValid().should.equal(true);
       topic.correctForm().should.equal('127.0.0.1');
     });
   });
 
-  describe('Converting an address to hex', function () {
-    var topic = new Address4('127.0.0.1');
+  describe('Converting an address to hex', () => {
+    const topic = new Address4('127.0.0.1');
 
-    it('should convert correctly', function () {
+    it('should convert correctly', () => {
       topic.toHex().should.equal('7f:00:00:01');
     });
   });
 
-  describe('Converting an address to an array', function () {
-    var topic = new Address4('127.0.0.1');
+  describe('Converting an address to an array', () => {
+    const topic = new Address4('127.0.0.1');
 
-    it('should convert correctly', function () {
-      var a = topic.toArray();
+    it('should convert correctly', () => {
+      const a = topic.toArray();
 
       a.should.be.an.instanceOf(Array).and.have.lengthOf(4);
 
@@ -185,27 +182,27 @@ describe('v4', function () {
     });
   });
 
-  describe('A different notation of the same address', function () {
-    var addresses = notationsToAddresseses([
+  describe('A different notation of the same address', () => {
+    const addresses = notationsToAddresseses([
       '127.0.0.1/32',
       '127.0.0.1/032',
       '127.000.000.001/032',
       '127.000.000.001/32',
       '127.0.0.1',
       '127.000.000.001',
-      '127.000.0.1'
+      '127.000.0.1',
     ]);
 
-    it('is parsed to the same result', function () {
-      addresses.forEach(function (topic) {
+    it('is parsed to the same result', () => {
+      addresses.forEach((topic) => {
         should.equal(topic.correctForm(), '127.0.0.1');
         should.equal(topic.subnetMask, 32);
       });
     });
   });
 
-  describe('A multicast address', function () {
-    var multicastAddresses = notationsToAddresseses([
+  describe('A multicast address', () => {
+    const multicastAddresses = notationsToAddresseses([
       '224.0.1.0',
       '224.0.1.255',
       '224.0.2.0',
@@ -221,18 +218,18 @@ describe('v4', function () {
       '234.0.0.0',
       '234.255.255.255',
       '239.0.0.0',
-      '239.255.255.255'
+      '239.255.255.255',
     ]);
 
-    it('is detected as multicast', function () {
-      multicastAddresses.forEach(function (topic) {
+    it('is detected as multicast', () => {
+      multicastAddresses.forEach((topic) => {
         should.equal(topic.isMulticast(), true);
       });
     });
   });
 
-  describe('A unicast address', function () {
-    var unicastAddresses = notationsToAddresseses([
+  describe('A unicast address', () => {
+    const unicastAddresses = notationsToAddresseses([
       '124.0.1.0',
       '124.0.1.255',
       '124.0.2.0',
@@ -248,11 +245,11 @@ describe('v4', function () {
       '134.0.0.0',
       '134.255.255.255',
       '139.0.0.0',
-      '139.255.255.255'
+      '139.255.255.255',
     ]);
 
-    it('is not detected as multicast', function () {
-      unicastAddresses.forEach(function (topic) {
+    it('is not detected as multicast', () => {
+      unicastAddresses.forEach((topic) => {
         should.equal(topic.isMulticast(), false);
       });
     });

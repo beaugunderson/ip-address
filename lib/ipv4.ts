@@ -1,11 +1,11 @@
-import { BigInteger } from 'jsbn';
-import { sprintf } from 'sprintf-js';
-
-import padStart from 'lodash.padstart';
-import repeat from 'lodash.repeat';
+/* eslint-disable no-param-reassign */
 
 import * as common from './common';
 import * as constants from './v4/constants';
+import padStart from 'lodash.padstart';
+import repeat from 'lodash.repeat';
+import { BigInteger } from 'jsbn';
+import { sprintf } from 'sprintf-js';
 
 /**
  * Represents an IPv4 address
@@ -27,12 +27,12 @@ export class Address4 {
   constructor(address: string) {
     this.address = address;
 
-    var subnet = constants.RE_SUBNET_STRING.exec(address);
+    const subnet = constants.RE_SUBNET_STRING.exec(address);
 
     if (subnet) {
       this.parsedSubnet = subnet[0].replace('/', '');
       this.subnetMask = parseInt(this.parsedSubnet, 10);
-      this.subnet = '/' + this.subnetMask;
+      this.subnet = `/${this.subnetMask}`;
 
       if (this.subnetMask < 0 || this.subnetMask > constants.BITS) {
         this.valid = false;
@@ -53,7 +53,7 @@ export class Address4 {
    * Parses a v4 address
    */
   parse(address: string) {
-    var groups = address.split('.');
+    const groups = address.split('.');
 
     if (address.match(constants.RE_ADDRESS)) {
       this.valid = true;
@@ -62,7 +62,7 @@ export class Address4 {
     }
 
     return groups;
-  };
+  }
 
   /**
    * Return true if the address is valid
@@ -72,7 +72,7 @@ export class Address4 {
    */
   isValid(): boolean {
     return this.valid;
-  };
+  }
 
   /**
    * Returns the correct form of an address
@@ -80,11 +80,9 @@ export class Address4 {
    * @instance
    * @returns {String}
    */
-  correctForm() {
-    return this.parsedAddress.map(function (part) {
-      return parseInt(part, 10);
-    }).join('.');
-  };
+  correctForm(): string {
+    return this.parsedAddress.map((part) => parseInt(part, 10)).join('.');
+  }
 
   /**
    * Returns true if the address is correct, false otherwise
@@ -101,19 +99,19 @@ export class Address4 {
    * @param {string} hex - a hex string to convert
    * @returns {Address4}
    */
-  static fromHex(hex: string) {
-    var padded = padStart(hex.replace(/:/g, ''), 8, '0');
-    var groups = [];
-    var i;
+  static fromHex(hex: string): Address4 {
+    const padded = padStart(hex.replace(/:/g, ''), 8, '0');
+    const groups = [];
+    let i;
 
     for (i = 0; i < 8; i += 2) {
-      var h = padded.slice(i, i + 2);
+      const h = padded.slice(i, i + 2);
 
       groups.push(parseInt(h, 16));
     }
 
     return new Address4(groups.join('.'));
-  };
+  }
 
   /**
    * Converts an integer into a IPv4 address object
@@ -122,9 +120,9 @@ export class Address4 {
    * @param {integer} integer - a number to convert
    * @returns {Address4}
    */
-  static fromInteger(integer: number) {
+  static fromInteger(integer: number): Address4 {
     return Address4.fromHex(integer.toString(16));
-  };
+  }
 
   /**
    * Converts an IPv4 address object to a hex string
@@ -133,10 +131,8 @@ export class Address4 {
    * @returns {String}
    */
   toHex(): string {
-    return this.parsedAddress.map(function (part) {
-      return sprintf('%02x', parseInt(part, 10));
-    }).join(':');
-  };
+    return this.parsedAddress.map((part) => sprintf('%02x', parseInt(part, 10))).join(':');
+  }
 
   /**
    * Converts an IPv4 address object to an array of bytes
@@ -145,10 +141,8 @@ export class Address4 {
    * @returns {Array}
    */
   toArray(): number[] {
-    return this.parsedAddress.map(function (part) {
-      return parseInt(part, 10);
-    });
-  };
+    return this.parsedAddress.map((part) => parseInt(part, 10));
+  }
 
   /**
    * Converts an IPv4 address object to an IPv6 address group
@@ -157,19 +151,21 @@ export class Address4 {
    * @returns {String}
    */
   toGroup6(): string {
-    var output = [];
-    var i;
+    const output = [];
+    let i;
 
     for (i = 0; i < constants.GROUPS; i += 2) {
-      var hex = sprintf('%02x%02x',
+      const hex = sprintf(
+        '%02x%02x',
         parseInt(this.parsedAddress[i], 10),
-        parseInt(this.parsedAddress[i + 1], 10));
+        parseInt(this.parsedAddress[i + 1], 10)
+      );
 
       output.push(sprintf('%x', parseInt(hex, 16)));
     }
 
     return output.join(':');
-  };
+  }
 
   /**
    * Returns the address as a BigInteger
@@ -182,10 +178,11 @@ export class Address4 {
       return null;
     }
 
-    return new BigInteger(this.parsedAddress.map(function (n) {
-      return sprintf('%02x', parseInt(n, 10));
-    }).join(''), 16);
-  };
+    return new BigInteger(
+      this.parsedAddress.map((n) => sprintf('%02x', parseInt(n, 10))).join(''),
+      16
+    );
+  }
 
   /**
    * Helper function getting start address.
@@ -194,10 +191,8 @@ export class Address4 {
    * @returns {BigInteger}
    */
   _startAddress(): BigInteger {
-    return new BigInteger(
-      this.mask() + repeat('0', constants.BITS - this.subnetMask), 2
-    );
-  };
+    return new BigInteger(this.mask() + repeat('0', constants.BITS - this.subnetMask), 2);
+  }
 
   /**
    * The first address in the range given by this address' subnet.
@@ -206,9 +201,9 @@ export class Address4 {
    * @instance
    * @returns {Address4}
    */
-  startAddress() {
+  startAddress(): Address4 {
     return Address4.fromBigInteger(this._startAddress());
-  };
+  }
 
   /**
    * The first host address in the range given by this address's subnet ie
@@ -217,10 +212,10 @@ export class Address4 {
    * @instance
    * @returns {Address4}
    */
-  startAddressExclusive() {
-    var adjust = new BigInteger('1');
+  startAddressExclusive(): Address4 {
+    const adjust = new BigInteger('1');
     return Address4.fromBigInteger(this._startAddress().add(adjust));
-  };
+  }
 
   /**
    * Helper function getting end address.
@@ -228,11 +223,9 @@ export class Address4 {
    * @instance
    * @returns {BigInteger}
    */
-  _endAddress() {
-    return new BigInteger(
-      this.mask() + repeat('1', constants.BITS - this.subnetMask), 2
-    );
-  };
+  _endAddress(): BigInteger {
+    return new BigInteger(this.mask() + repeat('1', constants.BITS - this.subnetMask), 2);
+  }
 
   /**
    * The last address in the range given by this address' subnet
@@ -241,9 +234,9 @@ export class Address4 {
    * @instance
    * @returns {Address4}
    */
-  endAddress() {
+  endAddress(): Address4 {
     return Address4.fromBigInteger(this._endAddress());
-  };
+  }
 
   /**
    * The last host address in the range given by this address's subnet ie
@@ -252,10 +245,10 @@ export class Address4 {
    * @instance
    * @returns {Address4}
    */
-  endAddressExclusive() {
-    var adjust = new BigInteger('1');
+  endAddressExclusive(): Address4 {
+    const adjust = new BigInteger('1');
     return Address4.fromBigInteger(this._endAddress().subtract(adjust));
-  };
+  }
 
   /**
    * Converts a BigInteger to a v4 address object
@@ -264,9 +257,9 @@ export class Address4 {
    * @param {BigInteger} bigInteger - a BigInteger to convert
    * @returns {Address4}
    */
-  static fromBigInteger(bigInteger: BigInteger) {
+  static fromBigInteger(bigInteger: BigInteger): Address4 {
     return Address4.fromInteger(parseInt(bigInteger.toString(), 10));
-  };
+  }
 
   /**
    * Returns the first n bits of the address, defaulting to the
@@ -281,7 +274,7 @@ export class Address4 {
     }
 
     return this.getBitsBase2(0, mask);
-  };
+  }
 
   /**
    * Returns the bits in the given range as a base-2 string
@@ -291,7 +284,7 @@ export class Address4 {
    */
   getBitsBase2(start: number, end: number): string {
     return this.binaryZeroPad().slice(start, end);
-  };
+  }
 
   /**
    * Returns true if the given address is in the subnet of the current address
@@ -307,9 +300,9 @@ export class Address4 {
    * @instance
    * @returns {boolean}
    */
-  isMulticast() {
+  isMulticast(): boolean {
     return this.isInSubnet(new Address4('224.0.0.0/4'));
-  };
+  }
 
   /**
    * Returns a zero-padded base-2 string representation of the address
@@ -317,7 +310,7 @@ export class Address4 {
    * @instance
    * @returns {string}
    */
-  binaryZeroPad() {
+  binaryZeroPad(): string {
     return padStart(this.bigInteger().toString(2), constants.BITS, '0');
-  };
+  }
 }

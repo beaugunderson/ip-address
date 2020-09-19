@@ -1,22 +1,25 @@
+/* eslint-disable prefer-destructuring */
+/* eslint-disable no-param-reassign */
+
+import * as common from './common';
+import * as constants4 from './v4/constants';
+import * as constants6 from './v6/constants';
+import * as helpers from './v6/helpers';
+import find from 'lodash.find';
+import max from 'lodash.max';
+import padStart from 'lodash.padstart';
+import repeat from 'lodash.repeat';
+import { Address4 } from './ipv4';
+import {
+  ADDRESS_BOUNDARY,
+  possibleElisions,
+  simpleRegularExpression,
+} from './v6/regular-expressions';
 import { BigInteger } from 'jsbn';
 import { sprintf } from 'sprintf-js';
 
-import merge from 'lodash.merge';
-import padStart from 'lodash.padstart';
-import repeat from 'lodash.repeat';
-import find from 'lodash.find';
-import max from 'lodash.max';
-
-import * as constants4 from './v4/constants';
-import * as constants6 from './v6/constants';
-import * as common from './common';
-import * as helpers from './v6/helpers';
-
-import { Address4 } from './ipv4';
-import { simpleRegularExpression, possibleElisions, ADDRESS_BOUNDARY } from './v6/regular-expressions';
-
 function addCommas(number: string): string {
-  var r = /(\d+)(\d{3})/;
+  const r = /(\d+)(\d{3})/;
 
   while (r.test(number)) {
     number = number.replace(r, '$1,$2');
@@ -36,9 +39,9 @@ function spanLeadingZeroes4(n: string): string {
  * A helper function to compact an array
  */
 function compact(address: string, slice: number[]) {
-  var s1 = [];
-  var s2 = [];
-  var i;
+  const s1 = [];
+  const s2 = [];
+  let i;
 
   for (i = 0; i < address.length; i++) {
     if (i < slice[0]) {
@@ -56,7 +59,8 @@ function paddedHex(octet: string): string {
 }
 
 function unsignByte(b) {
-  return b & 0xFF;
+  // eslint-disable-next-line no-bitwise
+  return b & 0xff;
 }
 
 /**
@@ -93,16 +97,14 @@ export class Address6 {
 
     this.address = address;
 
-    var subnet = constants6.RE_SUBNET_STRING.exec(address);
+    const subnet = constants6.RE_SUBNET_STRING.exec(address);
 
     if (subnet) {
       this.parsedSubnet = subnet[0].replace('/', '');
       this.subnetMask = parseInt(this.parsedSubnet, 10);
-      this.subnet = '/' + this.subnetMask;
+      this.subnet = `/${this.subnetMask}`;
 
-      if (isNaN(this.subnetMask) ||
-        this.subnetMask < 0 ||
-        this.subnetMask > constants6.BITS) {
+      if (isNaN(this.subnetMask) || this.subnetMask < 0 || this.subnetMask > constants6.BITS) {
         this.valid = false;
         this.error = 'Invalid subnet mask.';
 
@@ -117,7 +119,7 @@ export class Address6 {
       return;
     }
 
-    var zone = constants6.RE_ZONE_STRING.exec(address);
+    const zone = constants6.RE_ZONE_STRING.exec(address);
 
     if (zone) {
       this.zone = zone[0];
@@ -142,16 +144,16 @@ export class Address6 {
    * address.correctForm(); // '::e8:d4a5:1000'
    */
   static fromBigInteger(bigInteger: BigInteger): Address6 {
-    var hex = padStart(bigInteger.toString(16), 32, '0');
-    var groups = [];
-    var i;
+    const hex = padStart(bigInteger.toString(16), 32, '0');
+    const groups = [];
+    let i;
 
     for (i = 0; i < constants6.GROUPS; i++) {
       groups.push(hex.slice(i * 4, (i + 1) * 4));
     }
 
     return new Address6(groups.join(':'));
-  };
+  }
 
   /**
    * Convert a URL (with optional port number) to an address object
@@ -164,9 +166,9 @@ export class Address6 {
    * addressAndPort.port; // 8080
    */
   static fromURL(url: string) {
-    var host;
-    var port;
-    var result;
+    let host: string;
+    let port: string | number;
+    let result: string[];
 
     // If we have brackets parse them and find a port
     if (url.indexOf('[') !== -1 && url.indexOf(']:') !== -1) {
@@ -176,13 +178,13 @@ export class Address6 {
         return {
           error: 'failed to parse address with port',
           address: null,
-          port: null
+          port: null,
         };
       }
 
       host = result[1];
       port = result[2];
-    // If there's a URL extract the address
+      // If there's a URL extract the address
     } else if (url.indexOf('/') !== -1) {
       // Remove the protocol prefix
       url = url.replace(/^[a-z0-9]+:\/\//, '');
@@ -194,12 +196,12 @@ export class Address6 {
         return {
           error: 'failed to parse address from URL',
           address: null,
-          port: null
+          port: null,
         };
       }
 
       host = result[1];
-    // Otherwise just assign the URL to the host and let the library parse it
+      // Otherwise just assign the URL to the host and let the library parse it
     } else {
       host = url;
     }
@@ -208,7 +210,7 @@ export class Address6 {
     if (port) {
       port = parseInt(port, 10);
 
-      //squelch out of range ports
+      // squelch out of range ports
       if (port < 0 || port > 65536) {
         port = null;
       }
@@ -219,9 +221,9 @@ export class Address6 {
 
     return {
       address: new Address6(host),
-      port: port
+      port,
     };
-  };
+  }
 
   /**
    * Create an IPv6-mapped address given an IPv4 address
@@ -239,8 +241,8 @@ export class Address6 {
 
     const mask6 = constants6.BITS - (constants4.BITS - address4.subnetMask);
 
-    return new Address6('::ffff:' + address4.correctForm() + '/' + mask6);
-  };
+    return new Address6(`::ffff:${address4.correctForm()}/${mask6}`);
+  }
 
   /**
    * Return an address from ip6.arpa form
@@ -253,29 +255,29 @@ export class Address6 {
    * address.correctForm(); // '2001:0:ce49:7601:e866:efff:62c3:fffe'
    */
   static fromArpa(arpaFormAddress: string): Address6 {
-    //remove ending ".ip6.arpa." or just "."
-    var address = arpaFormAddress.replace(/(\.ip6\.arpa)?\.$/, '');
-    var semicolonAmount = 7;
+    // remove ending ".ip6.arpa." or just "."
+    let address = arpaFormAddress.replace(/(\.ip6\.arpa)?\.$/, '');
+    const semicolonAmount = 7;
 
-    //correct ip6.arpa form with ending removed will be 63 characters
+    // correct ip6.arpa form with ending removed will be 63 characters
     if (address.length !== 63) {
       return {
         error: "Not Valid 'ip6.arpa' form",
-        address: null
+        address: null,
       } as Address6;
     }
 
     const parts = address.split('.').reverse();
 
-    for (var i = semicolonAmount; i > 0; i--) {
-      var insertIndex = i * 4;
+    for (let i = semicolonAmount; i > 0; i--) {
+      const insertIndex = i * 4;
       parts.splice(insertIndex, 0, ':');
     }
 
     address = parts.join('');
 
     return new Address6(address);
-  };
+  }
 
   /**
    * Return the Microsoft UNC transcription of the address
@@ -284,9 +286,8 @@ export class Address6 {
    * @returns {String} the Microsoft UNC transcription of the address
    */
   microsoftTranscription(): string {
-    return sprintf('%s.ipv6-literal.net',
-      this.correctForm().replace(/:/g, '-'));
-  };
+    return sprintf('%s.ipv6-literal.net', this.correctForm().replace(/:/g, '-'));
+  }
 
   /**
    * Return the first n bits of the address, defaulting to the subnet mask
@@ -297,7 +298,7 @@ export class Address6 {
    */
   mask(mask: number = this.subnetMask): string {
     return this.getBitsBase2(0, mask);
-  };
+  }
 
   /**
    * Return the number of possible subnets of a given size in the address
@@ -308,16 +309,16 @@ export class Address6 {
    */
   // TODO: probably useful to have a numeric version of this too
   possibleSubnets(subnetSize: number = 128): string {
-    var availableBits = constants6.BITS - this.subnetMask;
-    var subnetBits = Math.abs(subnetSize - constants6.BITS);
-    var subnetPowers = availableBits - subnetBits;
+    const availableBits = constants6.BITS - this.subnetMask;
+    const subnetBits = Math.abs(subnetSize - constants6.BITS);
+    const subnetPowers = availableBits - subnetBits;
 
     if (subnetPowers < 0) {
       return '0';
     }
 
     return addCommas(new BigInteger('2', 10).pow(subnetPowers).toString(10));
-  };
+  }
 
   /**
    * Helper function getting start address.
@@ -326,10 +327,8 @@ export class Address6 {
    * @returns {BigInteger}
    */
   _startAddress(): BigInteger {
-    return new BigInteger(
-      this.mask() + repeat('0', constants6.BITS - this.subnetMask), 2
-    );
-  };
+    return new BigInteger(this.mask() + repeat('0', constants6.BITS - this.subnetMask), 2);
+  }
 
   /**
    * The first address in the range given by this address' subnet
@@ -340,7 +339,7 @@ export class Address6 {
    */
   startAddress(): Address6 {
     return Address6.fromBigInteger(this._startAddress());
-  };
+  }
 
   /**
    * The first host address in the range given by this address's subnet ie
@@ -350,9 +349,9 @@ export class Address6 {
    * @returns {Address6}
    */
   startAddressExclusive(): Address6 {
-    var adjust = new BigInteger('1');
+    const adjust = new BigInteger('1');
     return Address6.fromBigInteger(this._startAddress().add(adjust));
-  };
+  }
 
   /**
    * Helper function getting end address.
@@ -361,10 +360,8 @@ export class Address6 {
    * @returns {BigInteger}
    */
   _endAddress(): BigInteger {
-    return new BigInteger(
-      this.mask() + repeat('1', constants6.BITS - this.subnetMask), 2
-    );
-  };
+    return new BigInteger(this.mask() + repeat('1', constants6.BITS - this.subnetMask), 2);
+  }
 
   /**
    * The last address in the range given by this address' subnet
@@ -375,7 +372,7 @@ export class Address6 {
    */
   endAddress(): Address6 {
     return Address6.fromBigInteger(this._endAddress());
-  };
+  }
 
   /**
    * The last host address in the range given by this address's subnet ie
@@ -385,9 +382,9 @@ export class Address6 {
    * @returns {Address6}
    */
   endAddressExclusive(): Address6 {
-    var adjust = new BigInteger('1');
+    const adjust = new BigInteger('1');
     return Address6.fromBigInteger(this._endAddress().subtract(adjust));
-  };
+  }
 
   /**
    * Return the scope of the address
@@ -396,15 +393,14 @@ export class Address6 {
    * @returns {String}
    */
   getScope(): string {
-    var scope = constants6.SCOPES[this.getBits(12, 16).intValue()];
+    let scope = constants6.SCOPES[this.getBits(12, 16).intValue()];
 
-    if (this.getType() === 'Global unicast' &&
-        scope !== 'Link local') {
+    if (this.getType() === 'Global unicast' && scope !== 'Link local') {
       scope = 'Global';
     }
 
     return scope;
-  };
+  }
 
   /**
    * Return the type of the address
@@ -413,14 +409,14 @@ export class Address6 {
    * @returns {String}
    */
   getType(): string {
-    var self = this;
+    const self = this;
 
     function isType(name: string, type) {
       return self.isInSubnet(new Address6(type));
     }
 
     return find(constants6.TYPES, isType) || 'Global unicast';
-  };
+  }
 
   /**
    * Return the bits in the given range as a BigInteger
@@ -430,7 +426,7 @@ export class Address6 {
    */
   getBits(start: number, end: number): BigInteger {
     return new BigInteger(this.getBitsBase2(start, end), 2);
-  };
+  }
 
   /**
    * Return the bits in the given range as a base-2 string
@@ -440,7 +436,7 @@ export class Address6 {
    */
   getBitsBase2(start: number, end: number): string {
     return this.binaryZeroPad().slice(start, end);
-  };
+  }
 
   /**
    * Return the bits in the given range as a base-16 string
@@ -449,14 +445,14 @@ export class Address6 {
    * @returns {String}
    */
   getBitsBase16(start: number, end: number): string {
-    var length = end - start;
+    const length = end - start;
 
     if (length % 4 !== 0) {
       return null;
     }
 
     return padStart(this.getBits(start, end).toString(16), length / 4, '0');
-  };
+  }
 
   /**
    * Return the bits that are set past the subnet mask length
@@ -466,7 +462,7 @@ export class Address6 {
    */
   getBitsPastSubnet(): string {
     return this.getBitsBase2(this.subnetMask, constants6.BITS);
-  };
+  }
 
   /**
    * Return the reversed ip6.arpa form of the address
@@ -481,9 +477,9 @@ export class Address6 {
       options = {};
     }
 
-    var characters = Math.floor(this.subnetMask / 4);
+    const characters = Math.floor(this.subnetMask / 4);
 
-    var reversed = this.canonicalForm()
+    const reversed = this.canonicalForm()
       .replace(/:/g, '')
       .split('')
       .slice(0, characters)
@@ -503,7 +499,7 @@ export class Address6 {
     }
 
     return 'ip6.arpa.';
-  };
+  }
 
   /**
    * Return the correct form of the address
@@ -516,14 +512,14 @@ export class Address6 {
       return null;
     }
 
-    var i;
-    var groups = [];
+    let i;
+    let groups = [];
 
-    var zeroCounter = 0;
-    var zeroes = [];
+    let zeroCounter = 0;
+    const zeroes = [];
 
     for (i = 0; i < this.parsedAddress.length; i++) {
-      var value = parseInt(this.parsedAddress[i], 16);
+      const value = parseInt(this.parsedAddress[i], 16);
 
       if (value === 0) {
         zeroCounter++;
@@ -540,16 +536,13 @@ export class Address6 {
 
     // Do we end with a string of zeroes?
     if (zeroCounter > 1) {
-      zeroes.push([this.parsedAddress.length - zeroCounter,
-        this.parsedAddress.length - 1]);
+      zeroes.push([this.parsedAddress.length - zeroCounter, this.parsedAddress.length - 1]);
     }
 
-    var zeroLengths = zeroes.map(function (n) {
-      return (n[1] - n[0]) + 1;
-    });
+    const zeroLengths = zeroes.map((n) => n[1] - n[0] + 1);
 
     if (zeroes.length > 0) {
-      var index = zeroLengths.indexOf(max(zeroLengths));
+      const index = zeroLengths.indexOf(max(zeroLengths));
 
       groups = compact(this.parsedAddress, zeroes[index]);
     } else {
@@ -562,14 +555,14 @@ export class Address6 {
       }
     }
 
-    var correct = groups.join(':');
+    let correct = groups.join(':');
 
     correct = correct.replace(/^compact$/, '::');
     correct = correct.replace(/^compact|compact$/, ':');
     correct = correct.replace(/compact/, '');
 
     return correct;
-  };
+  }
 
   /**
    * Return a zero-padded base-2 string representation of the address
@@ -584,25 +577,27 @@ export class Address6 {
    */
   binaryZeroPad(): string {
     return padStart(this.bigInteger().toString(2), constants6.BITS, '0');
-  };
+  }
 
   // TODO: Improve the semantics of this helper function
   parse4in6(address: string) {
-    var groups = address.split(':');
-    var lastGroup = groups.slice(-1)[0];
+    const groups = address.split(':');
+    const lastGroup = groups.slice(-1)[0];
 
-    var address4 = lastGroup.match(constants4.RE_ADDRESS);
+    const address4 = lastGroup.match(constants4.RE_ADDRESS);
 
     if (address4) {
-      var temp4 = new Address4(address4[0]);
+      const temp4 = new Address4(address4[0]);
 
-      for (var i = 0; i < temp4.groups; i++) {
+      for (let i = 0; i < temp4.groups; i++) {
         if (/^0[0-9]+/.test(temp4.parsedAddress[i])) {
           this.valid = false;
           this.error = 'IPv4 addresses can not have leading zeroes.';
 
-          this.parseError = address.replace(constants4.RE_ADDRESS,
-            temp4.parsedAddress.map(spanLeadingZeroes4).join('.'));
+          this.parseError = address.replace(
+            constants4.RE_ADDRESS,
+            temp4.parsedAddress.map(spanLeadingZeroes4).join('.')
+          );
 
           return null;
         }
@@ -616,7 +611,7 @@ export class Address6 {
     }
 
     return address;
-  };
+  }
 
   // TODO: Make private?
   parse(address: string) {
@@ -626,50 +621,55 @@ export class Address6 {
       return null;
     }
 
-    var badCharacters = address.match(constants6.RE_BAD_CHARACTERS);
+    const badCharacters = address.match(constants6.RE_BAD_CHARACTERS);
 
     if (badCharacters) {
       this.valid = false;
-      this.error = sprintf('Bad character%s detected in address: %s',
-        badCharacters.length > 1 ? 's' : '', badCharacters.join(''));
+      this.error = sprintf(
+        'Bad character%s detected in address: %s',
+        badCharacters.length > 1 ? 's' : '',
+        badCharacters.join('')
+      );
 
-      this.parseError = address.replace(constants6.RE_BAD_CHARACTERS,
-        '<span class="parse-error">$1</span>');
+      this.parseError = address.replace(
+        constants6.RE_BAD_CHARACTERS,
+        '<span class="parse-error">$1</span>'
+      );
 
       return null;
     }
 
-    var badAddress = address.match(constants6.RE_BAD_ADDRESS);
+    const badAddress = address.match(constants6.RE_BAD_ADDRESS);
 
     if (badAddress) {
       this.valid = false;
       this.error = sprintf('Address failed regex: %s', badAddress.join(''));
 
-      this.parseError = address.replace(constants6.RE_BAD_ADDRESS,
-        '<span class="parse-error">$1</span>');
+      this.parseError = address.replace(
+        constants6.RE_BAD_ADDRESS,
+        '<span class="parse-error">$1</span>'
+      );
 
       return null;
     }
 
-    var groups = [];
+    let groups = [];
 
-    var halves = address.split('::');
+    const halves = address.split('::');
 
     if (halves.length === 2) {
-      var first = halves[0].split(':');
-      var last = halves[1].split(':');
+      let first = halves[0].split(':');
+      let last = halves[1].split(':');
 
-      if (first.length === 1 &&
-        first[0] === '') {
+      if (first.length === 1 && first[0] === '') {
         first = [];
       }
 
-      if (last.length === 1 &&
-        last[0] === '') {
+      if (last.length === 1 && last[0] === '') {
         last = [];
       }
 
-      var remaining = this.groups - (first.length + last.length);
+      const remaining = this.groups - (first.length + last.length);
 
       if (!remaining) {
         this.valid = false;
@@ -683,17 +683,15 @@ export class Address6 {
       this.elisionBegin = first.length;
       this.elisionEnd = first.length + this.elidedGroups;
 
-      first.forEach(function (group) {
-        groups.push(group);
-      });
+      // TODO: replace with concat?
+      first.forEach((group) => groups.push(group));
 
-      for (var i = 0; i < remaining; i++) {
+      for (let i = 0; i < remaining; i++) {
         groups.push(0);
       }
 
-      last.forEach(function (group) {
-        groups.push(group);
-      });
+      // TODO: replace with concat?
+      last.forEach((group) => groups.push(group));
     } else if (halves.length === 1) {
       groups = address.split(':');
 
@@ -705,9 +703,7 @@ export class Address6 {
       return null;
     }
 
-    groups = groups.map(function (g) {
-      return sprintf('%x', parseInt(g, 16));
-    });
+    groups = groups.map((g) => sprintf('%x', parseInt(g, 16)));
 
     if (groups.length !== this.groups) {
       this.valid = false;
@@ -719,7 +715,7 @@ export class Address6 {
     this.valid = true;
 
     return groups;
-  };
+  }
 
   /**
    * Return the canonical form of the address
@@ -733,7 +729,7 @@ export class Address6 {
     }
 
     return this.parsedAddress.map(paddedHex).join(':');
-  };
+  }
 
   /**
    * Return the decimal form of the address
@@ -746,10 +742,8 @@ export class Address6 {
       return null;
     }
 
-    return this.parsedAddress.map(function (n) {
-      return sprintf('%05d', parseInt(n, 16));
-    }).join(':');
-  };
+    return this.parsedAddress.map((n) => sprintf('%05d', parseInt(n, 16))).join(':');
+  }
 
   /**
    * Return the address as a BigInteger
@@ -763,7 +757,7 @@ export class Address6 {
     }
 
     return new BigInteger(this.parsedAddress.map(paddedHex).join(''), 16);
-  };
+  }
 
   /**
    * Return the last two groups of this address as an IPv4 address string
@@ -775,11 +769,10 @@ export class Address6 {
    * address.to4().correctForm(); // '24.37.191.17'
    */
   to4(): Address4 {
-    var binary = this.binaryZeroPad().split('');
+    const binary = this.binaryZeroPad().split('');
 
-    return Address4.fromHex(new BigInteger(binary.slice(96, 128)
-      .join(''), 2).toString(16));
-  };
+    return Address4.fromHex(new BigInteger(binary.slice(96, 128).join(''), 2).toString(16));
+  }
 
   /**
    * Return the v4-in-v6 form of the address
@@ -788,19 +781,19 @@ export class Address6 {
    * @returns {String}
    */
   to4in6(): string {
-    var address4 = this.to4();
-    var address6 = new Address6(this.parsedAddress.slice(0, 6).join(':'), 6);
+    const address4 = this.to4();
+    const address6 = new Address6(this.parsedAddress.slice(0, 6).join(':'), 6);
 
-    var correct = address6.correctForm();
+    const correct = address6.correctForm();
 
-    var infix = '';
+    let infix = '';
 
     if (!/:$/.test(correct)) {
       infix = ':';
     }
 
     return address6.correctForm() + infix + address4.address;
-  };
+  }
 
   /**
    * Return an object containing the Teredo properties of the address
@@ -830,39 +823,39 @@ export class Address6 {
     - Bits 96 to 127 contains the obfuscated IPv4 address. This is the
       public IPv4 address of the NAT with all bits inverted.
     */
-    var prefix = this.getBitsBase16(0, 32);
+    const prefix = this.getBitsBase16(0, 32);
 
-    var udpPort = this.getBits(80, 96).xor(new BigInteger('ffff', 16)).toString();
+    const udpPort = this.getBits(80, 96).xor(new BigInteger('ffff', 16)).toString();
 
-    var server4 = Address4.fromHex(this.getBitsBase16(32, 64));
-    var client4 = Address4.fromHex(this.getBits(96, 128)
-      .xor(new BigInteger('ffffffff', 16)).toString(16));
+    const server4 = Address4.fromHex(this.getBitsBase16(32, 64));
+    const client4 = Address4.fromHex(
+      this.getBits(96, 128).xor(new BigInteger('ffffffff', 16)).toString(16)
+    );
 
-    var flags = this.getBits(64, 80);
-    var flagsBase2 = this.getBitsBase2(64, 80);
+    const flags = this.getBits(64, 80);
+    const flagsBase2 = this.getBitsBase2(64, 80);
 
-    var coneNat = flags.testBit(15);
-    var reserved = flags.testBit(14);
-    var groupIndividual = flags.testBit(8);
-    var universalLocal = flags.testBit(9);
-    var nonce = new BigInteger(flagsBase2.slice(2, 6) +
-      flagsBase2.slice(8, 16), 2).toString(10);
+    const coneNat = flags.testBit(15);
+    const reserved = flags.testBit(14);
+    const groupIndividual = flags.testBit(8);
+    const universalLocal = flags.testBit(9);
+    const nonce = new BigInteger(flagsBase2.slice(2, 6) + flagsBase2.slice(8, 16), 2).toString(10);
 
     return {
       prefix: sprintf('%s:%s', prefix.slice(0, 4), prefix.slice(4, 8)),
       server4: server4.address,
       client4: client4.address,
       flags: flagsBase2,
-      coneNat: coneNat,
+      coneNat,
       microsoft: {
-        reserved: reserved,
-        universalLocal: universalLocal,
-        groupIndividual: groupIndividual,
-        nonce: nonce
+        reserved,
+        universalLocal,
+        groupIndividual,
+        nonce,
       },
-      udpPort: udpPort
+      udpPort,
     };
-  };
+  }
 
   /**
    * Return an object containing the 6to4 properties of the address
@@ -876,15 +869,15 @@ export class Address6 {
     - Bits 16 to 48 embed the IPv4 address of the 6to4 gateway that is used.
     */
 
-    var prefix = this.getBitsBase16(0, 16);
+    const prefix = this.getBitsBase16(0, 16);
 
-    var gateway = Address4.fromHex(this.getBitsBase16(16, 48));
+    const gateway = Address4.fromHex(this.getBitsBase16(16, 48));
 
     return {
       prefix: sprintf('%s', prefix.slice(0, 4)),
-      gateway: gateway.address
+      gateway: gateway.address,
     };
-  };
+  }
 
   /**
    * Return a v6 6to4 address from a v6 v4inv6 address
@@ -897,16 +890,16 @@ export class Address6 {
       return null;
     }
 
-    var addr6to4 = [
+    const addr6to4 = [
       '2002',
       this.getBitsBase16(96, 112),
       this.getBitsBase16(112, 128),
       '',
-      '/16'
+      '/16',
     ].join(':');
 
     return new Address6(addr6to4);
-  };
+  }
 
   /**
    * Return a byte array
@@ -915,7 +908,7 @@ export class Address6 {
    * @returns {Array}
    */
   toByteArray(): Array<any> {
-    var byteArray = this.bigInteger().toByteArray();
+    const byteArray = this.bigInteger().toByteArray();
 
     // work around issue where `toByteArray` returns a leading 0 element
     if (byteArray.length === 17 && byteArray[0] === 0) {
@@ -923,7 +916,7 @@ export class Address6 {
     }
 
     return byteArray;
-  };
+  }
 
   /**
    * Return an unsigned byte array
@@ -933,7 +926,7 @@ export class Address6 {
    */
   toUnsignedByteArray(): Array<any> {
     return this.toByteArray().map(unsignByte);
-  };
+  }
 
   /**
    * Convert a byte array to an Address6 object
@@ -943,7 +936,7 @@ export class Address6 {
    */
   static fromByteArray(bytes): Address6 {
     return this.fromUnsignedByteArray(bytes.map(unsignByte));
-  };
+  }
 
   /**
    * Convert an unsigned byte array to an Address6 object
@@ -952,21 +945,20 @@ export class Address6 {
    * @returns {Address6}
    */
   static fromUnsignedByteArray(bytes): Address6 {
-    var BYTE_MAX = new BigInteger('256', 10);
-    var result = new BigInteger('0', 10);
-    var multiplier = new BigInteger('1', 10);
+    const BYTE_MAX = new BigInteger('256', 10);
+    let result = new BigInteger('0', 10);
+    let multiplier = new BigInteger('1', 10);
 
-    for (var i = bytes.length - 1; i >= 0; i--) {
-      result = result.add(
-        multiplier.multiply(new BigInteger(bytes[i].toString(10), 10)));
+    for (let i = bytes.length - 1; i >= 0; i--) {
+      result = result.add(multiplier.multiply(new BigInteger(bytes[i].toString(10), 10)));
 
       multiplier = multiplier.multiply(BYTE_MAX);
     }
 
     return Address6.fromBigInteger(result);
-  };
+  }
 
-  //#region Attributes
+  // #region Attributes
   /**
    * Returns true if the address is valid, false otherwise
    * @memberof Address6
@@ -975,7 +967,7 @@ export class Address6 {
    */
   isValid(this: Address6): boolean {
     return this.valid;
-  };
+  }
 
   /**
    * Returns true if the given address is in the subnet of the current address
@@ -1011,8 +1003,10 @@ export class Address6 {
    */
   isLinkLocal = common.falseIfInvalid(function (this: Address6) {
     // Zeroes are required, i.e. we can't check isInSubnet with 'fe80::/10'
-    if (this.getBitsBase2(0, 64) ===
-      '1111111010000000000000000000000000000000000000000000000000000000') {
+    if (
+      this.getBitsBase2(0, 64) ===
+      '1111111010000000000000000000000000000000000000000000000000000000'
+    ) {
       return true;
     }
 
@@ -1068,9 +1062,9 @@ export class Address6 {
   isLoopback = common.falseIfInvalid(function () {
     return this.getType() === 'Loopback';
   });
-  //#endregion
+  // #endregion
 
-  //#region HTML
+  // #region HTML
   /**
    * @returns {String} the address in link form with a default port of 80
    */
@@ -1082,12 +1076,12 @@ export class Address6 {
     }
 
     return sprintf('http://[%s]%s/', this.correctForm(), optionalPort);
-  };
+  }
 
   /**
    * @returns {String} a link suitable for conveying the address via a URL hash
    */
-  link(options: { className?: string; prefix?: string; v4?: boolean; }): string {
+  link(options: { className?: string; prefix?: string; v4?: boolean }): string {
     if (!options) {
       options = {};
     }
@@ -1104,39 +1098,46 @@ export class Address6 {
       options.v4 = false;
     }
 
-    var formFunction = this.correctForm;
+    let formFunction = this.correctForm;
 
     if (options.v4) {
       formFunction = this.to4in6;
     }
 
     if (options.className) {
-      return sprintf('<a href="%1$s%2$s" class="%3$s">%2$s</a>',
-        options.prefix, formFunction.call(this), options.className);
+      return sprintf(
+        '<a href="%1$s%2$s" class="%3$s">%2$s</a>',
+        options.prefix,
+        formFunction.call(this),
+        options.className
+      );
     }
 
-    return sprintf('<a href="%1$s%2$s">%2$s</a>', options.prefix,
-      formFunction.call(this));
-  };
+    return sprintf('<a href="%1$s%2$s">%2$s</a>', options.prefix, formFunction.call(this));
+  }
 
   /**
    * Groups an address
    * @returns {String}
    */
   group(): string {
-    var address4 = this.address.match(constants4.RE_ADDRESS);
-    var i;
+    const address4 = this.address.match(constants4.RE_ADDRESS);
+    let i;
 
     if (address4) {
       // The IPv4 case
-      var segments = address4[0].split('.');
+      const segments = address4[0].split('.');
 
-      this.address = this.address.replace(constants4.RE_ADDRESS,
-        sprintf('<span class="hover-group group-v4 group-6">%s</span>' +
-          '.' +
-          '<span class="hover-group group-v4 group-7">%s</span>',
+      this.address = this.address.replace(
+        constants4.RE_ADDRESS,
+        sprintf(
+          '<span class="hover-group group-v4 group-6">%s</span>' +
+            '.' +
+            '<span class="hover-group group-v4 group-7">%s</span>',
           segments.slice(0, 2).join('.'),
-          segments.slice(2, 4).join('.')));
+          segments.slice(2, 4).join('.')
+        )
+      );
     }
 
     if (this.elidedGroups === 0) {
@@ -1145,9 +1146,9 @@ export class Address6 {
     }
 
     // The elided case
-    var output = [];
+    const output = [];
 
-    var halves = this.address.split('::');
+    const halves = this.address.split('::');
 
     if (halves[0].length) {
       output.push(helpers.simpleGroup(halves[0]));
@@ -1155,10 +1156,9 @@ export class Address6 {
       output.push('');
     }
 
-    var classes = ['hover-group'];
+    const classes = ['hover-group'];
 
-    for (i = this.elisionBegin;
-         i < this.elisionBegin + this.elidedGroups; i++) {
+    for (i = this.elisionBegin; i < this.elisionBegin + this.elidedGroups; i++) {
       classes.push(sprintf('group-%d', i));
     }
 
@@ -1171,10 +1171,10 @@ export class Address6 {
     }
 
     return output.join(':');
-  };
-  //#endregion
+  }
+  // #endregion
 
-  //#region Regular expressions
+  // #region Regular expressions
   /**
    * Generate a regular expression string that can be used to find or validate
    * all variations of this address
@@ -1184,10 +1184,10 @@ export class Address6 {
    * @returns {string}
    */
   regularExpressionString(this: Address6, optionalSubString: string = ''): string {
-    var output: string[] = [];
+    let output: string[] = [];
 
     // TODO: revisit why this is necessary
-    var address6 = new Address6(this.correctForm());
+    const address6 = new Address6(this.correctForm());
 
     if (address6.elidedGroups === 0) {
       // The simple case
@@ -1197,15 +1197,15 @@ export class Address6 {
       output.push(possibleElisions(constants6.GROUPS));
     } else {
       // A partially elided address
-      var halves = address6.address.split('::');
+      const halves = address6.address.split('::');
 
       if (halves[0].length) {
         output.push(simpleRegularExpression(halves[0].split(':')));
       }
 
-      output.push(possibleElisions(address6.elidedGroups,
-        halves[0].length !== 0,
-        halves[1].length !== 0));
+      output.push(
+        possibleElisions(address6.elidedGroups, halves[0].length !== 0, halves[1].length !== 0)
+      );
 
       if (halves[1].length) {
         output.push(simpleRegularExpression(halves[1].split(':')));
@@ -1218,14 +1218,16 @@ export class Address6 {
       output = [
         '(?=^|',
         ADDRESS_BOUNDARY,
-        '|[^\\w\\:])(', ...output, ')(?=[^\\w\\:]|',
+        '|[^\\w\\:])(',
+        ...output,
+        ')(?=[^\\w\\:]|',
         ADDRESS_BOUNDARY,
-        '|$)'
-      ]
+        '|$)',
+      ];
     }
 
     return output.join('');
-  };
+  }
 
   /**
    * Generate a regular expression that can be used to find or validate all
@@ -1237,6 +1239,6 @@ export class Address6 {
    */
   regularExpression(this: Address6, optionalSubstring?: string): RegExp {
     return new RegExp(this.regularExpressionString(optionalSubstring), 'i');
-  };
-  //#endregion
+  }
+  // #endregion
 }

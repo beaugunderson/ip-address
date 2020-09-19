@@ -6,4 +6,4 @@ export { Address6 };
 
 import * as helpers from './lib/v6/helpers';
 
-export const v6 = { helpers }
+export const v6 = { helpers };

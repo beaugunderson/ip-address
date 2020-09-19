@@ -14,7 +14,7 @@ export const SCOPES = {
   5: 'Site local',
   8: 'Organization local',
   14: 'Global',
-  15: 'Reserved'
+  15: 'Reserved',
 };
 
 /**
@@ -44,7 +44,7 @@ export const TYPES = {
   '::/128': 'Unspecified',
   '::1/128': 'Loopback',
   'ff00::/8': 'Multicast',
-  'fe80::/10': 'Link-local unicast'
+  'fe80::/10': 'Link-local unicast',
 };
 
 /**
@@ -52,14 +52,14 @@ export const TYPES = {
  * @memberof Address6
  * @static
  */
-export const RE_BAD_CHARACTERS = /([^0-9a-f:\/%])/ig;
+export const RE_BAD_CHARACTERS = /([^0-9a-f:\/%])/gi;
 
 /**
  * A regular expression that matches an incorrect IPv6 address
  * @memberof Address6
  * @static
  */
-export const RE_BAD_ADDRESS = /([0-9a-f]{5,}|:{3,}|[^:]:$|^:[^:]|\/$)/ig;
+export const RE_BAD_ADDRESS = /([0-9a-f]{5,}|:{3,}|[^:]:$|^:[^:]|\/$)/gi;
 
 /**
  * A regular expression that matches an IPv6 subnet

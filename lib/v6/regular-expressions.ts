@@ -1,6 +1,5 @@
-import { Address6 } from '../ipv6';
-import { sprintf } from 'sprintf-js';
 import * as v6 from './constants';
+import { sprintf } from 'sprintf-js';
 
 export function groupPossibilities(possibilities: string[]): string {
   return sprintf('(%s)', possibilities.join('|'));
@@ -14,13 +13,13 @@ export function padGroup(group: string): string {
   return group;
 }
 
-export var ADDRESS_BOUNDARY = '[^A-Fa-f0-9:]';
+export const ADDRESS_BOUNDARY = '[^A-Fa-f0-9:]';
 
 export function simpleRegularExpression(groups: string[]) {
-  var zeroIndexes: number[] = [];
+  const zeroIndexes: number[] = [];
 
-  groups.forEach(function (group, i) {
-    var groupInteger = parseInt(group, 16);
+  groups.forEach((group, i) => {
+    const groupInteger = parseInt(group, 16);
 
     if (groupInteger === 0) {
       zeroIndexes.push(i);
@@ -29,17 +28,19 @@ export function simpleRegularExpression(groups: string[]) {
 
   // You can technically elide a single 0, this creates the regular expressions
   // to match that eventuality
-  var possibilities = zeroIndexes.map(function (zeroIndex) {
-    return groups.map(function (group, i) {
-      if (i === zeroIndex) {
-        var elision = (i === 0 || i === v6.GROUPS - 1) ? ':' : '';
+  const possibilities = zeroIndexes.map((zeroIndex) =>
+    groups
+      .map((group, i) => {
+        if (i === zeroIndex) {
+          const elision = i === 0 || i === v6.GROUPS - 1 ? ':' : '';
 
-        return groupPossibilities([padGroup(group), elision]);
-      }
+          return groupPossibilities([padGroup(group), elision]);
+        }
 
-      return padGroup(group);
-    }).join(':');
-  });
+        return padGroup(group);
+      })
+      .join(':')
+  );
 
   // The simplest case
   possibilities.push(groups.map(padGroup).join(':'));
@@ -47,11 +48,15 @@ export function simpleRegularExpression(groups: string[]) {
   return groupPossibilities(possibilities);
 }
 
-export function possibleElisions(elidedGroups: number, moreLeft?: boolean, moreRight?: boolean): string {
-  var left = moreLeft ? '' : ':';
-  var right = moreRight ? '' : ':';
+export function possibleElisions(
+  elidedGroups: number,
+  moreLeft?: boolean,
+  moreRight?: boolean
+): string {
+  const left = moreLeft ? '' : ':';
+  const right = moreRight ? '' : ':';
 
-  var possibilities = [];
+  const possibilities = [];
 
   // 1. elision of everything (::)
   if (!moreLeft && !moreRight) {
@@ -78,11 +83,15 @@ export function possibleElisions(elidedGroups: number, moreLeft?: boolean, moreR
   possibilities.push(sprintf('(0{1,4}:){%d}0{1,4}', elidedGroups - 1));
 
   // 7. elision (including sloppy elision) from the middle
-  for (var groups = 1; groups < elidedGroups - 1; groups++) {
-    for (var position = 1; position < elidedGroups - groups; position++) {
-      possibilities.push(sprintf('(0{1,4}:){%d}:(0{1,4}:){%d}0{1,4}',
-        position,
-        elidedGroups - position - groups - 1));
+  for (let groups = 1; groups < elidedGroups - 1; groups++) {
+    for (let position = 1; position < elidedGroups - groups; position++) {
+      possibilities.push(
+        sprintf(
+          '(0{1,4}:){%d}:(0{1,4}:){%d}0{1,4}',
+          position,
+          elidedGroups - position - groups - 1
+        )
+      );
     }
   }
 

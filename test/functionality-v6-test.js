@@ -1,28 +1,23 @@
-var chai = require('chai');
+const chai = require('chai');
+const { Address6 } = require('../dist/lib/ipv6');
+const { BigInteger } = require('jsbn');
+const { sprintf } = require('sprintf-js');
+const { v6 } = require('../dist/ip-address');
 
-var expect = chai.expect;
-var should = chai.should();
-
-var BigInteger = require('jsbn').BigInteger;
-var sprintf = require('sprintf-js').sprintf;
-
-var { Address6 } = require('../dist/lib/ipv6');
-
-var v6 = require('../dist/ip-address').v6;
+const { expect } = chai;
+const should = chai.should();
 
 // A convenience function to convert a list of IPv6 address notations
 // to Address6 instances
 function notationsToAddresseses(notations) {
-  return notations.map(function (notation) {
-    return new Address6(notation);
-  });
+  return notations.map((notation) => new Address6(notation));
 }
 
-describe('v6', function () {
-  describe('An invalid address', function () {
-    var topic = new Address6('a:abcde::');
+describe('v6', () => {
+  describe('An invalid address', () => {
+    const topic = new Address6('a:abcde::');
 
-    it('is invalid', function () {
+    it('is invalid', () => {
       topic.error.should.equal('Address failed regex: abcde');
 
       topic.valid.should.equal(false);
@@ -38,19 +33,19 @@ describe('v6', function () {
     });
   });
 
-  describe('a fully ellided /0 address', function () {
-    var topic = new Address6('::/0');
+  describe('a fully ellided /0 address', () => {
+    const topic = new Address6('::/0');
 
-    it('gets the correct reverse from', function () {
-      topic.reverseForm({omitSuffix: true}).should.equal('');
+    it('gets the correct reverse from', () => {
+      topic.reverseForm({ omitSuffix: true }).should.equal('');
       topic.reverseForm().should.equal('ip6.arpa.');
     });
   });
 
-  describe('A link local address', function () {
-    var topic = new Address6('fe80::baf6:b1ff:fe15:4885');
+  describe('A link local address', () => {
+    const topic = new Address6('fe80::baf6:b1ff:fe15:4885');
 
-    it('gets the correct type', function () {
+    it('gets the correct type', () => {
       topic.getType().should.equal('Link-local unicast');
 
       topic.isTeredo().should.equal(false);
@@ -60,34 +55,34 @@ describe('v6', function () {
     });
   });
 
-  describe('A correct address', function () {
-    var topic = new Address6('a:b:c:d:e:f:0:1/64');
+  describe('A correct address', () => {
+    const topic = new Address6('a:b:c:d:e:f:0:1/64');
 
-    it('contains no uppercase letters', function () {
+    it('contains no uppercase letters', () => {
       /[A-Z]/.test(topic.address).should.equal(false);
     });
 
-    it('validates as correct', function () {
+    it('validates as correct', () => {
       topic.isCorrect().should.equal(true);
 
       should.equal(topic.correctForm(), 'a:b:c:d:e:f:0:1');
     });
 
-    it('converts to and from a signed byte array', function () {
-      var bytes = topic.toByteArray();
-      var address = Address6.fromByteArray(bytes);
+    it('converts to and from a signed byte array', () => {
+      const bytes = topic.toByteArray();
+      const address = Address6.fromByteArray(bytes);
 
       address.correctForm().should.equal(topic.correctForm());
     });
 
-    it('converts to and from an unsigned byte array', function () {
-      var unsignedBytes = topic.toUnsignedByteArray();
-      var address = Address6.fromUnsignedByteArray(unsignedBytes);
+    it('converts to and from an unsigned byte array', () => {
+      const unsignedBytes = topic.toUnsignedByteArray();
+      const address = Address6.fromUnsignedByteArray(unsignedBytes);
 
       address.correctForm().should.equal(topic.correctForm());
     });
 
-    it('gets the correct type', function () {
+    it('gets the correct type', () => {
       topic.getType().should.equal('Global unicast');
 
       topic.isTeredo().should.equal(false);
@@ -96,73 +91,70 @@ describe('v6', function () {
       topic.isLinkLocal().should.equal(false);
     });
 
-    it('gets the correct reverse from', function () {
-      topic.reverseForm({omitSuffix: true})
-        .should.equal('d.0.0.0.c.0.0.0.b.0.0.0.a.0.0.0');
+    it('gets the correct reverse from', () => {
+      topic.reverseForm({ omitSuffix: true }).should.equal('d.0.0.0.c.0.0.0.b.0.0.0.a.0.0.0');
 
-      topic.reverseForm()
-        .should.equal('d.0.0.0.c.0.0.0.b.0.0.0.a.0.0.0.ip6.arpa.');
+      topic.reverseForm().should.equal('d.0.0.0.c.0.0.0.b.0.0.0.a.0.0.0.ip6.arpa.');
     });
 
-    it('gets the correct scope', function () {
+    it('gets the correct scope', () => {
       topic.getScope().should.equal('Global');
     });
 
-    it('gets the correct is6to4 information', function () {
+    it('gets the correct is6to4 information', () => {
       topic.is6to4().should.equal(false);
     });
 
-    it('gets the correct microsoft transcription', function () {
-      topic.microsoftTranscription()
-        .should.equal('a-b-c-d-e-f-0-1.ipv6-literal.net');
+    it('gets the correct microsoft transcription', () => {
+      topic.microsoftTranscription().should.equal('a-b-c-d-e-f-0-1.ipv6-literal.net');
     });
 
-    it('has correct bit information', function () {
-      topic.getBitsPastSubnet().should.equal(
-        '0000000000001110000000000000111100000000000000000000000000000001');
+    it('has correct bit information', () => {
+      topic
+        .getBitsPastSubnet()
+        .should.equal('0000000000001110000000000000111100000000000000000000000000000001');
 
       topic.getBitsBase16(0, 64).should.equal('000a000b000c000d');
 
-      topic.getBitsBase16(0, 128).should.equal(
-        '000a000b000c000d000e000f00000001');
+      topic.getBitsBase16(0, 128).should.equal('000a000b000c000d000e000f00000001');
 
       should.equal(topic.getBitsBase16(0, 127), null);
 
-      topic.getBitsBase2().should.equal(
-        '0000000000001010000000000000101100000000000011000000000000001101' +
-        '0000000000001110000000000000111100000000000000000000000000000001');
+      topic
+        .getBitsBase2()
+        .should.equal(
+          '0000000000001010000000000000101100000000000011000000000000001101' +
+            '0000000000001110000000000000111100000000000000000000000000000001'
+        );
     });
   });
 
-  describe('An address with a subnet', function () {
-    var topic = new Address6('ffff::/64');
+  describe('An address with a subnet', () => {
+    const topic = new Address6('ffff::/64');
 
-    it('is contained by an identical address with an identical subnet',
-      function () {
-        var same = new Address6('ffff::/64');
+    it('is contained by an identical address with an identical subnet', () => {
+      const same = new Address6('ffff::/64');
 
-        topic.isInSubnet(same).should.equal(true);
-      });
+      topic.isInSubnet(same).should.equal(true);
+    });
 
-    it('has a correct start address', function () {
+    it('has a correct start address', () => {
       should.equal(topic.startAddress().correctForm(), 'ffff::');
     });
 
-    it('has a correct start address hosts only', function () {
+    it('has a correct start address hosts only', () => {
       should.equal(topic.startAddressExclusive().correctForm(), 'ffff::1');
     });
 
-    it('has a correct end address', function () {
-      should.equal(topic.endAddress().correctForm(),
-        'ffff::ffff:ffff:ffff:ffff');
+    it('has a correct end address', () => {
+      should.equal(topic.endAddress().correctForm(), 'ffff::ffff:ffff:ffff:ffff');
     });
 
-    it('has a correct end address hosts only', function () {
-      should.equal(topic.endAddressExclusive().correctForm(),
-        'ffff::ffff:ffff:ffff:fffe');
+    it('has a correct end address hosts only', () => {
+      should.equal(topic.endAddressExclusive().correctForm(), 'ffff::ffff:ffff:ffff:fffe');
     });
 
-    it('calculates and formats the subnet size', function () {
+    it('calculates and formats the subnet size', () => {
       topic.possibleSubnets().should.equal('18,446,744,073,709,551,616');
       topic.possibleSubnets(128).should.equal('18,446,744,073,709,551,616');
       topic.possibleSubnets(96).should.equal('4,294,967,296');
@@ -173,98 +165,97 @@ describe('v6', function () {
     });
   });
 
-  describe('Small subnets', function () {
-    var topic = new Address6('ffff::/64');
+  describe('Small subnets', () => {
+    const topic = new Address6('ffff::/64');
 
-    it('is contained by larger subnets', function () {
-      for (var i = 63; i > 0; i--) {
-        var larger = new Address6(sprintf('ffff::/%d', i));
+    it('is contained by larger subnets', () => {
+      for (let i = 63; i > 0; i--) {
+        const larger = new Address6(sprintf('ffff::/%d', i));
 
         topic.isInSubnet(larger).should.equal(true);
       }
     });
   });
 
-  describe('Large subnets', function () {
-    var topic = new Address6('ffff::/8');
+  describe('Large subnets', () => {
+    const topic = new Address6('ffff::/8');
 
-    it('is not contained by smaller subnets', function () {
-      for (var i = 9; i <= 128; i++) {
-        var smaller = new Address6(sprintf('ffff::/%d', i));
+    it('is not contained by smaller subnets', () => {
+      for (let i = 9; i <= 128; i++) {
+        const smaller = new Address6(sprintf('ffff::/%d', i));
 
         topic.isInSubnet(smaller).should.equal(false);
       }
     });
   });
 
-  describe('A canonical address', function () {
-    var topic = new Address6('000a:0000:0000:0000:0000:0000:0000:000b');
+  describe('A canonical address', () => {
+    const topic = new Address6('000a:0000:0000:0000:0000:0000:0000:000b');
 
-    it('is 39 characters long', function () {
+    it('is 39 characters long', () => {
       should.equal(topic.address.length, 39);
     });
 
-    it('validates as canonical', function () {
+    it('validates as canonical', () => {
       topic.isCanonical().should.equal(true);
 
-      should.equal(topic.canonicalForm(),
-        '000a:0000:0000:0000:0000:0000:0000:000b');
+      should.equal(topic.canonicalForm(), '000a:0000:0000:0000:0000:0000:0000:000b');
     });
   });
 
-  describe('A v4-in-v6 address', function () {
-    var topic = new Address6('::192.168.0.1');
+  describe('A v4-in-v6 address', () => {
+    const topic = new Address6('::192.168.0.1');
 
-    it('validates', function () {
+    it('validates', () => {
       topic.isValid().should.equal(true);
     });
 
-    it('is v4', function () {
+    it('is v4', () => {
       topic.is4().should.equal(true);
     });
   });
 
-  describe('An address with a subnet', function () {
-    var topic = new Address6('a:b::/48');
+  describe('An address with a subnet', () => {
+    const topic = new Address6('a:b::/48');
 
-    it('validates', function () {
+    it('validates', () => {
       topic.isValid().should.equal(true);
     });
 
-    it('parses the subnet', function () {
+    it('parses the subnet', () => {
       should.equal(topic.subnet, '/48');
     });
 
-    it('is in its own subnet', function () {
+    it('is in its own subnet', () => {
       topic.isInSubnet(new Address6('a:b::/48')).should.equal(true);
     });
 
-    it('is not in another subnet', function () {
+    it('is not in another subnet', () => {
       topic.isInSubnet(new Address6('a:c::/48')).should.equal(false);
     });
   });
 
-  describe('An address with a zone', function () {
-    var topic = new Address6('a::b%abcdefg');
+  describe('An address with a zone', () => {
+    const topic = new Address6('a::b%abcdefg');
 
-    it('validates', function () {
+    it('validates', () => {
       topic.isValid().should.equal(true);
     });
 
-    it('parses the zone', function () {
+    it('parses the zone', () => {
       should.equal(topic.zone, '%abcdefg');
     });
   });
 
-  describe('A teredo address', function () {
-    var topic = new Address6('2001:0000:ce49:7601:e866:efff:62c3:fffe');
+  describe('A teredo address', () => {
+    const topic = new Address6('2001:0000:ce49:7601:e866:efff:62c3:fffe');
 
-    it('validates as Teredo', function () {
+    it('validates as Teredo', () => {
       topic.isTeredo().should.equal(true);
     });
 
-    it('contains valid Teredo information', function () {
-      var teredo = topic.inspectTeredo();
+    it('contains valid Teredo information', () => {
+      const teredo = topic.inspectTeredo();
 
       should.equal(teredo.prefix, '2001:0000');
       should.equal(teredo.server4, '206.73.118.1');
@@ -274,23 +265,23 @@ describe('v6', function () {
     });
   });
 
-  describe('A 6to4 address', function () {
-    var topic = new Address6('2002:ce49:7601:1:2de:adff:febe:eeef');
+  describe('A 6to4 address', () => {
+    const topic = new Address6('2002:ce49:7601:1:2de:adff:febe:eeef');
 
-    it('validates as 6to4', function () {
+    it('validates as 6to4', () => {
       topic.is6to4().should.equal(true);
     });
 
-    it('contains valid 6to4 information', function () {
-      var sixToFourProperties = topic.inspect6to4();
+    it('contains valid 6to4 information', () => {
+      const sixToFourProperties = topic.inspect6to4();
 
       should.equal(sixToFourProperties.prefix, '2002');
       should.equal(sixToFourProperties.gateway, '206.73.118.1');
     });
   });
 
-  describe('A different notation of the same address', function () {
-    var addresses = notationsToAddresseses([
+  describe('A different notation of the same address', () => {
+    const addresses = notationsToAddresseses([
       '2001:db8:0:0:1:0:0:1/128',
       '2001:db8:0:0:1:0:0:1/128%eth0',
       '2001:db8:0:0:1:0:0:1%eth0',
@@ -301,160 +292,161 @@ describe('v6', function () {
       '2001:0db8::1:0:0:1',
       '2001:db8:0:0:1::1',
       '2001:db8:0000:0:1::1',
-      '2001:DB8:0:0:1::1'
+      '2001:DB8:0:0:1::1',
     ]);
 
-    it('is parsed to the same result', function () {
-      addresses.forEach(function (topic) {
+    it('is parsed to the same result', () => {
+      addresses.forEach((topic) => {
         should.equal(topic.correctForm(), '2001:db8::1:0:0:1');
-        should.equal(topic.canonicalForm(),
-          '2001:0db8:0000:0000:0001:0000:0000:0001');
+        should.equal(topic.canonicalForm(), '2001:0db8:0000:0000:0001:0000:0000:0001');
         should.equal(topic.to4in6(), '2001:db8::1:0:0.0.0.1');
-        should.equal(topic.decimal(),
-          '08193:03512:00000:00000:00001:00000:00000:00001');
-        should.equal(topic.binaryZeroPad(),
+        should.equal(topic.decimal(), '08193:03512:00000:00000:00001:00000:00000:00001');
+        should.equal(
+          topic.binaryZeroPad(),
           '0010000000000001000011011011100000000000000000000000000000000000' +
-          '0000000000000001000000000000000000000000000000000000000000000001');
+            '0000000000000001000000000000000000000000000000000000000000000001'
+        );
       });
     });
   });
 
-  describe('to4in6', function () {
-    it('should produce a valid 4in6 address', function () {
-      var topic1 = new Address6('1:2:3:4:5:6:7:8');
-      var topic2 = new Address6('1:2:3:4::7:8');
+  describe('to4in6', () => {
+    it('should produce a valid 4in6 address', () => {
+      const topic1 = new Address6('1:2:3:4:5:6:7:8');
+      const topic2 = new Address6('1:2:3:4::7:8');
 
       topic1.to4in6().should.equal('1:2:3:4:5:6:0.7.0.8');
       topic2.to4in6().should.equal('1:2:3:4::0.7.0.8');
     });
   });
 
-  describe('Address from an IPv4 address', function () {
-    var obj = Address6.fromAddress4('192.168.0.1/30');
+  describe('Address from an IPv4 address', () => {
+    const obj = Address6.fromAddress4('192.168.0.1/30');
 
-    it('should parse correctly', function () {
+    it('should parse correctly', () => {
       expect(obj.valid).to.equal(true);
       expect(obj.correctForm()).to.equal('::ffff:c0a8:1');
       expect(obj.to4in6()).to.equal('::ffff:192.168.0.1');
       expect(obj.subnetMask).to.equal(126);
     });
 
-    it('should generate a 6to4 address', function () {
+    it('should generate a 6to4 address', () => {
       expect(obj.to6to4().correctForm()).to.equal('2002:c0a8:1::');
     });
 
-    it('should generate a v4 address', function () {
+    it('should generate a v4 address', () => {
       expect(obj.to4().correctForm()).to.equal('192.168.0.1');
     });
   });
 
-  describe('Address given in ap6.arpa form', function() {
-    var obj = Address6.fromArpa('e.f.f.f.3.c.2.6.f.f.f.e.6.6.8.e.1.0.6.7.9.4.e.c.0.0.0.0.1.0.0.2.ip6.arpa.');
+  describe('Address given in ap6.arpa form', () => {
+    const obj = Address6.fromArpa(
+      'e.f.f.f.3.c.2.6.f.f.f.e.6.6.8.e.1.0.6.7.9.4.e.c.0.0.0.0.1.0.0.2.ip6.arpa.'
+    );
 
-    it('should return an Address6 object', function() {
+    it('should return an Address6 object', () => {
       expect(obj instanceof Address6).to.equal(true);
     });
 
-    it('should generate a valid v6 address', function() {
+    it('should generate a valid v6 address', () => {
       expect(obj.correctForm()).to.equal('2001:0:ce49:7601:e866:efff:62c3:fffe');
     });
 
-    it('should fail with an invalid ip6.arpa length', function() {
-      var obj = Address6.fromArpa('e.f.f.f.3.c.2.6.f.f.f.e.6.6.8.0.6.7.9.4.e.c.0.0.0.0.1.0.0.2.ip6.arpa.');
+    it('should fail with an invalid ip6.arpa length', () => {
+      const fromArpa = Address6.fromArpa(
+        'e.f.f.f.3.c.2.6.f.f.f.e.6.6.8.0.6.7.9.4.e.c.0.0.0.0.1.0.0.2.ip6.arpa.'
+      );
 
-      expect(obj.error).to.equal("Not Valid 'ip6.arpa' form");
-      expect(obj.address).to.equal(null);
+      expect(fromArpa.error).to.equal("Not Valid 'ip6.arpa' form");
+      expect(fromArpa.address).to.equal(null);
     });
   });
 
-
-  describe('Address inside a URL or inside a URL with a port', function () {
-    it('should work with a host address', function () {
-      var obj = Address6.fromURL('2001:db8::5');
+  describe('Address inside a URL or inside a URL with a port', () => {
+    it('should work with a host address', () => {
+      const obj = Address6.fromURL('2001:db8::5');
 
       expect(obj.address.valid).to.equal(true);
       expect(obj.address.address).to.equal('2001:db8::5');
       expect(obj.port).to.equal(null);
     });
 
-    it('should fail with an invalid URL', function () {
-      var obj = Address6.fromURL('http://zombo/foo');
+    it('should fail with an invalid URL', () => {
+      const obj = Address6.fromURL('http://zombo/foo');
 
       expect(obj.error).to.equal('failed to parse address from URL');
       expect(obj.address).to.equal(null);
       expect(obj.port).to.equal(null);
     });
 
-    it('should work with a basic URL', function () {
-      var obj = Address6.fromURL('http://2001:db8::5/foo');
+    it('should work with a basic URL', () => {
+      const obj = Address6.fromURL('http://2001:db8::5/foo');
 
       expect(obj.address.isValid()).to.equal(true);
       expect(obj.address.address).equal('2001:db8::5');
       expect(obj.port).to.equal(null);
     });
 
-    it('should work with a basic URL enclosed in brackets', function () {
-      var obj = Address6.fromURL('http://[2001:db8::5]/foo');
+    it('should work with a basic URL enclosed in brackets', () => {
+      const obj = Address6.fromURL('http://[2001:db8::5]/foo');
 
       expect(obj.address.isValid()).to.equal(true);
       expect(obj.address.address).equal('2001:db8::5');
       expect(obj.port).to.equal(null);
     });
 
-    it('should work with a URL with a port', function () {
-      var obj = Address6.fromURL('http://[2001:db8::5]:80/foo');
+    it('should work with a URL with a port', () => {
+      const obj = Address6.fromURL('http://[2001:db8::5]:80/foo');
 
       expect(obj.address.isValid()).to.equal(true);
       expect(obj.address.address).to.equal('2001:db8::5');
       expect(obj.port).to.equal(80);
     });
 
-    it('should work with a URL with a long port number', function () {
-      var obj = Address6.fromURL('http://[2001:db8::5]:65536/foo');
+    it('should work with a URL with a long port number', () => {
+      const obj = Address6.fromURL('http://[2001:db8::5]:65536/foo');
 
       expect(obj.address.isValid()).to.equal(true);
       expect(obj.address.address).to.equal('2001:db8::5');
       expect(obj.port).to.equal(65536);
     });
 
-    it('should work with a address with a port', function () {
-      var obj = Address6.fromURL('[2001:db8::5]:80');
+    it('should work with a address with a port', () => {
+      const obj = Address6.fromURL('[2001:db8::5]:80');
 
       expect(obj.address.isValid()).to.equal(true);
       expect(obj.address.address).to.equal('2001:db8::5');
       expect(obj.port).to.equal(80);
     });
 
-    it('should work with an address with a long port', function () {
-      var obj = Address6.fromURL('[2001:db8::5]:65536');
+    it('should work with an address with a long port', () => {
+      const obj = Address6.fromURL('[2001:db8::5]:65536');
 
       expect(obj.address.isValid()).to.equal(true);
       expect(obj.address.address).to.equal('2001:db8::5');
       expect(obj.port).to.equal(65536);
     });
 
-    it('should parse the address but fail with an invalid port', function () {
-      var obj = Address6.fromURL('[2001:db8::5]:65537');
+    it('should parse the address but fail with an invalid port', () => {
+      const obj = Address6.fromURL('[2001:db8::5]:65537');
 
       expect(obj.address.isValid()).to.equal(true);
       expect(obj.address.address).to.equal('2001:db8::5');
       expect(obj.port).to.equal(null);
     });
 
-    it('should fail with an invalid address and not return a port',
-      function () {
-        var obj = Address6.fromURL('[2001:db8:z:5]:65536');
+    it('should fail with an invalid address and not return a port', () => {
+      const obj = Address6.fromURL('[2001:db8:z:5]:65536');
 
-        expect(obj.error).to.equal('failed to parse address with port');
-        expect(obj.port).to.equal(null);
-      });
+      expect(obj.error).to.equal('failed to parse address with port');
+      expect(obj.port).to.equal(null);
+    });
   });
 
-  describe('An address from a BigInteger', function () {
-    var topic = Address6
-      .fromBigInteger(new BigInteger('51923840109643282840007714694758401'));
+  describe('An address from a BigInteger', () => {
+    const topic = Address6.fromBigInteger(new BigInteger('51923840109643282840007714694758401'));
 
-    it('should parse correctly', function () {
+    it('should parse correctly', () => {
       topic.valid.should.equal(true);
 
       // TODO: Define this behavior
@@ -464,127 +456,147 @@ describe('v6', function () {
     });
   });
 
-  describe('HTML helpers', function () {
-    describe('href', function () {
-      var topic = new Address6('2001:4860:4001:803::1011');
+  describe('HTML helpers', () => {
+    describe('href', () => {
+      const topic = new Address6('2001:4860:4001:803::1011');
 
-      it('should generate a URL correctly', function () {
+      it('should generate a URL correctly', () => {
         topic.href().should.equal('http://[2001:4860:4001:803::1011]/');
         topic.href(8080).should.equal('http://[2001:4860:4001:803::1011]:8080/');
       });
     });
 
-    describe('link', function () {
-      var topic = new Address6('2001:4860:4001:803::1011');
+    describe('link', () => {
+      const topic = new Address6('2001:4860:4001:803::1011');
 
-      it('should generate an anchor correctly', function () {
-        topic.link()
-          .should.equal('<a href="/#address=2001:4860:4001:803::1011">' +
-                        '2001:4860:4001:803::1011</a>');
+      it('should generate an anchor correctly', () => {
+        topic
+          .link()
+          .should.equal(
+            '<a href="/#address=2001:4860:4001:803::1011">2001:4860:4001:803::1011</a>'
+          );
 
-        topic.link({className: 'highlight', prefix: '/?address='})
-          .should.equal('<a href="/?address=2001:4860:4001:803::1011" ' +
-                        'class="highlight">2001:4860:4001:803::1011</a>');
+        topic
+          .link({ className: 'highlight', prefix: '/?address=' })
+          .should.equal(
+            '<a href="/?address=2001:4860:4001:803::1011" ' +
+              'class="highlight">2001:4860:4001:803::1011</a>'
+          );
       });
 
-      it('should generate a v4inv6 anchor correctly', function () {
-        var topic4 = new Address6('::ffff:c0a8:1');
+      it('should generate a v4inv6 anchor correctly', () => {
+        const topic4 = new Address6('::ffff:c0a8:1');
 
-        topic4.link({v4: true})
-          .should.equal('<a href="/#address=::ffff:192.168.0.1">' +
-                        '::ffff:192.168.0.1</a>');
+        topic4
+          .link({ v4: true })
+          .should.equal('<a href="/#address=::ffff:192.168.0.1">::ffff:192.168.0.1</a>');
       });
     });
 
-    describe('group', function () {
-      it('should group a fully ellided address', function () {
-        var topic = new Address6('::');
+    describe('group', () => {
+      it('should group a fully ellided address', () => {
+        const topic = new Address6('::');
 
-        topic.group()
-          .should.equal(':<span class="hover-group group-0 group-1 group-2 ' +
-                        'group-3 group-4 group-5 group-6 group-7"></span>:');
+        topic
+          .group()
+          .should.equal(
+            ':<span class="hover-group group-0 group-1 group-2 ' +
+              'group-3 group-4 group-5 group-6 group-7"></span>:'
+          );
       });
 
-      it('should group an address with no ellision', function () {
-        var topic = new Address6('a:b:c:d:1:2:3:4');
+      it('should group an address with no ellision', () => {
+        const topic = new Address6('a:b:c:d:1:2:3:4');
 
-        topic.group()
-          .should.equal('<span class="hover-group group-0">a</span>:' +
-                        '<span class="hover-group group-1">b</span>:' +
-                        '<span class="hover-group group-2">c</span>:' +
-                        '<span class="hover-group group-3">d</span>:' +
-                        '<span class="hover-group group-4">1</span>:' +
-                        '<span class="hover-group group-5">2</span>:' +
-                        '<span class="hover-group group-6">3</span>:' +
-                        '<span class="hover-group group-7">4</span>');
+        topic
+          .group()
+          .should.equal(
+            '<span class="hover-group group-0">a</span>:' +
+              '<span class="hover-group group-1">b</span>:' +
+              '<span class="hover-group group-2">c</span>:' +
+              '<span class="hover-group group-3">d</span>:' +
+              '<span class="hover-group group-4">1</span>:' +
+              '<span class="hover-group group-5">2</span>:' +
+              '<span class="hover-group group-6">3</span>:' +
+              '<span class="hover-group group-7">4</span>'
+          );
       });
 
-      it('should group an ellided address', function () {
-        var topic = new Address6('2001:4860:4001:803::1011');
+      it('should group an ellided address', () => {
+        const topic = new Address6('2001:4860:4001:803::1011');
 
-        topic.group()
-          .should.equal('<span class="hover-group group-0">2001</span>:' +
-                        '<span class="hover-group group-1">4860</span>:' +
-                        '<span class="hover-group group-2">4001</span>:' +
-                        '<span class="hover-group group-3">803</span>:' +
-                        '<span class="hover-group group-4 group-5 ' +
-                          'group-6"></span>:' +
-                        '<span class="hover-group group-7">1011</span>');
+        topic
+          .group()
+          .should.equal(
+            '<span class="hover-group group-0">2001</span>:' +
+              '<span class="hover-group group-1">4860</span>:' +
+              '<span class="hover-group group-2">4001</span>:' +
+              '<span class="hover-group group-3">803</span>:' +
+              '<span class="hover-group group-4 group-5 ' +
+              'group-6"></span>:' +
+              '<span class="hover-group group-7">1011</span>'
+          );
       });
 
-      it('should group an IPv4 address', function () {
-        var topic = new Address6('192.168.0.1');
+      it('should group an IPv4 address', () => {
+        const topic = new Address6('192.168.0.1');
 
-        topic.group().should.equal(
-          '<span class="hover-group group-v4 group-6">192.168</span>.' +
-          '<span class="hover-group group-v4 group-7">0.1</span>');
+        topic
+          .group()
+          .should.equal(
+            '<span class="hover-group group-v4 group-6">192.168</span>.' +
+              '<span class="hover-group group-v4 group-7">0.1</span>'
+          );
       });
     });
   });
 
-  describe('String helpers', function () {
-    describe('spanLeadingZeroes', function () {
-      it('should span leading zeroes', function () {
-        var topic = v6.helpers.spanLeadingZeroes('0000:0000:4444:0001');
+  describe('String helpers', () => {
+    describe('spanLeadingZeroes', () => {
+      it('should span leading zeroes', () => {
+        const topic = v6.helpers.spanLeadingZeroes('0000:0000:4444:0001');
 
-        topic
-          .should.equal('<span class="zero">0000</span>:' +
-                        '<span class="zero">0000</span>:4444:' +
-                        '<span class="zero">000</span>1');
+        topic.should.equal(
+          '<span class="zero">0000</span>:' +
+            '<span class="zero">0000</span>:4444:' +
+            '<span class="zero">000</span>1'
+        );
       });
     });
 
-    describe('spanAll', function () {
-      it('should span leading zeroes', function () {
-        var topic = v6.helpers.spanAll('001100');
+    describe('spanAll', () => {
+      it('should span leading zeroes', () => {
+        const topic = v6.helpers.spanAll('001100');
 
-        topic
-          .should.equal('<span class="digit value-0 position-0">' +
-                          '<span class="zero">0</span></span>' +
-                        '<span class="digit value-0 position-1">' +
-                          '<span class="zero">0</span></span>' +
-                        '<span class="digit value-1 position-2">1</span>' +
-                        '<span class="digit value-1 position-3">1</span>' +
-                        '<span class="digit value-0 position-4">' +
-                          '<span class="zero">0</span></span>' +
-                        '<span class="digit value-0 position-5">' +
-                          '<span class="zero">0</span></span>');
+        topic.should.equal(
+          '<span class="digit value-0 position-0">' +
+            '<span class="zero">0</span></span>' +
+            '<span class="digit value-0 position-1">' +
+            '<span class="zero">0</span></span>' +
+            '<span class="digit value-1 position-2">1</span>' +
+            '<span class="digit value-1 position-3">1</span>' +
+            '<span class="digit value-0 position-4">' +
+            '<span class="zero">0</span></span>' +
+            '<span class="digit value-0 position-5">' +
+            '<span class="zero">0</span></span>'
+        );
       });
 
-      it('should span leading zeroes with offset', function () {
-        var topic = v6.helpers.spanAll('001100', 1);
+      it('should span leading zeroes with offset', () => {
+        const topic = v6.helpers.spanAll('001100', 1);
 
-        topic
-          .should.equal('<span class="digit value-0 position-1">' +
-                          '<span class="zero">0</span></span>' +
-                        '<span class="digit value-0 position-2">' +
-                          '<span class="zero">0</span></span>' +
-                        '<span class="digit value-1 position-3">1</span>' +
-                        '<span class="digit value-1 position-4">1</span>' +
-                        '<span class="digit value-0 position-5">' +
-                          '<span class="zero">0</span></span>' +
-                        '<span class="digit value-0 position-6">' +
-                          '<span class="zero">0</span></span>');
+        topic.should.equal(
+          '<span class="digit value-0 position-1">' +
+            '<span class="zero">0</span></span>' +
+            '<span class="digit value-0 position-2">' +
+            '<span class="zero">0</span></span>' +
+            '<span class="digit value-1 position-3">1</span>' +
+            '<span class="digit value-1 position-4">1</span>' +
+            '<span class="digit value-0 position-5">' +
+            '<span class="zero">0</span></span>' +
+            '<span class="digit value-0 position-6">' +
+            '<span class="zero">0</span></span>'
+        );
       });
     });
   });

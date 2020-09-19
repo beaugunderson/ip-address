@@ -8,13 +8,7 @@ module.exports = {
 
   parser: '@typescript-eslint/parser',
 
-  plugins: [
-    'filenames',
-    'import',
-    'prettier',
-    'sort-imports-es6-autofix',
-    '@typescript-eslint',
-  ],
+  plugins: ['filenames', 'import', 'prettier', 'sort-imports-es6-autofix', '@typescript-eslint'],
 
   extends: ['airbnb', 'prettier'],
 
@@ -74,19 +68,6 @@ module.exports = {
           '`with` is disallowed in strict mode because it makes code impossible to predict and optimize.',
       },
     ],
-
-    // JSX
-    'jsx-a11y/anchor-is-valid': 'off',
-    'jsx-a11y/click-events-have-key-events': 'off',
-    'jsx-a11y/href-no-hash': 'off',
-    'jsx-a11y/img-has-alt': 'off',
-    'jsx-a11y/label-has-associated-control': 'off',
-    'jsx-a11y/label-has-for': 'off',
-    'jsx-a11y/no-noninteractive-element-interactions': 'warn',
-    'jsx-a11y/no-static-element-interactions': 'off',
-    'jsx-a11y/tabindex-no-positive': 'off',
-
-    'rulesdir/import-match-filename': 'off',
 
     '@typescript-eslint/no-unused-vars': 'error',
 
