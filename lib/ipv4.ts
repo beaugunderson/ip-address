@@ -4,6 +4,7 @@ import * as common from './common';
 import * as constants from './v4/constants';
 import padStart from 'lodash.padstart';
 import repeat from 'lodash.repeat';
+import { AddressError } from './address-error';
 import { BigInteger } from 'jsbn';
 import { sprintf } from 'sprintf-js';
 
@@ -15,14 +16,12 @@ import { sprintf } from 'sprintf-js';
 export class Address4 {
   address: string;
   addressMinusSuffix?: string;
-  error?: string;
   groups: number = constants.GROUPS;
   parsedAddress: string[] = [];
   parsedSubnet: string = '';
   subnet: string = '/32';
   subnetMask: number = 32;
   v4: boolean = true;
-  valid: boolean = false;
 
   constructor(address: string) {
     this.address = address;
@@ -35,10 +34,7 @@ export class Address4 {
       this.subnet = `/${this.subnetMask}`;
 
       if (this.subnetMask < 0 || this.subnetMask > constants.BITS) {
-        this.valid = false;
-        this.error = 'Invalid subnet mask.';
-
-        return;
+        throw new AddressError('Invalid subnet mask.');
       }
 
       address = address.replace(constants.RE_SUBNET_STRING, '');
@@ -55,23 +51,11 @@ export class Address4 {
   parse(address: string) {
     const groups = address.split('.');
 
-    if (address.match(constants.RE_ADDRESS)) {
-      this.valid = true;
-    } else {
-      this.error = 'Invalid IPv4 address.';
+    if (!address.match(constants.RE_ADDRESS)) {
+      throw new AddressError('Invalid IPv4 address.');
     }
 
     return groups;
-  }
-
-  /**
-   * Return true if the address is valid
-   * @memberof Address4
-   * @instance
-   * @returns {Boolean}
-   */
-  isValid(): boolean {
-    return this.valid;
   }
 
   /**
@@ -173,11 +157,7 @@ export class Address4 {
    * @instance
    * @returns {BigInteger}
    */
-  bigInteger(): BigInteger | null {
-    if (!this.valid) {
-      return null;
-    }
-
+  bigInteger(): BigInteger {
     return new BigInteger(
       this.parsedAddress.map((n) => sprintf('%02x', parseInt(n, 10))).join(''),
       16
@@ -268,7 +248,7 @@ export class Address4 {
    * @instance
    * @returns {String}
    */
-  mask(mask?: number): string {
+  mask(mask?: number): string | null {
     if (mask === undefined) {
       mask = this.subnetMask;
     }
@@ -282,8 +262,14 @@ export class Address4 {
    * @instance
    * @returns {string}
    */
-  getBitsBase2(start: number, end: number): string {
-    return this.binaryZeroPad().slice(start, end);
+  getBitsBase2(start: number, end: number): string | null {
+    const binaryZeroPad = this.binaryZeroPad();
+
+    if (binaryZeroPad === null) {
+      return null;
+    }
+
+    return binaryZeroPad.slice(start, end);
   }
 
   /**

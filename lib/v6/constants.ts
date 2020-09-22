@@ -6,7 +6,7 @@ export const GROUPS = 8;
  * @memberof Address6
  * @static
  */
-export const SCOPES = {
+export const SCOPES: { [key: number]: string | undefined } = {
   0: 'Reserved',
   1: 'Interface local',
   2: 'Link local',
@@ -15,7 +15,7 @@ export const SCOPES = {
   8: 'Organization local',
   14: 'Global',
   15: 'Reserved',
-};
+} as const;
 
 /**
  * Represents IPv6 address types
@@ -45,7 +45,7 @@ export const TYPES = {
   '::1/128': 'Loopback',
   'ff00::/8': 'Multicast',
   'fe80::/10': 'Link-local unicast',
-};
+} as const;
 
 /**
  * A regular expression that matches bad characters in an IPv6 address
