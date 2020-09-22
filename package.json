@@ -20,7 +20,7 @@
     "watch": "mocha --require ts-node/register --inline-diff --reporter spec --watch test/**/*.ts"
   },
   "engines": {
-    "node": ">= 0.10"
+    "node": ">= 10"
   },
   "files": [
     "ip-address.js",
