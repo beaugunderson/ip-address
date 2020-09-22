@@ -15,6 +15,18 @@
 `ip-address` is a library for validating and manipulating IPv4 and IPv6
 addresses in JavaScript.
 
+
+### Migrating from 7.x to 8.x
+
+`ip-address` was rewritten in TypeScript for version 8. If you were using version 7 you'll need to make these changes to upgrade:
+
+- Instead of checking `isValid()`, which has been removed, you'll need to use a
+  `try`/`catch` if you're accepting unknown input. This made the TypeScript
+  types substantially easier as well as allowed the use of an `AddressError`
+  class which will contain a `parseMessage` if an error occurred in the parsing
+  step.
+-
+
 ### Documentation
 
 Documentation is available at [ip-address.js.org](http://ip-address.js.org/).
