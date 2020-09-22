@@ -17,8 +17,8 @@
     "prepublishOnly": "tsc",
     "release": "release-it",
     "test-ci": "nyc mocha",
-    "test": "mocha --require ts-node/register --inline-diff --reporter spec test/**/*.ts",
-    "watch": "mocha --require ts-node/register --inline-diff --reporter spec --watch test/**/*.ts"
+    "test": "mocha",
+    "watch": "mocha --watch"
   },
   "nyc": {
     "extension": [

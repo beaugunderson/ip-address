@@ -1,5 +1,7 @@
 recursive: true
+reporter: spec
 require:
 - ts-node/register
 - source-map-support/register
+inline-diffs: true
 spec: test/**/*.ts
