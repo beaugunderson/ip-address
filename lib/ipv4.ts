@@ -246,7 +246,7 @@ export class Address4 {
    * @instance
    * @returns {String}
    */
-  mask(mask?: number): string | null {
+  mask(mask?: number): string {
     if (mask === undefined) {
       mask = this.subnetMask;
     }
@@ -260,14 +260,8 @@ export class Address4 {
    * @instance
    * @returns {string}
    */
-  getBitsBase2(start: number, end: number): string | null {
-    const binaryZeroPad = this.binaryZeroPad();
-
-    if (binaryZeroPad === null) {
-      return null;
-    }
-
-    return binaryZeroPad.slice(start, end);
+  getBitsBase2(start: number, end: number): string {
+    return this.binaryZeroPad().slice(start, end);
   }
 
   /**

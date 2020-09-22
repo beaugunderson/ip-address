@@ -315,7 +315,7 @@ export class Address6 {
    * @param {number} [mask=subnet] - the number of bits to mask
    * @returns {String} the first n bits of the address as a string
    */
-  mask(mask: number = this.subnetMask): string | null {
+  mask(mask: number = this.subnetMask): string {
     return this.getBitsBase2(0, mask);
   }
 
@@ -721,7 +721,7 @@ export class Address6 {
    * @instance
    * @returns {String}
    */
-  decimal(): string | null {
+  decimal(): string {
     return this.parsedAddress.map((n) => sprintf('%05d', parseInt(n, 16))).join(':');
   }
 
