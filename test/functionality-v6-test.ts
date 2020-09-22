@@ -1,35 +1,22 @@
-const chai = require('chai');
-const { Address6 } = require('../dist/lib/ipv6');
-const { BigInteger } = require('jsbn');
-const { sprintf } = require('sprintf-js');
-const { v6 } = require('../dist/ip-address');
+import chai from 'chai';
+import { Address6 } from '../lib/ipv6';
+import { BigInteger } from 'jsbn';
+import { sprintf } from 'sprintf-js';
+import { v6 } from '../ip-address';
 
 const { expect } = chai;
 const should = chai.should();
 
 // A convenience function to convert a list of IPv6 address notations
 // to Address6 instances
-function notationsToAddresseses(notations) {
+function notationsToAddresseses(notations: string[]): Address6[] {
   return notations.map((notation) => new Address6(notation));
 }
 
 describe('v6', () => {
   describe('An invalid address', () => {
-    const topic = new Address6('a:abcde::');
-
     it('is invalid', () => {
-      topic.error.should.equal('Address failed regex: abcde');
-
-      topic.valid.should.equal(false);
-
-      topic.isCorrect().should.equal(false);
-
-      should.equal(topic.canonicalForm(), null);
-      should.equal(topic.decimal(), null);
-      should.equal(topic.bigInteger(), null);
-      should.equal(topic.to6to4(), null);
-
-      topic.isTeredo().should.equal(false);
+      should.Throw(() => new Address6('a:abcde::'));
     });
   });
 
@@ -118,10 +105,10 @@ describe('v6', () => {
 
       topic.getBitsBase16(0, 128).should.equal('000a000b000c000d000e000f00000001');
 
-      should.equal(topic.getBitsBase16(0, 127), null);
+      should.Throw(() => topic.getBitsBase16(0, 127));
 
       topic
-        .getBitsBase2()
+        .binaryZeroPad()
         .should.equal(
           '0000000000001010000000000000101100000000000011000000000000001101' +
             '0000000000001110000000000000111100000000000000000000000000000001'
@@ -206,10 +193,6 @@ describe('v6', () => {
   describe('A v4-in-v6 address', () => {
     const topic = new Address6('::192.168.0.1');
 
-    it('validates', () => {
-      topic.isValid().should.equal(true);
-    });
-
     it('is v4', () => {
       topic.is4().should.equal(true);
     });
@@ -217,10 +200,6 @@ describe('v6', () => {
 
   describe('An address with a subnet', () => {
     const topic = new Address6('a:b::/48');
-
-    it('validates', () => {
-      topic.isValid().should.equal(true);
-    });
 
     it('parses the subnet', () => {
       should.equal(topic.subnet, '/48');
@@ -237,10 +216,6 @@ describe('v6', () => {
 
   describe('An address with a zone', () => {
     const topic = new Address6('a::b%abcdefg');
-
-    it('validates', () => {
-      topic.isValid().should.equal(true);
-    });
 
     it('parses the zone', () => {
       should.equal(topic.zone, '%abcdefg');
@@ -324,14 +299,13 @@ describe('v6', () => {
     const obj = Address6.fromAddress4('192.168.0.1/30');
 
     it('should parse correctly', () => {
-      expect(obj.valid).to.equal(true);
       expect(obj.correctForm()).to.equal('::ffff:c0a8:1');
       expect(obj.to4in6()).to.equal('::ffff:192.168.0.1');
       expect(obj.subnetMask).to.equal(126);
     });
 
     it('should generate a 6to4 address', () => {
-      expect(obj.to6to4().correctForm()).to.equal('2002:c0a8:1::');
+      expect(obj.to6to4()?.correctForm()).to.equal('2002:c0a8:1::');
     });
 
     it('should generate a v4 address', () => {
@@ -353,12 +327,9 @@ describe('v6', () => {
     });
 
     it('should fail with an invalid ip6.arpa length', () => {
-      const fromArpa = Address6.fromArpa(
-        'e.f.f.f.3.c.2.6.f.f.f.e.6.6.8.0.6.7.9.4.e.c.0.0.0.0.1.0.0.2.ip6.arpa.'
+      should.Throw(() =>
+        Address6.fromArpa('e.f.f.f.3.c.2.6.f.f.f.e.6.6.8.0.6.7.9.4.e.c.0.0.0.0.1.0.0.2.ip6.arpa.')
       );
-
-      expect(fromArpa.error).to.equal("Not Valid 'ip6.arpa' form");
-      expect(fromArpa.address).to.equal(null);
     });
   });
 
@@ -366,8 +337,7 @@ describe('v6', () => {
     it('should work with a host address', () => {
       const obj = Address6.fromURL('2001:db8::5');
 
-      expect(obj.address.valid).to.equal(true);
-      expect(obj.address.address).to.equal('2001:db8::5');
+      expect(obj.address?.address).to.equal('2001:db8::5');
       expect(obj.port).to.equal(null);
     });
 
@@ -382,56 +352,49 @@ describe('v6', () => {
     it('should work with a basic URL', () => {
       const obj = Address6.fromURL('http://2001:db8::5/foo');
 
-      expect(obj.address.isValid()).to.equal(true);
-      expect(obj.address.address).equal('2001:db8::5');
+      expect(obj.address?.address).equal('2001:db8::5');
       expect(obj.port).to.equal(null);
     });
 
     it('should work with a basic URL enclosed in brackets', () => {
       const obj = Address6.fromURL('http://[2001:db8::5]/foo');
 
-      expect(obj.address.isValid()).to.equal(true);
-      expect(obj.address.address).equal('2001:db8::5');
+      expect(obj.address?.address).equal('2001:db8::5');
       expect(obj.port).to.equal(null);
     });
 
     it('should work with a URL with a port', () => {
       const obj = Address6.fromURL('http://[2001:db8::5]:80/foo');
 
-      expect(obj.address.isValid()).to.equal(true);
-      expect(obj.address.address).to.equal('2001:db8::5');
+      expect(obj.address?.address).to.equal('2001:db8::5');
       expect(obj.port).to.equal(80);
     });
 
     it('should work with a URL with a long port number', () => {
       const obj = Address6.fromURL('http://[2001:db8::5]:65536/foo');
 
-      expect(obj.address.isValid()).to.equal(true);
-      expect(obj.address.address).to.equal('2001:db8::5');
+      expect(obj.address?.address).to.equal('2001:db8::5');
       expect(obj.port).to.equal(65536);
     });
 
     it('should work with a address with a port', () => {
       const obj = Address6.fromURL('[2001:db8::5]:80');
 
-      expect(obj.address.isValid()).to.equal(true);
-      expect(obj.address.address).to.equal('2001:db8::5');
+      expect(obj.address?.address).to.equal('2001:db8::5');
       expect(obj.port).to.equal(80);
     });
 
     it('should work with an address with a long port', () => {
       const obj = Address6.fromURL('[2001:db8::5]:65536');
 
-      expect(obj.address.isValid()).to.equal(true);
-      expect(obj.address.address).to.equal('2001:db8::5');
+      expect(obj.address?.address).to.equal('2001:db8::5');
       expect(obj.port).to.equal(65536);
     });
 
     it('should parse the address but fail with an invalid port', () => {
       const obj = Address6.fromURL('[2001:db8::5]:65537');
 
-      expect(obj.address.isValid()).to.equal(true);
-      expect(obj.address.address).to.equal('2001:db8::5');
+      expect(obj.address?.address).to.equal('2001:db8::5');
       expect(obj.port).to.equal(null);
     });
 
@@ -447,11 +410,6 @@ describe('v6', () => {
     const topic = Address6.fromBigInteger(new BigInteger('51923840109643282840007714694758401'));
 
     it('should parse correctly', () => {
-      topic.valid.should.equal(true);
-
-      // TODO: Define this behavior
-      // topic.isCorrect().should.equal(true);
-
       should.equal(topic.correctForm(), 'a:b:c:d:e:f:0:1');
     });
   });
@@ -535,17 +493,6 @@ describe('v6', () => {
               '<span class="hover-group group-4 group-5 ' +
               'group-6"></span>:' +
               '<span class="hover-group group-7">1011</span>'
-          );
-      });
-
-      it('should group an IPv4 address', () => {
-        const topic = new Address6('192.168.0.1');
-
-        topic
-          .group()
-          .should.equal(
-            '<span class="hover-group group-v4 group-6">192.168</span>.' +
-              '<span class="hover-group group-v4 group-7">0.1</span>'
           );
       });
     });

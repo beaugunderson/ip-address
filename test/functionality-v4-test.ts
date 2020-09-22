@@ -1,31 +1,20 @@
-const should = require('chai').should();
-const { Address4 } = require('../dist/lib/ipv4');
-const { sprintf } = require('sprintf-js');
+import chai from 'chai';
+import { Address4 } from '../lib/ipv4';
+import { BigInteger } from 'jsbn';
+import { sprintf } from 'sprintf-js';
+
+const should = chai.should();
 
 // A convenience function to convert a list of IPv4 address notations
 // to Address4 instances
-function notationsToAddresseses(notations) {
-  const addresses = [];
-
-  notations.forEach((notation) => {
-    addresses.push(new Address4(notation));
-  });
-
-  return addresses;
+function notationsToAddresseses(notations: string[]): Address4[] {
+  return notations.map((notation) => new Address4(notation));
 }
 
 describe('v4', () => {
   describe('An invalid address', () => {
-    const topic = new Address4('127.0.0');
-
     it('is invalid', () => {
-      topic.error.should.equal('Invalid IPv4 address.');
-
-      topic.valid.should.equal(false);
-
-      topic.isCorrect().should.equal(false);
-
-      should.equal(topic.bigInteger(), null);
+      should.Throw(() => new Address4('127.0.0'));
     });
   });
 
@@ -76,10 +65,6 @@ describe('v4', () => {
   describe('An integer v4 address', () => {
     const topic = Address4.fromInteger(432432423);
 
-    it('validates', () => {
-      topic.isValid().should.equal(true);
-    });
-
     it('parses correctly', () => {
       topic.address.should.equal('25.198.101.39');
 
@@ -99,10 +84,6 @@ describe('v4', () => {
 
   describe('An address with a subnet', () => {
     const topic = new Address4('127.0.0.1/16');
-
-    it('validates', () => {
-      topic.isValid().should.equal(true);
-    });
 
     it('parses the subnet', () => {
       should.equal(topic.subnet, '/16');
@@ -134,10 +115,9 @@ describe('v4', () => {
   });
 
   describe('Creating an address from a BigInteger', () => {
-    const topic = Address4.fromBigInteger(2130706433);
+    const topic = Address4.fromBigInteger(new BigInteger('2130706433'));
 
     it('should parse correctly', () => {
-      topic.isValid().should.equal(true);
       topic.correctForm().should.equal('127.0.0.1');
     });
   });
@@ -154,7 +134,6 @@ describe('v4', () => {
     const topic = Address4.fromHex('7f:00:00:01');
 
     it('should parse correctly', () => {
-      topic.isValid().should.equal(true);
       topic.correctForm().should.equal('127.0.0.1');
     });
   });
@@ -185,8 +164,6 @@ describe('v4', () => {
   describe('A different notation of the same address', () => {
     const addresses = notationsToAddresseses([
       '127.0.0.1/32',
-      '127.0.0.1/032',
-      '127.000.000.001/032',
       '127.000.000.001/32',
       '127.0.0.1',
       '127.000.000.001',
