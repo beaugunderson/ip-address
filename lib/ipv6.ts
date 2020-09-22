@@ -883,7 +883,7 @@ export class Address6 {
    * @instance
    * @returns {Array}
    */
-  toByteArray(): Array<any> {
+  toByteArray(): number[] {
     const byteArray = this.bigInteger().toByteArray();
 
     // work around issue where `toByteArray` returns a leading 0 element
@@ -900,7 +900,7 @@ export class Address6 {
    * @instance
    * @returns {Array}
    */
-  toUnsignedByteArray(): Array<any> {
+  toUnsignedByteArray(): number[] {
     return this.toByteArray().map(unsignByte);
   }
 
