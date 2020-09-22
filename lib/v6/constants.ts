@@ -22,7 +22,7 @@ export const SCOPES: { [key: number]: string | undefined } = {
  * @memberof Address6
  * @static
  */
-export const TYPES = {
+export const TYPES: { [key: string]: string | undefined } = {
   'ff01::1/128': 'Multicast (All nodes on this interface)',
   'ff01::2/128': 'Multicast (All routers on this interface)',
   'ff02::1/128': 'Multicast (All nodes on this link)',
@@ -52,7 +52,7 @@ export const TYPES = {
  * @memberof Address6
  * @static
  */
-export const RE_BAD_CHARACTERS = /([^0-9a-f:\/%])/gi;
+export const RE_BAD_CHARACTERS = /([^0-9a-f:/%])/gi;
 
 /**
  * A regular expression that matches an incorrect IPv6 address

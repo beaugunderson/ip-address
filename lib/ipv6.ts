@@ -5,10 +5,6 @@ import * as common from './common';
 import * as constants4 from './v4/constants';
 import * as constants6 from './v6/constants';
 import * as helpers from './v6/helpers';
-import find from 'lodash.find';
-import max from 'lodash.max';
-import padStart from 'lodash.padstart';
-import repeat from 'lodash.repeat';
 import { Address4 } from './ipv4';
 import {
   ADDRESS_BOUNDARY,
@@ -170,7 +166,7 @@ export class Address6 {
    * address.correctForm(); // '::e8:d4a5:1000'
    */
   static fromBigInteger(bigInteger: BigInteger): Address6 {
-    const hex = padStart(bigInteger.toString(16), 32, '0');
+    const hex = bigInteger.toString(16).padStart(32, '0');
     const groups = [];
     let i;
 
@@ -350,7 +346,7 @@ export class Address6 {
    * @returns {BigInteger}
    */
   _startAddress(): BigInteger {
-    return new BigInteger(this.mask() + repeat('0', constants6.BITS - this.subnetMask), 2);
+    return new BigInteger(this.mask() + '0'.repeat(constants6.BITS - this.subnetMask), 2);
   }
 
   /**
@@ -383,7 +379,7 @@ export class Address6 {
    * @returns {BigInteger}
    */
   _endAddress(): BigInteger {
-    return new BigInteger(this.mask() + repeat('1', constants6.BITS - this.subnetMask), 2);
+    return new BigInteger(this.mask() + '1'.repeat(constants6.BITS - this.subnetMask), 2);
   }
 
   /**
@@ -432,13 +428,13 @@ export class Address6 {
    * @returns {String}
    */
   getType(): string {
-    const self = this;
-
-    function isType(name: string, type: string) {
-      return self.isInSubnet(new Address6(type));
+    for (const subnet of Object.keys(constants6.TYPES)) {
+      if (this.isInSubnet(new Address6(subnet))) {
+        return constants6.TYPES[subnet] as string;
+      }
     }
 
-    return find(constants6.TYPES, isType) || 'Global unicast';
+    return 'Global unicast';
   }
 
   /**
@@ -474,7 +470,9 @@ export class Address6 {
       throw new Error('Length of bits to retrieve must be divisible by four');
     }
 
-    return padStart(this.getBits(start, end).toString(16), length / 4, '0');
+    return this.getBits(start, end)
+      .toString(16)
+      .padStart(length / 4, '0');
   }
 
   /**
@@ -561,7 +559,7 @@ export class Address6 {
     const zeroLengths = zeroes.map((n) => n[1] - n[0] + 1);
 
     if (zeroes.length > 0) {
-      const index = zeroLengths.indexOf(max(zeroLengths) as number);
+      const index = zeroLengths.indexOf(Math.max(...zeroLengths) as number);
 
       groups = compact(this.parsedAddress, zeroes[index]);
     } else {
@@ -595,7 +593,7 @@ export class Address6 {
    * //  0000000000000000000000000000000000000000000000000001000000010001'
    */
   binaryZeroPad(): string {
-    return padStart(this.bigInteger().toString(2), constants6.BITS, '0');
+    return this.bigInteger().toString(2).padStart(constants6.BITS, '0');
   }
 
   // TODO: Improve the semantics of this helper function

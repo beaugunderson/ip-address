@@ -2,8 +2,6 @@
 
 import * as common from './common';
 import * as constants from './v4/constants';
-import padStart from 'lodash.padstart';
-import repeat from 'lodash.repeat';
 import { AddressError } from './address-error';
 import { BigInteger } from 'jsbn';
 import { sprintf } from 'sprintf-js';
@@ -84,7 +82,7 @@ export class Address4 {
    * @returns {Address4}
    */
   static fromHex(hex: string): Address4 {
-    const padded = padStart(hex.replace(/:/g, ''), 8, '0');
+    const padded = hex.replace(/:/g, '').padStart(8, '0');
     const groups = [];
     let i;
 
@@ -171,7 +169,7 @@ export class Address4 {
    * @returns {BigInteger}
    */
   _startAddress(): BigInteger {
-    return new BigInteger(this.mask() + repeat('0', constants.BITS - this.subnetMask), 2);
+    return new BigInteger(this.mask() + '0'.repeat(constants.BITS - this.subnetMask), 2);
   }
 
   /**
@@ -204,7 +202,7 @@ export class Address4 {
    * @returns {BigInteger}
    */
   _endAddress(): BigInteger {
-    return new BigInteger(this.mask() + repeat('1', constants.BITS - this.subnetMask), 2);
+    return new BigInteger(this.mask() + '1'.repeat(constants.BITS - this.subnetMask), 2);
   }
 
   /**
@@ -297,6 +295,6 @@ export class Address4 {
    * @returns {string}
    */
   binaryZeroPad(): string {
-    return padStart(this.bigInteger().toString(2), constants.BITS, '0');
+    return this.bigInteger().toString(2).padStart(constants.BITS, '0');
   }
 }

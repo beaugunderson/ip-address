@@ -14,7 +14,7 @@
   "types": "dist/index.d.ts",
   "scripts": {
     "docs": "documentation build --github --output docs --format html ./ip-address.js",
-    "prepublish": "tsc",
+    "prepublishOnly": "tsc",
     "release": "release-it",
     "test": "mocha --require ts-node/register --inline-diff --reporter spec test/**/*.ts",
     "watch": "mocha --require ts-node/register --inline-diff --reporter spec --watch test/**/*.ts"
@@ -33,21 +33,11 @@
   },
   "dependencies": {
     "jsbn": "1.1.0",
-    "lodash.find": "4.6.0",
-    "lodash.max": "4.0.1",
-    "lodash.merge": "4.6.2",
-    "lodash.padstart": "4.6.1",
-    "lodash.repeat": "4.1.0",
     "sprintf-js": "1.1.2"
   },
   "devDependencies": {
     "@types/chai": "^4.2.12",
     "@types/jsbn": "^1.2.29",
-    "@types/lodash.find": "^4.6.6",
-    "@types/lodash.max": "^4.0.6",
-    "@types/lodash.merge": "^4.6.6",
-    "@types/lodash.padstart": "^4.6.6",
-    "@types/lodash.repeat": "^4.1.6",
     "@types/mocha": "^8.0.3",
     "@types/sprintf-js": "^1.1.2",
     "@typescript-eslint/eslint-plugin": "^4.1.1",
