@@ -18,14 +18,16 @@ addresses in JavaScript.
 
 ### Migrating from 7.x to 8.x
 
-`ip-address` was rewritten in TypeScript for version 8. If you were using version 7 you'll need to make these changes to upgrade:
+`ip-address` was rewritten in TypeScript for version 8. If you were using
+version 7 you'll need to make these changes to upgrade:
 
 - Instead of checking `isValid()`, which has been removed, you'll need to use a
   `try`/`catch` if you're accepting unknown input. This made the TypeScript
   types substantially easier as well as allowed the use of an `AddressError`
   class which will contain a `parseMessage` if an error occurred in the parsing
   step.
--
+- Instead of using the `error`, `parseError`, and `valid` attributes you'll
+  need to use the `message` and `parseMessage` of the thrown `AddressError`.
 
 ### Documentation
 
