@@ -16,10 +16,10 @@
 addresses in JavaScript.
 
 
-### Migrating from 7.x to 8.x
+### Migrating from 6.x to 7.x
 
-`ip-address` was rewritten in TypeScript for version 8. If you were using
-version 7 you'll need to make these changes to upgrade:
+`ip-address` was rewritten in TypeScript for version 7. If you were using
+version 6 you'll need to make these changes to upgrade:
 
 - Instead of checking `isValid()`, which has been removed, you'll need to use a
   `try`/`catch` if you're accepting unknown input. This made the TypeScript
