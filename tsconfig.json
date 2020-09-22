@@ -7,6 +7,7 @@
     "declaration": true,                   /* Generates corresponding '.d.ts' file. */
     "outDir": "dist",                        /* Redirect output structure to the directory. */
     "resolveJsonModule": true,
+    "sourceMap": true,
 
     /* Strict Type-Checking Options */
     "strict": true,                           /* Enable all strict type-checking options. */
