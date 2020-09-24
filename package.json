@@ -7,7 +7,7 @@
     "browser",
     "validation"
   ],
-  "version": "6.4.0",
+  "version": "7.0.0-beta.0",
   "author": "Beau Gunderson <beau@beaugunderson.com> (https://beaugunderson.com/)",
   "license": "MIT",
   "main": "dist/ip-address.js",
