@@ -26,6 +26,15 @@ describe('v4', () => {
 
       should.equal(topic.correctForm(), '127.0.0.1');
     });
+
+    it('should group', () => {
+      topic
+        .groupForV6()
+        .should.equal(
+          '<span class="hover-group group-v4 group-6">127.0</span>.' +
+            '<span class="hover-group group-v4 group-7">0.1</span>'
+        );
+    });
   });
 
   describe('An address with a subnet', () => {

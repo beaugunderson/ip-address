@@ -99,12 +99,14 @@ interface TeredoProperties {
  * var address = new Address6('2001::/32');
  */
 export class Address6 {
+  address4?: Address4;
   address: string;
   addressMinusSuffix: string = '';
   elidedGroups?: number;
   elisionBegin?: number;
   elisionEnd?: number;
   groups: number;
+  parsedAddress4?: string;
   parsedAddress: string[];
   parsedSubnet: string = '';
   subnet: string = '/128';
@@ -604,15 +606,16 @@ export class Address6 {
     const address4 = lastGroup.match(constants4.RE_ADDRESS);
 
     if (address4) {
-      const temp4 = new Address4(address4[0]);
+      this.parsedAddress4 = address4[0];
+      this.address4 = new Address4(this.parsedAddress4);
 
-      for (let i = 0; i < temp4.groups; i++) {
-        if (/^0[0-9]+/.test(temp4.parsedAddress[i])) {
+      for (let i = 0; i < this.address4.groups; i++) {
+        if (/^0[0-9]+/.test(this.address4.parsedAddress[i])) {
           throw new AddressError(
             "IPv4 addresses can't have leading zeroes.",
             address.replace(
               constants4.RE_ADDRESS,
-              temp4.parsedAddress.map(spanLeadingZeroes4).join('.')
+              this.address4.parsedAddress.map(spanLeadingZeroes4).join('.')
             )
           );
         }
@@ -620,7 +623,7 @@ export class Address6 {
 
       this.v4 = true;
 
-      groups[groups.length - 1] = temp4.toGroup6();
+      groups[groups.length - 1] = this.address4.toGroup6();
 
       address = groups.join(':');
     }
@@ -1087,26 +1090,9 @@ export class Address6 {
    * @returns {String}
    */
   group(): string {
-    const address4 = this.address.match(constants4.RE_ADDRESS);
-    let i;
-
-    if (address4) {
-      // The IPv4 case
-      const segments = address4[0].split('.');
-
-      this.address = this.address.replace(
-        constants4.RE_ADDRESS,
-        sprintf(
-          '<span class="hover-group group-v4 group-6">%s</span>.<span class="hover-group group-v4 group-7">%s</span>',
-          segments.slice(0, 2).join('.'),
-          segments.slice(2, 4).join('.')
-        )
-      );
-    }
-
     if (this.elidedGroups === 0) {
       // The simple case
-      return helpers.simpleGroup(this.address);
+      return helpers.simpleGroup(this.address).join(':');
     }
 
     assert(typeof this.elidedGroups === 'number');
@@ -1115,26 +1101,33 @@ export class Address6 {
     // The elided case
     const output = [];
 
-    const halves = this.address.split('::');
+    const [left, right] = this.address.split('::');
 
-    if (halves[0].length) {
-      output.push(helpers.simpleGroup(halves[0]));
+    if (left.length) {
+      output.push(...helpers.simpleGroup(left));
     } else {
       output.push('');
     }
 
     const classes = ['hover-group'];
 
-    for (i = this.elisionBegin; i < this.elisionBegin + this.elidedGroups; i++) {
+    for (let i = this.elisionBegin; i < this.elisionBegin + this.elidedGroups; i++) {
       classes.push(sprintf('group-%d', i));
     }
 
     output.push(sprintf('<span class="%s"></span>', classes.join(' ')));
 
-    if (halves[1].length) {
-      output.push(helpers.simpleGroup(halves[1], this.elisionEnd));
+    if (right.length) {
+      output.push(...helpers.simpleGroup(right, this.elisionEnd));
     } else {
       output.push('');
+    }
+
+    if (this.is4()) {
+      assert(this.address4 instanceof Address4);
+
+      output.pop();
+      output.push(this.address4.groupForV6());
     }
 
     return output.join(':');

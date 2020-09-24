@@ -291,4 +291,21 @@ export class Address4 {
   binaryZeroPad(): string {
     return this.bigInteger().toString(2).padStart(constants.BITS, '0');
   }
+
+  /**
+   * Groups an IPv4 address for inclusion at the end of an IPv6 address
+   * @returns {String}
+   */
+  groupForV6(): string {
+    const segments = this.parsedAddress;
+
+    return this.address.replace(
+      constants.RE_ADDRESS,
+      sprintf(
+        '<span class="hover-group group-v4 group-6">%s</span>.<span class="hover-group group-v4 group-7">%s</span>',
+        segments.slice(0, 2).join('.'),
+        segments.slice(2, 4).join('.')
+      )
+    );
+  }
 }

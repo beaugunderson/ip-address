@@ -495,6 +495,20 @@ describe('v6', () => {
               '<span class="hover-group group-7">1011</span>'
           );
       });
+
+      it('should group an IPv4 address', () => {
+        const topic = new Address6('::ffff:192.168.0.1');
+
+        topic.is4().should.equal(true);
+
+        topic
+          .group()
+          .should.equal(
+            ':<span class="hover-group group-0 group-1 group-2 group-3 group-4"></span>' +
+              ':<span class="hover-group group-5">ffff</span>:' +
+              '<span class="hover-group group-v4 group-6">192.168</span>.<span class="hover-group group-v4 group-7">0.1</span>'
+          );
+      });
     });
   });
 

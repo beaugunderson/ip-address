@@ -43,20 +43,18 @@ export function spanLeadingZeroes(address: string): string {
  * Groups an address
  * @returns {String} a grouped address
  */
-export function simpleGroup(addressString: string, offset: number = 0): string {
+export function simpleGroup(addressString: string, offset: number = 0): string[] {
   const groups = addressString.split(':');
 
-  return groups
-    .map((g, i) => {
-      if (/group-v4/.test(g)) {
-        return g;
-      }
+  return groups.map((g, i) => {
+    if (/group-v4/.test(g)) {
+      return g;
+    }
 
-      return sprintf(
-        '<span class="hover-group group-%d">%s</span>',
-        i + offset,
-        spanLeadingZeroesSimple(g)
-      );
-    })
-    .join(':');
+    return sprintf(
+      '<span class="hover-group group-%d">%s</span>',
+      i + offset,
+      spanLeadingZeroesSimple(g)
+    );
+  });
 }
