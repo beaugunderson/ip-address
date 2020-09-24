@@ -3,5 +3,5 @@ reporter: spec
 require:
 - ts-node/register
 - source-map-support/register
-inline-diffs: true
+inline-diffs: false
 spec: test/**/*.ts
