@@ -37,7 +37,8 @@
   ],
 
   "exclude": [
+    "./dist/**/*",
     "./node_modules/**/*",
-    "./dist/**/*"
+    "./test/**/*"
   ]
 }

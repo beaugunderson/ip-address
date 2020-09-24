@@ -43,9 +43,8 @@
     "node": ">= 10"
   },
   "files": [
-    "ip-address.js",
-    "ip-address-globals.js",
-    "lib/**/*"
+    "dist/**/*.js",
+    "dist/**/*.ts"
   ],
   "repository": {
     "type": "git",
