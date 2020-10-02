@@ -15,6 +15,20 @@
 `ip-address` is a library for validating and manipulating IPv4 and IPv6
 addresses in JavaScript.
 
+
+### Migrating from 6.x to 7.x
+
+`ip-address` was rewritten in TypeScript for version 7. If you were using
+version 6 you'll need to make these changes to upgrade:
+
+- Instead of checking `isValid()`, which has been removed, you'll need to use a
+  `try`/`catch` if you're accepting unknown input. This made the TypeScript
+  types substantially easier as well as allowed the use of an `AddressError`
+  class which will contain a `parseMessage` if an error occurred in the parsing
+  step.
+- Instead of using the `error`, `parseError`, and `valid` attributes you'll
+  need to use the `message` and `parseMessage` of the thrown `AddressError`.
+
 ### Documentation
 
 Documentation is available at [ip-address.js.org](http://ip-address.js.org/).
@@ -25,8 +39,6 @@ Documentation is available at [ip-address.js.org](http://ip-address.js.org/).
 var Address6 = require('ip-address').Address6;
 
 var address = new Address6('2001:0:ce49:7601:e866:efff:62c3:fffe');
-
-address.isValid(); // true
 
 var teredo = address.inspectTeredo();
 

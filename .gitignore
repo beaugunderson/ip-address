@@ -20,3 +20,5 @@ test.sh
 test/unused/
 coverage/
 docs/
+dist/
+.nyc_output/
