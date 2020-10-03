@@ -11,7 +11,7 @@
   "author": "Beau Gunderson <beau@beaugunderson.com> (https://beaugunderson.com/)",
   "license": "MIT",
   "main": "dist/ip-address.js",
-  "types": "dist/index.d.ts",
+  "types": "dist/ip-address.d.ts",
   "scripts": {
     "docs": "documentation build --github --output docs --format html ./ip-address.js",
     "prepublishOnly": "tsc",
