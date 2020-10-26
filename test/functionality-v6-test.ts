@@ -17,6 +17,7 @@ describe('v6', () => {
   describe('An invalid address', () => {
     it('is invalid', () => {
       should.Throw(() => new Address6('a:abcde::'));
+      should.equal(Address6.isValid('a:abcde::'), false);
     });
   });
 
@@ -53,6 +54,7 @@ describe('v6', () => {
       topic.isCorrect().should.equal(true);
 
       should.equal(topic.correctForm(), 'a:b:c:d:e:f:0:1');
+      should.equal(Address6.isValid('a:b:c:d:e:f:0:1'), true);
     });
 
     it('converts to and from a signed byte array', () => {

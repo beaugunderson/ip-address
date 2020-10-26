@@ -43,6 +43,17 @@ export class Address4 {
     this.parsedAddress = this.parse(address);
   }
 
+  static isValid(address: string): boolean {
+    try {
+      // eslint-disable-next-line no-new
+      new Address4(address);
+
+      return true;
+    } catch (e) {
+      return false;
+    }
+  }
+
   /*
    * Parses a v4 address
    */

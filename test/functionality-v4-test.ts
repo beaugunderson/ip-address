@@ -15,6 +15,7 @@ describe('v4', () => {
   describe('An invalid address', () => {
     it('is invalid', () => {
       should.Throw(() => new Address4('127.0.0'));
+      should.equal(Address4.isValid('127.0.0'), false);
     });
   });
 
@@ -25,6 +26,7 @@ describe('v4', () => {
       topic.isCorrect().should.equal(true);
 
       should.equal(topic.correctForm(), '127.0.0.1');
+      should.equal(Address4.isValid('127.0.0.1'), true);
     });
 
     it('should group', () => {

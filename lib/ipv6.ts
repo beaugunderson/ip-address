@@ -156,6 +156,17 @@ export class Address6 {
     this.parsedAddress = this.parse(this.addressMinusSuffix);
   }
 
+  static isValid(address: string): boolean {
+    try {
+      // eslint-disable-next-line no-new
+      new Address6(address);
+
+      return true;
+    } catch (e) {
+      return false;
+    }
+  }
+
   /**
    * Convert a BigInteger to a v6 address object
    * @memberof Address6
