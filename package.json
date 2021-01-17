@@ -12,6 +12,7 @@
   "license": "MIT",
   "main": "dist/cjs/ip-address.js",
   "module": "dist/esm/ip-address.js",
+  "types": "dist/esm/ip-address.d.ts",
   "scripts": {
     "docs": "documentation build --github --output docs --format html ./ip-address.js",
     "build": "tsc -p tsconfig.json && tsc -p tsconfig-cjs.json",
