@@ -18,7 +18,7 @@
       "require": "./dist/cjs/ip-address.js"
     }
   },
-  "types": "dist/ip-address.d.ts",
+  "types": "dist/mjs/ip-address.d.ts",
   "scripts": {
     "docs": "documentation build --github --output docs --format html ./ip-address.js",
     "prepublishOnly": "tsc --build tsconfig-cjs.json && tsc --build tsconfig-esm.json",
