@@ -21,7 +21,8 @@
   "types": "dist/mjs/ip-address.d.ts",
   "scripts": {
     "docs": "documentation build --github --output docs --format html ./ip-address.js",
-    "prepublishOnly": "tsc --build tsconfig-cjs.json && tsc --build tsconfig-esm.json",
+    "prepublishOnly": "tsc --build tsconfig-cjs.json && tsc --build tsconfig-esm.json && npm run _postTSC",
+    "_postTSC": "echo '{\"type\": \"module\"}' >dist/mjs/package.json && echo '{\"type\": \"commonjs\"}' >dist/cjs/package.json",
     "release": "release-it",
     "test-ci": "TS_NODE_PROJECT=./tsconfig-cjs.json  nyc mocha",
     "test": "TS_NODE_PROJECT=./tsconfig-cjs.json  mocha",
