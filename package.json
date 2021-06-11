@@ -10,15 +10,22 @@
   "version": "7.1.0",
   "author": "Beau Gunderson <beau@beaugunderson.com> (https://beaugunderson.com/)",
   "license": "MIT",
-  "main": "dist/ip-address.js",
+  "main": "dist/cjs/ip-address.js",
+  "module": "dist/mjs/ip-address.js",
+  "exports": {
+    ".": {
+      "import": "./dist/mjs/ip-address.js",
+      "require": "./dist/cjs/ip-address.js"
+    }
+  },
   "types": "dist/ip-address.d.ts",
   "scripts": {
     "docs": "documentation build --github --output docs --format html ./ip-address.js",
-    "prepublishOnly": "tsc",
+    "prepublishOnly": "tsc --build tsconfig-cjs.json && tsc --build tsconfig-esm.json",
     "release": "release-it",
-    "test-ci": "nyc mocha",
-    "test": "mocha",
-    "watch": "mocha --watch"
+    "test-ci": "TS_NODE_PROJECT=./tsconfig-cjs.json  nyc mocha",
+    "test": "TS_NODE_PROJECT=./tsconfig-cjs.json  mocha",
+    "watch": "TS_NODE_PROJECT=./tsconfig-cjs.json  mocha --watch"
   },
   "nyc": {
     "extension": [
