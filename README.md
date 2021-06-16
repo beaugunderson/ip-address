@@ -47,6 +47,7 @@ teredo.client4;    // '157.60.0.1'
 
 ### Features
 
+- Usable via CommonJS or ESM
 - Parsing of all IPv6 notations
 - Parsing of IPv6 addresses and ports from URLs with `Address6.fromURL(url)`
 - Validity checking
