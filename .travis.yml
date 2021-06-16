@@ -1,5 +1,6 @@
 arch:
    - amd64
+   - arm64
    - ppc64le
 addons:
   apt:
@@ -14,6 +15,8 @@ env:
   - CXX=g++-4.8
 language: node_js
 node_js:
+  - 16
+  - 15
   - 14
   - 13
   - 12
