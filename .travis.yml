@@ -11,7 +11,7 @@ node_js:
   - 12
 script: "./coverage.sh"
 jobs:
-  exclude:
+  allow_failures:
     # this specific combination is broken within Travis at present
     - arch: ppc64le
       node_js: 16
