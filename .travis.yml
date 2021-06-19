@@ -15,3 +15,4 @@ jobs:
     # this specific combination is broken within Travis at present
     - arch: ppc64le
       node_js: 16
+  fast_finish: true
