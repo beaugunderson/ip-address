@@ -3,7 +3,7 @@
 
   "compilerOptions": {
     "target": "es2015",
-    "module": "esnext",
+    "module": "es2015",
     "outDir": "./dist/esm",
     "moduleResolution": "node"
   }
