@@ -1,4 +1,4 @@
-[![travis]](http://travis-ci.org/beaugunderson/ip-address)
+[![travis]](http://travis-ci.com/beaugunderson/ip-address)
 [![codecov]](https://codecov.io/github/beaugunderson/ip-address?branch=master)
 [![downloads]](https://www.npmjs.com/package/ip-address)
 [![npm]](https://www.npmjs.com/package/ip-address)
