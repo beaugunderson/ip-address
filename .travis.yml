@@ -10,3 +10,8 @@ node_js:
   - 13
   - 12
 script: "./coverage.sh"
+jobs:
+  exclude:
+    # this specific combination is broken within Travis at present
+    - arch: ppc64le
+      node_js: 16
