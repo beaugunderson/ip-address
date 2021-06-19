@@ -1,18 +1,7 @@
 arch:
-   - amd64
-   - arm64
-   - ppc64le
-addons:
-  apt:
-    sources:
-      - ubuntu-toolchain-r-test
-    packages:
-      - g++-4.8
-cache:
-  directories:
-    - $HOME/.npm
-env:
-  - CXX=g++-4.8
+  - amd64
+  - arm64
+  - ppc64le
 language: node_js
 node_js:
   - 16
@@ -21,4 +10,3 @@ node_js:
   - 13
   - 12
 script: "./coverage.sh"
-sudo: false
