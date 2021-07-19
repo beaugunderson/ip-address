@@ -117,7 +117,6 @@ export class Address4 {
     return Address4.fromHex(integer.toString(16));
   }
 
-
   /**
    * Return an address from in-addr.arpa form
    * @memberof Address4
@@ -132,13 +131,10 @@ export class Address4 {
     // remove ending ".in-addr.arpa." or just "."
     const leader = arpaFormAddress.replace(/(\.in-addr\.arpa)?\.$/, '');
 
-    const address = leader.split('.')
-      .reverse()
-      .join('.');
+    const address = leader.split('.').reverse().join('.');
 
     return new Address4(address);
   }
-
 
   /**
    * Converts an IPv4 address object to a hex string
@@ -311,16 +307,13 @@ export class Address4 {
       options = {};
     }
 
-    const reversed = this.correctForm()
-      .split('.')
-      .reverse()
-      .join('.');
+    const reversed = this.correctForm().split('.').reverse().join('.');
 
     if (options.omitSuffix) {
       return reversed;
-    } else {
-      return sprintf('%s.in-addr.arpa.', reversed);
     }
+
+    return sprintf('%s.in-addr.arpa.', reversed);
   }
 
   /**

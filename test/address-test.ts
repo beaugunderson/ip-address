@@ -30,12 +30,15 @@ function addressIs(addressString: string, descriptors: string[]) {
           address4.subnetMask.should.be.at.least(0);
           address4.subnetMask.should.be.at.most(128);
         });
+
         it('converts to arpa format and back', () => {
           const arpa = address4.reverseForm();
           arpa.length.should.be.at.most(29);
 
-          const converted = Address4.fromArpa(arpa);
+          const arpaWithoutSuffix = address4.reverseForm({ omitSuffix: true });
+          arpaWithoutSuffix.length.should.be.at.most(15);
 
+          const converted = Address4.fromArpa(arpa);
           address4.correctForm().should.equal(converted.correctForm());
         });
       }
