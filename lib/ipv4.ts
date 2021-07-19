@@ -117,6 +117,29 @@ export class Address4 {
     return Address4.fromHex(integer.toString(16));
   }
 
+
+  /**
+   * Return an address from in-addr.arpa form
+   * @memberof Address4
+   * @static
+   * @param {string} arpaFormAddress - an 'in-addr.arpa' form ipv4 address
+   * @returns {Adress4}
+   * @example
+   * var address = Address4.fromArpa(42.2.0.192.arpa.)
+   * address.correctForm(); // '192.0.2.42'
+   */
+  static fromArpa(arpaFormAddress: string): Address4 {
+    // remove ending ".in-addr.arpa." or just "."
+    const leader = arpaFormAddress.replace(/(\.in-addr\.arpa)?\.$/, '');
+
+    const address = leader.split('.')
+      .reverse()
+      .join('.');
+
+    return new Address4(address);
+  }
+
+
   /**
    * Converts an IPv4 address object to a hex string
    * @memberof Address4
@@ -273,6 +296,31 @@ export class Address4 {
    */
   getBitsBase2(start: number, end: number): string {
     return this.binaryZeroPad().slice(start, end);
+  }
+
+  /**
+   * Return the reversed ip6.arpa form of the address
+   * @memberof Address4
+   * @param {Object} options
+   * @param {boolean} options.omitSuffix - omit the "in-addr.arpa" suffix
+   * @instance
+   * @returns {String}
+   */
+  reverseForm(options?: common.ReverseFormOptions): string {
+    if (!options) {
+      options = {};
+    }
+
+    const reversed = this.correctForm()
+      .split('.')
+      .reverse()
+      .join('.');
+
+    if (options.omitSuffix) {
+      return reversed;
+    } else {
+      return sprintf('%s.in-addr.arpa.', reversed);
+    }
   }
 
   /**

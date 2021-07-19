@@ -1,6 +1,10 @@
 import { Address4 } from './ipv4';
 import { Address6 } from './ipv6';
 
+export interface ReverseFormOptions {
+  omitSuffix?: boolean;
+}
+
 export function isInSubnet(this: Address4 | Address6, address: Address4 | Address6) {
   if (this.subnetMask < address.subnetMask) {
     return false;
