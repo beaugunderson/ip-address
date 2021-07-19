@@ -125,7 +125,7 @@ export class Address4 {
    * @param {string} arpaFormAddress - an 'in-addr.arpa' form ipv4 address
    * @returns {Adress4}
    * @example
-   * var address = Address4.fromArpa(42.2.0.192.arpa.)
+   * var address = Address4.fromArpa(42.2.0.192.in-addr.arpa.)
    * address.correctForm(); // '192.0.2.42'
    */
   static fromArpa(arpaFormAddress: string): Address4 {
