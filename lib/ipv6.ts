@@ -66,9 +66,6 @@ function unsignByte(b: number) {
   return b & 0xff;
 }
 
-interface ReverseFormOptions {
-  omitSuffix?: boolean;
-}
 
 interface SixToFourProperties {
   prefix: string;
@@ -506,7 +503,7 @@ export class Address6 {
    * @instance
    * @returns {String}
    */
-  reverseForm(options?: ReverseFormOptions): string {
+  reverseForm(options?: common.ReverseFormOptions): string {
     if (!options) {
       options = {};
     }
