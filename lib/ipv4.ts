@@ -13,7 +13,7 @@ import { sprintf } from 'sprintf-js';
  */
 export class Address4 {
   address: string;
-  addressMinusSuffix?: string;
+  addressMinusSuffix: string;
   groups: number = constants.GROUPS;
   parsedAddress: string[] = [];
   parsedSubnet: string = '';
