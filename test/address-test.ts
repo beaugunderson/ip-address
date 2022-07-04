@@ -3,13 +3,13 @@
 
 import chai from 'chai';
 
-import { Address4, Address6 } from '../ip-address';
+import { Address4, Address6 } from '../ip-address.js';
 
-import invalid4 from './data/invalid-ipv4-addresses.json';
-import invalid6 from './data/invalid-ipv6-addresses.json';
+import invalid4 from './data/invalid-ipv4-addresses.json' assert { type: 'json' };
+import invalid6 from './data/invalid-ipv6-addresses.json' assert { type: 'json' };
 
-import valid4 from './data/valid-ipv4-addresses.json';
-import valid6 from './data/valid-ipv6-addresses.json';
+import valid4 from './data/valid-ipv4-addresses.json' assert { type: 'json' };
+import valid6 from './data/valid-ipv6-addresses.json' assert { type: 'json' };
 
 const should = chai.should();
 

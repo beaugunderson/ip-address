@@ -19,7 +19,7 @@ module.exports = {
     'consistent-return': 'off',
     'filenames/match-exported': 'error',
     'import/default': 'error',
-    'import/extensions': ['warn', 'never'],
+    'import/extensions': ['warn', 'always'],
     'import/first': 'off',
     'import/named': 'error',
     'import/newline-after-import': 'warn',

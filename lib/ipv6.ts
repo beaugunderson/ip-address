@@ -1,17 +1,17 @@
 /* eslint-disable prefer-destructuring */
 /* eslint-disable no-param-reassign */
 
-import * as common from './common';
-import * as constants4 from './v4/constants';
-import * as constants6 from './v6/constants';
-import * as helpers from './v6/helpers';
-import { Address4 } from './ipv4';
+import * as common from './common.js';
+import * as constants4 from './v4/constants.js';
+import * as constants6 from './v6/constants.js';
+import * as helpers from './v6/helpers.js';
+import { Address4 } from './ipv4.js';
 import {
   ADDRESS_BOUNDARY,
   possibleElisions,
   simpleRegularExpression,
-} from './v6/regular-expressions';
-import { AddressError } from './address-error';
+} from './v6/regular-expressions.js';
+import { AddressError } from './address-error.js';
 import { BigInteger } from 'jsbn';
 import { sprintf } from 'sprintf-js';
 
@@ -65,7 +65,6 @@ function unsignByte(b: number) {
   // eslint-disable-next-line no-bitwise
   return b & 0xff;
 }
-
 
 interface SixToFourProperties {
   prefix: string;

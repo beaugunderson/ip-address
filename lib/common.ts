@@ -1,5 +1,5 @@
-import { Address4 } from './ipv4';
-import { Address6 } from './ipv6';
+import { Address4 } from './ipv4.js';
+import { Address6 } from './ipv6.js';
 
 export interface ReverseFormOptions {
   omitSuffix?: boolean;

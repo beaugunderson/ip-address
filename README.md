@@ -36,11 +36,11 @@ Documentation is available at [ip-address.js.org](http://ip-address.js.org/).
 ### Examples
 
 ```js
-var Address6 = require('ip-address').Address6;
+import { Address6 } from 'ip-address';
 
-var address = new Address6('2001:0:ce49:7601:e866:efff:62c3:fffe');
+const address = new Address6('2001:0:ce49:7601:e866:efff:62c3:fffe');
 
-var teredo = address.inspectTeredo();
+const teredo = address.inspectTeredo();
 
 teredo.client4;    // '157.60.0.1'
 ```

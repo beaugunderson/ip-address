@@ -1,41 +1,17 @@
 {
+  "extends": "./tsconfig.base.json",
+
   "compilerOptions": {
-    "incremental": true,
-    "target": "es5",
-    "module": "commonjs",
-    "allowJs": true,
-    "declaration": true,
-    "outDir": "./dist/cjs",
-    "resolveJsonModule": true,
-    "sourceMap": true,
-
-    "strict": true,
-    "noImplicitAny": true,
-    "strictNullChecks": true,
-    "strictFunctionTypes": true,
-    "strictBindCallApply": true,
-    "strictPropertyInitialization": true,
-    "noImplicitThis": true,
-    "alwaysStrict": true,
-
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
-    "noImplicitReturns": true,
-    "noFallthroughCasesInSwitch": true,
-
-    "esModuleInterop": true,
-
-    "skipLibCheck": true,
-    "forceConsistentCasingInFileNames": true
+    "target": "es2015",
+    "module": "esnext",
+    "outDir": "./dist/esm",
+    "moduleResolution": "node"
   },
 
   "include": [
-    "./**/*.ts"
-  ],
-
-  "exclude": [
-    "./dist/**/*",
-    "./node_modules/**/*",
-    "./test/**/*"
+    "ip-address.ts",
+    "lib/**/*.ts",
+    "test/**/*.ts",
+    "test/**/*.json"
   ]
 }

@@ -2,3 +2,4 @@ coverage.sh
 coverage/
 test/
 tmp/
+dist/esm/test

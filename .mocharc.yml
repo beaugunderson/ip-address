@@ -1,7 +1,4 @@
 recursive: true
 reporter: spec
-require:
-- ts-node/register
-- source-map-support/register
 inline-diffs: false
-spec: test/**/*.ts
+spec: dist/esm/test/**/*.js

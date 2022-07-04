@@ -4,15 +4,7 @@ arch:
   - ppc64le
 language: node_js
 node_js:
-  - 16
-  - 15
-  - 14
-  - 13
-  - 12
+  - 18
 script: "./coverage.sh"
 jobs:
-  allow_failures:
-    # this specific combination is broken within Travis at present
-    - arch: ppc64le
-      node_js: 16
   fast_finish: true

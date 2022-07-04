@@ -1,4 +1,4 @@
-import * as v6 from './constants';
+import * as v6 from './constants.js';
 import { sprintf } from 'sprintf-js';
 
 export function groupPossibilities(possibilities: string[]): string {

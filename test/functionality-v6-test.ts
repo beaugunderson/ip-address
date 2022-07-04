@@ -1,8 +1,8 @@
 import chai from 'chai';
-import { Address6 } from '../lib/ipv6';
+import { Address6 } from '../lib/ipv6.js';
 import { BigInteger } from 'jsbn';
 import { sprintf } from 'sprintf-js';
-import { v6 } from '../ip-address';
+import { v6 } from '../ip-address.js';
 
 const { expect } = chai;
 const should = chai.should();

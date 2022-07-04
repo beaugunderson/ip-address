@@ -1,8 +1,8 @@
 /* eslint-disable no-param-reassign */
 
-import * as common from './common';
-import * as constants from './v4/constants';
-import { AddressError } from './address-error';
+import * as common from './common.js';
+import * as constants from './v4/constants.js';
+import { AddressError } from './address-error.js';
 import { BigInteger } from 'jsbn';
 import { sprintf } from 'sprintf-js';
 
