@@ -1,6 +1,5 @@
 {
   "name": "ip-address",
-  "type": "module",
   "description": "A library for parsing IPv4 and IPv6 IP addresses in node and the browser.",
   "keywords": [
     "ipv6",
@@ -20,7 +19,7 @@
   },
   "scripts": {
     "docs": "documentation build --github --output docs --format html ./ip-address.js",
-    "build": "rm -rf dist && tsc && tsc -p tsconfig.cjs.json",
+    "build": "rm -rf dist && tsc && tsc -p tsconfig.cjs.json && ./.fix-package-types.sh",
     "prepublishOnly": "npm run build",
     "release": "release-it",
     "test-ci": "nyc mocha",
@@ -50,9 +49,9 @@
     "node": ">= 12"
   },
   "files": [
-    "dist/**/*.js",
-    "dist/**/*.ts",
-    "dist/**/*.map"
+    "dist/*/package.json",
+    "dist/*/ip-address.*",
+    "dist/*/lib/*"
   ],
   "repository": {
     "type": "git",
