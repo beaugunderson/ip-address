@@ -27,8 +27,7 @@
     "release": "release-it",
     "test-ci": "TS_NODE_PROJECT='./tsconfig-esm.json' nyc mocha",
     "test": "TS_NODE_PROJECT='./tsconfig-esm.json' mocha",
-    "watch": "TS_NODE_PROJECT='./tsconfig-esm.json' mocha --watch --parallel",
-    "ts-node": "ts-node"
+    "watch": "TS_NODE_PROJECT='./tsconfig-esm.json' mocha --watch --parallel"
   },
   "nyc": {
     "extension": [
