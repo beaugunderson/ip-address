@@ -5,11 +5,15 @@ import chai from 'chai';
 
 import { Address4, Address6 } from '../ip-address';
 
-import invalid4 from './data/invalid-ipv4-addresses.json';
-import invalid6 from './data/invalid-ipv6-addresses.json';
+// @ts-ignore: type assertion is required by node17(ish)+, but not permitted by ts-node unless module: esnext
+import invalid4 from './data/invalid-ipv4-addresses.json' assert {type: 'json'};
+// @ts-ignore
+import invalid6 from './data/invalid-ipv6-addresses.json' assert {type: 'json'};
 
-import valid4 from './data/valid-ipv4-addresses.json';
-import valid6 from './data/valid-ipv6-addresses.json';
+// @ts-ignore
+import valid4 from './data/valid-ipv4-addresses.json' assert {type: 'json'};
+// @ts-ignore
+import valid6 from './data/valid-ipv6-addresses.json' assert {type: 'json'};
 
 const should = chai.should();
 

@@ -9,6 +9,7 @@
     "resolveJsonModule": true,
     "sourceMap": true,
 
+
     "strict": true,
     "noImplicitAny": true,
     "strictNullChecks": true,
@@ -30,6 +31,7 @@
   },
 
   "include": [
+    "ip-address.ts",
     "./**/*.ts"
   ],
 
