@@ -7,7 +7,6 @@ inline-diffs: false
 spec: test/**/*.ts
 extension: 'ts,json'
 node-option:
-- experimental-specifier-resolution=node
 - es-module-specifier-resolution=node
 - loader=ts-node/esm
 - no-warnings
