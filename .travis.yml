@@ -15,7 +15,11 @@ node_js:
 script: "./coverage.sh"
 jobs:
   allow_failures:
-    # this specific combination is broken within Travis at present
+    # these specific combinations are broken within Travis at present
     - arch: ppc64le
       node_js: 16
+    - arch: ppc64le
+      node_js: 17
+    - arch: ppc64le
+      node_js: 18
   fast_finish: true
