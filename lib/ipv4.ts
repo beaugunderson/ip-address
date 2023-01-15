@@ -3,8 +3,13 @@
 import * as common from './common';
 import * as constants from './v4/constants';
 import { AddressError } from './address-error';
-import { BigInteger } from 'jsbn';
-import { sprintf } from 'sprintf-js';
+import jsbn from 'jsbn';
+import sprintfJs from 'sprintf-js';
+
+// work around named imports failing in node13
+type BigInteger = jsbn.BigInteger;
+const BigInteger = jsbn.BigInteger;
+const sprintf = sprintfJs.sprintf;
 
 /**
  * Represents an IPv4 address

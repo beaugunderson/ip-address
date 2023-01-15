@@ -1,8 +1,13 @@
 import chai from 'chai';
 import { Address6 } from '../lib/ipv6';
-import { BigInteger } from 'jsbn';
-import { sprintf } from 'sprintf-js';
+import jsbn from 'jsbn';
+import sprintfJs from 'sprintf-js';
 import { v6 } from '../ip-address';
+
+// work around named imports failing in node13
+type BigInteger = jsbn.BigInteger;
+const BigInteger = jsbn.BigInteger;
+const sprintf = sprintfJs.sprintf;
 
 const { expect } = chai;
 const should = chai.should();

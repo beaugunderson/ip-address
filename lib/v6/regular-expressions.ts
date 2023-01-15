@@ -1,5 +1,6 @@
 import * as v6 from './constants';
-import { sprintf } from 'sprintf-js';
+import sprintfJs from 'sprintf-js';
+const sprintf = sprintfJs.sprintf;
 
 export function groupPossibilities(possibilities: string[]): string {
   return sprintf('(%s)', possibilities.join('|'));

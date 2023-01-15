@@ -1,4 +1,5 @@
-import { sprintf } from 'sprintf-js';
+import sprintfJs from 'sprintf-js';
+const sprintf = sprintfJs.sprintf;
 
 /**
  * @returns {String} the string with all zeroes contained in a <span>
