@@ -1,5 +1,5 @@
 import chai from 'chai';
-import { Address4 } from '../lib/ipv4';
+import { Address4 } from '../src/ipv4';
 import { BigInteger } from 'jsbn';
 import { sprintf } from 'sprintf-js';
 

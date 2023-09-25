@@ -3,7 +3,7 @@
 
 import chai from 'chai';
 
-import { Address4, Address6 } from '../ip-address';
+import { Address4, Address6 } from '../src/ip-address';
 
 import invalid4 from './data/invalid-ipv4-addresses.json';
 import invalid6 from './data/invalid-ipv6-addresses.json';

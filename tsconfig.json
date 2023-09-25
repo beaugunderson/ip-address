@@ -1,11 +1,13 @@
 {
   "compilerOptions": {
     "incremental": true,
-    "target": "es5",
+    "target": "es6",
     "module": "commonjs",
     "allowJs": true,
     "declaration": true,
-    "outDir": "./dist/cjs",
+    "declarationMap": true,
+    "rootDir": "./src",
+    "outDir": "./dist",
     "resolveJsonModule": true,
     "sourceMap": true,
 
@@ -26,7 +28,9 @@
     "esModuleInterop": true,
 
     "skipLibCheck": true,
-    "forceConsistentCasingInFileNames": true
+    "forceConsistentCasingInFileNames": true,
+
+    "lib": ["es2017"]
   },
 
   "include": [
