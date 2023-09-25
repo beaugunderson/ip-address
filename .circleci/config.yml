@@ -2,6 +2,7 @@ version: 2.1
 
 orbs:
   node: circleci/node@5.1.0
+  codecov: codecov/codecov@3.2.5
 
 jobs:
   test:
@@ -19,6 +20,8 @@ jobs:
       - run:
           command: ./coverage.sh
           name: Run tests
+    post-steps:
+      -codecov/upload
 
 workflows:
   all-tests:
@@ -26,4 +29,4 @@ workflows:
       - test:
           matrix:
             parameters:
-              node-version: ["16.20", "17.9", "lts", "19.9", "current"]
+              node-version: ["16.20", "17.9", "18.18", "19.9", "20.7"]
