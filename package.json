@@ -15,7 +15,7 @@
   "scripts": {
     "docs": "documentation build --github --output docs --format html ./ip-address.js",
     "build": "rm -rf dist/* && tsc -p tsconfig.json",
-    "prepublishOnly": "npm run build",
+    "prepack": "npm run build",
     "release": "release-it",
     "test-ci": "nyc mocha",
     "test": "mocha",
