@@ -5,9 +5,8 @@ orbs:
 
 jobs:
   test:
+    executor: node/default
     parameters:
-      os:
-        type: executor
       node-version:
         type: string
     steps:
