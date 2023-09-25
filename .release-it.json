@@ -1,5 +1,7 @@
 {
-  "publishConfig": {
-    "registry": "https://registry.npmjs.org"
+  "npm": {
+    "publishConfig": {
+      "registry": "https://registry.npmjs.org"
+    }
   }
 }
