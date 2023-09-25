@@ -1,0 +1,30 @@
+version: 2.1
+
+orbs:
+  node: circleci/node@5.1.0
+
+jobs:
+  test:
+    parameters:
+      os:
+        type: executor
+      node-version:
+        type: string
+    steps:
+      - checkout
+      - node/install:
+          node-version: << parameters.node-version >>
+          install-yarn: true
+      - node/install-packages:
+          pkg-manager: yarn
+      - run:
+          command: ./coverage.sh
+          name: Run tests
+
+workflows:
+  all-tests:
+    jobs:
+      - test:
+          matrix:
+            parameters:
+              node-version: ["16.20", "17.9", "lts", "19.9", "current"]
