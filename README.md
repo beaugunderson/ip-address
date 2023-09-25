@@ -1,4 +1,4 @@
-![CircleCI](https://img.shields.io/circleci/build/github/beaugunderson/ip-address)
+[![CircleCI](https://dl.circleci.com/status-badge/img/circleci/9fJmTZfn8d8p7GtVt688PY/JjriGjhcxBD6zYKygMZaet/tree/master.svg?style=svg&circle-token=f140305b73131a735a67b9be6929524fb5e2d493)](https://dl.circleci.com/status-badge/redirect/circleci/9fJmTZfn8d8p7GtVt688PY/JjriGjhcxBD6zYKygMZaet/tree/master)
 [![codecov]](https://codecov.io/github/beaugunderson/ip-address?branch=master)
 [![downloads]](https://www.npmjs.com/package/ip-address)
 [![npm]](https://www.npmjs.com/package/ip-address)
