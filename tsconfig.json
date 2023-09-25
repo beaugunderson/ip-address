@@ -1,6 +1,5 @@
 {
   "compilerOptions": {
-    "incremental": true,
     "target": "es6",
     "module": "commonjs",
     "allowJs": true,
@@ -34,12 +33,6 @@
   },
 
   "include": [
-    "./**/*.ts"
-  ],
-
-  "exclude": [
-    "./dist/**/*",
-    "./node_modules/**/*",
-    "./test/**/*"
+    "./src/**/*.ts"
   ]
 }
