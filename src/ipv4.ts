@@ -167,7 +167,9 @@ export class Address4 {
 
     for (i = 0; i < constants.GROUPS; i += 2) {
       output.push(
-        `${common.stringToPaddedHex(this.parsedAddress[i])}${common.stringToPaddedHex(this.parsedAddress[i + 1])}`,
+        `${common.stringToPaddedHex(this.parsedAddress[i])}${common.stringToPaddedHex(
+          this.parsedAddress[i + 1]
+        )}`
       );
     }
 
@@ -345,7 +347,11 @@ export class Address4 {
 
     return this.address.replace(
       constants.RE_ADDRESS,
-        `<span class="hover-group group-v4 group-6">${segments.slice(0, 2).join('.')}</span>.<span class="hover-group group-v4 group-7">${segments.slice(2, 4).join('.')}</span>`,
+      `<span class="hover-group group-v4 group-6">${segments
+        .slice(0, 2)
+        .join('.')}</span>.<span class="hover-group group-v4 group-7">${segments
+        .slice(2, 4)
+        .join('.')}</span>`
     );
   }
 }

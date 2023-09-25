@@ -621,8 +621,8 @@ export class Address6 {
             "IPv4 addresses can't have leading zeroes.",
             address.replace(
               constants4.RE_ADDRESS,
-              this.address4.parsedAddress.map(spanLeadingZeroes4).join('.'),
-            ),
+              this.address4.parsedAddress.map(spanLeadingZeroes4).join('.')
+            )
           );
         }
       }
@@ -645,8 +645,10 @@ export class Address6 {
 
     if (badCharacters) {
       throw new AddressError(
-        `Bad character${badCharacters.length > 1 ? 's' : ''} detected in address: ${badCharacters.join('')}`,
-        address.replace(constants6.RE_BAD_CHARACTERS, '<span class="parse-error">$1</span>'),
+        `Bad character${
+          badCharacters.length > 1 ? 's' : ''
+        } detected in address: ${badCharacters.join('')}`,
+        address.replace(constants6.RE_BAD_CHARACTERS, '<span class="parse-error">$1</span>')
       );
     }
 
@@ -655,7 +657,7 @@ export class Address6 {
     if (badAddress) {
       throw new AddressError(
         `Address failed regex: ${badAddress.join('')}`,
-        address.replace(constants6.RE_BAD_ADDRESS, '<span class="parse-error">$1</span>'),
+        address.replace(constants6.RE_BAD_ADDRESS, '<span class="parse-error">$1</span>')
       );
     }
 
@@ -810,7 +812,7 @@ export class Address6 {
 
     const server4 = Address4.fromHex(this.getBitsBase16(32, 64));
     const client4 = Address4.fromHex(
-      this.getBits(96, 128).xor(new BigInteger('ffffffff', 16)).toString(16),
+      this.getBits(96, 128).xor(new BigInteger('ffffffff', 16)).toString(16)
     );
 
     const flags = this.getBits(64, 80);

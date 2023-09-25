@@ -85,7 +85,7 @@ export function possibleElisions(
   for (let groups = 1; groups < elidedGroups - 1; groups++) {
     for (let position = 1; position < elidedGroups - groups; position++) {
       possibilities.push(
-        `(0{1,4}:){${position}}:(0{1,4}:){${elidedGroups - position - groups - 1}}0{1,4}`,
+        `(0{1,4}:){${position}}:(0{1,4}:){${elidedGroups - position - groups - 1}}0{1,4}`
       );
     }
   }
