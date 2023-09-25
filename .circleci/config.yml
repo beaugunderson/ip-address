@@ -20,7 +20,6 @@ jobs:
       - run:
           command: ./coverage.sh
           name: Run tests
-    post-steps:
       - codecov/upload
 
 workflows:
