@@ -1,7 +1,0 @@
-{
-  "npm": {
-    "publishConfig": {
-      "registry": "https://registry.npmjs.org"
-    }
-  }
-}
