@@ -1,7 +1,7 @@
 recursive: true
 reporter: spec
 require:
-- ts-node/register
+- tsx/cjs
 - source-map-support/register
 inline-diffs: false
 spec: test/**/*.ts
