@@ -13,7 +13,6 @@ import {
 } from './v6/regular-expressions';
 import { AddressError } from './address-error';
 import { BigInteger } from 'jsbn';
-import { sprintf } from 'sprintf-js';
 
 function assert(condition: any): asserts condition {
   if (!condition) {
@@ -58,14 +57,13 @@ function compact(address: string[], slice: number[]) {
 }
 
 function paddedHex(octet: string): string {
-  return sprintf('%04x', parseInt(octet, 16));
+  return parseInt(octet, 16).toString(16).padStart(4, '0');
 }
 
 function unsignByte(b: number) {
   // eslint-disable-next-line no-bitwise
   return b & 0xff;
 }
-
 
 interface SixToFourProperties {
   prefix: string;
@@ -315,7 +313,7 @@ export class Address6 {
    * @returns {String} the Microsoft UNC transcription of the address
    */
   microsoftTranscription(): string {
-    return sprintf('%s.ipv6-literal.net', this.correctForm().replace(/:/g, '-'));
+    return `${this.correctForm().replace(/:/g, '-')}.ipv6-literal.net`;
   }
 
   /**
@@ -522,7 +520,7 @@ export class Address6 {
         return reversed;
       }
 
-      return sprintf('%s.ip6.arpa.', reversed);
+      return `${reversed}.ip6.arpa.`;
     }
 
     if (options.omitSuffix) {
@@ -623,8 +621,8 @@ export class Address6 {
             "IPv4 addresses can't have leading zeroes.",
             address.replace(
               constants4.RE_ADDRESS,
-              this.address4.parsedAddress.map(spanLeadingZeroes4).join('.')
-            )
+              this.address4.parsedAddress.map(spanLeadingZeroes4).join('.'),
+            ),
           );
         }
       }
@@ -647,12 +645,8 @@ export class Address6 {
 
     if (badCharacters) {
       throw new AddressError(
-        sprintf(
-          'Bad character%s detected in address: %s',
-          badCharacters.length > 1 ? 's' : '',
-          badCharacters.join('')
-        ),
-        address.replace(constants6.RE_BAD_CHARACTERS, '<span class="parse-error">$1</span>')
+        `Bad character${badCharacters.length > 1 ? 's' : ''} detected in address: ${badCharacters.join('')}`,
+        address.replace(constants6.RE_BAD_CHARACTERS, '<span class="parse-error">$1</span>'),
       );
     }
 
@@ -660,8 +654,8 @@ export class Address6 {
 
     if (badAddress) {
       throw new AddressError(
-        sprintf('Address failed regex: %s', badAddress.join('')),
-        address.replace(constants6.RE_BAD_ADDRESS, '<span class="parse-error">$1</span>')
+        `Address failed regex: ${badAddress.join('')}`,
+        address.replace(constants6.RE_BAD_ADDRESS, '<span class="parse-error">$1</span>'),
       );
     }
 
@@ -707,7 +701,7 @@ export class Address6 {
       throw new AddressError('Too many :: groups found');
     }
 
-    groups = groups.map((group: string) => sprintf('%x', parseInt(group, 16)));
+    groups = groups.map((group: string) => parseInt(group, 16).toString(16));
 
     if (groups.length !== this.groups) {
       throw new AddressError('Incorrect number of groups found');
@@ -733,7 +727,7 @@ export class Address6 {
    * @returns {String}
    */
   decimal(): string {
-    return this.parsedAddress.map((n) => sprintf('%05d', parseInt(n, 16))).join(':');
+    return this.parsedAddress.map((n) => parseInt(n, 16).toString(10).padStart(5, '0')).join(':');
   }
 
   /**
@@ -816,7 +810,7 @@ export class Address6 {
 
     const server4 = Address4.fromHex(this.getBitsBase16(32, 64));
     const client4 = Address4.fromHex(
-      this.getBits(96, 128).xor(new BigInteger('ffffffff', 16)).toString(16)
+      this.getBits(96, 128).xor(new BigInteger('ffffffff', 16)).toString(16),
     );
 
     const flags = this.getBits(64, 80);
@@ -829,7 +823,7 @@ export class Address6 {
     const nonce = new BigInteger(flagsBase2.slice(2, 6) + flagsBase2.slice(8, 16), 2).toString(10);
 
     return {
-      prefix: sprintf('%s:%s', prefix.slice(0, 4), prefix.slice(4, 8)),
+      prefix: `${prefix.slice(0, 4)}:${prefix.slice(4, 8)}`,
       server4: server4.address,
       client4: client4.address,
       flags: flagsBase2,
@@ -861,7 +855,7 @@ export class Address6 {
     const gateway = Address4.fromHex(this.getBitsBase16(16, 48));
 
     return {
-      prefix: sprintf('%s', prefix.slice(0, 4)),
+      prefix: prefix.slice(0, 4),
       gateway: gateway.address,
     };
   }
@@ -1049,10 +1043,10 @@ export class Address6 {
     if (optionalPort === undefined) {
       optionalPort = '';
     } else {
-      optionalPort = sprintf(':%s', optionalPort);
+      optionalPort = `:${optionalPort}`;
     }
 
-    return sprintf('http://[%s]%s/', this.correctForm(), optionalPort);
+    return `http://[${this.correctForm()}]${optionalPort}/`;
   }
 
   /**
@@ -1081,16 +1075,13 @@ export class Address6 {
       formFunction = this.to4in6;
     }
 
+    const form = formFunction.call(this);
+
     if (options.className) {
-      return sprintf(
-        '<a href="%1$s%2$s" class="%3$s">%2$s</a>',
-        options.prefix,
-        formFunction.call(this),
-        options.className
-      );
+      return `<a href="${options.prefix}${form}" class="${options.className}">${form}</a>`;
     }
 
-    return sprintf('<a href="%1$s%2$s">%2$s</a>', options.prefix, formFunction.call(this));
+    return `<a href="${options.prefix}${form}">${form}</a>`;
   }
 
   /**
@@ -1120,10 +1111,10 @@ export class Address6 {
     const classes = ['hover-group'];
 
     for (let i = this.elisionBegin; i < this.elisionBegin + this.elidedGroups; i++) {
-      classes.push(sprintf('group-%d', i));
+      classes.push(`group-${i}`);
     }
 
-    output.push(sprintf('<span class="%s"></span>', classes.join(' ')));
+    output.push(`<span class="${classes.join(' ')}"></span>`);
 
     if (right.length) {
       output.push(...helpers.simpleGroup(right, this.elisionEnd));

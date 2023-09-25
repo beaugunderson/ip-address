@@ -1,7 +1,6 @@
 import chai from 'chai';
 import { Address4 } from '../src/ipv4';
 import { BigInteger } from 'jsbn';
-import { sprintf } from 'sprintf-js';
 
 const should = chai.should();
 
@@ -54,7 +53,7 @@ describe('v4', () => {
 
     it('is contained by larger subnets', () => {
       for (let i = 15; i > 0; i--) {
-        const larger = new Address4(sprintf('127.0.0.1/%d', i));
+        const larger = new Address4(`127.0.0.1/${i}`);
 
         topic.isInSubnet(larger).should.equal(true);
       }
@@ -66,7 +65,7 @@ describe('v4', () => {
 
     it('is not contained by smaller subnets', () => {
       for (let i = 9; i <= 32; i++) {
-        const smaller = new Address4(sprintf('127.0.0.1/%d', i));
+        const smaller = new Address4(`127.0.0.1/${i}`);
 
         topic.isInSubnet(smaller).should.equal(false);
       }

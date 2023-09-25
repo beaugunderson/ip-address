@@ -1,7 +1,6 @@
 import chai from 'chai';
 import { Address6 } from '../src/ipv6';
 import { BigInteger } from 'jsbn';
-import { sprintf } from 'sprintf-js';
 import { v6 } from '../src/ip-address';
 
 const { expect } = chai;
@@ -159,7 +158,7 @@ describe('v6', () => {
 
     it('is contained by larger subnets', () => {
       for (let i = 63; i > 0; i--) {
-        const larger = new Address6(sprintf('ffff::/%d', i));
+        const larger = new Address6(`ffff::/${i}`);
 
         topic.isInSubnet(larger).should.equal(true);
       }
@@ -171,7 +170,7 @@ describe('v6', () => {
 
     it('is not contained by smaller subnets', () => {
       for (let i = 9; i <= 128; i++) {
-        const smaller = new Address6(sprintf('ffff::/%d', i));
+        const smaller = new Address6(`ffff::/${i}`);
 
         topic.isInSubnet(smaller).should.equal(false);
       }

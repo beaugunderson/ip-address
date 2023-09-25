@@ -4,7 +4,6 @@ import * as common from './common';
 import * as constants from './v4/constants';
 import { AddressError } from './address-error';
 import { BigInteger } from 'jsbn';
-import { sprintf } from 'sprintf-js';
 
 /**
  * Represents an IPv4 address
@@ -143,7 +142,7 @@ export class Address4 {
    * @returns {String}
    */
   toHex(): string {
-    return this.parsedAddress.map((part) => sprintf('%02x', parseInt(part, 10))).join(':');
+    return this.parsedAddress.map((part) => common.stringToPaddedHex(part)).join(':');
   }
 
   /**
@@ -167,13 +166,9 @@ export class Address4 {
     let i;
 
     for (i = 0; i < constants.GROUPS; i += 2) {
-      const hex = sprintf(
-        '%02x%02x',
-        parseInt(this.parsedAddress[i], 10),
-        parseInt(this.parsedAddress[i + 1], 10)
+      output.push(
+        `${common.stringToPaddedHex(this.parsedAddress[i])}${common.stringToPaddedHex(this.parsedAddress[i + 1])}`,
       );
-
-      output.push(sprintf('%x', parseInt(hex, 16)));
     }
 
     return output.join(':');
@@ -186,10 +181,7 @@ export class Address4 {
    * @returns {BigInteger}
    */
   bigInteger(): BigInteger {
-    return new BigInteger(
-      this.parsedAddress.map((n) => sprintf('%02x', parseInt(n, 10))).join(''),
-      16
-    );
+    return new BigInteger(this.parsedAddress.map((n) => common.stringToPaddedHex(n)).join(''), 16);
   }
 
   /**
@@ -313,7 +305,7 @@ export class Address4 {
       return reversed;
     }
 
-    return sprintf('%s.in-addr.arpa.', reversed);
+    return `${reversed}.in-addr.arpa.`;
   }
 
   /**
@@ -353,11 +345,7 @@ export class Address4 {
 
     return this.address.replace(
       constants.RE_ADDRESS,
-      sprintf(
-        '<span class="hover-group group-v4 group-6">%s</span>.<span class="hover-group group-v4 group-7">%s</span>',
-        segments.slice(0, 2).join('.'),
-        segments.slice(2, 4).join('.')
-      )
+        `<span class="hover-group group-v4 group-6">${segments.slice(0, 2).join('.')}</span>.<span class="hover-group group-v4 group-7">${segments.slice(2, 4).join('.')}</span>`,
     );
   }
 }
