@@ -13,7 +13,7 @@ export function spanAll(s: string, offset: number = 0): string {
 
   return letters
     .map(
-      (n, i) => `<span class="digit value-${n} position-${i + offset}">${spanAllZeroes(n)}</span>`
+      (n, i) => `<span class="digit value-${n} position-${i + offset}">${spanAllZeroes(n)}</span>`,
     )
     .join('');
 }

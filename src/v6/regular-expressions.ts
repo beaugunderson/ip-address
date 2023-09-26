@@ -38,7 +38,7 @@ export function simpleRegularExpression(groups: string[]) {
 
         return padGroup(group);
       })
-      .join(':')
+      .join(':'),
   );
 
   // The simplest case
@@ -50,7 +50,7 @@ export function simpleRegularExpression(groups: string[]) {
 export function possibleElisions(
   elidedGroups: number,
   moreLeft?: boolean,
-  moreRight?: boolean
+  moreRight?: boolean,
 ): string {
   const left = moreLeft ? '' : ':';
   const right = moreRight ? '' : ':';
@@ -85,7 +85,7 @@ export function possibleElisions(
   for (let groups = 1; groups < elidedGroups - 1; groups++) {
     for (let position = 1; position < elidedGroups - groups; position++) {
       possibilities.push(
-        `(0{1,4}:){${position}}:(0{1,4}:){${elidedGroups - position - groups - 1}}0{1,4}`
+        `(0{1,4}:){${position}}:(0{1,4}:){${elidedGroups - position - groups - 1}}0{1,4}`,
       );
     }
   }
