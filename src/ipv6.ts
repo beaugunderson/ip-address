@@ -583,7 +583,7 @@ export class Address6 {
     let correct = groups.join(':');
 
     correct = correct.replace(/^compact$/, '::');
-    correct = correct.replace(/^compact|compact$/, ':');
+    correct = correct.replace(/(^compact)|(compact$)/, ':');
     correct = correct.replace(/compact/, '');
 
     return correct;
