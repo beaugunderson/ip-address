@@ -1,7 +1,7 @@
 /* eslint-disable import/extensions */
 /* eslint-disable no-param-reassign */
 
-import chai from 'chai';
+import * as chai from 'chai';
 
 import { Address4, Address6 } from '../src/ip-address';
 

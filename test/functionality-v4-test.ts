@@ -1,4 +1,4 @@
-import chai from 'chai';
+import * as chai from 'chai';
 import { Address4 } from '../src/ipv4';
 import { BigInteger } from 'jsbn';
 
@@ -33,7 +33,7 @@ describe('v4', () => {
         .groupForV6()
         .should.equal(
           '<span class="hover-group group-v4 group-6">127.0</span>.' +
-            '<span class="hover-group group-v4 group-7">0.1</span>'
+            '<span class="hover-group group-v4 group-7">0.1</span>',
         );
     });
   });

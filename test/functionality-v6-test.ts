@@ -1,4 +1,4 @@
-import chai from 'chai';
+import * as chai from 'chai';
 import { Address6 } from '../src/ipv6';
 import { BigInteger } from 'jsbn';
 import { v6 } from '../src/ip-address';
@@ -112,7 +112,7 @@ describe('v6', () => {
         .binaryZeroPad()
         .should.equal(
           '0000000000001010000000000000101100000000000011000000000000001101' +
-            '0000000000001110000000000000111100000000000000000000000000000001'
+            '0000000000001110000000000000111100000000000000000000000000000001',
         );
     });
   });
@@ -280,7 +280,7 @@ describe('v6', () => {
         should.equal(
           topic.binaryZeroPad(),
           '0010000000000001000011011011100000000000000000000000000000000000' +
-            '0000000000000001000000000000000000000000000000000000000000000001'
+            '0000000000000001000000000000000000000000000000000000000000000001',
         );
       });
     });
@@ -316,7 +316,7 @@ describe('v6', () => {
 
   describe('Address given in ap6.arpa form', () => {
     const obj = Address6.fromArpa(
-      'e.f.f.f.3.c.2.6.f.f.f.e.6.6.8.e.1.0.6.7.9.4.e.c.0.0.0.0.1.0.0.2.ip6.arpa.'
+      'e.f.f.f.3.c.2.6.f.f.f.e.6.6.8.e.1.0.6.7.9.4.e.c.0.0.0.0.1.0.0.2.ip6.arpa.',
     );
 
     it('should return an Address6 object', () => {
@@ -329,7 +329,7 @@ describe('v6', () => {
 
     it('should fail with an invalid ip6.arpa length', () => {
       should.Throw(() =>
-        Address6.fromArpa('e.f.f.f.3.c.2.6.f.f.f.e.6.6.8.0.6.7.9.4.e.c.0.0.0.0.1.0.0.2.ip6.arpa.')
+        Address6.fromArpa('e.f.f.f.3.c.2.6.f.f.f.e.6.6.8.0.6.7.9.4.e.c.0.0.0.0.1.0.0.2.ip6.arpa.'),
       );
     });
   });
@@ -432,14 +432,14 @@ describe('v6', () => {
         topic
           .link()
           .should.equal(
-            '<a href="/#address=2001:4860:4001:803::1011">2001:4860:4001:803::1011</a>'
+            '<a href="/#address=2001:4860:4001:803::1011">2001:4860:4001:803::1011</a>',
           );
 
         topic
           .link({ className: 'highlight', prefix: '/?address=' })
           .should.equal(
             '<a href="/?address=2001:4860:4001:803::1011" ' +
-              'class="highlight">2001:4860:4001:803::1011</a>'
+              'class="highlight">2001:4860:4001:803::1011</a>',
           );
       });
 
@@ -460,7 +460,7 @@ describe('v6', () => {
           .group()
           .should.equal(
             ':<span class="hover-group group-0 group-1 group-2 ' +
-              'group-3 group-4 group-5 group-6 group-7"></span>:'
+              'group-3 group-4 group-5 group-6 group-7"></span>:',
           );
       });
 
@@ -477,7 +477,7 @@ describe('v6', () => {
               '<span class="hover-group group-4">1</span>:' +
               '<span class="hover-group group-5">2</span>:' +
               '<span class="hover-group group-6">3</span>:' +
-              '<span class="hover-group group-7">4</span>'
+              '<span class="hover-group group-7">4</span>',
           );
       });
 
@@ -493,7 +493,7 @@ describe('v6', () => {
               '<span class="hover-group group-3">803</span>:' +
               '<span class="hover-group group-4 group-5 ' +
               'group-6"></span>:' +
-              '<span class="hover-group group-7">1011</span>'
+              '<span class="hover-group group-7">1011</span>',
           );
       });
 
@@ -507,7 +507,7 @@ describe('v6', () => {
           .should.equal(
             ':<span class="hover-group group-0 group-1 group-2 group-3 group-4"></span>' +
               ':<span class="hover-group group-5">ffff</span>:' +
-              '<span class="hover-group group-v4 group-6">192.168</span>.<span class="hover-group group-v4 group-7">0.1</span>'
+              '<span class="hover-group group-v4 group-6">192.168</span>.<span class="hover-group group-v4 group-7">0.1</span>',
           );
       });
     });
@@ -521,7 +521,7 @@ describe('v6', () => {
         topic.should.equal(
           '<span class="zero">0000</span>:' +
             '<span class="zero">0000</span>:4444:' +
-            '<span class="zero">000</span>1'
+            '<span class="zero">000</span>1',
         );
       });
     });
@@ -540,7 +540,7 @@ describe('v6', () => {
             '<span class="digit value-0 position-4">' +
             '<span class="zero">0</span></span>' +
             '<span class="digit value-0 position-5">' +
-            '<span class="zero">0</span></span>'
+            '<span class="zero">0</span></span>',
         );
       });
 
@@ -557,7 +557,7 @@ describe('v6', () => {
             '<span class="digit value-0 position-5">' +
             '<span class="zero">0</span></span>' +
             '<span class="digit value-0 position-6">' +
-            '<span class="zero">0</span></span>'
+            '<span class="zero">0</span></span>',
         );
       });
     });
