@@ -12,7 +12,7 @@ import {
   simpleRegularExpression,
 } from './v6/regular-expressions';
 import { AddressError } from './address-error';
-import { BigInteger } from 'jsbn';
+import { testBit } from './common';
 
 function assert(condition: any): asserts condition {
   if (!condition) {
@@ -166,14 +166,14 @@ export class Address6 {
    * Convert a BigInteger to a v6 address object
    * @memberof Address6
    * @static
-   * @param {BigInteger} bigInteger - a BigInteger to convert
+   * @param {bigint} bigInteger - a BigInteger to convert
    * @returns {Address6}
    * @example
-   * var bigInteger = new BigInteger('1000000000000');
+   * var bigInteger = BigInt('1000000000000');
    * var address = Address6.fromBigInteger(bigInteger);
    * address.correctForm(); // '::e8:d4a5:1000'
    */
-  static fromBigInteger(bigInteger: BigInteger): Address6 {
+  static fromBigInteger(bigInteger: bigint): Address6 {
     const hex = bigInteger.toString(16).padStart(32, '0');
     const groups = [];
     let i;
@@ -331,7 +331,7 @@ export class Address6 {
    * Return the number of possible subnets of a given size in the address
    * @memberof Address6
    * @instance
-   * @param {number} [size=128] - the subnet size
+   * @param {number} [subnetSize=128] - the subnet size
    * @returns {String}
    */
   // TODO: probably useful to have a numeric version of this too
@@ -344,17 +344,17 @@ export class Address6 {
       return '0';
     }
 
-    return addCommas(new BigInteger('2', 10).pow(subnetPowers).toString(10));
+    return addCommas((BigInt('2') ** BigInt(subnetPowers)).toString(10));
   }
 
   /**
    * Helper function getting start address.
    * @memberof Address6
    * @instance
-   * @returns {BigInteger}
+   * @returns {bigint}
    */
-  _startAddress(): BigInteger {
-    return new BigInteger(this.mask() + '0'.repeat(constants6.BITS - this.subnetMask), 2);
+  _startAddress(): bigint {
+    return BigInt(`0b${this.mask() + '0'.repeat(constants6.BITS - this.subnetMask)}`);
   }
 
   /**
@@ -376,18 +376,18 @@ export class Address6 {
    * @returns {Address6}
    */
   startAddressExclusive(): Address6 {
-    const adjust = new BigInteger('1');
-    return Address6.fromBigInteger(this._startAddress().add(adjust));
+    const adjust = BigInt('1');
+    return Address6.fromBigInteger(this._startAddress() + adjust);
   }
 
   /**
    * Helper function getting end address.
    * @memberof Address6
    * @instance
-   * @returns {BigInteger}
+   * @returns {bigint}
    */
-  _endAddress(): BigInteger {
-    return new BigInteger(this.mask() + '1'.repeat(constants6.BITS - this.subnetMask), 2);
+  _endAddress(): bigint {
+    return BigInt(`0b${this.mask() + '1'.repeat(constants6.BITS - this.subnetMask)}`);
   }
 
   /**
@@ -409,8 +409,8 @@ export class Address6 {
    * @returns {Address6}
    */
   endAddressExclusive(): Address6 {
-    const adjust = new BigInteger('1');
-    return Address6.fromBigInteger(this._endAddress().subtract(adjust));
+    const adjust = BigInt('1');
+    return Address6.fromBigInteger(this._endAddress() - adjust);
   }
 
   /**
@@ -420,7 +420,7 @@ export class Address6 {
    * @returns {String}
    */
   getScope(): string {
-    let scope = constants6.SCOPES[this.getBits(12, 16).intValue()];
+    let scope = constants6.SCOPES[parseInt(this.getBits(12, 16).toString(10), 10)];
 
     if (this.getType() === 'Global unicast' && scope !== 'Link local') {
       scope = 'Global';
@@ -449,10 +449,10 @@ export class Address6 {
    * Return the bits in the given range as a BigInteger
    * @memberof Address6
    * @instance
-   * @returns {BigInteger}
+   * @returns {bigint}
    */
-  getBits(start: number, end: number): BigInteger {
-    return new BigInteger(this.getBitsBase2(start, end), 2);
+  getBits(start: number, end: number): bigint {
+    return BigInt(`0b${this.getBitsBase2(start, end)}`);
   }
 
   /**
@@ -736,10 +736,10 @@ export class Address6 {
    * Return the address as a BigInteger
    * @memberof Address6
    * @instance
-   * @returns {BigInteger}
+   * @returns {bigint}
    */
-  bigInteger(): BigInteger {
-    return new BigInteger(this.parsedAddress.map(paddedHex).join(''), 16);
+  bigInteger(): bigint {
+    return BigInt(`0x${this.parsedAddress.map(paddedHex).join('')}`);
   }
 
   /**
@@ -754,7 +754,7 @@ export class Address6 {
   to4(): Address4 {
     const binary = this.binaryZeroPad().split('');
 
-    return Address4.fromHex(new BigInteger(binary.slice(96, 128).join(''), 2).toString(16));
+    return Address4.fromHex(BigInt(`0b${binary.slice(96, 128).join('')}`).toString(16));
   }
 
   /**
@@ -808,21 +808,23 @@ export class Address6 {
     */
     const prefix = this.getBitsBase16(0, 32);
 
-    const udpPort = this.getBits(80, 96).xor(new BigInteger('ffff', 16)).toString();
+    const bitsForUdpPort: bigint = this.getBits(80, 96);
+    // eslint-disable-next-line no-bitwise
+    const udpPort = (bitsForUdpPort ^ BigInt('0xffff')).toString();
 
     const server4 = Address4.fromHex(this.getBitsBase16(32, 64));
-    const client4 = Address4.fromHex(
-      this.getBits(96, 128).xor(new BigInteger('ffffffff', 16)).toString(16),
-    );
 
-    const flags = this.getBits(64, 80);
+    const bitsForClient4 = this.getBits(96, 128);
+    // eslint-disable-next-line no-bitwise
+    const client4 = Address4.fromHex((bitsForClient4 ^ BigInt('0xffffffff')).toString(16));
+
     const flagsBase2 = this.getBitsBase2(64, 80);
 
-    const coneNat = flags.testBit(15);
-    const reserved = flags.testBit(14);
-    const groupIndividual = flags.testBit(8);
-    const universalLocal = flags.testBit(9);
-    const nonce = new BigInteger(flagsBase2.slice(2, 6) + flagsBase2.slice(8, 16), 2).toString(10);
+    const coneNat = testBit(flagsBase2, 15);
+    const reserved = testBit(flagsBase2, 14);
+    const groupIndividual = testBit(flagsBase2, 8);
+    const universalLocal = testBit(flagsBase2, 9);
+    const nonce = BigInt(`0b${flagsBase2.slice(2, 6) + flagsBase2.slice(8, 16)}`).toString(10);
 
     return {
       prefix: `${prefix.slice(0, 4)}:${prefix.slice(4, 8)}`,
@@ -891,14 +893,17 @@ export class Address6 {
    * @returns {Array}
    */
   toByteArray(): number[] {
-    const byteArray = this.bigInteger().toByteArray();
+    const valueWithoutPadding = this.bigInteger().toString(16);
+    const leadingPad = '0'.repeat(valueWithoutPadding.length % 2);
 
-    // work around issue where `toByteArray` returns a leading 0 element
-    if (byteArray.length === 17 && byteArray[0] === 0) {
-      return byteArray.slice(1);
+    const value = `${leadingPad}${valueWithoutPadding}`;
+
+    const bytes = [];
+    for (let i = 0, length = value.length; i < length; i += 2) {
+      bytes.push(parseInt(value.substring(i, i + 2), 16));
     }
 
-    return byteArray;
+    return bytes;
   }
 
   /**
@@ -928,14 +933,14 @@ export class Address6 {
    * @returns {Address6}
    */
   static fromUnsignedByteArray(bytes: Array<any>): Address6 {
-    const BYTE_MAX = new BigInteger('256', 10);
-    let result = new BigInteger('0', 10);
-    let multiplier = new BigInteger('1', 10);
+    const BYTE_MAX = BigInt('256');
+    let result = BigInt('0');
+    let multiplier = BigInt('1');
 
     for (let i = bytes.length - 1; i >= 0; i--) {
-      result = result.add(multiplier.multiply(new BigInteger(bytes[i].toString(10), 10)));
+      result += multiplier * BigInt(bytes[i].toString(10));
 
-      multiplier = multiplier.multiply(BYTE_MAX);
+      multiplier *= BYTE_MAX;
     }
 
     return Address6.fromBigInteger(result);

@@ -1,6 +1,5 @@
 import * as chai from 'chai';
 import { Address6 } from '../src/ipv6';
-import { BigInteger } from 'jsbn';
 import { v6 } from '../src/ip-address';
 
 const { expect } = chai;
@@ -414,7 +413,7 @@ describe('v6', () => {
   });
 
   describe('An address from a BigInteger', () => {
-    const topic = Address6.fromBigInteger(new BigInteger('51923840109643282840007714694758401'));
+    const topic = Address6.fromBigInteger(BigInt('51923840109643282840007714694758401'));
 
     it('should parse correctly', () => {
       should.equal(topic.correctForm(), 'a:b:c:d:e:f:0:1');

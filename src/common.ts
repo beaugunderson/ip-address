@@ -38,3 +38,18 @@ export function numberToPaddedHex(number: number) {
 export function stringToPaddedHex(numberString: string) {
   return numberToPaddedHex(parseInt(numberString, 10));
 }
+
+/**
+ * @param binaryValue Binary representation of a value (e.g. `10`)
+ * @param position Byte position, where 0 is the least significant bit
+ */
+export function testBit(binaryValue: string, position: number): boolean {
+  const { length } = binaryValue;
+
+  if (position > length) {
+    return false;
+  }
+
+  const positionInString = length - position;
+  return binaryValue.substring(positionInString, positionInString + 1) === '1';
+}
