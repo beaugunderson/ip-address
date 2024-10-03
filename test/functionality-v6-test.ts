@@ -238,6 +238,12 @@ describe('v6', () => {
       should.equal(teredo.flags, '1110100001100110');
       should.equal(teredo.udpPort, '4096');
       should.equal(teredo.client4, '157.60.0.1');
+      should.equal(teredo.coneNat, true);
+
+      should.equal(teredo.microsoft.reserved, true);
+      should.equal(teredo.microsoft.universalLocal, false);
+      should.equal(teredo.microsoft.groupIndividual, false);
+      should.equal(teredo.microsoft.nonce, '2662');
     });
   });
 
