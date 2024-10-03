@@ -1,6 +1,5 @@
 import * as chai from 'chai';
 import { Address4 } from '../src/ipv4';
-import { BigInteger } from 'jsbn';
 
 const should = chai.should();
 
@@ -125,7 +124,7 @@ describe('v4', () => {
   });
 
   describe('Creating an address from a BigInteger', () => {
-    const topic = Address4.fromBigInteger(new BigInteger('2130706433'));
+    const topic = Address4.fromBigInteger(BigInt('2130706433'));
 
     it('should parse correctly', () => {
       topic.correctForm().should.equal('127.0.0.1');
@@ -136,7 +135,7 @@ describe('v4', () => {
     const topic = new Address4('127.0.0.1');
 
     it('should convert properly', () => {
-      topic.bigInteger().intValue().should.equal(2130706433);
+      topic.bigInteger().toString(10).should.equal('2130706433');
     });
   });
 

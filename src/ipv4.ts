@@ -3,7 +3,6 @@
 import * as common from './common';
 import * as constants from './v4/constants';
 import { AddressError } from './address-error';
-import { BigInteger } from 'jsbn';
 
 /**
  * Represents an IPv4 address
@@ -177,23 +176,23 @@ export class Address4 {
   }
 
   /**
-   * Returns the address as a BigInteger
+   * Returns the address as a `bigint`
    * @memberof Address4
    * @instance
-   * @returns {BigInteger}
+   * @returns {bigint}
    */
-  bigInteger(): BigInteger {
-    return new BigInteger(this.parsedAddress.map((n) => common.stringToPaddedHex(n)).join(''), 16);
+  bigInteger(): BigInt {
+    return BigInt(`0x${this.parsedAddress.map((n) => common.stringToPaddedHex(n)).join('')}`);
   }
 
   /**
    * Helper function getting start address.
    * @memberof Address4
    * @instance
-   * @returns {BigInteger}
+   * @returns {bigint}
    */
-  _startAddress(): BigInteger {
-    return new BigInteger(this.mask() + '0'.repeat(constants.BITS - this.subnetMask), 2);
+  _startAddress(): bigint {
+    return BigInt(`0b${this.mask() + '0'.repeat(constants.BITS - this.subnetMask)}`);
   }
 
   /**
@@ -215,18 +214,18 @@ export class Address4 {
    * @returns {Address4}
    */
   startAddressExclusive(): Address4 {
-    const adjust = new BigInteger('1');
-    return Address4.fromBigInteger(this._startAddress().add(adjust));
+    const adjust = BigInt('1');
+    return Address4.fromBigInteger(this._startAddress() + adjust);
   }
 
   /**
    * Helper function getting end address.
    * @memberof Address4
    * @instance
-   * @returns {BigInteger}
+   * @returns {bigint}
    */
-  _endAddress(): BigInteger {
-    return new BigInteger(this.mask() + '1'.repeat(constants.BITS - this.subnetMask), 2);
+  _endAddress(): bigint {
+    return BigInt(`0b${this.mask() + '1'.repeat(constants.BITS - this.subnetMask)}`);
   }
 
   /**
@@ -248,19 +247,19 @@ export class Address4 {
    * @returns {Address4}
    */
   endAddressExclusive(): Address4 {
-    const adjust = new BigInteger('1');
-    return Address4.fromBigInteger(this._endAddress().subtract(adjust));
+    const adjust = BigInt('1');
+    return Address4.fromBigInteger(this._endAddress() - adjust);
   }
 
   /**
    * Converts a BigInteger to a v4 address object
    * @memberof Address4
    * @static
-   * @param {BigInteger} bigInteger - a BigInteger to convert
+   * @param {bigint} bigInteger - a BigInteger to convert
    * @returns {Address4}
    */
-  static fromBigInteger(bigInteger: BigInteger): Address4 {
-    return Address4.fromInteger(parseInt(bigInteger.toString(), 10));
+  static fromBigInteger(bigInteger: bigint): Address4 {
+    return Address4.fromHex(bigInteger.toString(16));
   }
 
   /**
