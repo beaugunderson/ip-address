@@ -123,19 +123,19 @@ describe('v4', () => {
     });
   });
 
-  describe('Creating an address from a BigInteger', () => {
-    const topic = Address4.fromBigInteger(BigInt('2130706433'));
+  describe('Creating an address from a BigInt', () => {
+    const topic = Address4.fromBigInt(BigInt('2130706433'));
 
     it('should parse correctly', () => {
       topic.correctForm().should.equal('127.0.0.1');
     });
   });
 
-  describe('Converting an address to a BigInteger', () => {
+  describe('Converting an address to a BigInt', () => {
     const topic = new Address4('127.0.0.1');
 
     it('should convert properly', () => {
-      topic.bigInteger().toString(10).should.equal('2130706433');
+      topic.bigInt().toString(10).should.equal('2130706433');
     });
   });
 

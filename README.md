@@ -14,6 +14,17 @@
 `ip-address` is a library for validating and manipulating IPv4 and IPv6
 addresses in JavaScript.
 
+### Upgrading from 9.x to 10.x
+
+The dependency on `jsbn` was removed thanks to
+[michal-kocarek](https://github.com/michal-kocarek). Thanks Michal! For
+clarity, all methods with BigInteger in the name were renamed to BigInt.
+
+#### Breaking changes
+
+`#fromBigInteger()` → `#fromBigInt()`; now returns a native BigInt
+`#bigInteger()` → `#bigInt()`; now returns a native BigInt
+
 ### Documentation
 
 Documentation is available at [ip-address.js.org](http://ip-address.js.org/).

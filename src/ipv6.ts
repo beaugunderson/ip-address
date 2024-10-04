@@ -163,18 +163,18 @@ export class Address6 {
   }
 
   /**
-   * Convert a BigInteger to a v6 address object
+   * Convert a BigInt to a v6 address object
    * @memberof Address6
    * @static
-   * @param {bigint} bigInteger - a BigInteger to convert
+   * @param {bigint} bigInt - a BigInt to convert
    * @returns {Address6}
    * @example
-   * var bigInteger = BigInt('1000000000000');
-   * var address = Address6.fromBigInteger(bigInteger);
+   * var bigInt = BigInt('1000000000000');
+   * var address = Address6.fromBigInt(bigInt);
    * address.correctForm(); // '::e8:d4a5:1000'
    */
-  static fromBigInteger(bigInteger: bigint): Address6 {
-    const hex = bigInteger.toString(16).padStart(32, '0');
+  static fromBigInt(bigInt: bigint): Address6 {
+    const hex = bigInt.toString(16).padStart(32, '0');
     const groups = [];
     let i;
 
@@ -365,7 +365,7 @@ export class Address6 {
    * @returns {Address6}
    */
   startAddress(): Address6 {
-    return Address6.fromBigInteger(this._startAddress());
+    return Address6.fromBigInt(this._startAddress());
   }
 
   /**
@@ -377,7 +377,7 @@ export class Address6 {
    */
   startAddressExclusive(): Address6 {
     const adjust = BigInt('1');
-    return Address6.fromBigInteger(this._startAddress() + adjust);
+    return Address6.fromBigInt(this._startAddress() + adjust);
   }
 
   /**
@@ -398,7 +398,7 @@ export class Address6 {
    * @returns {Address6}
    */
   endAddress(): Address6 {
-    return Address6.fromBigInteger(this._endAddress());
+    return Address6.fromBigInt(this._endAddress());
   }
 
   /**
@@ -410,7 +410,7 @@ export class Address6 {
    */
   endAddressExclusive(): Address6 {
     const adjust = BigInt('1');
-    return Address6.fromBigInteger(this._endAddress() - adjust);
+    return Address6.fromBigInt(this._endAddress() - adjust);
   }
 
   /**
@@ -446,7 +446,7 @@ export class Address6 {
   }
 
   /**
-   * Return the bits in the given range as a BigInteger
+   * Return the bits in the given range as a BigInt
    * @memberof Address6
    * @instance
    * @returns {bigint}
@@ -601,7 +601,7 @@ export class Address6 {
    * //  0000000000000000000000000000000000000000000000000001000000010001'
    */
   binaryZeroPad(): string {
-    return this.bigInteger().toString(2).padStart(constants6.BITS, '0');
+    return this.bigInt().toString(2).padStart(constants6.BITS, '0');
   }
 
   // TODO: Improve the semantics of this helper function
@@ -733,12 +733,12 @@ export class Address6 {
   }
 
   /**
-   * Return the address as a BigInteger
+   * Return the address as a BigInt
    * @memberof Address6
    * @instance
    * @returns {bigint}
    */
-  bigInteger(): bigint {
+  bigInt(): bigint {
     return BigInt(`0x${this.parsedAddress.map(paddedHex).join('')}`);
   }
 
@@ -893,7 +893,7 @@ export class Address6 {
    * @returns {Array}
    */
   toByteArray(): number[] {
-    const valueWithoutPadding = this.bigInteger().toString(16);
+    const valueWithoutPadding = this.bigInt().toString(16);
     const leadingPad = '0'.repeat(valueWithoutPadding.length % 2);
 
     const value = `${leadingPad}${valueWithoutPadding}`;
@@ -943,7 +943,7 @@ export class Address6 {
       multiplier *= BYTE_MAX;
     }
 
-    return Address6.fromBigInteger(result);
+    return Address6.fromBigInt(result);
   }
 
   // #region Attributes

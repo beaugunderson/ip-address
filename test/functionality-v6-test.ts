@@ -412,8 +412,8 @@ describe('v6', () => {
     });
   });
 
-  describe('An address from a BigInteger', () => {
-    const topic = Address6.fromBigInteger(BigInt('51923840109643282840007714694758401'));
+  describe('An address from a BigInt', () => {
+    const topic = Address6.fromBigInt(BigInt('51923840109643282840007714694758401'));
 
     it('should parse correctly', () => {
       should.equal(topic.correctForm(), 'a:b:c:d:e:f:0:1');

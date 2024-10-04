@@ -181,7 +181,7 @@ export class Address4 {
    * @instance
    * @returns {bigint}
    */
-  bigInteger(): BigInt {
+  bigInt(): BigInt {
     return BigInt(`0x${this.parsedAddress.map((n) => common.stringToPaddedHex(n)).join('')}`);
   }
 
@@ -203,7 +203,7 @@ export class Address4 {
    * @returns {Address4}
    */
   startAddress(): Address4 {
-    return Address4.fromBigInteger(this._startAddress());
+    return Address4.fromBigInt(this._startAddress());
   }
 
   /**
@@ -215,7 +215,7 @@ export class Address4 {
    */
   startAddressExclusive(): Address4 {
     const adjust = BigInt('1');
-    return Address4.fromBigInteger(this._startAddress() + adjust);
+    return Address4.fromBigInt(this._startAddress() + adjust);
   }
 
   /**
@@ -236,7 +236,7 @@ export class Address4 {
    * @returns {Address4}
    */
   endAddress(): Address4 {
-    return Address4.fromBigInteger(this._endAddress());
+    return Address4.fromBigInt(this._endAddress());
   }
 
   /**
@@ -248,18 +248,18 @@ export class Address4 {
    */
   endAddressExclusive(): Address4 {
     const adjust = BigInt('1');
-    return Address4.fromBigInteger(this._endAddress() - adjust);
+    return Address4.fromBigInt(this._endAddress() - adjust);
   }
 
   /**
-   * Converts a BigInteger to a v4 address object
+   * Converts a BigInt to a v4 address object
    * @memberof Address4
    * @static
-   * @param {bigint} bigInteger - a BigInteger to convert
+   * @param {bigint} bigInt - a BigInt to convert
    * @returns {Address4}
    */
-  static fromBigInteger(bigInteger: bigint): Address4 {
-    return Address4.fromHex(bigInteger.toString(16));
+  static fromBigInt(bigInt: bigint): Address4 {
+    return Address4.fromHex(bigInt.toString(16));
   }
 
   /**
@@ -334,7 +334,7 @@ export class Address4 {
    * @returns {string}
    */
   binaryZeroPad(): string {
-    return this.bigInteger().toString(2).padStart(constants.BITS, '0');
+    return this.bigInt().toString(2).padStart(constants.BITS, '0');
   }
 
   /**
