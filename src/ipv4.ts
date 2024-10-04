@@ -181,7 +181,7 @@ export class Address4 {
    * @instance
    * @returns {bigint}
    */
-  bigInt(): BigInt {
+  bigInt(): bigint {
     return BigInt(`0x${this.parsedAddress.map((n) => common.stringToPaddedHex(n)).join('')}`);
   }
 
