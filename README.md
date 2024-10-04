@@ -22,8 +22,8 @@ clarity, all methods with BigInteger in the name were renamed to BigInt.
 
 #### Breaking changes
 
-`#fromBigInteger()` → `#fromBigInt()`; now returns a native BigInt
-`#bigInteger()` → `#bigInt()`; now returns a native BigInt
+- `#fromBigInteger()` → `#fromBigInt()`; now returns a native BigInt
+- `#bigInteger()` → `#bigInt()`; now returns a native BigInt
 
 ### Documentation
 
