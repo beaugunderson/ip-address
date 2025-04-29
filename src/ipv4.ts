@@ -41,6 +41,12 @@ export class Address4 {
     this.parsedAddress = this.parse(address);
   }
 
+  /**
+   * Return true if the address is valid
+   * @memberof Address4
+   * @static
+   * @returns {boolean}
+   */
   static isValid(address: string): boolean {
     try {
       // eslint-disable-next-line no-new
