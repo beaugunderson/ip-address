@@ -170,6 +170,34 @@ describe('v4', () => {
     });
   });
 
+  describe('Creating an address from a byte array', () => {
+    it('should parse correctly from valid byte array', () => {
+      const topic = Address4.fromByteArray([127, 0, 0, 1]);
+      topic.correctForm().should.equal('127.0.0.1');
+    });
+
+    it('should parse correctly from different valid byte array', () => {
+      const topic = Address4.fromByteArray([192, 168, 1, 1]);
+      topic.correctForm().should.equal('192.168.1.1');
+    });
+
+    it('should handle signed bytes correctly', () => {
+      const topic = Address4.fromByteArray([255, 255, 255, 255]);
+      topic.correctForm().should.equal('255.255.255.255');
+    });
+
+    it('should handle negative bytes by converting to unsigned', () => {
+      const topic = Address4.fromByteArray([-1, -128, 0, 1]);
+      topic.correctForm().should.equal('255.128.0.1');
+    });
+
+    it('should throw error for array with wrong length', () => {
+      should.Throw(() => Address4.fromByteArray([127, 0, 0]), 'IPv4 addresses require exactly 4 bytes');
+      should.Throw(() => Address4.fromByteArray([127, 0, 0, 1, 2]), 'IPv4 addresses require exactly 4 bytes');
+      should.Throw(() => Address4.fromByteArray([]), 'IPv4 addresses require exactly 4 bytes');
+    });
+  });
+
   describe('A different notation of the same address', () => {
     const addresses = notationsToAddresseses([
       '127.0.0.1/32',

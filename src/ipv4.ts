@@ -263,6 +263,37 @@ export class Address4 {
   }
 
   /**
+   * Convert a byte array to an Address4 object
+   * @memberof Address4
+   * @static
+   * @param {Array<number>} bytes - an array of 4 bytes (0-255)
+   * @returns {Address4}
+   */
+  static fromByteArray(bytes: Array<number>): Address4 {
+    if (bytes.length !== 4) {
+      throw new AddressError('IPv4 addresses require exactly 4 bytes');
+    }
+
+    return this.fromUnsignedByteArray(bytes.map(b => b & 0xff));
+  }
+
+  /**
+   * Convert an unsigned byte array to an Address4 object
+   * @memberof Address4
+   * @static
+   * @param {Array<number>} bytes - an array of 4 unsigned bytes (0-255)
+   * @returns {Address4}
+   */
+  static fromUnsignedByteArray(bytes: Array<number>): Address4 {
+    if (bytes.length !== 4) {
+      throw new AddressError('IPv4 addresses require exactly 4 bytes');
+    }
+
+    const address = bytes.join('.');
+    return new Address4(address);
+  }
+
+  /**
    * Returns the first n bits of the address, defaulting to the
    * subnet mask
    * @memberof Address4
