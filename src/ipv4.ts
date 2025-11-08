@@ -274,7 +274,14 @@ export class Address4 {
       throw new AddressError('IPv4 addresses require exactly 4 bytes');
     }
 
-    return this.fromUnsignedByteArray(bytes.map(b => b & 0xff));
+    // Validate that all bytes are within valid range (0-255)
+    for (let i = 0; i < bytes.length; i++) {
+      if (!Number.isInteger(bytes[i]) || bytes[i] < 0 || bytes[i] > 255) {
+        throw new AddressError('All bytes must be integers between 0 and 255');
+      }
+    }
+
+    return this.fromUnsignedByteArray(bytes);
   }
 
   /**

@@ -181,14 +181,21 @@ describe('v4', () => {
       topic.correctForm().should.equal('192.168.1.1');
     });
 
-    it('should handle signed bytes correctly', () => {
+    it('should handle maximum values correctly', () => {
       const topic = Address4.fromByteArray([255, 255, 255, 255]);
       topic.correctForm().should.equal('255.255.255.255');
     });
 
-    it('should handle negative bytes by converting to unsigned', () => {
-      const topic = Address4.fromByteArray([-1, -128, 0, 1]);
-      topic.correctForm().should.equal('255.128.0.1');
+    it('should throw error for negative bytes', () => {
+      should.Throw(() => Address4.fromByteArray([-1, -128, 0, 1]), 'All bytes must be integers between 0 and 255');
+    });
+
+    it('should throw error for bytes over 255', () => {
+      should.Throw(() => Address4.fromByteArray([256, 0, 0, 1]), 'All bytes must be integers between 0 and 255');
+    });
+
+    it('should throw error for non-integer bytes', () => {
+      should.Throw(() => Address4.fromByteArray([127.5, 0, 0, 1]), 'All bytes must be integers between 0 and 255');
     });
 
     it('should throw error for array with wrong length', () => {
