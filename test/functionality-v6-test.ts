@@ -28,6 +28,14 @@ describe('v6', () => {
     });
   });
 
+  describe('An address with an unknown scope', () => {
+    const topic = new Address6('ff03::1');
+
+    it('should return Unknown scope', () => {
+      topic.getScope().should.equal('Unknown');
+    });
+  });
+
   describe('A link local address', () => {
     const topic = new Address6('fe80::baf6:b1ff:fe15:4885');
 
@@ -261,6 +269,23 @@ describe('v6', () => {
     });
   });
 
+  describe('Internal assertions', () => {
+    it('should throw when group() is called with corrupted elidedGroups', () => {
+      const topic = new Address6('2001:db8::1');
+      (topic as any).elidedGroups = undefined;
+      should.Throw(() => topic.group(), 'Assertion failed.');
+    });
+
+  });
+
+  describe('to6to4 on a non-v4 address', () => {
+    const topic = new Address6('2001:db8::1');
+
+    it('should return null', () => {
+      expect(topic.to6to4()).to.equal(null);
+    });
+  });
+
   describe('A different notation of the same address', () => {
     const addresses = notationsToAddresseses([
       '2001:db8:0:0:1:0:0:1/128',
@@ -412,6 +437,25 @@ describe('v6', () => {
     });
   });
 
+  describe('regularExpressionString', () => {
+    it('should work without arguments (using defaults)', () => {
+      const topic = new Address6('2001:db8::1');
+      const re = topic.regularExpressionString();
+
+      re.should.be.a('string');
+      re.length.should.be.greaterThan(0);
+    });
+
+    it('should work with substringSearch=true', () => {
+      const topic = new Address6('2001:db8::1');
+      const re = topic.regularExpressionString(true);
+
+      re.should.be.a('string');
+      // substring search should not include boundary assertions
+      re.should.not.include('(?=^|');
+    });
+  });
+
   describe('An address from a BigInt', () => {
     const topic = Address6.fromBigInt(BigInt('51923840109643282840007714694758401'));
 
@@ -527,6 +571,23 @@ describe('v6', () => {
           '<span class="zero">0000</span>:' +
             '<span class="zero">0000</span>:4444:' +
             '<span class="zero">000</span>1',
+        );
+      });
+    });
+
+    describe('simpleGroup', () => {
+      it('should pass through groups containing group-v4', () => {
+        const topic = v6.helpers.simpleGroup(
+          'ffff:<span class="hover-group group-v4 group-6">192.168</span>.<span class="hover-group group-v4 group-7">0.1</span>',
+        );
+
+        topic[0].should.equal(
+          '<span class="hover-group group-0">ffff</span>',
+        );
+
+        // The group-v4 segment should pass through unchanged
+        topic[1].should.equal(
+          '<span class="hover-group group-v4 group-6">192.168</span>.<span class="hover-group group-v4 group-7">0.1</span>',
         );
       });
     });

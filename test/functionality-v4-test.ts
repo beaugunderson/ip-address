@@ -205,6 +205,18 @@ describe('v4', () => {
     });
   });
 
+  describe('Creating an address from an unsigned byte array', () => {
+    it('should parse correctly', () => {
+      const topic = Address4.fromUnsignedByteArray([127, 0, 0, 1]);
+      topic.correctForm().should.equal('127.0.0.1');
+    });
+
+    it('should throw error for array with wrong length', () => {
+      should.Throw(() => Address4.fromUnsignedByteArray([127, 0, 0]), 'IPv4 addresses require exactly 4 bytes');
+      should.Throw(() => Address4.fromUnsignedByteArray([127, 0, 0, 1, 2]), 'IPv4 addresses require exactly 4 bytes');
+    });
+  });
+
   describe('A different notation of the same address', () => {
     const addresses = notationsToAddresseses([
       '127.0.0.1/32',

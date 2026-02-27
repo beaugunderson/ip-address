@@ -30,6 +30,7 @@
       ".eslintrc.js",
       "coverage/",
       "dist/",
+      "docs/",
       "test/",
       "tmp/"
     ],
