@@ -151,6 +151,12 @@ export class Address6 {
     this.parsedAddress = this.parse(this.addressMinusSuffix);
   }
 
+  /**
+   * Return true if the address is valid
+   * @memberof Address6
+   * @static
+   * @returns {boolean}
+   */
   static isValid(address: string): boolean {
     try {
       // eslint-disable-next-line no-new
