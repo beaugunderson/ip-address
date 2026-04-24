@@ -149,6 +149,13 @@ export class Address6 {
     this.addressMinusSuffix = address;
 
     this.parsedAddress = this.parse(this.addressMinusSuffix);
+    if (
+      this.parsedAddress.length === 8 &&
+      this.parsedAddress.slice(0, 5).every((group) => group === '0') &&
+      this.parsedAddress[5].toLowerCase() === 'ffff'
+    ) {
+      this.v4 = true;
+    }
   }
 
   static isValid(address: string): boolean {
