@@ -13,6 +13,9 @@ import {
 } from './v6/regular-expressions';
 import { AddressError } from './address-error';
 import { testBit } from './common';
+ 
+const TYPES_CACHE: Map<string, Address6> = new Map();
+
 
 function assert(condition: any): asserts condition {
   if (!condition) {
@@ -437,7 +440,15 @@ export class Address6 {
    */
   getType(): string {
     for (const subnet of Object.keys(constants6.TYPES)) {
-      if (this.isInSubnet(new Address6(subnet))) {
+      let subnetAddress = TYPES_CACHE.get(subnet);
+
+      if (!subnetAddress) {
+        subnetAddress = new Address6(subnet);
+
+        TYPES_CACHE.set(subnet, subnetAddress);
+      }
+
+      if (this.isInSubnet(subnetAddress)) {
         return constants6.TYPES[subnet] as string;
       }
     }
@@ -998,7 +1009,7 @@ export class Address6 {
    * @returns {boolean}
    */
   isMulticast(): boolean {
-    return this.getType() === 'Multicast';
+    return this.getBitsBase2(0, 8) === '11111111';
   }
 
   /**

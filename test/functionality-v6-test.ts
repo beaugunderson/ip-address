@@ -100,6 +100,13 @@ describe('v6', () => {
       topic.is6to4().should.equal(false);
     });
 
+    it('correctly identifies multicast addresses', () => {
+      new Address6('ff00::').isMulticast().should.equal(true);
+      new Address6('ff01::1').isMulticast().should.equal(true);
+      new Address6('ff02::1').isMulticast().should.equal(true);
+      new Address6('ff05::2').isMulticast().should.equal(true);
+    });
+
     it('gets the correct microsoft transcription', () => {
       topic.microsoftTranscription().should.equal('a-b-c-d-e-f-0-1.ipv6-literal.net');
     });
