@@ -230,6 +230,65 @@ describe('v6', () => {
     });
   });
 
+  describe('group() with a zone containing HTML characters', () => {
+    const payload = 'fe80::1%<b>';
+    const topic = new Address6(payload);
+
+    it('stores the raw zone on the instance', () => {
+      should.equal(topic.zone, '%<b>');
+    });
+
+    it('does not include the zone in the grouped HTML output', () => {
+      const html = topic.group();
+      html.should.not.include('<b>');
+    });
+
+    it('does not include the zone in the non-elided grouped HTML output', () => {
+      const nonElided = new Address6('a:b:c:d:1:2:3:4%<b>');
+      const html = nonElided.group();
+      html.should.not.include('<b>');
+    });
+  });
+
+  describe('link() with options containing HTML characters', () => {
+    const topic = new Address6('2001:db8::1');
+
+    it('escapes the className', () => {
+      const html = topic.link({ className: 'a"b' });
+      html.should.include('class="a&quot;b"');
+    });
+
+    it('escapes the prefix', () => {
+      const html = topic.link({ prefix: 'a"b' });
+      html.should.include('href="a&quot;b');
+    });
+  });
+
+  describe('parse4in6 leading-zero error', () => {
+    it('highlights the offending IPv4 octet in parseMessage', () => {
+      try {
+        // eslint-disable-next-line no-new
+        new Address6('::ffff:10.0.01.1');
+        throw new Error('expected Address6 constructor to throw');
+      } catch (e) {
+        (e as any).parseMessage.should.include('<span class="parse-error">0</span>');
+        (e as any).parseMessage.should.include('::ffff:');
+      }
+    });
+
+    it('escapes HTML characters in the prefix', () => {
+      try {
+        // eslint-disable-next-line no-new
+        new Address6('<b>:10.0.01.1');
+        throw new Error('expected Address6 constructor to throw');
+      } catch (e) {
+        const parseMessage = (e as any).parseMessage;
+        parseMessage.should.not.include('<b>');
+        parseMessage.should.include('&lt;b&gt;');
+      }
+    });
+  });
+
   describe('A teredo address', () => {
     const topic = new Address6('2001:0000:ce49:7601:e866:efff:62c3:fffe');
 
@@ -590,9 +649,25 @@ describe('v6', () => {
           '<span class="hover-group group-v4 group-6">192.168</span>.<span class="hover-group group-v4 group-7">0.1</span>',
         );
       });
+
+      it('should HTML-escape non-pass-through segments', () => {
+        const topic = v6.helpers.simpleGroup('<b>bold</b>');
+
+        topic[0].should.equal(
+          '<span class="hover-group group-0">&lt;b&gt;bold&lt;/b&gt;</span>',
+        );
+      });
     });
 
     describe('spanAll', () => {
+      it('should HTML-escape characters in the class attribute', () => {
+        const topic = v6.helpers.spanAll('"');
+
+        topic.should.equal(
+          '<span class="digit value-&quot; position-0">&quot;</span>',
+        );
+      });
+
       it('should span leading zeroes', () => {
         const topic = v6.helpers.spanAll('001100');
 

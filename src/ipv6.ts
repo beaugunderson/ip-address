@@ -617,12 +617,15 @@ export class Address6 {
 
       for (let i = 0; i < this.address4.groups; i++) {
         if (/^0[0-9]+/.test(this.address4.parsedAddress[i])) {
+          // The prefix groups haven't been through the bad-character check
+          // yet, so escape them before including in the error HTML.
+          const highlighted = this.address4.parsedAddress.map(spanLeadingZeroes4).join('.');
+          const prefix = groups.slice(0, -1).map(helpers.escapeHtml).join(':');
+          const separator = groups.length > 1 ? ':' : '';
+
           throw new AddressError(
             "IPv4 addresses can't have leading zeroes.",
-            address.replace(
-              constants4.RE_ADDRESS,
-              this.address4.parsedAddress.map(spanLeadingZeroes4).join('.'),
-            ),
+            `${prefix}${separator}${highlighted}`,
           );
         }
       }
@@ -1083,12 +1086,16 @@ export class Address6 {
     }
 
     const form = formFunction.call(this);
+    const safeHref = helpers.escapeHtml(`${options.prefix}${form}`);
+    const safeForm = helpers.escapeHtml(form);
 
     if (options.className) {
-      return `<a href="${options.prefix}${form}" class="${options.className}">${form}</a>`;
+      const safeClass = helpers.escapeHtml(options.className);
+
+      return `<a href="${safeHref}" class="${safeClass}">${safeForm}</a>`;
     }
 
-    return `<a href="${options.prefix}${form}">${form}</a>`;
+    return `<a href="${safeHref}">${safeForm}</a>`;
   }
 
   /**
@@ -1098,7 +1105,7 @@ export class Address6 {
   group(): string {
     if (this.elidedGroups === 0) {
       // The simple case
-      return helpers.simpleGroup(this.address).join(':');
+      return helpers.simpleGroup(this.addressMinusSuffix).join(':');
     }
 
     assert(typeof this.elidedGroups === 'number');
@@ -1107,7 +1114,7 @@ export class Address6 {
     // The elided case
     const output = [];
 
-    const [left, right] = this.address.split('::');
+    const [left, right] = this.addressMinusSuffix.split('::');
 
     if (left.length) {
       output.push(...helpers.simpleGroup(left));

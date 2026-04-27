@@ -1,8 +1,17 @@
+export function escapeHtml(s: string): string {
+  return s
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
 /**
  * @returns {String} the string with all zeroes contained in a <span>
  */
 export function spanAllZeroes(s: string): string {
-  return s.replace(/(0+)/g, '<span class="zero">$1</span>');
+  return escapeHtml(s).replace(/(0+)/g, '<span class="zero">$1</span>');
 }
 
 /**
@@ -13,13 +22,14 @@ export function spanAll(s: string, offset: number = 0): string {
 
   return letters
     .map(
-      (n, i) => `<span class="digit value-${n} position-${i + offset}">${spanAllZeroes(n)}</span>`,
+      (n, i) =>
+        `<span class="digit value-${escapeHtml(n)} position-${i + offset}">${spanAllZeroes(n)}</span>`,
     )
     .join('');
 }
 
 function spanLeadingZeroesSimple(group: string): string {
-  return group.replace(/^(0+)/, '<span class="zero">$1</span>');
+  return escapeHtml(group).replace(/^(0+)/, '<span class="zero">$1</span>');
 }
 
 /**
