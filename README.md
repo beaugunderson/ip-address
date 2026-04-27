@@ -2,12 +2,10 @@
 [![codecov]](https://codecov.io/github/beaugunderson/ip-address?branch=master)
 [![downloads]](https://www.npmjs.com/package/ip-address)
 [![npm]](https://www.npmjs.com/package/ip-address)
-[![snyk]](https://snyk.io/test/github/beaugunderson/ip-address)
 
 [codecov]: https://codecov.io/github/beaugunderson/ip-address/coverage.svg?branch=master
 [downloads]: https://img.shields.io/npm/dm/ip-address.svg
 [npm]: https://img.shields.io/npm/v/ip-address.svg
-[snyk]: https://snyk.io/test/github/beaugunderson/ip-address/badge.svg
 
 ## ip-address
 
