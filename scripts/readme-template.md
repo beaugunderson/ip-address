@@ -70,7 +70,7 @@ Address6.fromURL('http://[2001:db8::1]:8080/').port;  // 8080
 - Decodes [Teredo](http://en.wikipedia.org/wiki/Teredo_tunneling#IPv6_addressing) and 6to4 tunneling information
 - Conversions: canonical/correct form, hex, binary, decimal, byte arrays, BigInt, `in-addr.arpa` / `ip6.arpa`
 - Runs in Node.js and the browser
-- 2,000+ test cases
+- Thousands of test cases
 
 ### Terminology
 
