@@ -189,6 +189,139 @@ describe('v4', () => {
     });
   });
 
+  describe('wildcardMask', () => {
+    it('returns 255.255.255.255 for /0', () => {
+      should.equal(new Address4('0.0.0.0/0').wildcardMask().correctForm(), '255.255.255.255');
+    });
+
+    it('returns 0.255.255.255 for /8', () => {
+      should.equal(new Address4('10.0.0.1/8').wildcardMask().correctForm(), '0.255.255.255');
+    });
+
+    it('returns 0.0.15.255 for /20', () => {
+      should.equal(new Address4('127.0.0.2/20').wildcardMask().correctForm(), '0.0.15.255');
+    });
+
+    it('returns 0.0.0.3 for /30', () => {
+      should.equal(new Address4('127.0.0.2/30').wildcardMask().correctForm(), '0.0.0.3');
+    });
+
+    it('returns 0.0.0.0 for /32 (default)', () => {
+      should.equal(new Address4('192.168.1.1').wildcardMask().correctForm(), '0.0.0.0');
+    });
+
+    it('is the inverse of subnetMaskAddress', () => {
+      for (let i = 0; i <= 32; i++) {
+        const topic = new Address4(`10.0.0.1/${i}`);
+        const mask = topic.subnetMaskAddress().bigInt();
+        const wildcard = topic.wildcardMask().bigInt();
+        // eslint-disable-next-line no-bitwise
+        const allOnes = (BigInt(1) << BigInt(32)) - BigInt(1);
+        // eslint-disable-next-line no-bitwise
+        (mask ^ wildcard).should.equal(allOnes);
+      }
+    });
+  });
+
+  describe('fromAddressAndWildcardMask', () => {
+    it('translates 0.0.0.255 to /24', () => {
+      const topic = Address4.fromAddressAndWildcardMask('192.168.1.1', '0.0.0.255');
+      topic.subnetMask.should.equal(24);
+      topic.subnet.should.equal('/24');
+      should.equal(topic.addressMinusSuffix, '192.168.1.1');
+    });
+
+    it('translates 0.0.0.3 to /30 (Cisco ACL example)', () => {
+      Address4.fromAddressAndWildcardMask(
+        '192.168.1.1',
+        '0.0.0.3',
+      ).subnetMask.should.equal(30);
+    });
+
+    it('translates 255.255.255.255 to /0', () => {
+      Address4.fromAddressAndWildcardMask(
+        '192.168.1.1',
+        '255.255.255.255',
+      ).subnetMask.should.equal(0);
+    });
+
+    it('translates 0.0.0.0 to /32', () => {
+      Address4.fromAddressAndWildcardMask(
+        '192.168.1.1',
+        '0.0.0.0',
+      ).subnetMask.should.equal(32);
+    });
+
+    it('round-trips through wildcardMask()', () => {
+      const original = new Address4('10.0.0.1/20');
+      const wildcard = original.wildcardMask().correctForm();
+      Address4.fromAddressAndWildcardMask('10.0.0.1', wildcard).subnetMask.should.equal(20);
+    });
+
+    it('rejects a non-contiguous wildcard mask', () => {
+      (() =>
+        Address4.fromAddressAndWildcardMask('192.168.1.1', '0.255.0.255')).should.throw(
+        'Invalid subnet mask.',
+      );
+    });
+  });
+
+  describe('fromWildcard', () => {
+    it('parses 192.168.0.* as /24', () => {
+      const topic = Address4.fromWildcard('192.168.0.*');
+      topic.subnet.should.equal('/24');
+      topic.startAddress().correctForm().should.equal('192.168.0.0');
+      topic.endAddress().correctForm().should.equal('192.168.0.255');
+    });
+
+    it('parses 192.168.*.* as /16', () => {
+      const topic = Address4.fromWildcard('192.168.*.*');
+      topic.subnet.should.equal('/16');
+      topic.startAddress().correctForm().should.equal('192.168.0.0');
+      topic.endAddress().correctForm().should.equal('192.168.255.255');
+    });
+
+    it('parses 10.*.*.* as /8', () => {
+      Address4.fromWildcard('10.*.*.*').subnet.should.equal('/8');
+    });
+
+    it('parses *.*.*.* as /0', () => {
+      Address4.fromWildcard('*.*.*.*').subnet.should.equal('/0');
+    });
+
+    it('parses a no-wildcard address as /32', () => {
+      const topic = Address4.fromWildcard('192.168.1.1');
+      topic.subnet.should.equal('/32');
+      topic.correctForm().should.equal('192.168.1.1');
+    });
+
+    it('rejects an interior wildcard', () => {
+      (() => Address4.fromWildcard('*.168.0.1')).should.throw(
+        'Wildcard `*` must only appear in trailing octets',
+      );
+      (() => Address4.fromWildcard('192.*.0.1')).should.throw(
+        'Wildcard `*` must only appear in trailing octets',
+      );
+    });
+
+    it('rejects a partial-octet wildcard', () => {
+      (() => Address4.fromWildcard('192.168.0.1*')).should.throw('Invalid IPv4 address.');
+    });
+
+    it('rejects a pattern with the wrong number of octets', () => {
+      (() => Address4.fromWildcard('192.168.*')).should.throw(
+        'Wildcard pattern must have 4 octets',
+      );
+      (() => Address4.fromWildcard('192.168.0.0.*')).should.throw(
+        'Wildcard pattern must have 4 octets',
+      );
+    });
+
+    it('rejects an out-of-range octet in the prefix', () => {
+      (() => Address4.fromWildcard('999.168.0.*')).should.throw('Invalid IPv4 address.');
+    });
+  });
+
   describe('Creating an address from a BigInt', () => {
     const topic = Address4.fromBigInt(BigInt('2130706433'));
 

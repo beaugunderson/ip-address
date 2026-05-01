@@ -637,6 +637,142 @@ describe('v6', () => {
     });
   });
 
+  describe('wildcardMask', () => {
+    it('returns ffff:ffff:ffff:ffff:ffff:ffff:ffff:ffff for /0', () => {
+      should.equal(
+        new Address6('::/0').wildcardMask().correctForm(),
+        'ffff:ffff:ffff:ffff:ffff:ffff:ffff:ffff',
+      );
+    });
+
+    it('returns ::ffff:ffff:ffff:ffff:ffff:ffff for /32', () => {
+      should.equal(
+        new Address6('2001:db8::/32').wildcardMask().correctForm(),
+        '::ffff:ffff:ffff:ffff:ffff:ffff',
+      );
+    });
+
+    it('returns ::ffff:ffff:ffff:ffff for /64', () => {
+      should.equal(
+        new Address6('2001:db8::/64').wildcardMask().correctForm(),
+        '::ffff:ffff:ffff:ffff',
+      );
+    });
+
+    it('returns :: for /128 (default)', () => {
+      should.equal(new Address6('2001:db8::1').wildcardMask().correctForm(), '::');
+    });
+
+    it('is the inverse of subnetMaskAddress', () => {
+      for (const i of [0, 16, 32, 48, 64, 80, 96, 112, 128]) {
+        const topic = new Address6(`2001:db8::1/${i}`);
+        const mask = topic.subnetMaskAddress().bigInt();
+        const wildcard = topic.wildcardMask().bigInt();
+        // eslint-disable-next-line no-bitwise
+        const allOnes = (BigInt(1) << BigInt(128)) - BigInt(1);
+        // eslint-disable-next-line no-bitwise
+        (mask ^ wildcard).should.equal(allOnes);
+      }
+    });
+  });
+
+  describe('fromAddressAndWildcardMask', () => {
+    it('translates ::ffff:ffff:ffff:ffff to /64', () => {
+      const topic = Address6.fromAddressAndWildcardMask('2001:db8::1', '::ffff:ffff:ffff:ffff');
+      topic.subnetMask.should.equal(64);
+      topic.subnet.should.equal('/64');
+    });
+
+    it('translates :: to /128', () => {
+      Address6.fromAddressAndWildcardMask('2001:db8::1', '::').subnetMask.should.equal(128);
+    });
+
+    it('translates an all-ones wildcard to /0', () => {
+      Address6.fromAddressAndWildcardMask(
+        '2001:db8::1',
+        'ffff:ffff:ffff:ffff:ffff:ffff:ffff:ffff',
+      ).subnetMask.should.equal(0);
+    });
+
+    it('round-trips through wildcardMask()', () => {
+      const original = new Address6('2001:db8::/48');
+      const wildcard = original.wildcardMask().correctForm();
+      Address6.fromAddressAndWildcardMask('2001:db8::', wildcard).subnetMask.should.equal(48);
+    });
+
+    it('rejects a non-contiguous wildcard mask', () => {
+      (() =>
+        Address6.fromAddressAndWildcardMask('2001:db8::1', 'ffff::ffff')).should.throw(
+        'Invalid subnet mask.',
+      );
+    });
+  });
+
+  describe('fromWildcard', () => {
+    it('parses 2001:db8:*:*:*:*:*:* as /32', () => {
+      const topic = Address6.fromWildcard('2001:db8:*:*:*:*:*:*');
+      topic.subnet.should.equal('/32');
+      topic.startAddress().correctForm().should.equal('2001:db8::');
+    });
+
+    it('parses 2001:db8:1:2:3:4:5:* as /112', () => {
+      Address6.fromWildcard('2001:db8:1:2:3:4:5:*').subnet.should.equal('/112');
+    });
+
+    it('parses 2001:db8::* as /112 (with `::` expansion)', () => {
+      const topic = Address6.fromWildcard('2001:db8::*');
+      topic.subnet.should.equal('/112');
+      topic.startAddress().correctForm().should.equal('2001:db8::');
+    });
+
+    it('parses *:*:*:*:*:*:*:* as /0', () => {
+      Address6.fromWildcard('*:*:*:*:*:*:*:*').subnet.should.equal('/0');
+    });
+
+    it('parses a no-wildcard address as /128', () => {
+      const topic = Address6.fromWildcard('2001:db8::1');
+      topic.subnet.should.equal('/128');
+      topic.correctForm().should.equal('2001:db8::1');
+    });
+
+    it('rejects an interior wildcard', () => {
+      (() => Address6.fromWildcard('*:db8:1:2:3:4:5:6')).should.throw(
+        'Wildcard `*` must only appear in trailing groups',
+      );
+      (() => Address6.fromWildcard('2001:*:1:2:3:4:5:6')).should.throw(
+        'Wildcard `*` must only appear in trailing groups',
+      );
+    });
+
+    it('rejects a partial-group wildcard', () => {
+      (() => Address6.fromWildcard('2001:db8:1:2:3:4:5:0*')).should.throw();
+    });
+
+    it('rejects a pattern with the wrong number of groups', () => {
+      (() => Address6.fromWildcard('2001:db8:*:*:*:*:*')).should.throw(
+        'Wildcard pattern must have 8 groups',
+      );
+    });
+
+    it('rejects multiple `::`', () => {
+      (() => Address6.fromWildcard('2001::db8::*')).should.throw(
+        "Wildcard pattern cannot contain more than one '::'",
+      );
+    });
+
+    it('rejects a CIDR suffix', () => {
+      (() => Address6.fromWildcard('2001:db8:*:*:*:*:*:*/32')).should.throw(
+        'Wildcard pattern must not include a zone or CIDR suffix',
+      );
+    });
+
+    it('rejects a zone identifier', () => {
+      (() => Address6.fromWildcard('fe80::*%eth0')).should.throw(
+        'Wildcard pattern must not include a zone or CIDR suffix',
+      );
+    });
+  });
+
   describe('HTML helpers', () => {
     describe('href', () => {
       const topic = new Address6('2001:4860:4001:803::1011');

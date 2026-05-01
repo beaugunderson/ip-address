@@ -104,6 +104,65 @@ export class Address4 {
   }
 
   /**
+   * Construct an `Address4` from an address and a Cisco-style wildcard mask
+   * given as separate strings (e.g. `0.0.0.255` for a `/24`). The wildcard
+   * mask is the bitwise inverse of the subnet mask. Throws `AddressError`
+   * if the mask is non-contiguous (e.g. `0.255.0.255`).
+   * @example
+   * var address = Address4.fromAddressAndWildcardMask('10.0.0.1', '0.0.0.255');
+   * address.subnetMask; // 24
+   */
+  static fromAddressAndWildcardMask(address: string, wildcardMask: string): Address4 {
+    const wildcard = new Address4(wildcardMask).bigInt();
+    const allOnes = (BigInt(1) << BigInt(constants.BITS)) - BigInt(1);
+    // eslint-disable-next-line no-bitwise
+    const mask = wildcard ^ allOnes;
+    const bits = common.prefixLengthFromMask(mask, constants.BITS);
+    return new Address4(`${address}/${bits}`);
+  }
+
+  /**
+   * Construct an `Address4` from a wildcard pattern with trailing `*`
+   * octets. The number of trailing wildcards determines the prefix
+   * length: each `*` represents 8 bits.
+   *
+   * Only trailing whole-octet wildcards are supported. Partial-octet
+   * wildcards (e.g. `192.168.0.1*`) and interior wildcards (e.g.
+   * `192.*.0.1`) throw `AddressError`.
+   * @example
+   * Address4.fromWildcard('192.168.0.*').subnet;   // '/24'
+   * Address4.fromWildcard('192.168.*.*').subnet;   // '/16'
+   * Address4.fromWildcard('*.*.*.*').subnet;       // '/0'
+   */
+  static fromWildcard(input: string): Address4 {
+    const groups = input.split('.');
+
+    if (groups.length !== constants.GROUPS) {
+      throw new AddressError('Wildcard pattern must have 4 octets');
+    }
+
+    let firstWildcard = -1;
+
+    for (let i = 0; i < groups.length; i++) {
+      if (groups[i] === '*') {
+        if (firstWildcard === -1) {
+          firstWildcard = i;
+        }
+      } else if (firstWildcard !== -1) {
+        throw new AddressError(
+          'Wildcard `*` must only appear in trailing octets (e.g. `192.168.0.*`)',
+        );
+      }
+    }
+
+    const trailing = firstWildcard === -1 ? 0 : groups.length - firstWildcard;
+    const replaced = groups.map((g) => (g === '*' ? '0' : g));
+    const subnetBits = constants.BITS - trailing * 8;
+
+    return new Address4(`${replaced.join('.')}/${subnetBits}`);
+  }
+
+  /**
    * Converts a hex string to an IPv4 address object
    * @param {string} hex - a hex string to convert
    * @returns {Address4}
@@ -255,6 +314,18 @@ export class Address4 {
   subnetMaskAddress(): Address4 {
     return Address4.fromBigInt(
       BigInt(`0b${'1'.repeat(this.subnetMask)}${'0'.repeat(constants.BITS - this.subnetMask)}`),
+    );
+  }
+
+  /**
+   * The Cisco-style wildcard mask, e.g. `0.0.0.255` for a `/24`. This is
+   * the bitwise inverse of `subnetMaskAddress()`. Returns an `Address4`;
+   * call `.correctForm()` for the string.
+   * @returns {Address4}
+   */
+  wildcardMask(): Address4 {
+    return Address4.fromBigInt(
+      BigInt(`0b${'0'.repeat(this.subnetMask)}${'1'.repeat(constants.BITS - this.subnetMask)}`),
     );
   }
 
