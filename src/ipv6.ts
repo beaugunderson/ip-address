@@ -1202,6 +1202,30 @@ export class Address6 {
   isLoopback(): boolean {
     return this.getType() === 'Loopback';
   }
+
+  /**
+   * Returns true if the address is a Unique Local Address in `fc00::/7` ([RFC 4193](https://datatracker.ietf.org/doc/html/rfc4193)). ULAs are the IPv6 equivalent of IPv4 [RFC 1918](https://datatracker.ietf.org/doc/html/rfc1918) private addresses.
+   * @returns {boolean}
+   */
+  isULA(): boolean {
+    return this.isInSubnet(ULA_SUBNET);
+  }
+
+  /**
+   * Returns true if the address is the unspecified address `::`.
+   * @returns {boolean}
+   */
+  isUnspecified(): boolean {
+    return this.getType() === 'Unspecified';
+  }
+
+  /**
+   * Returns true if the address is in the documentation prefix `2001:db8::/32` ([RFC 3849](https://datatracker.ietf.org/doc/html/rfc3849)).
+   * @returns {boolean}
+   */
+  isDocumentation(): boolean {
+    return this.isInSubnet(DOCUMENTATION_SUBNET);
+  }
   // #endregion
 
   // #region HTML
@@ -1386,3 +1410,5 @@ const TYPE_SUBNETS: Array<[Address6, string]> = Object.keys(constants6.TYPES).ma
 ]);
 const TEREDO_SUBNET = new Address6('2001::/32');
 const SIX_TO_FOUR_SUBNET = new Address6('2002::/16');
+const ULA_SUBNET = new Address6('fc00::/7');
+const DOCUMENTATION_SUBNET = new Address6('2001:db8::/32');

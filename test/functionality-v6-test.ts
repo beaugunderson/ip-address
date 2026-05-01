@@ -871,6 +871,69 @@ describe('v6', () => {
     });
   });
 
+  describe('isULA', () => {
+    it('detects fc00::/7', () => {
+      notationsToAddresseses([
+        'fc00::',
+        'fc00::1',
+        'fcff:ffff:ffff:ffff:ffff:ffff:ffff:ffff',
+        'fd00::',
+        'fd12:3456:789a::1',
+        'fdff:ffff:ffff:ffff:ffff:ffff:ffff:ffff',
+      ]).forEach((topic) => {
+        should.equal(topic.isULA(), true);
+      });
+    });
+
+    it('rejects addresses outside fc00::/7 including fe80::/10 and global unicast', () => {
+      notationsToAddresseses([
+        '::',
+        '::1',
+        'fbff:ffff:ffff:ffff:ffff:ffff:ffff:ffff',
+        'fe00::',
+        'fe80::1',
+        '2001:db8::1',
+      ]).forEach((topic) => {
+        should.equal(topic.isULA(), false);
+      });
+    });
+  });
+
+  describe('isUnspecified', () => {
+    it('detects ::', () => {
+      should.equal(new Address6('::').isUnspecified(), true);
+    });
+
+    it('rejects non-zero addresses', () => {
+      notationsToAddresseses(['::1', '2001:db8::1', 'fc00::']).forEach((topic) => {
+        should.equal(topic.isUnspecified(), false);
+      });
+    });
+  });
+
+  describe('isDocumentation', () => {
+    it('detects 2001:db8::/32', () => {
+      notationsToAddresseses([
+        '2001:db8::',
+        '2001:db8::1',
+        '2001:db8:ffff:ffff:ffff:ffff:ffff:ffff',
+      ]).forEach((topic) => {
+        should.equal(topic.isDocumentation(), true);
+      });
+    });
+
+    it('rejects addresses outside 2001:db8::/32', () => {
+      notationsToAddresseses([
+        '2001:db7:ffff:ffff:ffff:ffff:ffff:ffff',
+        '2001:db9::',
+        '2001::1',
+        'fc00::',
+      ]).forEach((topic) => {
+        should.equal(topic.isDocumentation(), false);
+      });
+    });
+  });
+
   describe('String helpers', () => {
     describe('spanLeadingZeroes', () => {
       it('should span leading zeroes', () => {

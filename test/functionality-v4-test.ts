@@ -486,4 +486,101 @@ describe('v4', () => {
       });
     });
   });
+
+  describe('isPrivate', () => {
+    it('detects RFC 1918 ranges', () => {
+      notationsToAddresseses([
+        '10.0.0.0',
+        '10.255.255.255',
+        '172.16.0.0',
+        '172.16.0.1',
+        '172.31.255.255',
+        '192.168.0.0',
+        '192.168.1.1',
+        '192.168.255.255',
+      ]).forEach((topic) => {
+        should.equal(topic.isPrivate(), true);
+      });
+    });
+
+    it('rejects non-private addresses including range boundaries', () => {
+      notationsToAddresseses([
+        '8.8.8.8',
+        '9.255.255.255',
+        '11.0.0.0',
+        '172.15.255.255',
+        '172.32.0.0',
+        '192.167.255.255',
+        '192.169.0.0',
+      ]).forEach((topic) => {
+        should.equal(topic.isPrivate(), false);
+      });
+    });
+  });
+
+  describe('isLoopback', () => {
+    it('detects 127.0.0.0/8', () => {
+      notationsToAddresseses(['127.0.0.0', '127.0.0.1', '127.255.255.255']).forEach((topic) => {
+        should.equal(topic.isLoopback(), true);
+      });
+    });
+
+    it('rejects non-loopback addresses', () => {
+      notationsToAddresseses(['126.255.255.255', '128.0.0.0', '8.8.8.8']).forEach((topic) => {
+        should.equal(topic.isLoopback(), false);
+      });
+    });
+  });
+
+  describe('isLinkLocal', () => {
+    it('detects 169.254.0.0/16', () => {
+      notationsToAddresseses(['169.254.0.0', '169.254.1.1', '169.254.255.255']).forEach((topic) => {
+        should.equal(topic.isLinkLocal(), true);
+      });
+    });
+
+    it('rejects addresses outside 169.254.0.0/16', () => {
+      notationsToAddresseses(['169.253.255.255', '169.255.0.0', '8.8.8.8']).forEach((topic) => {
+        should.equal(topic.isLinkLocal(), false);
+      });
+    });
+  });
+
+  describe('isUnspecified', () => {
+    it('detects 0.0.0.0', () => {
+      should.equal(new Address4('0.0.0.0').isUnspecified(), true);
+    });
+
+    it('rejects non-zero addresses', () => {
+      notationsToAddresseses(['0.0.0.1', '1.0.0.0', '8.8.8.8']).forEach((topic) => {
+        should.equal(topic.isUnspecified(), false);
+      });
+    });
+  });
+
+  describe('isBroadcast', () => {
+    it('detects 255.255.255.255', () => {
+      should.equal(new Address4('255.255.255.255').isBroadcast(), true);
+    });
+
+    it('rejects non-broadcast addresses including subnet broadcasts', () => {
+      notationsToAddresseses(['255.255.255.254', '192.168.1.255', '8.8.8.8']).forEach((topic) => {
+        should.equal(topic.isBroadcast(), false);
+      });
+    });
+  });
+
+  describe('isCGNAT', () => {
+    it('detects 100.64.0.0/10', () => {
+      notationsToAddresseses(['100.64.0.0', '100.64.0.1', '100.127.255.255']).forEach((topic) => {
+        should.equal(topic.isCGNAT(), true);
+      });
+    });
+
+    it('rejects addresses outside 100.64.0.0/10', () => {
+      notationsToAddresseses(['100.63.255.255', '100.128.0.0', '8.8.8.8']).forEach((topic) => {
+        should.equal(topic.isCGNAT(), false);
+      });
+    });
+  });
 });
