@@ -517,6 +517,17 @@ export class Address6 {
   }
 
   /**
+   * The network address in CIDR string form, e.g. `2001:db8::/32` for
+   * `2001:db8::1/32`. For an address with no explicit subnet the prefix
+   * is `/128`, e.g. `networkForm()` on `2001:db8::1` returns
+   * `2001:db8::1/128`.
+   * @returns {string}
+   */
+  networkForm(): string {
+    return `${this.startAddress().correctForm()}/${this.subnetMask}`;
+  }
+
+  /**
    * Return the scope of the address
    * @returns {String}
    */

@@ -708,6 +708,31 @@ describe('v6', () => {
     });
   });
 
+  describe('networkForm', () => {
+    it('returns ::/0 for /0', () => {
+      should.equal(new Address6('2001:db8::1/0').networkForm(), '::/0');
+    });
+
+    it('returns 2001:db8::/32 for 2001:db8::1/32', () => {
+      should.equal(new Address6('2001:db8::1/32').networkForm(), '2001:db8::/32');
+    });
+
+    it('returns 2001:db8::/64 for 2001:db8::abcd/64', () => {
+      should.equal(new Address6('2001:db8::abcd/64').networkForm(), '2001:db8::/64');
+    });
+
+    it('returns the address itself with /128 when no subnet is given', () => {
+      should.equal(new Address6('2001:db8::1').networkForm(), '2001:db8::1/128');
+    });
+
+    it('round-trips through the Address6 constructor', () => {
+      const original = new Address6('2001:db8:abcd:ef01::1/48');
+      const round = new Address6(original.networkForm());
+      round.correctForm().should.equal('2001:db8:abcd::');
+      round.subnetMask.should.equal(48);
+    });
+  });
+
   describe('fromWildcard', () => {
     it('parses 2001:db8:*:*:*:*:*:* as /32', () => {
       const topic = Address6.fromWildcard('2001:db8:*:*:*:*:*:*');

@@ -223,6 +223,35 @@ describe('v4', () => {
     });
   });
 
+  describe('networkForm', () => {
+    it('returns 0.0.0.0/0 for /0', () => {
+      should.equal(new Address4('10.0.0.1/0').networkForm(), '0.0.0.0/0');
+    });
+
+    it('returns 10.0.0.0/8 for 10.0.0.1/8', () => {
+      should.equal(new Address4('10.0.0.1/8').networkForm(), '10.0.0.0/8');
+    });
+
+    it('returns 205.65.224.104/29 for the issue #39 example', () => {
+      should.equal(new Address4('205.65.224.110/29').networkForm(), '205.65.224.104/29');
+    });
+
+    it('returns 192.168.1.0/24 for 192.168.1.5/24', () => {
+      should.equal(new Address4('192.168.1.5/24').networkForm(), '192.168.1.0/24');
+    });
+
+    it('returns the address itself with /32 when no subnet is given', () => {
+      should.equal(new Address4('192.168.1.5').networkForm(), '192.168.1.5/32');
+    });
+
+    it('round-trips through the Address4 constructor', () => {
+      const original = new Address4('10.20.30.40/12');
+      const round = new Address4(original.networkForm());
+      round.correctForm().should.equal('10.16.0.0');
+      round.subnetMask.should.equal(12);
+    });
+  });
+
   describe('fromAddressAndWildcardMask', () => {
     it('translates 0.0.0.255 to /24', () => {
       const topic = Address4.fromAddressAndWildcardMask('192.168.1.1', '0.0.0.255');
