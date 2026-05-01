@@ -209,11 +209,14 @@ export class Address6 {
   static fromURL(url: string) {
     let host: string;
     let port: string | number | null = null;
-    let result: string[] | null;
+    let result: RegExpExecArray | null;
+
+    // Remove the protocol prefix, if any
+    const stripped = url.replace(/^[a-z][a-z0-9+.-]*:\/\//i, '');
 
     // If we have brackets parse them and find a port
-    if (url.indexOf('[') !== -1 && url.indexOf(']:') !== -1) {
-      result = constants6.RE_URL_WITH_PORT.exec(url);
+    if (stripped.indexOf('[') !== -1 && stripped.indexOf(']:') !== -1) {
+      result = constants6.RE_URL_WITH_PORT.exec(stripped);
 
       if (result === null) {
         return {
@@ -225,13 +228,8 @@ export class Address6 {
 
       host = result[1];
       port = result[2];
-      // If there's a URL extract the address
-    } else if (url.indexOf('/') !== -1) {
-      // Remove the protocol prefix
-      url = url.replace(/^[a-z0-9]+:\/\//, '');
-
-      // Parse the address
-      result = constants6.RE_URL.exec(url);
+    } else {
+      result = constants6.RE_URL.exec(stripped);
 
       if (result === null) {
         return {
@@ -241,10 +239,7 @@ export class Address6 {
         };
       }
 
-      host = result[1];
-      // Otherwise just assign the URL to the host and let the library parse it
-    } else {
-      host = url;
+      host = result[1] ?? result[2];
     }
 
     // If there's a port convert it to an integer
