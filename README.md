@@ -46,6 +46,9 @@ link.isLinkLocal();                        // true
 link.isMulticast();                        // false
 link.isLoopback();                         // false
 
+new Address4('192.168.1.1').isPrivate();   // true (RFC 1918)
+new Address6('fc00::1').isULA();           // true (RFC 4193)
+
 // Numeric and byte representations
 v4.bigInt();                               // 3232235777n
 v4.toArray();                              // [192, 168, 1, 1]
@@ -66,7 +69,7 @@ Address6.fromURL('http://[2001:db8::1]:8080/').port;  // 8080
 - Parses all standard IPv4 and IPv6 notations, including subnets and zones
 - Parses IPv6 hosts (and ports) from URLs via `Address6.fromURL(url)`
 - Subnet membership checks (`isInSubnet`) and range queries (`startAddress` / `endAddress`)
-- Special-property checks: multicast, loopback, link-local, ULA, Teredo, 6to4, v4-in-v6
+- Special-property checks: private (RFC 1918) / ULA (RFC 4193), loopback, link-local, multicast, broadcast, unspecified, CGNAT, documentation, Teredo, 6to4, v4-in-v6
 - Decodes [Teredo](http://en.wikipedia.org/wiki/Teredo_tunneling#IPv6_addressing) and 6to4 tunneling information
 - Conversions: canonical/correct form, hex, binary, decimal, byte arrays, BigInt, `in-addr.arpa` / `ip6.arpa`
 - Runs in Node.js and the browser
@@ -137,8 +140,14 @@ Represents an IPv4 address
 - `getBitsBase2(start: number, end: number): string` — Returns the bits in the given range as a base-2 string [src](https://github.com/beaugunderson/ip-address/blob/master/src/ipv4.ts#L394)
 - `reverseForm(options?: ReverseFormOptions): string` — Return the reversed ip6.arpa form of the address [src](https://github.com/beaugunderson/ip-address/blob/master/src/ipv4.ts#L404)
 - `isMulticast(): boolean` — Returns true if the given address is a multicast address [src](https://github.com/beaugunderson/ip-address/blob/master/src/ipv4.ts#L428)
-- `binaryZeroPad(): string` — Returns a zero-padded base-2 string representation of the address [src](https://github.com/beaugunderson/ip-address/blob/master/src/ipv4.ts#L436)
-- `groupForV6(): string` — Groups an IPv4 address for inclusion at the end of an IPv6 address [src](https://github.com/beaugunderson/ip-address/blob/master/src/ipv4.ts#L447)
+- `isPrivate(): boolean` — Returns true if the address is in one of the [RFC 1918](https://datatracker.ietf.org/doc/html/rfc1918) private address ranges (`10.0.0.0/8`, `172.16.0.0/12`, `192.168.0.0/16`). [src](https://github.com/beaugunderson/ip-address/blob/master/src/ipv4.ts#L436)
+- `isLoopback(): boolean` — Returns true if the address is in the loopback range `127.0.0.0/8` ([RFC 1122](https://datatracker.ietf.org/doc/html/rfc1122)). [src](https://github.com/beaugunderson/ip-address/blob/master/src/ipv4.ts#L444)
+- `isLinkLocal(): boolean` — Returns true if the address is in the link-local range `169.254.0.0/16` ([RFC 3927](https://datatracker.ietf.org/doc/html/rfc3927)). [src](https://github.com/beaugunderson/ip-address/blob/master/src/ipv4.ts#L452)
+- `isUnspecified(): boolean` — Returns true if the address is the unspecified address `0.0.0.0`. [src](https://github.com/beaugunderson/ip-address/blob/master/src/ipv4.ts#L460)
+- `isBroadcast(): boolean` — Returns true if the address is the limited broadcast address `255.255.255.255` ([RFC 919](https://datatracker.ietf.org/doc/html/rfc919)). [src](https://github.com/beaugunderson/ip-address/blob/master/src/ipv4.ts#L468)
+- `isCGNAT(): boolean` — Returns true if the address is in the carrier-grade NAT range `100.64.0.0/10` ([RFC 6598](https://datatracker.ietf.org/doc/html/rfc6598)). [src](https://github.com/beaugunderson/ip-address/blob/master/src/ipv4.ts#L476)
+- `binaryZeroPad(): string` — Returns a zero-padded base-2 string representation of the address [src](https://github.com/beaugunderson/ip-address/blob/master/src/ipv4.ts#L484)
+- `groupForV6(): string` — Groups an IPv4 address for inclusion at the end of an IPv6 address [src](https://github.com/beaugunderson/ip-address/blob/master/src/ipv4.ts#L495)
 
 **Properties**
 
@@ -215,11 +224,14 @@ Represents an IPv6 address
 - `isTeredo(): boolean` — Returns true if the address is a Teredo address, false otherwise [src](https://github.com/beaugunderson/ip-address/blob/master/src/ipv6.ts#L1186)
 - `is6to4(): boolean` — Returns true if the address is a 6to4 address, false otherwise [src](https://github.com/beaugunderson/ip-address/blob/master/src/ipv6.ts#L1194)
 - `isLoopback(): boolean` — Returns true if the address is a loopback address, false otherwise [src](https://github.com/beaugunderson/ip-address/blob/master/src/ipv6.ts#L1202)
-- `href(optionalPort?: string | number): string` — Returns the address as an HTTP URL with the host bracketed, e.g. `http://[2001:db8::1]/`. If `optionalPort` is provided it is appended, e.g. `http://[2001:db8::1]:8080/`. [src](https://github.com/beaugunderson/ip-address/blob/master/src/ipv6.ts#L1213)
-- `link(options?: { className?: string; prefix?: string; v4?: boolean }): string` — Returns an HTML `<a>` element whose `href` encodes the address in a URL hash fragment (default prefix `/#address=`). Useful for linking between pages of an address-inspector UI. [src](https://github.com/beaugunderson/ip-address/blob/master/src/ipv6.ts#L1231)
-- `group(): string` — Groups an address [src](https://github.com/beaugunderson/ip-address/blob/master/src/ipv6.ts#L1271)
-- `regularExpressionString(this: Address6, substringSearch: boolean): string` — Generate a regular expression string that can be used to find or validate all variations of this address [src](https://github.com/beaugunderson/ip-address/blob/master/src/ipv6.ts#L1323)
-- `regularExpression(this: Address6, substringSearch: boolean): RegExp` — Generate a regular expression that can be used to find or validate all variations of this address. [src](https://github.com/beaugunderson/ip-address/blob/master/src/ipv6.ts#L1377)
+- `isULA(): boolean` — Returns true if the address is a Unique Local Address in `fc00::/7` ([RFC 4193](https://datatracker.ietf.org/doc/html/rfc4193)). ULAs are the IPv6 equivalent of IPv4 [RFC 1918](https://datatracker.ietf.org/doc/html/rfc1918) private addresses. [src](https://github.com/beaugunderson/ip-address/blob/master/src/ipv6.ts#L1210)
+- `isUnspecified(): boolean` — Returns true if the address is the unspecified address `::`. [src](https://github.com/beaugunderson/ip-address/blob/master/src/ipv6.ts#L1218)
+- `isDocumentation(): boolean` — Returns true if the address is in the documentation prefix `2001:db8::/32` ([RFC 3849](https://datatracker.ietf.org/doc/html/rfc3849)). [src](https://github.com/beaugunderson/ip-address/blob/master/src/ipv6.ts#L1226)
+- `href(optionalPort?: string | number): string` — Returns the address as an HTTP URL with the host bracketed, e.g. `http://[2001:db8::1]/`. If `optionalPort` is provided it is appended, e.g. `http://[2001:db8::1]:8080/`. [src](https://github.com/beaugunderson/ip-address/blob/master/src/ipv6.ts#L1237)
+- `link(options?: { className?: string; prefix?: string; v4?: boolean }): string` — Returns an HTML `<a>` element whose `href` encodes the address in a URL hash fragment (default prefix `/#address=`). Useful for linking between pages of an address-inspector UI. [src](https://github.com/beaugunderson/ip-address/blob/master/src/ipv6.ts#L1255)
+- `group(): string` — Groups an address [src](https://github.com/beaugunderson/ip-address/blob/master/src/ipv6.ts#L1295)
+- `regularExpressionString(this: Address6, substringSearch: boolean): string` — Generate a regular expression string that can be used to find or validate all variations of this address [src](https://github.com/beaugunderson/ip-address/blob/master/src/ipv6.ts#L1347)
+- `regularExpression(this: Address6, substringSearch: boolean): RegExp` — Generate a regular expression that can be used to find or validate all variations of this address. [src](https://github.com/beaugunderson/ip-address/blob/master/src/ipv6.ts#L1401)
 
 **Properties**
 

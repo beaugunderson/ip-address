@@ -46,6 +46,9 @@ link.isLinkLocal();                        // true
 link.isMulticast();                        // false
 link.isLoopback();                         // false
 
+new Address4('192.168.1.1').isPrivate();   // true (RFC 1918)
+new Address6('fc00::1').isULA();           // true (RFC 4193)
+
 // Numeric and byte representations
 v4.bigInt();                               // 3232235777n
 v4.toArray();                              // [192, 168, 1, 1]
@@ -66,7 +69,7 @@ Address6.fromURL('http://[2001:db8::1]:8080/').port;  // 8080
 - Parses all standard IPv4 and IPv6 notations, including subnets and zones
 - Parses IPv6 hosts (and ports) from URLs via `Address6.fromURL(url)`
 - Subnet membership checks (`isInSubnet`) and range queries (`startAddress` / `endAddress`)
-- Special-property checks: multicast, loopback, link-local, ULA, Teredo, 6to4, v4-in-v6
+- Special-property checks: private (RFC 1918) / ULA (RFC 4193), loopback, link-local, multicast, broadcast, unspecified, CGNAT, documentation, Teredo, 6to4, v4-in-v6
 - Decodes [Teredo](http://en.wikipedia.org/wiki/Teredo_tunneling#IPv6_addressing) and 6to4 tunneling information
 - Conversions: canonical/correct form, hex, binary, decimal, byte arrays, BigInt, `in-addr.arpa` / `ip6.arpa`
 - Runs in Node.js and the browser

@@ -430,6 +430,54 @@ export class Address4 {
   }
 
   /**
+   * Returns true if the address is in one of the [RFC 1918](https://datatracker.ietf.org/doc/html/rfc1918) private address ranges (`10.0.0.0/8`, `172.16.0.0/12`, `192.168.0.0/16`).
+   * @returns {boolean}
+   */
+  isPrivate(): boolean {
+    return PRIVATE_V4.some((subnet) => this.isInSubnet(subnet));
+  }
+
+  /**
+   * Returns true if the address is in the loopback range `127.0.0.0/8` ([RFC 1122](https://datatracker.ietf.org/doc/html/rfc1122)).
+   * @returns {boolean}
+   */
+  isLoopback(): boolean {
+    return this.isInSubnet(LOOPBACK_V4);
+  }
+
+  /**
+   * Returns true if the address is in the link-local range `169.254.0.0/16` ([RFC 3927](https://datatracker.ietf.org/doc/html/rfc3927)).
+   * @returns {boolean}
+   */
+  isLinkLocal(): boolean {
+    return this.isInSubnet(LINK_LOCAL_V4);
+  }
+
+  /**
+   * Returns true if the address is the unspecified address `0.0.0.0`.
+   * @returns {boolean}
+   */
+  isUnspecified(): boolean {
+    return this.isInSubnet(UNSPECIFIED_V4);
+  }
+
+  /**
+   * Returns true if the address is the limited broadcast address `255.255.255.255` ([RFC 919](https://datatracker.ietf.org/doc/html/rfc919)).
+   * @returns {boolean}
+   */
+  isBroadcast(): boolean {
+    return this.isInSubnet(BROADCAST_V4);
+  }
+
+  /**
+   * Returns true if the address is in the carrier-grade NAT range `100.64.0.0/10` ([RFC 6598](https://datatracker.ietf.org/doc/html/rfc6598)).
+   * @returns {boolean}
+   */
+  isCGNAT(): boolean {
+    return this.isInSubnet(CGNAT_V4);
+  }
+
+  /**
    * Returns a zero-padded base-2 string representation of the address
    * @returns {string}
    */
@@ -459,3 +507,13 @@ export class Address4 {
 }
 
 const MULTICAST_V4 = new Address4('224.0.0.0/4');
+const PRIVATE_V4 = [
+  new Address4('10.0.0.0/8'),
+  new Address4('172.16.0.0/12'),
+  new Address4('192.168.0.0/16'),
+];
+const LOOPBACK_V4 = new Address4('127.0.0.0/8');
+const LINK_LOCAL_V4 = new Address4('169.254.0.0/16');
+const UNSPECIFIED_V4 = new Address4('0.0.0.0/32');
+const BROADCAST_V4 = new Address4('255.255.255.255/32');
+const CGNAT_V4 = new Address4('100.64.0.0/10');
