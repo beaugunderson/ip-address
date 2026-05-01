@@ -274,6 +274,90 @@ export class Address6 {
   }
 
   /**
+   * Construct an `Address6` from an address and a Cisco-style wildcard mask
+   * given as separate strings (e.g. `::ffff:ffff:ffff:ffff` for a `/64`).
+   * The wildcard mask is the bitwise inverse of the subnet mask. Throws
+   * `AddressError` if the mask is non-contiguous.
+   * @example
+   * var address = Address6.fromAddressAndWildcardMask('fe80::1', '::ffff:ffff:ffff:ffff');
+   * address.subnetMask; // 64
+   */
+  static fromAddressAndWildcardMask(address: string, wildcardMask: string): Address6 {
+    const wildcard = new Address6(wildcardMask).bigInt();
+    const allOnes = (BigInt(1) << BigInt(constants6.BITS)) - BigInt(1);
+    // eslint-disable-next-line no-bitwise
+    const mask = wildcard ^ allOnes;
+    const bits = common.prefixLengthFromMask(mask, constants6.BITS);
+    return new Address6(`${address}/${bits}`);
+  }
+
+  /**
+   * Construct an `Address6` from a wildcard pattern with trailing `*`
+   * groups. The number of trailing wildcards determines the prefix
+   * length: each `*` represents 16 bits. `::` is expanded to zero groups
+   * (not wildcards) before evaluating trailing wildcards.
+   *
+   * Only trailing whole-group wildcards are supported. Partial-group
+   * wildcards (e.g. `2001:db8::0*`) and interior wildcards (e.g.
+   * `*::1`) throw `AddressError`.
+   * @example
+   * Address6.fromWildcard('2001:db8:*:*:*:*:*:*').subnet;  // '/32'
+   * Address6.fromWildcard('2001:db8::*').subnet;           // '/112'
+   * Address6.fromWildcard('*:*:*:*:*:*:*:*').subnet;       // '/0'
+   */
+  static fromWildcard(input: string): Address6 {
+    if (input.includes('%') || input.includes('/')) {
+      throw new AddressError('Wildcard pattern must not include a zone or CIDR suffix');
+    }
+
+    const halves = input.split('::');
+
+    if (halves.length > 2) {
+      throw new AddressError("Wildcard pattern cannot contain more than one '::'");
+    }
+
+    let groups: string[];
+
+    if (halves.length === 2) {
+      const left = halves[0] === '' ? [] : halves[0].split(':');
+      const right = halves[1] === '' ? [] : halves[1].split(':');
+      const remaining = constants6.GROUPS - left.length - right.length;
+
+      if (remaining < 1) {
+        throw new AddressError("Wildcard pattern with '::' has too many groups");
+      }
+
+      groups = [...left, ...new Array(remaining).fill('0'), ...right];
+    } else {
+      groups = input.split(':');
+    }
+
+    if (groups.length !== constants6.GROUPS) {
+      throw new AddressError('Wildcard pattern must have 8 groups');
+    }
+
+    let firstWildcard = -1;
+
+    for (let i = 0; i < groups.length; i++) {
+      if (groups[i] === '*') {
+        if (firstWildcard === -1) {
+          firstWildcard = i;
+        }
+      } else if (firstWildcard !== -1) {
+        throw new AddressError(
+          'Wildcard `*` must only appear in trailing groups (e.g. `2001:db8:*:*:*:*:*:*`)',
+        );
+      }
+    }
+
+    const trailing = firstWildcard === -1 ? 0 : groups.length - firstWildcard;
+    const replaced = groups.map((g) => (g === '*' ? '0' : g));
+    const subnetBits = constants6.BITS - trailing * 16;
+
+    return new Address6(`${replaced.join(':')}/${subnetBits}`);
+  }
+
+  /**
    * Create an IPv6-mapped address given an IPv4 address
    * @param {string} address - An IPv4 address string
    * @returns {Address6}
@@ -417,6 +501,18 @@ export class Address6 {
   subnetMaskAddress(): Address6 {
     return Address6.fromBigInt(
       BigInt(`0b${'1'.repeat(this.subnetMask)}${'0'.repeat(constants6.BITS - this.subnetMask)}`),
+    );
+  }
+
+  /**
+   * The Cisco-style wildcard mask, e.g. `::ffff:ffff:ffff:ffff` for a
+   * `/64`. This is the bitwise inverse of `subnetMaskAddress()`. Returns
+   * an `Address6`; call `.correctForm()` for the string.
+   * @returns {Address6}
+   */
+  wildcardMask(): Address6 {
+    return Address6.fromBigInt(
+      BigInt(`0b${'0'.repeat(this.subnetMask)}${'1'.repeat(constants6.BITS - this.subnetMask)}`),
     );
   }
 
