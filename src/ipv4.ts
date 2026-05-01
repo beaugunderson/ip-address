@@ -166,31 +166,41 @@ export class Address4 {
   }
 
   /**
-   * Converts a hex string to an IPv4 address object
+   * Converts a hex string to an IPv4 address object. Accepts 8 hex digits
+   * with optional `:` separators (e.g. `'7f000001'` or `'7f:00:00:01'`).
+   * Throws `AddressError` for any other length or for non-hex characters.
    * @param {string} hex - a hex string to convert
    * @returns {Address4}
    */
   static fromHex(hex: string): Address4 {
-    const padded = hex.replace(/:/g, '').padStart(8, '0');
+    const stripped = hex.replace(/:/g, '');
+
+    if (!/^[0-9a-fA-F]{8}$/.test(stripped)) {
+      throw new AddressError('IPv4 hex must be exactly 8 hex digits');
+    }
+
     const groups = [];
-    let i;
 
-    for (i = 0; i < 8; i += 2) {
-      const h = padded.slice(i, i + 2);
-
-      groups.push(parseInt(h, 16));
+    for (let i = 0; i < 8; i += 2) {
+      groups.push(parseInt(stripped.slice(i, i + 2), 16));
     }
 
     return new Address4(groups.join('.'));
   }
 
   /**
-   * Converts an integer into a IPv4 address object
+   * Converts an integer into a IPv4 address object. The integer must be a
+   * non-negative safe integer in the range `[0, 2**32 - 1]`; otherwise
+   * `AddressError` is thrown.
    * @param {integer} integer - a number to convert
    * @returns {Address4}
    */
   static fromInteger(integer: number): Address4 {
-    return Address4.fromHex(integer.toString(16));
+    if (!Number.isInteger(integer) || integer < 0 || integer > 0xffffffff) {
+      throw new AddressError('IPv4 integer must be in the range 0 to 2**32 - 1');
+    }
+
+    return Address4.fromHex(integer.toString(16).padStart(8, '0'));
   }
 
   /**
@@ -343,12 +353,17 @@ export class Address4 {
   }
 
   /**
-   * Converts a BigInt to a v4 address object
+   * Converts a BigInt to a v4 address object. The value must be in the
+   * range `[0, 2**32 - 1]`; otherwise `AddressError` is thrown.
    * @param {bigint} bigInt - a BigInt to convert
    * @returns {Address4}
    */
   static fromBigInt(bigInt: bigint): Address4 {
-    return Address4.fromHex(bigInt.toString(16));
+    if (bigInt < 0n || bigInt > 0xffffffffn) {
+      throw new AddressError('IPv4 BigInt must be in the range 0 to 2**32 - 1');
+    }
+
+    return Address4.fromHex(bigInt.toString(16).padStart(8, '0'));
   }
 
   /**

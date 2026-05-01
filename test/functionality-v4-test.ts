@@ -357,6 +357,46 @@ describe('v4', () => {
     it('should parse correctly', () => {
       topic.correctForm().should.equal('127.0.0.1');
     });
+
+    it('should accept the boundary values 0 and 2**32 - 1', () => {
+      Address4.fromBigInt(0n).correctForm().should.equal('0.0.0.0');
+      Address4.fromBigInt(0xffffffffn).correctForm().should.equal('255.255.255.255');
+    });
+
+    it('should reject negative values', () => {
+      (() => Address4.fromBigInt(-1n)).should.throw(
+        'IPv4 BigInt must be in the range 0 to 2**32 - 1',
+      );
+    });
+
+    it('should reject values greater than 2**32 - 1', () => {
+      (() => Address4.fromBigInt(0x100000000n)).should.throw(
+        'IPv4 BigInt must be in the range 0 to 2**32 - 1',
+      );
+    });
+  });
+
+  describe('Creating an address from an integer', () => {
+    it('should reject negative integers', () => {
+      (() => Address4.fromInteger(-1)).should.throw(
+        'IPv4 integer must be in the range 0 to 2**32 - 1',
+      );
+    });
+
+    it('should reject integers greater than 2**32 - 1', () => {
+      (() => Address4.fromInteger(2 ** 32)).should.throw(
+        'IPv4 integer must be in the range 0 to 2**32 - 1',
+      );
+    });
+
+    it('should reject non-integer numbers', () => {
+      (() => Address4.fromInteger(1.5)).should.throw(
+        'IPv4 integer must be in the range 0 to 2**32 - 1',
+      );
+      (() => Address4.fromInteger(NaN)).should.throw(
+        'IPv4 integer must be in the range 0 to 2**32 - 1',
+      );
+    });
   });
 
   describe('Converting an address to a BigInt', () => {
@@ -372,6 +412,28 @@ describe('v4', () => {
 
     it('should parse correctly', () => {
       topic.correctForm().should.equal('127.0.0.1');
+    });
+
+    it('should accept 8 hex digits without separators', () => {
+      Address4.fromHex('7f000001').correctForm().should.equal('127.0.0.1');
+    });
+
+    it('should reject hex strings shorter than 8 digits', () => {
+      (() => Address4.fromHex('ff:ff')).should.throw(
+        'IPv4 hex must be exactly 8 hex digits',
+      );
+    });
+
+    it('should reject hex strings longer than 8 digits', () => {
+      (() => Address4.fromHex('1ff:ff:ff:ff')).should.throw(
+        'IPv4 hex must be exactly 8 hex digits',
+      );
+    });
+
+    it('should reject non-hex characters', () => {
+      (() => Address4.fromHex('zz:zz:zz:zz')).should.throw(
+        'IPv4 hex must be exactly 8 hex digits',
+      );
     });
   });
 

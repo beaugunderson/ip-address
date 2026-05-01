@@ -638,6 +638,26 @@ describe('v6', () => {
     it('should parse correctly', () => {
       should.equal(topic.correctForm(), 'a:b:c:d:e:f:0:1');
     });
+
+    it('should accept the boundary values 0 and 2**128 - 1', () => {
+      should.equal(Address6.fromBigInt(0n).correctForm(), '::');
+      should.equal(
+        Address6.fromBigInt((1n << 128n) - 1n).correctForm(),
+        'ffff:ffff:ffff:ffff:ffff:ffff:ffff:ffff',
+      );
+    });
+
+    it('should reject negative values', () => {
+      (() => Address6.fromBigInt(-1n)).should.throw(
+        'IPv6 BigInt must be in the range 0 to 2**128 - 1',
+      );
+    });
+
+    it('should reject values greater than 2**128 - 1', () => {
+      (() => Address6.fromBigInt(1n << 128n)).should.throw(
+        'IPv6 BigInt must be in the range 0 to 2**128 - 1',
+      );
+    });
   });
 
   describe('subnetMaskAddress', () => {
