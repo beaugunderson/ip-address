@@ -40,6 +40,13 @@ host.isInSubnet(network);                  // true
 network.startAddress().correctForm();      // '192.168.1.0'
 network.endAddress().correctForm();        // '192.168.1.255'
 
+// Strict network-address check (host bits must be zero).
+// isValid() accepts CIDRs with host bits set — '192.168.1.5/24' is a valid
+// host-with-subnet, but it isn't a network address.
+const cidr = new Address4('192.168.1.5/24');
+Address4.isValid('192.168.1.5/24');                                // true
+cidr.correctForm() === cidr.startAddress().correctForm();          // false
+
 // Address properties
 const link = new Address6('fe80::1');
 link.isLinkLocal();                        // true

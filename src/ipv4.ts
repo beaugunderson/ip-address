@@ -45,7 +45,10 @@ export class Address4 {
 
   /**
    * Returns true if the given string is a valid IPv4 address (with optional
-   * CIDR subnet), false otherwise.
+   * CIDR subnet), false otherwise. Host bits in the subnet portion are
+   * allowed (e.g. `192.168.1.5/24` is valid); for strict network-address
+   * validation compare `correctForm()` to `startAddress().correctForm()`,
+   * or use `networkForm()`.
    */
   static isValid(address: string): boolean {
     try {

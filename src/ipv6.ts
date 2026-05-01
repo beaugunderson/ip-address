@@ -155,7 +155,10 @@ export class Address6 {
 
   /**
    * Returns true if the given string is a valid IPv6 address (with optional
-   * CIDR subnet and zone identifier), false otherwise.
+   * CIDR subnet and zone identifier), false otherwise. Host bits in the
+   * subnet portion are allowed (e.g. `2001:db8::1/32` is valid); for strict
+   * network-address validation compare `correctForm()` to
+   * `startAddress().correctForm()`, or use `networkForm()`.
    */
   static isValid(address: string): boolean {
     try {
