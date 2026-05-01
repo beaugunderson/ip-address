@@ -8,7 +8,6 @@ const isCorrect4 = common.isCorrect(constants.BITS);
 
 /**
  * Represents an IPv4 address
- * @class Address4
  * @param {string} address - An IPv4 address string
  */
 export class Address4 {
@@ -44,6 +43,10 @@ export class Address4 {
     this.parsedAddress = this.parse(address);
   }
 
+  /**
+   * Returns true if the given string is a valid IPv4 address (with optional
+   * CIDR subnet), false otherwise.
+   */
   static isValid(address: string): boolean {
     try {
       // eslint-disable-next-line no-new
@@ -55,8 +58,9 @@ export class Address4 {
     }
   }
 
-  /*
-   * Parses a v4 address
+  /**
+   * Parses an IPv4 address string into its four octet groups. Throws
+   * `AddressError` if the input is not a valid IPv4 address.
    */
   parse(address: string) {
     const groups = address.split('.');
@@ -69,10 +73,9 @@ export class Address4 {
   }
 
   /**
-   * Returns the correct form of an address
-   * @memberof Address4
-   * @instance
-   * @returns {String}
+   * Returns the address in correct form: octets joined with `.` and any
+   * leading zeros stripped (e.g. `192.168.1.1`). For IPv4 this matches the
+   * canonical dotted-decimal representation.
    */
   correctForm(): string {
     return this.parsedAddress.map((part) => parseInt(part, 10)).join('.');
@@ -80,16 +83,12 @@ export class Address4 {
 
   /**
    * Returns true if the address is correct, false otherwise
-   * @memberof Address4
-   * @instance
    * @returns {Boolean}
    */
   isCorrect = isCorrect4;
 
   /**
    * Converts a hex string to an IPv4 address object
-   * @memberof Address4
-   * @static
    * @param {string} hex - a hex string to convert
    * @returns {Address4}
    */
@@ -109,8 +108,6 @@ export class Address4 {
 
   /**
    * Converts an integer into a IPv4 address object
-   * @memberof Address4
-   * @static
    * @param {integer} integer - a number to convert
    * @returns {Address4}
    */
@@ -120,8 +117,6 @@ export class Address4 {
 
   /**
    * Return an address from in-addr.arpa form
-   * @memberof Address4
-   * @static
    * @param {string} arpaFormAddress - an 'in-addr.arpa' form ipv4 address
    * @returns {Adress4}
    * @example
@@ -139,8 +134,6 @@ export class Address4 {
 
   /**
    * Converts an IPv4 address object to a hex string
-   * @memberof Address4
-   * @instance
    * @returns {String}
    */
   toHex(): string {
@@ -149,8 +142,6 @@ export class Address4 {
 
   /**
    * Converts an IPv4 address object to an array of bytes
-   * @memberof Address4
-   * @instance
    * @returns {Array}
    */
   toArray(): number[] {
@@ -159,8 +150,6 @@ export class Address4 {
 
   /**
    * Converts an IPv4 address object to an IPv6 address group
-   * @memberof Address4
-   * @instance
    * @returns {String}
    */
   toGroup6(): string {
@@ -180,8 +169,6 @@ export class Address4 {
 
   /**
    * Returns the address as a `bigint`
-   * @memberof Address4
-   * @instance
    * @returns {bigint}
    */
   bigInt(): bigint {
@@ -190,8 +177,6 @@ export class Address4 {
 
   /**
    * Helper function getting start address.
-   * @memberof Address4
-   * @instance
    * @returns {bigint}
    */
   _startAddress(): bigint {
@@ -201,8 +186,6 @@ export class Address4 {
   /**
    * The first address in the range given by this address' subnet.
    * Often referred to as the Network Address.
-   * @memberof Address4
-   * @instance
    * @returns {Address4}
    */
   startAddress(): Address4 {
@@ -212,8 +195,6 @@ export class Address4 {
   /**
    * The first host address in the range given by this address's subnet ie
    * the first address after the Network Address
-   * @memberof Address4
-   * @instance
    * @returns {Address4}
    */
   startAddressExclusive(): Address4 {
@@ -223,8 +204,6 @@ export class Address4 {
 
   /**
    * Helper function getting end address.
-   * @memberof Address4
-   * @instance
    * @returns {bigint}
    */
   _endAddress(): bigint {
@@ -234,8 +213,6 @@ export class Address4 {
   /**
    * The last address in the range given by this address' subnet
    * Often referred to as the Broadcast
-   * @memberof Address4
-   * @instance
    * @returns {Address4}
    */
   endAddress(): Address4 {
@@ -245,8 +222,6 @@ export class Address4 {
   /**
    * The last host address in the range given by this address's subnet ie
    * the last address prior to the Broadcast Address
-   * @memberof Address4
-   * @instance
    * @returns {Address4}
    */
   endAddressExclusive(): Address4 {
@@ -256,8 +231,6 @@ export class Address4 {
 
   /**
    * Converts a BigInt to a v4 address object
-   * @memberof Address4
-   * @static
    * @param {bigint} bigInt - a BigInt to convert
    * @returns {Address4}
    */
@@ -267,8 +240,6 @@ export class Address4 {
 
   /**
    * Convert a byte array to an Address4 object
-   * @memberof Address4
-   * @static
    * @param {Array<number>} bytes - an array of 4 bytes (0-255)
    * @returns {Address4}
    */
@@ -289,8 +260,6 @@ export class Address4 {
 
   /**
    * Convert an unsigned byte array to an Address4 object
-   * @memberof Address4
-   * @static
    * @param {Array<number>} bytes - an array of 4 unsigned bytes (0-255)
    * @returns {Address4}
    */
@@ -306,8 +275,6 @@ export class Address4 {
   /**
    * Returns the first n bits of the address, defaulting to the
    * subnet mask
-   * @memberof Address4
-   * @instance
    * @returns {String}
    */
   mask(mask?: number): string {
@@ -320,8 +287,6 @@ export class Address4 {
 
   /**
    * Returns the bits in the given range as a base-2 string
-   * @memberof Address4
-   * @instance
    * @returns {string}
    */
   getBitsBase2(start: number, end: number): string {
@@ -330,10 +295,8 @@ export class Address4 {
 
   /**
    * Return the reversed ip6.arpa form of the address
-   * @memberof Address4
    * @param {Object} options
    * @param {boolean} options.omitSuffix - omit the "in-addr.arpa" suffix
-   * @instance
    * @returns {String}
    */
   reverseForm(options?: common.ReverseFormOptions): string {
@@ -352,16 +315,12 @@ export class Address4 {
 
   /**
    * Returns true if the given address is in the subnet of the current address
-   * @memberof Address4
-   * @instance
    * @returns {boolean}
    */
   isInSubnet = common.isInSubnet;
 
   /**
    * Returns true if the given address is a multicast address
-   * @memberof Address4
-   * @instance
    * @returns {boolean}
    */
   isMulticast(): boolean {
@@ -370,8 +329,6 @@ export class Address4 {
 
   /**
    * Returns a zero-padded base-2 string representation of the address
-   * @memberof Address4
-   * @instance
    * @returns {string}
    */
   binaryZeroPad(): string {

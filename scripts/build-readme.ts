@@ -1,0 +1,183 @@
+#!/usr/bin/env tsx
+
+import * as fs from 'node:fs';
+import * as path from 'node:path';
+import * as TypeDoc from 'typedoc';
+
+const ROOT = path.resolve(__dirname, '..');
+const TEMPLATE_PATH = path.join(ROOT, 'scripts/readme-template.md');
+const README_PATH = path.join(ROOT, 'README.md');
+const ENTRY_POINTS = [path.join(ROOT, 'src/ip-address.ts')];
+const REPO_BLOB_BASE = 'https://github.com/beaugunderson/ip-address/blob/master';
+
+const START_MARKER = '<!-- API:START -->';
+const END_MARKER = '<!-- API:END -->';
+
+type SourceRef = { fileName: string; line: number };
+
+function summaryFor(reflection: TypeDoc.Reflection): string {
+  const parts = reflection.comment?.summary;
+  if (!parts || parts.length === 0) return '';
+  return parts
+    .map((p) => p.text)
+    .join('')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
+function renderType(type: TypeDoc.SomeType | undefined): string {
+  return type ? type.toString() : 'void';
+}
+
+function renderSignature(name: string, sig: TypeDoc.SignatureReflection): string {
+  const params = (sig.parameters ?? [])
+    .map((p) => {
+      const optional = p.flags.isOptional ? '?' : '';
+      const typeStr = renderType(p.type);
+      return `${p.name}${optional}: ${typeStr}`;
+    })
+    .join(', ');
+  const returnType = renderType(sig.type);
+  return `${name}(${params}): ${returnType}`;
+}
+
+function sourceLink(sources: SourceRef[] | undefined): string {
+  if (!sources || sources.length === 0) return '';
+  const { fileName, line } = sources[0];
+  const path = fileName.startsWith('src/') ? fileName : `src/${fileName}`;
+  return `[src](${REPO_BLOB_BASE}/${path}#L${line})`;
+}
+
+function renderMethod(method: TypeDoc.DeclarationReflection): string[] {
+  const isStatic = method.flags.isStatic;
+  const sigs = method.signatures ?? [];
+  const lines: string[] = [];
+
+  for (const sig of sigs) {
+    const prefix = isStatic ? 'static ' : '';
+    const code = `\`${prefix}${renderSignature(method.name, sig)}\``;
+    const summary = summaryFor(sig) || summaryFor(method);
+    const link = sourceLink(method.sources as SourceRef[] | undefined);
+    const tail = [summary, link].filter(Boolean).join(' ');
+    lines.push(`- ${code}${tail ? ' — ' + tail : ''}`);
+  }
+
+  return lines;
+}
+
+function renderProperty(prop: TypeDoc.DeclarationReflection): string {
+  const isStatic = prop.flags.isStatic;
+  const prefix = isStatic ? 'static ' : '';
+  const typeStr = renderType(prop.type);
+  const code = `\`${prefix}${prop.name}: ${typeStr}\``;
+  const summary = summaryFor(prop);
+  const link = sourceLink(prop.sources as SourceRef[] | undefined);
+  const tail = [summary, link].filter(Boolean).join(' ');
+  return `- ${code}${tail ? ' — ' + tail : ''}`;
+}
+
+function renderClass(cls: TypeDoc.DeclarationReflection): string {
+  const out: string[] = [];
+  out.push(`#### ${cls.name}`);
+  out.push('');
+  const summary = summaryFor(cls);
+  if (summary) {
+    out.push(summary);
+    out.push('');
+  }
+
+  const ctor = cls.children?.find((c) => c.kind === TypeDoc.ReflectionKind.Constructor);
+  if (ctor && ctor.signatures) {
+    out.push('**Constructor**');
+    out.push('');
+    for (const sig of ctor.signatures) {
+      out.push(`- \`new ${renderSignature(cls.name, sig)}\``);
+    }
+    out.push('');
+  }
+
+  const staticMethods: string[] = [];
+  const instanceMethods: string[] = [];
+  const properties: string[] = [];
+
+  for (const child of cls.children ?? []) {
+    if (child.flags.isPrivate) continue;
+    if (child.name.startsWith('_')) continue;
+
+    if (child.kind === TypeDoc.ReflectionKind.Method) {
+      const rendered = renderMethod(child);
+      if (child.flags.isStatic) staticMethods.push(...rendered);
+      else instanceMethods.push(...rendered);
+    } else if (child.kind === TypeDoc.ReflectionKind.Property) {
+      properties.push(renderProperty(child));
+    }
+  }
+
+  if (staticMethods.length) {
+    out.push('**Static methods**');
+    out.push('');
+    out.push(...staticMethods);
+    out.push('');
+  }
+  if (instanceMethods.length) {
+    out.push('**Instance methods**');
+    out.push('');
+    out.push(...instanceMethods);
+    out.push('');
+  }
+  if (properties.length) {
+    out.push('**Properties**');
+    out.push('');
+    out.push(...properties);
+    out.push('');
+  }
+
+  return out.join('\n');
+}
+
+async function main() {
+  const app = await TypeDoc.Application.bootstrapWithPlugins({
+    entryPoints: ENTRY_POINTS,
+    tsconfig: path.join(ROOT, 'tsconfig.json'),
+    excludePrivate: true,
+    excludeInternal: true,
+    excludeExternals: true,
+    skipErrorChecking: true,
+    sort: ['source-order'],
+    logLevel: 'Error',
+    blockTags: ['@param', '@returns', '@example', '@throws', '@deprecated', '@see'],
+  });
+
+  const project = await app.convert();
+  if (!project) throw new Error('TypeDoc failed to convert the project');
+
+  const classes = (project.children ?? []).filter(
+    (c) => c.kind === TypeDoc.ReflectionKind.Class,
+  );
+
+  const sections: string[] = [];
+  for (const cls of classes) {
+    sections.push(renderClass(cls));
+  }
+
+  const apiBlock = sections.join('\n').trimEnd();
+  const template = fs.readFileSync(TEMPLATE_PATH, 'utf8');
+
+  const startIdx = template.indexOf(START_MARKER);
+  const endIdx = template.indexOf(END_MARKER);
+  if (startIdx === -1 || endIdx === -1) {
+    throw new Error(`Markers ${START_MARKER} / ${END_MARKER} not found in template`);
+  }
+
+  const before = template.slice(0, startIdx + START_MARKER.length);
+  const after = template.slice(endIdx);
+  const next = `${before}\n\n${apiBlock}\n\n${after}`;
+
+  fs.writeFileSync(README_PATH, next);
+  console.log(`Wrote ${README_PATH} (${classes.length} classes, ${apiBlock.length} chars of API)`);
+}
+
+main().catch((err) => {
+  console.error(err);
+  process.exit(1);
+});
