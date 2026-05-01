@@ -1172,11 +1172,26 @@ export class Address6 {
   }
 
   /**
-   * Returns true if the address is a v4-in-v6 address, false otherwise
+   * Returns true if the address was written in v4-in-v6 dotted-quad notation
+   * (e.g. `::ffff:127.0.0.1`), false otherwise. This is a notation-level flag
+   * and does not reflect whether the address bits lie in the IPv4-mapped
+   * (`::ffff:0:0/96`) subnet — for that, see {@link isMapped4}.
    * @returns {boolean}
    */
   is4(): boolean {
     return this.v4;
+  }
+
+  /**
+   * Returns true if the address is an IPv4-mapped IPv6 address in
+   * `::ffff:0:0/96` ([RFC 4291 §2.5.5.2](https://datatracker.ietf.org/doc/html/rfc4291#section-2.5.5.2)),
+   * false otherwise. Unlike {@link is4}, this checks the underlying address
+   * bits rather than the textual notation, so `::ffff:127.0.0.1` and
+   * `::ffff:7f00:1` both return true.
+   * @returns {boolean}
+   */
+  isMapped4(): boolean {
+    return this.isInSubnet(IPV4_MAPPED_SUBNET);
   }
 
   /**
@@ -1412,3 +1427,4 @@ const TEREDO_SUBNET = new Address6('2001::/32');
 const SIX_TO_FOUR_SUBNET = new Address6('2002::/16');
 const ULA_SUBNET = new Address6('fc00::/7');
 const DOCUMENTATION_SUBNET = new Address6('2001:db8::/32');
+const IPV4_MAPPED_SUBNET = new Address6('::ffff:0:0/96');
