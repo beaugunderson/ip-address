@@ -2,10 +2,19 @@
   "name": "ip-address",
   "description": "A library for parsing IPv4 and IPv6 IP addresses in node and the browser.",
   "keywords": [
-    "ipv6",
+    "ip",
     "ipv4",
-    "browser",
-    "validation"
+    "ipv6",
+    "address",
+    "cidr",
+    "subnet",
+    "netmask",
+    "validate",
+    "validation",
+    "parse",
+    "arpa",
+    "bigint",
+    "browser"
   ],
   "version": "10.1.1",
   "author": "Beau Gunderson <beau@beaugunderson.com> (https://beaugunderson.com/)",
