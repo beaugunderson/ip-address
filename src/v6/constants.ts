@@ -45,6 +45,11 @@ export const TYPES: { [key: string]: string | undefined } = {
   '::1/128': 'Loopback',
   'ff00::/8': 'Multicast',
   'fe80::/10': 'Link-local unicast',
+  'fc00::/7': 'Unique local',
+  '2002::/16': '6to4',
+  '2001:db8::/32': 'Documentation',
+  '64:ff9b::/96': 'NAT64 (well-known)',
+  '64:ff9b:1::/48': 'NAT64 (local-use)',
 } as const;
 
 /**

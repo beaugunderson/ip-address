@@ -36,6 +36,77 @@ describe('v6', () => {
     });
   });
 
+  describe('getScope', () => {
+    it('returns the multicast scope nibble for multicast addresses', () => {
+      new Address6('ff01::1').getScope().should.equal('Interface local');
+      new Address6('ff02::1').getScope().should.equal('Link local');
+      new Address6('ff04::1').getScope().should.equal('Admin local');
+      new Address6('ff05::2').getScope().should.equal('Site local');
+      new Address6('ff08::1').getScope().should.equal('Organization local');
+      new Address6('ff0e::1').getScope().should.equal('Global');
+    });
+
+    it('returns Link local for fe80::/10 (issue #122)', () => {
+      new Address6('fe80::2ff:33ff:feaa:bbcc').getScope().should.equal('Link local');
+    });
+
+    it('does not return Link local for 2002::/16 (issue #122)', () => {
+      new Address6('2002::').getScope().should.equal('Global');
+    });
+
+    it('returns Link local for the loopback address (RFC 4291 §2.5.3)', () => {
+      new Address6('::1').getScope().should.equal('Link local');
+    });
+
+    it('returns Global for ULA, documentation, 6to4, and ordinary unicast', () => {
+      new Address6('fd12:3456:789a::1').getScope().should.equal('Global');
+      new Address6('2001:db8::1').getScope().should.equal('Global');
+      new Address6('2002:c0a8:1::').getScope().should.equal('Global');
+      new Address6('2620:0:2d0:200::7').getScope().should.equal('Global');
+    });
+
+    it('returns Unknown for the unspecified address', () => {
+      new Address6('::').getScope().should.equal('Unknown');
+    });
+  });
+
+  describe('getType', () => {
+    it('classifies ULA addresses as Unique local', () => {
+      new Address6('fc00::').getType().should.equal('Unique local');
+      new Address6('fd12:3456:789a::1').getType().should.equal('Unique local');
+    });
+
+    it('classifies 2002::/16 as 6to4', () => {
+      new Address6('2002:c0a8:1::').getType().should.equal('6to4');
+    });
+
+    it('classifies 2001:db8::/32 as Documentation', () => {
+      new Address6('2001:db8::1').getType().should.equal('Documentation');
+    });
+
+    it('classifies the well-known NAT64 prefix', () => {
+      new Address6('64:ff9b::c000:221').getType().should.equal('NAT64 (well-known)');
+    });
+
+    it('classifies the local-use NAT64 prefix', () => {
+      new Address6('64:ff9b:1::1').getType().should.equal('NAT64 (local-use)');
+    });
+  });
+
+  describe('isMulticast', () => {
+    it('returns true for any multicast address, including specific subtypes', () => {
+      ['ff00::', 'ff01::1', 'ff02::1', 'ff05::2', 'ff0e::1'].forEach((notation) => {
+        new Address6(notation).isMulticast().should.equal(true);
+      });
+    });
+
+    it('returns false for non-multicast addresses', () => {
+      ['::', '::1', '2001:db8::1', 'fe80::1', 'fd00::1'].forEach((notation) => {
+        new Address6(notation).isMulticast().should.equal(false);
+      });
+    });
+  });
+
   describe('A link local address', () => {
     const topic = new Address6('fe80::baf6:b1ff:fe15:4885');
 
