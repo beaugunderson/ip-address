@@ -260,6 +260,20 @@ export class Address6 {
   }
 
   /**
+   * Construct an `Address6` from an address and a hex subnet mask given as
+   * separate strings (e.g. as returned by Node's `os.networkInterfaces()`).
+   * Throws `AddressError` if the mask is non-contiguous (e.g.
+   * `ffff::ffff`).
+   * @example
+   * var address = Address6.fromAddressAndMask('fe80::1', 'ffff:ffff:ffff:ffff::');
+   * address.subnetMask; // 64
+   */
+  static fromAddressAndMask(address: string, mask: string): Address6 {
+    const bits = common.prefixLengthFromMask(new Address6(mask).bigInt(), constants6.BITS);
+    return new Address6(`${address}/${bits}`);
+  }
+
+  /**
    * Create an IPv6-mapped address given an IPv4 address
    * @param {string} address - An IPv4 address string
    * @returns {Address6}
@@ -393,6 +407,17 @@ export class Address6 {
   endAddressExclusive(): Address6 {
     const adjust = BigInt('1');
     return Address6.fromBigInt(this._endAddress() - adjust);
+  }
+
+  /**
+   * The hex form of the subnet mask, e.g. `ffff:ffff:ffff:ffff::` for a
+   * `/64`. Returns an `Address6`; call `.correctForm()` for the string.
+   * @returns {Address6}
+   */
+  subnetMaskAddress(): Address6 {
+    return Address6.fromBigInt(
+      BigInt(`0b${'1'.repeat(this.subnetMask)}${'0'.repeat(constants6.BITS - this.subnetMask)}`),
+    );
   }
 
   /**

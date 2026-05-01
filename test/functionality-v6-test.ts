@@ -149,6 +149,10 @@ describe('v6', () => {
       should.equal(topic.endAddressExclusive().correctForm(), 'ffff::ffff:ffff:ffff:fffe');
     });
 
+    it('has a correct subnet mask address', () => {
+      should.equal(topic.subnetMaskAddress().correctForm(), 'ffff:ffff:ffff:ffff::');
+    });
+
     it('calculates and formats the subnet size', () => {
       topic.possibleSubnets().should.equal('18,446,744,073,709,551,616');
       topic.possibleSubnets(128).should.equal('18,446,744,073,709,551,616');
@@ -520,6 +524,74 @@ describe('v6', () => {
 
     it('should parse correctly', () => {
       should.equal(topic.correctForm(), 'a:b:c:d:e:f:0:1');
+    });
+  });
+
+  describe('subnetMaskAddress', () => {
+    it('returns :: for /0', () => {
+      should.equal(new Address6('::/0').subnetMaskAddress().correctForm(), '::');
+    });
+
+    it('returns ffff:ffff:: for /32', () => {
+      should.equal(
+        new Address6('2001:db8::/32').subnetMaskAddress().correctForm(),
+        'ffff:ffff::',
+      );
+    });
+
+    it('returns ffff:ffff:ffff:ffff:: for /64', () => {
+      should.equal(
+        new Address6('2001:db8::/64').subnetMaskAddress().correctForm(),
+        'ffff:ffff:ffff:ffff::',
+      );
+    });
+
+    it('returns ffff:ffff:ffff:ffff:ffff:ffff:ffff:ffff for /128 (default)', () => {
+      should.equal(
+        new Address6('2001:db8::1').subnetMaskAddress().correctForm(),
+        'ffff:ffff:ffff:ffff:ffff:ffff:ffff:ffff',
+      );
+    });
+  });
+
+  describe('fromAddressAndMask', () => {
+    it('translates ffff:ffff:ffff:ffff:: to /64', () => {
+      const topic = Address6.fromAddressAndMask('2001:db8::1', 'ffff:ffff:ffff:ffff::');
+      topic.subnetMask.should.equal(64);
+      topic.subnet.should.equal('/64');
+      should.equal(topic.addressMinusSuffix, '2001:db8::1');
+    });
+
+    it('translates :: to /0', () => {
+      Address6.fromAddressAndMask('2001:db8::1', '::').subnetMask.should.equal(0);
+    });
+
+    it('translates an all-ones mask to /128', () => {
+      Address6.fromAddressAndMask(
+        '2001:db8::1',
+        'ffff:ffff:ffff:ffff:ffff:ffff:ffff:ffff',
+      ).subnetMask.should.equal(128);
+    });
+
+    it('round-trips through subnetMaskAddress()', () => {
+      const original = new Address6('2001:db8::/48');
+      const mask = original.subnetMaskAddress().correctForm();
+      Address6.fromAddressAndMask('2001:db8::', mask).subnetMask.should.equal(48);
+    });
+
+    it('rejects a non-contiguous mask', () => {
+      (() =>
+        Address6.fromAddressAndMask('2001:db8::1', 'ffff::ffff')).should.throw(
+        'Invalid subnet mask.',
+      );
+    });
+
+    it('rejects an invalid mask address', () => {
+      (() => Address6.fromAddressAndMask('2001:db8::1', 'not:an:address')).should.throw();
+    });
+
+    it('does not change isValid() behavior for mask-form input', () => {
+      Address6.isValid('2001:db8::1/ffff:ffff:ffff:ffff::').should.equal(false);
     });
   });
 

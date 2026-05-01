@@ -1,5 +1,6 @@
 import { Address4 } from './ipv4';
 import { Address6 } from './ipv6';
+import { AddressError } from './address-error';
 
 export interface ReverseFormOptions {
   omitSuffix?: boolean;
@@ -29,6 +30,31 @@ export function isCorrect(defaultBits: number) {
 
     return this.parsedSubnet === String(this.subnetMask);
   };
+}
+
+/**
+ * Returns the prefix length (number of leading 1 bits) of a contiguous
+ * subnet mask. Throws `AddressError` if the mask is non-contiguous (e.g.
+ * `255.0.255.0`).
+ */
+export function prefixLengthFromMask(value: bigint, totalBits: number): number {
+  const binary = value.toString(2).padStart(totalBits, '0');
+
+  if (binary.length > totalBits) {
+    throw new AddressError('Invalid subnet mask.');
+  }
+
+  const firstZero = binary.indexOf('0');
+
+  if (firstZero === -1) {
+    return totalBits;
+  }
+
+  if (binary.slice(firstZero).includes('1')) {
+    throw new AddressError('Invalid subnet mask.');
+  }
+
+  return firstZero;
 }
 
 export function numberToPaddedHex(number: number) {
