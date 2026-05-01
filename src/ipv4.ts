@@ -12,7 +12,7 @@ const isCorrect4 = common.isCorrect(constants.BITS);
  */
 export class Address4 {
   address: string;
-  addressMinusSuffix?: string;
+  addressMinusSuffix: string = '';
   groups: number = constants.GROUPS;
   parsedAddress: string[] = [];
   parsedSubnet: string = '';
