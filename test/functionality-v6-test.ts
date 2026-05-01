@@ -518,6 +518,37 @@ describe('v6', () => {
     it('should generate a v4 address', () => {
       expect(obj.to4().correctForm()).to.equal('192.168.0.1');
     });
+
+    it('preserves the subnet on the embedded address4', () => {
+      expect(obj.address4?.subnetMask).to.equal(30);
+      expect(obj.address4?.subnet).to.equal('/30');
+    });
+
+    it('round-trips the subnet through to4()', () => {
+      const v4 = obj.to4();
+
+      expect(v4.subnetMask).to.equal(30);
+      expect(v4.subnet).to.equal('/30');
+    });
+  });
+
+  describe('to4() subnet derivation', () => {
+    it('derives /24 from a /120 v4-mapped address', () => {
+      const v6 = Address6.fromAddress4('192.168.0.1/24');
+
+      expect(v6.subnetMask).to.equal(120);
+      expect(v6.to4().subnetMask).to.equal(24);
+      expect(v6.to4().subnet).to.equal('/24');
+    });
+
+    it('keeps /32 for an unprefixed v4-mapped address', () => {
+      expect(new Address6('::ffff:192.168.0.1').to4().subnetMask).to.equal(32);
+    });
+
+    it('keeps /32 when the v6 mask does not cover the v4 portion', () => {
+      // /64 prefix covers none of the trailing 32 bits — degrade to host.
+      expect(new Address6('::ffff:192.168.0.1/64').to4().subnetMask).to.equal(32);
+    });
   });
 
   describe('Address given in ap6.arpa form', () => {

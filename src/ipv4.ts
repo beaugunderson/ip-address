@@ -523,7 +523,7 @@ export class Address4 {
   groupForV6(): string {
     const segments = this.parsedAddress;
 
-    return this.address.replace(
+    return this.correctForm().replace(
       constants.RE_ADDRESS,
       `<span class="hover-group group-v4 group-6">${segments
         .slice(0, 2)
