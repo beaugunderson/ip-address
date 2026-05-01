@@ -349,6 +349,48 @@ describe('v6', () => {
     });
   });
 
+  describe('NAT64 (RFC 6052)', () => {
+    // Test vectors from RFC 6052 §2.4 (IPv4 192.0.2.33 across all prefix lengths).
+    const cases: Array<{ pl: number; prefix: string; encoded: string }> = [
+      { pl: 32, prefix: '2001:db8::/32', encoded: '2001:db8:c000:221::' },
+      { pl: 40, prefix: '2001:db8:100::/40', encoded: '2001:db8:1c0:2:21::' },
+      { pl: 48, prefix: '2001:db8:122::/48', encoded: '2001:db8:122:c000:2:2100::' },
+      { pl: 56, prefix: '2001:db8:122:300::/56', encoded: '2001:db8:122:3c0:0:221::' },
+      { pl: 64, prefix: '2001:db8:122:344::/64', encoded: '2001:db8:122:344:c0:2:2100:0' },
+      { pl: 96, prefix: '2001:db8:122:344::/96', encoded: '2001:db8:122:344::c000:221' },
+    ];
+
+    cases.forEach(({ pl, prefix, encoded }) => {
+      it(`encodes 192.0.2.33 with a /${pl} prefix`, () => {
+        Address6.fromAddress4Nat64('192.0.2.33', prefix).correctForm().should.equal(encoded);
+      });
+
+      it(`decodes ${encoded} with a /${pl} prefix`, () => {
+        const v4 = new Address6(encoded).toAddress4Nat64(prefix);
+        should.exist(v4);
+        v4!.correctForm().should.equal('192.0.2.33');
+      });
+    });
+
+    it('uses the well-known prefix 64:ff9b::/96 by default', () => {
+      Address6.fromAddress4Nat64('192.0.2.33').correctForm().should.equal('64:ff9b::c000:221');
+      new Address6('64:ff9b::c000:221').toAddress4Nat64()!.correctForm().should.equal('192.0.2.33');
+    });
+
+    it('encodes the example from issue #72', () => {
+      Address6.fromAddress4Nat64('127.0.0.1').correctForm().should.equal('64:ff9b::7f00:1');
+    });
+
+    it('returns null when decoding an address outside the prefix', () => {
+      expect(new Address6('2001:db8::1').toAddress4Nat64()).to.equal(null);
+    });
+
+    it('throws on an invalid prefix length', () => {
+      should.Throw(() => Address6.fromAddress4Nat64('192.0.2.33', '2001:db8::/80'));
+      should.Throw(() => new Address6('64:ff9b::1').toAddress4Nat64('2001:db8::/80'));
+    });
+  });
+
   describe('A different notation of the same address', () => {
     const addresses = notationsToAddresseses([
       '2001:db8:0:0:1:0:0:1/128',

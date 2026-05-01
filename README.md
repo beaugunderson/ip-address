@@ -166,8 +166,9 @@ Represents an IPv6 address
 - `static fromAddressAndMask(address: string, mask: string): Address6` — Construct an `Address6` from an address and a hex subnet mask given as separate strings (e.g. as returned by Node's `os.networkInterfaces()`). Throws `AddressError` if the mask is non-contiguous (e.g. `ffff::ffff`). [src](https://github.com/beaugunderson/ip-address/blob/master/src/ipv6.ts#L271)
 - `static fromAddress4(address: string): Address6` — Create an IPv6-mapped address given an IPv4 address [src](https://github.com/beaugunderson/ip-address/blob/master/src/ipv6.ts#L285)
 - `static fromArpa(arpaFormAddress: string): Address6` — Return an address from ip6.arpa form [src](https://github.com/beaugunderson/ip-address/blob/master/src/ipv6.ts#L301)
-- `static fromByteArray(bytes: any[]): Address6` — Convert a byte array to an Address6 object. To convert from a Node.js `Buffer`, spread it: `Address6.fromByteArray([...buf])`. [src](https://github.com/beaugunderson/ip-address/blob/master/src/ipv6.ts#L929)
-- `static fromUnsignedByteArray(bytes: any[]): Address6` — Convert an unsigned byte array to an Address6 object. To convert from a Node.js `Buffer`, spread it: `Address6.fromUnsignedByteArray([...buf])`. [src](https://github.com/beaugunderson/ip-address/blob/master/src/ipv6.ts#L939)
+- `static fromAddress4Nat64(address: string, prefix: string): Address6` — Embed an IPv4 address into a NAT64 IPv6 address using the encoding defined by [RFC 6052](https://datatracker.ietf.org/doc/html/rfc6052). The default prefix is the well-known prefix `64:ff9b::/96`. The prefix length must be one of 32, 40, 48, 56, 64, or 96; for prefixes shorter than /64 the IPv4 octets are split around the reserved bits 64–71. [src](https://github.com/beaugunderson/ip-address/blob/master/src/ipv6.ts#L903)
+- `static fromByteArray(bytes: any[]): Address6` — Convert a byte array to an Address6 object. To convert from a Node.js `Buffer`, spread it: `Address6.fromByteArray([...buf])`. [src](https://github.com/beaugunderson/ip-address/blob/master/src/ipv6.ts#L1009)
+- `static fromUnsignedByteArray(bytes: any[]): Address6` — Convert an unsigned byte array to an Address6 object. To convert from a Node.js `Buffer`, spread it: `Address6.fromUnsignedByteArray([...buf])`. [src](https://github.com/beaugunderson/ip-address/blob/master/src/ipv6.ts#L1019)
 
 **Instance methods**
 
@@ -198,20 +199,21 @@ Represents an IPv6 address
 - `inspectTeredo(): TeredoProperties` — Decodes the Teredo tunneling fields embedded in this address. Returns the Teredo prefix, server IPv4, client IPv4, raw flag bits, cone-NAT flag, UDP port, and Microsoft-format flag breakdown (reserved, universal/local, group/individual, nonce). Only meaningful for addresses in `2001::/32`. [src](https://github.com/beaugunderson/ip-address/blob/master/src/ipv6.ts#L794)
 - `inspect6to4(): SixToFourProperties` — Decodes the 6to4 tunneling fields embedded in this address. Returns the 6to4 prefix and the embedded IPv4 gateway address. Only meaningful for addresses in `2002::/16`. [src](https://github.com/beaugunderson/ip-address/blob/master/src/ipv6.ts#L857)
 - `to6to4(): Address6 | null` — Return a v6 6to4 address from a v6 v4inv6 address [src](https://github.com/beaugunderson/ip-address/blob/master/src/ipv6.ts#L877)
-- `toByteArray(): number[]` — Return a byte array. To get a Node.js `Buffer`, wrap the result: `Buffer.from(address.toByteArray())`. [src](https://github.com/beaugunderson/ip-address/blob/master/src/ipv6.ts#L899)
-- `toUnsignedByteArray(): number[]` — Return an unsigned byte array. To get a Node.js `Buffer`, wrap the result: `Buffer.from(address.toUnsignedByteArray())`. [src](https://github.com/beaugunderson/ip-address/blob/master/src/ipv6.ts#L919)
-- `isCanonical(): boolean` — Returns true if the address is in the canonical form, false otherwise [src](https://github.com/beaugunderson/ip-address/blob/master/src/ipv6.ts#L970)
-- `isLinkLocal(): boolean` — Returns true if the address is a link local address, false otherwise [src](https://github.com/beaugunderson/ip-address/blob/master/src/ipv6.ts#L978)
-- `isMulticast(): boolean` — Returns true if the address is a multicast address, false otherwise [src](https://github.com/beaugunderson/ip-address/blob/master/src/ipv6.ts#L994)
-- `is4(): boolean` — Returns true if the address is a v4-in-v6 address, false otherwise [src](https://github.com/beaugunderson/ip-address/blob/master/src/ipv6.ts#L1002)
-- `isTeredo(): boolean` — Returns true if the address is a Teredo address, false otherwise [src](https://github.com/beaugunderson/ip-address/blob/master/src/ipv6.ts#L1010)
-- `is6to4(): boolean` — Returns true if the address is a 6to4 address, false otherwise [src](https://github.com/beaugunderson/ip-address/blob/master/src/ipv6.ts#L1018)
-- `isLoopback(): boolean` — Returns true if the address is a loopback address, false otherwise [src](https://github.com/beaugunderson/ip-address/blob/master/src/ipv6.ts#L1026)
-- `href(optionalPort?: string | number): string` — Returns the address as an HTTP URL with the host bracketed, e.g. `http://[2001:db8::1]/`. If `optionalPort` is provided it is appended, e.g. `http://[2001:db8::1]:8080/`. [src](https://github.com/beaugunderson/ip-address/blob/master/src/ipv6.ts#L1037)
-- `link(options?: { className?: string; prefix?: string; v4?: boolean }): string` — Returns an HTML `<a>` element whose `href` encodes the address in a URL hash fragment (default prefix `/#address=`). Useful for linking between pages of an address-inspector UI. [src](https://github.com/beaugunderson/ip-address/blob/master/src/ipv6.ts#L1055)
-- `group(): string` — Groups an address [src](https://github.com/beaugunderson/ip-address/blob/master/src/ipv6.ts#L1095)
-- `regularExpressionString(this: Address6, substringSearch: boolean): string` — Generate a regular expression string that can be used to find or validate all variations of this address [src](https://github.com/beaugunderson/ip-address/blob/master/src/ipv6.ts#L1147)
-- `regularExpression(this: Address6, substringSearch: boolean): RegExp` — Generate a regular expression that can be used to find or validate all variations of this address. [src](https://github.com/beaugunderson/ip-address/blob/master/src/ipv6.ts#L1201)
+- `toAddress4Nat64(prefix: string): Address4 | null` — Extract the embedded IPv4 address from a NAT64 IPv6 address using the encoding defined by [RFC 6052](https://datatracker.ietf.org/doc/html/rfc6052). The default prefix is the well-known prefix `64:ff9b::/96`. Returns `null` if this address is not contained within the given prefix. [src](https://github.com/beaugunderson/ip-address/blob/master/src/ipv6.ts#L944)
+- `toByteArray(): number[]` — Return a byte array. To get a Node.js `Buffer`, wrap the result: `Buffer.from(address.toByteArray())`. [src](https://github.com/beaugunderson/ip-address/blob/master/src/ipv6.ts#L979)
+- `toUnsignedByteArray(): number[]` — Return an unsigned byte array. To get a Node.js `Buffer`, wrap the result: `Buffer.from(address.toUnsignedByteArray())`. [src](https://github.com/beaugunderson/ip-address/blob/master/src/ipv6.ts#L999)
+- `isCanonical(): boolean` — Returns true if the address is in the canonical form, false otherwise [src](https://github.com/beaugunderson/ip-address/blob/master/src/ipv6.ts#L1050)
+- `isLinkLocal(): boolean` — Returns true if the address is a link local address, false otherwise [src](https://github.com/beaugunderson/ip-address/blob/master/src/ipv6.ts#L1058)
+- `isMulticast(): boolean` — Returns true if the address is a multicast address, false otherwise [src](https://github.com/beaugunderson/ip-address/blob/master/src/ipv6.ts#L1074)
+- `is4(): boolean` — Returns true if the address is a v4-in-v6 address, false otherwise [src](https://github.com/beaugunderson/ip-address/blob/master/src/ipv6.ts#L1082)
+- `isTeredo(): boolean` — Returns true if the address is a Teredo address, false otherwise [src](https://github.com/beaugunderson/ip-address/blob/master/src/ipv6.ts#L1090)
+- `is6to4(): boolean` — Returns true if the address is a 6to4 address, false otherwise [src](https://github.com/beaugunderson/ip-address/blob/master/src/ipv6.ts#L1098)
+- `isLoopback(): boolean` — Returns true if the address is a loopback address, false otherwise [src](https://github.com/beaugunderson/ip-address/blob/master/src/ipv6.ts#L1106)
+- `href(optionalPort?: string | number): string` — Returns the address as an HTTP URL with the host bracketed, e.g. `http://[2001:db8::1]/`. If `optionalPort` is provided it is appended, e.g. `http://[2001:db8::1]:8080/`. [src](https://github.com/beaugunderson/ip-address/blob/master/src/ipv6.ts#L1117)
+- `link(options?: { className?: string; prefix?: string; v4?: boolean }): string` — Returns an HTML `<a>` element whose `href` encodes the address in a URL hash fragment (default prefix `/#address=`). Useful for linking between pages of an address-inspector UI. [src](https://github.com/beaugunderson/ip-address/blob/master/src/ipv6.ts#L1135)
+- `group(): string` — Groups an address [src](https://github.com/beaugunderson/ip-address/blob/master/src/ipv6.ts#L1175)
+- `regularExpressionString(this: Address6, substringSearch: boolean): string` — Generate a regular expression string that can be used to find or validate all variations of this address [src](https://github.com/beaugunderson/ip-address/blob/master/src/ipv6.ts#L1227)
+- `regularExpression(this: Address6, substringSearch: boolean): RegExp` — Generate a regular expression that can be used to find or validate all variations of this address. [src](https://github.com/beaugunderson/ip-address/blob/master/src/ipv6.ts#L1281)
 
 **Properties**
 
@@ -229,8 +231,8 @@ Represents an IPv6 address
 - `subnetMask: number` — [src](https://github.com/beaugunderson/ip-address/blob/master/src/ipv6.ts#L109)
 - `v4: boolean` — [src](https://github.com/beaugunderson/ip-address/blob/master/src/ipv6.ts#L110)
 - `zone: string` — [src](https://github.com/beaugunderson/ip-address/blob/master/src/ipv6.ts#L111)
-- `isInSubnet: (this: Address4 | Address6, address: Address4 | Address6) => boolean` — Returns true if the given address is in the subnet of the current address [src](https://github.com/beaugunderson/ip-address/blob/master/src/ipv6.ts#L958)
-- `isCorrect: (this: Address4 | Address6) => boolean` — Returns true if the address is correct, false otherwise [src](https://github.com/beaugunderson/ip-address/blob/master/src/ipv6.ts#L964)
+- `isInSubnet: (this: Address4 | Address6, address: Address4 | Address6) => boolean` — Returns true if the given address is in the subnet of the current address [src](https://github.com/beaugunderson/ip-address/blob/master/src/ipv6.ts#L1038)
+- `isCorrect: (this: Address4 | Address6) => boolean` — Returns true if the address is correct, false otherwise [src](https://github.com/beaugunderson/ip-address/blob/master/src/ipv6.ts#L1044)
 
 <!-- API:END -->
 

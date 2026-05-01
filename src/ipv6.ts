@@ -891,6 +891,86 @@ export class Address6 {
   }
 
   /**
+   * Embed an IPv4 address into a NAT64 IPv6 address using the encoding
+   * defined by [RFC 6052](https://datatracker.ietf.org/doc/html/rfc6052).
+   * The default prefix is the well-known prefix `64:ff9b::/96`. The prefix
+   * length must be one of 32, 40, 48, 56, 64, or 96; for prefixes shorter
+   * than /64 the IPv4 octets are split around the reserved bits 64–71.
+   * @example
+   * Address6.fromAddress4Nat64('192.0.2.33').correctForm(); // '64:ff9b::c000:221'
+   * Address6.fromAddress4Nat64('192.0.2.33', '2001:db8::/32').correctForm(); // '2001:db8:c000:221::'
+   */
+  static fromAddress4Nat64(address: string, prefix: string = '64:ff9b::/96'): Address6 {
+    const v4 = new Address4(address);
+    const prefix6 = new Address6(prefix);
+    const pl = prefix6.subnetMask;
+
+    if (pl !== 32 && pl !== 40 && pl !== 48 && pl !== 56 && pl !== 64 && pl !== 96) {
+      throw new AddressError('NAT64 prefix length must be 32, 40, 48, 56, 64, or 96');
+    }
+
+    const prefixBits = prefix6.binaryZeroPad();
+    const v4Bits = v4.binaryZeroPad();
+
+    let bits: string;
+    if (pl === 96) {
+      bits = prefixBits.slice(0, 96) + v4Bits;
+    } else {
+      const beforeU = 64 - pl;
+      bits =
+        prefixBits.slice(0, pl) +
+        v4Bits.slice(0, beforeU) +
+        '00000000' +
+        v4Bits.slice(beforeU) +
+        '0'.repeat(128 - 72 - (32 - beforeU));
+    }
+
+    const hex = BigInt(`0b${bits}`).toString(16).padStart(32, '0');
+    const groups: string[] = [];
+    for (let i = 0; i < 8; i++) {
+      groups.push(hex.slice(i * 4, (i + 1) * 4));
+    }
+    return new Address6(groups.join(':'));
+  }
+
+  /**
+   * Extract the embedded IPv4 address from a NAT64 IPv6 address using the
+   * encoding defined by [RFC 6052](https://datatracker.ietf.org/doc/html/rfc6052).
+   * The default prefix is the well-known prefix `64:ff9b::/96`. Returns
+   * `null` if this address is not contained within the given prefix.
+   * @example
+   * new Address6('64:ff9b::c000:221').toAddress4Nat64()!.correctForm(); // '192.0.2.33'
+   */
+  toAddress4Nat64(prefix: string = '64:ff9b::/96'): Address4 | null {
+    const prefix6 = new Address6(prefix);
+    const pl = prefix6.subnetMask;
+
+    if (pl !== 32 && pl !== 40 && pl !== 48 && pl !== 56 && pl !== 64 && pl !== 96) {
+      throw new AddressError('NAT64 prefix length must be 32, 40, 48, 56, 64, or 96');
+    }
+
+    if (!this.isInSubnet(prefix6)) {
+      return null;
+    }
+
+    const bits = this.binaryZeroPad();
+    let v4Bits: string;
+
+    if (pl === 96) {
+      v4Bits = bits.slice(96, 128);
+    } else {
+      const beforeU = 64 - pl;
+      v4Bits = bits.slice(pl, pl + beforeU) + bits.slice(72, 72 + (32 - beforeU));
+    }
+
+    const octets: string[] = [];
+    for (let i = 0; i < 4; i++) {
+      octets.push(parseInt(v4Bits.slice(i * 8, (i + 1) * 8), 2).toString());
+    }
+    return new Address4(octets.join('.'));
+  }
+
+  /**
    * Return a byte array.
    *
    * To get a Node.js `Buffer`, wrap the result: `Buffer.from(address.toByteArray())`.
