@@ -172,7 +172,8 @@ export class Address6 {
   }
 
   /**
-   * Convert a BigInt to a v6 address object
+   * Convert a BigInt to a v6 address object. The value must be in the
+   * range `[0, 2**128 - 1]`; otherwise `AddressError` is thrown.
    * @param {bigint} bigInt - a BigInt to convert
    * @returns {Address6}
    * @example
@@ -181,11 +182,14 @@ export class Address6 {
    * address.correctForm(); // '::e8:d4a5:1000'
    */
   static fromBigInt(bigInt: bigint): Address6 {
+    if (bigInt < 0n || bigInt > (1n << BigInt(constants6.BITS)) - 1n) {
+      throw new AddressError('IPv6 BigInt must be in the range 0 to 2**128 - 1');
+    }
+
     const hex = bigInt.toString(16).padStart(32, '0');
     const groups = [];
-    let i;
 
-    for (i = 0; i < constants6.GROUPS; i++) {
+    for (let i = 0; i < constants6.GROUPS; i++) {
       groups.push(hex.slice(i * 4, (i + 1) * 4));
     }
 
@@ -890,7 +894,9 @@ export class Address6 {
   to4(): Address4 {
     const binary = this.binaryZeroPad().split('');
 
-    return Address4.fromHex(BigInt(`0b${binary.slice(96, 128).join('')}`).toString(16));
+    return Address4.fromHex(
+      BigInt(`0b${binary.slice(96, 128).join('')}`).toString(16).padStart(8, '0'),
+    );
   }
 
   /**
@@ -950,7 +956,9 @@ export class Address6 {
 
     const bitsForClient4 = this.getBits(96, 128);
     // eslint-disable-next-line no-bitwise
-    const client4 = Address4.fromHex((bitsForClient4 ^ BigInt('0xffffffff')).toString(16));
+    const client4 = Address4.fromHex(
+      (bitsForClient4 ^ BigInt('0xffffffff')).toString(16).padStart(8, '0'),
+    );
 
     const flagsBase2 = this.getBitsBase2(64, 80);
 
