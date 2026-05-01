@@ -1,14 +1,15 @@
 {
   "compilerOptions": {
-    "target": "es2016",
+    "target": "es2020",
     "module": "commonjs",
     "allowJs": true,
     "declaration": true,
-    "declarationMap": true,
+    "declarationMap": false,
     "rootDir": "./src",
     "outDir": "./dist",
     "resolveJsonModule": true,
     "sourceMap": true,
+    "inlineSources": true,
 
     "strict": true,
     "noImplicitAny": true,

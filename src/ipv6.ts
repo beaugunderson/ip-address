@@ -14,6 +14,8 @@ import {
 import { AddressError } from './address-error';
 import { testBit } from './common';
 
+const isCorrect6 = common.isCorrect(constants6.BITS);
+
 function assert(condition: any): asserts condition {
   if (!condition) {
     throw new Error('Assertion failed.');
@@ -108,6 +110,7 @@ export class Address6 {
   subnetMask: number = 128;
   v4: boolean = false;
   zone: string = '';
+  private _binaryZeroPad?: string;
 
   constructor(address: string, optionalGroups?: number) {
     if (optionalGroups === undefined) {
@@ -436,9 +439,10 @@ export class Address6 {
    * @returns {String}
    */
   getType(): string {
-    for (const subnet of Object.keys(constants6.TYPES)) {
-      if (this.isInSubnet(new Address6(subnet))) {
-        return constants6.TYPES[subnet] as string;
+    for (let i = 0; i < TYPE_SUBNETS.length; i++) {
+      const entry = TYPE_SUBNETS[i];
+      if (this.isInSubnet(entry[0])) {
+        return entry[1];
       }
     }
 
@@ -601,11 +605,18 @@ export class Address6 {
    * //  0000000000000000000000000000000000000000000000000001000000010001'
    */
   binaryZeroPad(): string {
-    return this.bigInt().toString(2).padStart(constants6.BITS, '0');
+    if (this._binaryZeroPad === undefined) {
+      this._binaryZeroPad = this.bigInt().toString(2).padStart(constants6.BITS, '0');
+    }
+    return this._binaryZeroPad;
   }
 
   // TODO: Improve the semantics of this helper function
   parse4in6(address: string): string {
+    if (address.indexOf('.') === -1) {
+      return address;
+    }
+
     const groups = address.split(':');
     const lastGroup = groups.slice(-1)[0];
 
@@ -964,7 +975,7 @@ export class Address6 {
    * @instance
    * @returns {boolean}
    */
-  isCorrect = common.isCorrect(constants6.BITS);
+  isCorrect = isCorrect6;
 
   /**
    * Returns true if the address is in the canonical form, false otherwise
@@ -1021,7 +1032,7 @@ export class Address6 {
    * @returns {boolean}
    */
   isTeredo(): boolean {
-    return this.isInSubnet(new Address6('2001::/32'));
+    return this.isInSubnet(TEREDO_SUBNET);
   }
 
   /**
@@ -1031,7 +1042,7 @@ export class Address6 {
    * @returns {boolean}
    */
   is6to4(): boolean {
-    return this.isInSubnet(new Address6('2002::/16'));
+    return this.isInSubnet(SIX_TO_FOUR_SUBNET);
   }
 
   /**
@@ -1217,3 +1228,10 @@ export class Address6 {
   }
   // #endregion
 }
+
+const TYPE_SUBNETS: Array<[Address6, string]> = Object.keys(constants6.TYPES).map((subnet) => [
+  new Address6(subnet),
+  constants6.TYPES[subnet] as string,
+]);
+const TEREDO_SUBNET = new Address6('2001::/32');
+const SIX_TO_FOUR_SUBNET = new Address6('2002::/16');

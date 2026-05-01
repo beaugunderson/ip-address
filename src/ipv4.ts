@@ -4,6 +4,8 @@ import * as common from './common';
 import * as constants from './v4/constants';
 import { AddressError } from './address-error';
 
+const isCorrect4 = common.isCorrect(constants.BITS);
+
 /**
  * Represents an IPv4 address
  * @class Address4
@@ -18,6 +20,7 @@ export class Address4 {
   subnet: string = '/32';
   subnetMask: number = 32;
   v4: boolean = true;
+  private _binaryZeroPad?: string;
 
   constructor(address: string) {
     this.address = address;
@@ -81,7 +84,7 @@ export class Address4 {
    * @instance
    * @returns {Boolean}
    */
-  isCorrect = common.isCorrect(constants.BITS);
+  isCorrect = isCorrect4;
 
   /**
    * Converts a hex string to an IPv4 address object
@@ -362,7 +365,7 @@ export class Address4 {
    * @returns {boolean}
    */
   isMulticast(): boolean {
-    return this.isInSubnet(new Address4('224.0.0.0/4'));
+    return this.isInSubnet(MULTICAST_V4);
   }
 
   /**
@@ -372,7 +375,10 @@ export class Address4 {
    * @returns {string}
    */
   binaryZeroPad(): string {
-    return this.bigInt().toString(2).padStart(constants.BITS, '0');
+    if (this._binaryZeroPad === undefined) {
+      this._binaryZeroPad = this.bigInt().toString(2).padStart(constants.BITS, '0');
+    }
+    return this._binaryZeroPad;
   }
 
   /**
@@ -392,3 +398,5 @@ export class Address4 {
     );
   }
 }
+
+const MULTICAST_V4 = new Address4('224.0.0.0/4');
