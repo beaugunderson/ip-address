@@ -232,6 +232,17 @@ export class Address4 {
   }
 
   /**
+   * The dotted-decimal form of the subnet mask, e.g. `255.255.240.0` for
+   * a `/20`. Returns an `Address4`; call `.correctForm()` for the string.
+   * @returns {Address4}
+   */
+  subnetMaskAddress(): Address4 {
+    return Address4.fromBigInt(
+      BigInt(`0b${'1'.repeat(this.subnetMask)}${'0'.repeat(constants.BITS - this.subnetMask)}`),
+    );
+  }
+
+  /**
    * Converts a BigInt to a v4 address object
    * @param {bigint} bigInt - a BigInt to convert
    * @returns {Address4}

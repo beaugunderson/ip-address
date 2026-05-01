@@ -112,9 +112,9 @@ Represents an IPv4 address
 - `static fromHex(hex: string): Address4` — Converts a hex string to an IPv4 address object [src](https://github.com/beaugunderson/ip-address/blob/master/src/ipv4.ts#L97)
 - `static fromInteger(integer: number): Address4` — Converts an integer into a IPv4 address object [src](https://github.com/beaugunderson/ip-address/blob/master/src/ipv4.ts#L116)
 - `static fromArpa(arpaFormAddress: string): Address4` — Return an address from in-addr.arpa form [src](https://github.com/beaugunderson/ip-address/blob/master/src/ipv4.ts#L128)
-- `static fromBigInt(bigInt: bigint): Address4` — Converts a BigInt to a v4 address object [src](https://github.com/beaugunderson/ip-address/blob/master/src/ipv4.ts#L239)
-- `static fromByteArray(bytes: number[]): Address4` — Convert a byte array to an Address4 object [src](https://github.com/beaugunderson/ip-address/blob/master/src/ipv4.ts#L248)
-- `static fromUnsignedByteArray(bytes: number[]): Address4` — Convert an unsigned byte array to an Address4 object [src](https://github.com/beaugunderson/ip-address/blob/master/src/ipv4.ts#L268)
+- `static fromBigInt(bigInt: bigint): Address4` — Converts a BigInt to a v4 address object [src](https://github.com/beaugunderson/ip-address/blob/master/src/ipv4.ts#L250)
+- `static fromByteArray(bytes: number[]): Address4` — Convert a byte array to an Address4 object [src](https://github.com/beaugunderson/ip-address/blob/master/src/ipv4.ts#L259)
+- `static fromUnsignedByteArray(bytes: number[]): Address4` — Convert an unsigned byte array to an Address4 object [src](https://github.com/beaugunderson/ip-address/blob/master/src/ipv4.ts#L279)
 
 **Instance methods**
 
@@ -128,12 +128,13 @@ Represents an IPv4 address
 - `startAddressExclusive(): Address4` — The first host address in the range given by this address's subnet ie the first address after the Network Address [src](https://github.com/beaugunderson/ip-address/blob/master/src/ipv4.ts#L202)
 - `endAddress(): Address4` — The last address in the range given by this address' subnet Often referred to as the Broadcast [src](https://github.com/beaugunderson/ip-address/blob/master/src/ipv4.ts#L220)
 - `endAddressExclusive(): Address4` — The last host address in the range given by this address's subnet ie the last address prior to the Broadcast Address [src](https://github.com/beaugunderson/ip-address/blob/master/src/ipv4.ts#L229)
-- `mask(mask?: number): string` — Returns the first n bits of the address, defaulting to the subnet mask [src](https://github.com/beaugunderson/ip-address/blob/master/src/ipv4.ts#L282)
-- `getBitsBase2(start: number, end: number): string` — Returns the bits in the given range as a base-2 string [src](https://github.com/beaugunderson/ip-address/blob/master/src/ipv4.ts#L294)
-- `reverseForm(options?: ReverseFormOptions): string` — Return the reversed ip6.arpa form of the address [src](https://github.com/beaugunderson/ip-address/blob/master/src/ipv4.ts#L304)
-- `isMulticast(): boolean` — Returns true if the given address is a multicast address [src](https://github.com/beaugunderson/ip-address/blob/master/src/ipv4.ts#L328)
-- `binaryZeroPad(): string` — Returns a zero-padded base-2 string representation of the address [src](https://github.com/beaugunderson/ip-address/blob/master/src/ipv4.ts#L336)
-- `groupForV6(): string` — Groups an IPv4 address for inclusion at the end of an IPv6 address [src](https://github.com/beaugunderson/ip-address/blob/master/src/ipv4.ts#L347)
+- `subnetMaskAddress(): Address4` — The dotted-decimal form of the subnet mask, e.g. `255.255.240.0` for a `/20`. Returns an `Address4`; call `.correctForm()` for the string. [src](https://github.com/beaugunderson/ip-address/blob/master/src/ipv4.ts#L239)
+- `mask(mask?: number): string` — Returns the first n bits of the address, defaulting to the subnet mask [src](https://github.com/beaugunderson/ip-address/blob/master/src/ipv4.ts#L293)
+- `getBitsBase2(start: number, end: number): string` — Returns the bits in the given range as a base-2 string [src](https://github.com/beaugunderson/ip-address/blob/master/src/ipv4.ts#L305)
+- `reverseForm(options?: ReverseFormOptions): string` — Return the reversed ip6.arpa form of the address [src](https://github.com/beaugunderson/ip-address/blob/master/src/ipv4.ts#L315)
+- `isMulticast(): boolean` — Returns true if the given address is a multicast address [src](https://github.com/beaugunderson/ip-address/blob/master/src/ipv4.ts#L339)
+- `binaryZeroPad(): string` — Returns a zero-padded base-2 string representation of the address [src](https://github.com/beaugunderson/ip-address/blob/master/src/ipv4.ts#L347)
+- `groupForV6(): string` — Groups an IPv4 address for inclusion at the end of an IPv6 address [src](https://github.com/beaugunderson/ip-address/blob/master/src/ipv4.ts#L358)
 
 **Properties**
 
@@ -146,7 +147,7 @@ Represents an IPv4 address
 - `subnetMask: number` — [src](https://github.com/beaugunderson/ip-address/blob/master/src/ipv4.ts#L20)
 - `v4: boolean` — [src](https://github.com/beaugunderson/ip-address/blob/master/src/ipv4.ts#L21)
 - `isCorrect: (this: Address4 | Address6) => boolean` — Returns true if the address is correct, false otherwise [src](https://github.com/beaugunderson/ip-address/blob/master/src/ipv4.ts#L90)
-- `isInSubnet: (this: Address4 | Address6, address: Address4 | Address6) => boolean` — Returns true if the given address is in the subnet of the current address [src](https://github.com/beaugunderson/ip-address/blob/master/src/ipv4.ts#L322)
+- `isInSubnet: (this: Address4 | Address6, address: Address4 | Address6) => boolean` — Returns true if the given address is in the subnet of the current address [src](https://github.com/beaugunderson/ip-address/blob/master/src/ipv4.ts#L333)
 
 #### Address6
 

@@ -114,12 +114,40 @@ describe('v4', () => {
       should.equal(topic.endAddressExclusive().correctForm(), '127.0.255.254');
     });
 
+    it('has a correct subnet mask address', () => {
+      should.equal(topic.subnetMaskAddress().correctForm(), '255.255.0.0');
+    });
+
     it('is in its own subnet', () => {
       topic.isInSubnet(new Address4('127.0.0.1/16')).should.equal(true);
     });
 
     it('is not in another subnet', () => {
       topic.isInSubnet(new Address4('192.168.0.1/16')).should.equal(false);
+    });
+  });
+
+  describe('subnetMaskAddress', () => {
+    it('returns 0.0.0.0 for /0', () => {
+      should.equal(new Address4('0.0.0.0/0').subnetMaskAddress().correctForm(), '0.0.0.0');
+    });
+
+    it('returns 255.0.0.0 for /8', () => {
+      should.equal(new Address4('10.0.0.1/8').subnetMaskAddress().correctForm(), '255.0.0.0');
+    });
+
+    it('returns 255.255.240.0 for /20', () => {
+      should.equal(
+        new Address4('127.0.0.2/20').subnetMaskAddress().correctForm(),
+        '255.255.240.0',
+      );
+    });
+
+    it('returns 255.255.255.255 for /32 (default)', () => {
+      should.equal(
+        new Address4('192.168.1.1').subnetMaskAddress().correctForm(),
+        '255.255.255.255',
+      );
     });
   });
 
