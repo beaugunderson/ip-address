@@ -157,7 +157,9 @@ export class Address4 {
   }
 
   /**
-   * Converts an IPv4 address object to an array of bytes
+   * Converts an IPv4 address object to an array of bytes.
+   *
+   * To get a Node.js `Buffer`, wrap the result: `Buffer.from(address.toArray())`.
    * @returns {Array}
    */
   toArray(): number[] {
@@ -266,7 +268,9 @@ export class Address4 {
   }
 
   /**
-   * Convert a byte array to an Address4 object
+   * Convert a byte array to an Address4 object.
+   *
+   * To convert from a Node.js `Buffer`, spread it: `Address4.fromByteArray([...buf])`.
    * @param {Array<number>} bytes - an array of 4 bytes (0-255)
    * @returns {Address4}
    */

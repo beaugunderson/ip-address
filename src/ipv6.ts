@@ -891,7 +891,9 @@ export class Address6 {
   }
 
   /**
-   * Return a byte array
+   * Return a byte array.
+   *
+   * To get a Node.js `Buffer`, wrap the result: `Buffer.from(address.toByteArray())`.
    * @returns {Array}
    */
   toByteArray(): number[] {
@@ -909,7 +911,9 @@ export class Address6 {
   }
 
   /**
-   * Return an unsigned byte array
+   * Return an unsigned byte array.
+   *
+   * To get a Node.js `Buffer`, wrap the result: `Buffer.from(address.toUnsignedByteArray())`.
    * @returns {Array}
    */
   toUnsignedByteArray(): number[] {
@@ -917,7 +921,9 @@ export class Address6 {
   }
 
   /**
-   * Convert a byte array to an Address6 object
+   * Convert a byte array to an Address6 object.
+   *
+   * To convert from a Node.js `Buffer`, spread it: `Address6.fromByteArray([...buf])`.
    * @returns {Address6}
    */
   static fromByteArray(bytes: Array<any>): Address6 {
@@ -925,7 +931,9 @@ export class Address6 {
   }
 
   /**
-   * Convert an unsigned byte array to an Address6 object
+   * Convert an unsigned byte array to an Address6 object.
+   *
+   * To convert from a Node.js `Buffer`, spread it: `Address6.fromUnsignedByteArray([...buf])`.
    * @returns {Address6}
    */
   static fromUnsignedByteArray(bytes: Array<any>): Address6 {
