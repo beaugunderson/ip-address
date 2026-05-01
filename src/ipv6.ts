@@ -89,7 +89,6 @@ interface TeredoProperties {
 
 /**
  * Represents an IPv6 address
- * @class Address6
  * @param {string} address - An IPv6 address string
  * @param {number} [groups=8] - How many octets to parse
  * @example
@@ -154,6 +153,10 @@ export class Address6 {
     this.parsedAddress = this.parse(this.addressMinusSuffix);
   }
 
+  /**
+   * Returns true if the given string is a valid IPv6 address (with optional
+   * CIDR subnet and zone identifier), false otherwise.
+   */
   static isValid(address: string): boolean {
     try {
       // eslint-disable-next-line no-new
@@ -167,8 +170,6 @@ export class Address6 {
 
   /**
    * Convert a BigInt to a v6 address object
-   * @memberof Address6
-   * @static
    * @param {bigint} bigInt - a BigInt to convert
    * @returns {Address6}
    * @example
@@ -189,10 +190,10 @@ export class Address6 {
   }
 
   /**
-   * Convert a URL (with optional port number) to an address object
-   * @memberof Address6
-   * @static
-   * @param {string} url - a URL with optional port number
+   * Parse a URL (with optional bracketed host and port) into an address and
+   * port. Returns either `{ address, port }` on success or
+   * `{ error, address: null, port: null }` if the URL could not be parsed.
+   * Ports are returned as numbers (or `null` if absent or out of range).
    * @example
    * var addressAndPort = Address6.fromURL('http://[ffff::]:8080/foo/');
    * addressAndPort.address.correctForm(); // 'ffff::'
@@ -260,8 +261,6 @@ export class Address6 {
 
   /**
    * Create an IPv6-mapped address given an IPv4 address
-   * @memberof Address6
-   * @static
    * @param {string} address - An IPv4 address string
    * @returns {Address6}
    * @example
@@ -279,8 +278,6 @@ export class Address6 {
 
   /**
    * Return an address from ip6.arpa form
-   * @memberof Address6
-   * @static
    * @param {string} arpaFormAddress - an 'ip6.arpa' form address
    * @returns {Adress6}
    * @example
@@ -311,8 +308,6 @@ export class Address6 {
 
   /**
    * Return the Microsoft UNC transcription of the address
-   * @memberof Address6
-   * @instance
    * @returns {String} the Microsoft UNC transcription of the address
    */
   microsoftTranscription(): string {
@@ -321,8 +316,6 @@ export class Address6 {
 
   /**
    * Return the first n bits of the address, defaulting to the subnet mask
-   * @memberof Address6
-   * @instance
    * @param {number} [mask=subnet] - the number of bits to mask
    * @returns {String} the first n bits of the address as a string
    */
@@ -332,8 +325,6 @@ export class Address6 {
 
   /**
    * Return the number of possible subnets of a given size in the address
-   * @memberof Address6
-   * @instance
    * @param {number} [subnetSize=128] - the subnet size
    * @returns {String}
    */
@@ -352,8 +343,6 @@ export class Address6 {
 
   /**
    * Helper function getting start address.
-   * @memberof Address6
-   * @instance
    * @returns {bigint}
    */
   _startAddress(): bigint {
@@ -363,8 +352,6 @@ export class Address6 {
   /**
    * The first address in the range given by this address' subnet
    * Often referred to as the Network Address.
-   * @memberof Address6
-   * @instance
    * @returns {Address6}
    */
   startAddress(): Address6 {
@@ -374,8 +361,6 @@ export class Address6 {
   /**
    * The first host address in the range given by this address's subnet ie
    * the first address after the Network Address
-   * @memberof Address6
-   * @instance
    * @returns {Address6}
    */
   startAddressExclusive(): Address6 {
@@ -385,8 +370,6 @@ export class Address6 {
 
   /**
    * Helper function getting end address.
-   * @memberof Address6
-   * @instance
    * @returns {bigint}
    */
   _endAddress(): bigint {
@@ -396,8 +379,6 @@ export class Address6 {
   /**
    * The last address in the range given by this address' subnet
    * Often referred to as the Broadcast
-   * @memberof Address6
-   * @instance
    * @returns {Address6}
    */
   endAddress(): Address6 {
@@ -407,8 +388,6 @@ export class Address6 {
   /**
    * The last host address in the range given by this address's subnet ie
    * the last address prior to the Broadcast Address
-   * @memberof Address6
-   * @instance
    * @returns {Address6}
    */
   endAddressExclusive(): Address6 {
@@ -418,8 +397,6 @@ export class Address6 {
 
   /**
    * Return the scope of the address
-   * @memberof Address6
-   * @instance
    * @returns {String}
    */
   getScope(): string {
@@ -434,8 +411,6 @@ export class Address6 {
 
   /**
    * Return the type of the address
-   * @memberof Address6
-   * @instance
    * @returns {String}
    */
   getType(): string {
@@ -451,8 +426,6 @@ export class Address6 {
 
   /**
    * Return the bits in the given range as a BigInt
-   * @memberof Address6
-   * @instance
    * @returns {bigint}
    */
   getBits(start: number, end: number): bigint {
@@ -461,8 +434,6 @@ export class Address6 {
 
   /**
    * Return the bits in the given range as a base-2 string
-   * @memberof Address6
-   * @instance
    * @returns {String}
    */
   getBitsBase2(start: number, end: number): string {
@@ -471,8 +442,6 @@ export class Address6 {
 
   /**
    * Return the bits in the given range as a base-16 string
-   * @memberof Address6
-   * @instance
    * @returns {String}
    */
   getBitsBase16(start: number, end: number): string {
@@ -489,8 +458,6 @@ export class Address6 {
 
   /**
    * Return the bits that are set past the subnet mask length
-   * @memberof Address6
-   * @instance
    * @returns {String}
    */
   getBitsPastSubnet(): string {
@@ -499,10 +466,8 @@ export class Address6 {
 
   /**
    * Return the reversed ip6.arpa form of the address
-   * @memberof Address6
    * @param {Object} options
    * @param {boolean} options.omitSuffix - omit the "ip6.arpa" suffix
-   * @instance
    * @returns {String}
    */
   reverseForm(options?: common.ReverseFormOptions): string {
@@ -535,10 +500,10 @@ export class Address6 {
   }
 
   /**
-   * Return the correct form of the address
-   * @memberof Address6
-   * @instance
-   * @returns {String}
+   * Returns the address in correct form, per
+   * [RFC 5952](https://datatracker.ietf.org/doc/html/rfc5952): leading zeros
+   * stripped, the longest run of zero groups collapsed to `::`, and hex digits
+   * lowercased (e.g. `2001:db8::1`). This is the recommended form for display.
    */
   correctForm(): string {
     let i;
@@ -595,8 +560,6 @@ export class Address6 {
 
   /**
    * Return a zero-padded base-2 string representation of the address
-   * @memberof Address6
-   * @instance
    * @returns {String}
    * @example
    * var address = new Address6('2001:4860:4001:803::1011');
@@ -611,6 +574,12 @@ export class Address6 {
     return this._binaryZeroPad;
   }
 
+  /**
+   * Parses a v4-in-v6 string (e.g. `::ffff:192.168.0.1`) by extracting the
+   * trailing IPv4 address into `this.address4` / `this.parsedAddress4` and
+   * returning the address with the v4 portion converted to two v6 groups.
+   * Used internally by `parse()`.
+   */
   // TODO: Improve the semantics of this helper function
   parse4in6(address: string): string {
     if (address.indexOf('.') === -1) {
@@ -651,6 +620,13 @@ export class Address6 {
     return address;
   }
 
+  /**
+   * Parses an IPv6 address string into its 8 hexadecimal groups (expanding
+   * any `::` elision and any trailing v4-in-v6 portion) and stores the result
+   * on `this.parsedAddress`. Called automatically by the constructor; you
+   * typically don't need to call it directly. Throws `AddressError` if the
+   * input is malformed.
+   */
   // TODO: Make private?
   parse(address: string): string[] {
     address = this.parse4in6(address);
@@ -727,10 +703,10 @@ export class Address6 {
   }
 
   /**
-   * Return the canonical form of the address
-   * @memberof Address6
-   * @instance
-   * @returns {String}
+   * Returns the canonical (fully expanded) form of the address: all 8 groups,
+   * each padded to 4 hex digits, with no `::` collapsing
+   * (e.g. `2001:0db8:0000:0000:0000:0000:0000:0001`). Useful for sorting and
+   * byte-exact comparison.
    */
   canonicalForm(): string {
     return this.parsedAddress.map(paddedHex).join(':');
@@ -738,8 +714,6 @@ export class Address6 {
 
   /**
    * Return the decimal form of the address
-   * @memberof Address6
-   * @instance
    * @returns {String}
    */
   decimal(): string {
@@ -748,8 +722,6 @@ export class Address6 {
 
   /**
    * Return the address as a BigInt
-   * @memberof Address6
-   * @instance
    * @returns {bigint}
    */
   bigInt(): bigint {
@@ -758,8 +730,6 @@ export class Address6 {
 
   /**
    * Return the last two groups of this address as an IPv4 address string
-   * @memberof Address6
-   * @instance
    * @returns {Address4}
    * @example
    * var address = new Address6('2001:4860:4001::1825:bf11');
@@ -773,8 +743,6 @@ export class Address6 {
 
   /**
    * Return the v4-in-v6 form of the address
-   * @memberof Address6
-   * @instance
    * @returns {String}
    */
   to4in6(): string {
@@ -793,10 +761,10 @@ export class Address6 {
   }
 
   /**
-   * Return an object containing the Teredo properties of the address
-   * @memberof Address6
-   * @instance
-   * @returns {Object}
+   * Decodes the Teredo tunneling fields embedded in this address. Returns the
+   * Teredo prefix, server IPv4, client IPv4, raw flag bits, cone-NAT flag,
+   * UDP port, and Microsoft-format flag breakdown (reserved, universal/local,
+   * group/individual, nonce). Only meaningful for addresses in `2001::/32`.
    */
   inspectTeredo(): TeredoProperties {
     /*
@@ -857,10 +825,9 @@ export class Address6 {
   }
 
   /**
-   * Return an object containing the 6to4 properties of the address
-   * @memberof Address6
-   * @instance
-   * @returns {Object}
+   * Decodes the 6to4 tunneling fields embedded in this address. Returns the
+   * 6to4 prefix and the embedded IPv4 gateway address. Only meaningful for
+   * addresses in `2002::/16`.
    */
   inspect6to4(): SixToFourProperties {
     /*
@@ -880,8 +847,6 @@ export class Address6 {
 
   /**
    * Return a v6 6to4 address from a v6 v4inv6 address
-   * @memberof Address6
-   * @instance
    * @returns {Address6}
    */
   to6to4(): Address6 | null {
@@ -902,8 +867,6 @@ export class Address6 {
 
   /**
    * Return a byte array
-   * @memberof Address6
-   * @instance
    * @returns {Array}
    */
   toByteArray(): number[] {
@@ -922,8 +885,6 @@ export class Address6 {
 
   /**
    * Return an unsigned byte array
-   * @memberof Address6
-   * @instance
    * @returns {Array}
    */
   toUnsignedByteArray(): number[] {
@@ -932,8 +893,6 @@ export class Address6 {
 
   /**
    * Convert a byte array to an Address6 object
-   * @memberof Address6
-   * @static
    * @returns {Address6}
    */
   static fromByteArray(bytes: Array<any>): Address6 {
@@ -942,8 +901,6 @@ export class Address6 {
 
   /**
    * Convert an unsigned byte array to an Address6 object
-   * @memberof Address6
-   * @static
    * @returns {Address6}
    */
   static fromUnsignedByteArray(bytes: Array<any>): Address6 {
@@ -963,24 +920,18 @@ export class Address6 {
   // #region Attributes
   /**
    * Returns true if the given address is in the subnet of the current address
-   * @memberof Address6
-   * @instance
    * @returns {boolean}
    */
   isInSubnet = common.isInSubnet;
 
   /**
    * Returns true if the address is correct, false otherwise
-   * @memberof Address6
-   * @instance
    * @returns {boolean}
    */
   isCorrect = isCorrect6;
 
   /**
    * Returns true if the address is in the canonical form, false otherwise
-   * @memberof Address6
-   * @instance
    * @returns {boolean}
    */
   isCanonical(): boolean {
@@ -989,8 +940,6 @@ export class Address6 {
 
   /**
    * Returns true if the address is a link local address, false otherwise
-   * @memberof Address6
-   * @instance
    * @returns {boolean}
    */
   isLinkLocal(): boolean {
@@ -1007,8 +956,6 @@ export class Address6 {
 
   /**
    * Returns true if the address is a multicast address, false otherwise
-   * @memberof Address6
-   * @instance
    * @returns {boolean}
    */
   isMulticast(): boolean {
@@ -1017,8 +964,6 @@ export class Address6 {
 
   /**
    * Returns true if the address is a v4-in-v6 address, false otherwise
-   * @memberof Address6
-   * @instance
    * @returns {boolean}
    */
   is4(): boolean {
@@ -1027,8 +972,6 @@ export class Address6 {
 
   /**
    * Returns true if the address is a Teredo address, false otherwise
-   * @memberof Address6
-   * @instance
    * @returns {boolean}
    */
   isTeredo(): boolean {
@@ -1037,8 +980,6 @@ export class Address6 {
 
   /**
    * Returns true if the address is a 6to4 address, false otherwise
-   * @memberof Address6
-   * @instance
    * @returns {boolean}
    */
   is6to4(): boolean {
@@ -1047,8 +988,6 @@ export class Address6 {
 
   /**
    * Returns true if the address is a loopback address, false otherwise
-   * @memberof Address6
-   * @instance
    * @returns {boolean}
    */
   isLoopback(): boolean {
@@ -1058,7 +997,9 @@ export class Address6 {
 
   // #region HTML
   /**
-   * @returns {String} the address in link form with a default port of 80
+   * Returns the address as an HTTP URL with the host bracketed, e.g.
+   * `http://[2001:db8::1]/`. If `optionalPort` is provided it is appended,
+   * e.g. `http://[2001:db8::1]:8080/`.
    */
   href(optionalPort?: number | string): string {
     if (optionalPort === undefined) {
@@ -1071,7 +1012,12 @@ export class Address6 {
   }
 
   /**
-   * @returns {String} a link suitable for conveying the address via a URL hash
+   * Returns an HTML `<a>` element whose `href` encodes the address in a URL
+   * hash fragment (default prefix `/#address=`). Useful for linking between
+   * pages of an address-inspector UI.
+   * @param options.className - CSS class for the rendered `<a>` element
+   * @param options.prefix - hash prefix prepended to the address (default `/#address=`)
+   * @param options.v4 - when true, render the address in v4-in-v6 form
    */
   link(options?: { className?: string; prefix?: string; v4?: boolean }): string {
     if (!options) {
@@ -1162,8 +1108,6 @@ export class Address6 {
   /**
    * Generate a regular expression string that can be used to find or validate
    * all variations of this address
-   * @memberof Address6
-   * @instance
    * @param {boolean} substringSearch
    * @returns {string}
    */
@@ -1218,8 +1162,6 @@ export class Address6 {
   /**
    * Generate a regular expression that can be used to find or validate all
    * variations of this address.
-   * @memberof Address6
-   * @instance
    * @param {boolean} substringSearch
    * @returns {RegExp}
    */

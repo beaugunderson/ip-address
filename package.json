@@ -13,9 +13,9 @@
   "main": "dist/ip-address.js",
   "types": "dist/ip-address.d.ts",
   "scripts": {
-    "docs": "documentation build --github --output docs --format html ./ip-address.js",
+    "docs": "tsx scripts/build-readme.ts",
     "build": "rm -rf dist; mkdir dist; tsc",
-    "prepack": "npm run build",
+    "prepack": "npm run docs && npm run build",
     "release": "release-it",
     "test-ci": "c8 --experimental-monocart mocha",
     "test": "mocha",
@@ -55,7 +55,6 @@
     "@typescript-eslint/parser": "^8.8.0",
     "c8": "^11.0.0",
     "chai": "^5.1.1",
-    "documentation": "^14.0.3",
     "eslint": "^8.50.0",
     "eslint_d": "^14.0.4",
     "eslint-config-airbnb": "^19.0.4",
@@ -71,6 +70,7 @@
     "release-it": "^17.6.0",
     "source-map-support": "^0.5.21",
     "tsx": "^4.19.1",
+    "typedoc": "^0.28.19",
     "typescript": "<5.6.0"
   }
 }
