@@ -5,6 +5,8 @@ import * as chai from 'chai';
 
 import { Address4, Address6 } from '../src/ip-address';
 
+import intermapperInvalid6 from './data/intermapper-invalid-ipv6-addresses.json';
+import intermapperValid6 from './data/intermapper-valid-ipv6-addresses.json';
 import invalid4 from './data/invalid-ipv4-addresses.json';
 import invalid6 from './data/invalid-ipv6-addresses.json';
 
@@ -212,4 +214,16 @@ describe('Invalid IPv4 addresses', () => {
 
 describe('Invalid IPv6 addresses', () => {
   loadJsonBatch(invalid6, ['invalid-ipv6']);
+});
+
+// Test corpus from richb-intermapper/IPv6-Regex (Dartware/Intermapper, ~2010).
+// Three cases were reclassified to match ip-address's actual behavior:
+// leading/trailing whitespace addresses are rejected (intermapper's regex
+// trims), and `2001:db8::%1` is accepted because we support zone IDs.
+describe('Intermapper IPv6 corpus — valid', () => {
+  loadJsonBatch(intermapperValid6, ['valid-ipv6']);
+});
+
+describe('Intermapper IPv6 corpus — invalid', () => {
+  loadJsonBatch(intermapperInvalid6, ['invalid-ipv6']);
 });
