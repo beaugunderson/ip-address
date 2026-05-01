@@ -543,14 +543,14 @@ export class Address6 {
       return scope || 'Unknown';
     }
 
-    if (type === 'Link-local unicast') {
+    // RFC 4291 §2.5.3: the loopback address is treated as having Link-Local
+    // scope. (Multicast scope 1, "Interface-Local", is a different concept
+    // used only for loopback transmission of multicast.)
+    if (type === 'Link-local unicast' || type === 'Loopback') {
       return 'Link local';
     }
 
-    if (type === 'Loopback') {
-      return 'Interface local';
-    }
-
+    // RFC 4007 §6: the unspecified address has no scope.
     if (type === 'Unspecified') {
       return 'Unknown';
     }

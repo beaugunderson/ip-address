@@ -54,8 +54,8 @@ describe('v6', () => {
       new Address6('2002::').getScope().should.equal('Global');
     });
 
-    it('returns Interface local for the loopback address', () => {
-      new Address6('::1').getScope().should.equal('Interface local');
+    it('returns Link local for the loopback address (RFC 4291 §2.5.3)', () => {
+      new Address6('::1').getScope().should.equal('Link local');
     });
 
     it('returns Global for ULA, documentation, 6to4, and ordinary unicast', () => {
