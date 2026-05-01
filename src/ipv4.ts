@@ -330,6 +330,16 @@ export class Address4 {
   }
 
   /**
+   * The network address in CIDR string form, e.g. `192.168.1.0/24` for
+   * `192.168.1.5/24`. For an address with no explicit subnet the prefix is
+   * `/32`, e.g. `networkForm()` on `192.168.1.5` returns `192.168.1.5/32`.
+   * @returns {string}
+   */
+  networkForm(): string {
+    return `${this.startAddress().correctForm()}/${this.subnetMask}`;
+  }
+
+  /**
    * Converts a BigInt to a v4 address object
    * @param {bigint} bigInt - a BigInt to convert
    * @returns {Address4}
