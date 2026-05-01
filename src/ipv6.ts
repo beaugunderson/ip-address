@@ -744,7 +744,8 @@ export class Address6 {
 
     if (address4) {
       this.parsedAddress4 = address4[0];
-      this.address4 = new Address4(this.parsedAddress4);
+      const v4Suffix = this.subnetMask >= 96 ? `/${this.subnetMask - 96}` : '';
+      this.address4 = new Address4(`${this.parsedAddress4}${v4Suffix}`);
 
       for (let i = 0; i < this.address4.groups; i++) {
         if (/^0[0-9]+/.test(this.address4.parsedAddress[i])) {
@@ -880,7 +881,11 @@ export class Address6 {
   }
 
   /**
-   * Return the last two groups of this address as an IPv4 address string
+   * Return the last two groups of this address as an IPv4 address string.
+   * If this address carries a CIDR prefix that covers the trailing 32 bits
+   * (i.e. `subnetMask >= 96`), the resulting `Address4` inherits the
+   * corresponding v4 prefix (`subnetMask - 96`); otherwise it defaults to
+   * `/32`.
    * @returns {Address4}
    * @example
    * var address = new Address6('2001:4860:4001::1825:bf11');
@@ -888,10 +893,20 @@ export class Address6 {
    */
   to4(): Address4 {
     const binary = this.binaryZeroPad().split('');
+    const hex = BigInt(`0b${binary.slice(96, 128).join('')}`).toString(16).padStart(8, '0');
 
-    return Address4.fromHex(
-      BigInt(`0b${binary.slice(96, 128).join('')}`).toString(16).padStart(8, '0'),
-    );
+    if (this.subnetMask >= 96) {
+      const v4Mask = this.subnetMask - 96;
+      const groups = [];
+
+      for (let i = 0; i < 8; i += 2) {
+        groups.push(parseInt(hex.slice(i, i + 2), 16));
+      }
+
+      return new Address4(`${groups.join('.')}/${v4Mask}`);
+    }
+
+    return Address4.fromHex(hex);
   }
 
   /**
@@ -910,7 +925,7 @@ export class Address6 {
       infix = ':';
     }
 
-    return correct + infix + address4.address;
+    return correct + infix + address4.correctForm();
   }
 
   /**
