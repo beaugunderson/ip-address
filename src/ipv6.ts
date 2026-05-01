@@ -621,8 +621,11 @@ export class Address6 {
   }
 
   /**
-   * Parses an IPv6 address string into its 8 hexadecimal groups, expanding
-   * any `::` elision. Throws `AddressError` if the input is malformed.
+   * Parses an IPv6 address string into its 8 hexadecimal groups (expanding
+   * any `::` elision and any trailing v4-in-v6 portion) and stores the result
+   * on `this.parsedAddress`. Called automatically by the constructor; you
+   * typically don't need to call it directly. Throws `AddressError` if the
+   * input is malformed.
    */
   // TODO: Make private?
   parse(address: string): string[] {

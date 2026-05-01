@@ -59,8 +59,10 @@ export class Address4 {
   }
 
   /**
-   * Parses an IPv4 address string into its four octet groups. Throws
-   * `AddressError` if the input is not a valid IPv4 address.
+   * Parses an IPv4 address string into its four octet groups and stores the
+   * result on `this.parsedAddress`. Called automatically by the constructor;
+   * you typically don't need to call it directly. Throws `AddressError` if
+   * the input is not a valid IPv4 address.
    */
   parse(address: string) {
     const groups = address.split('.');
