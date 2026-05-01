@@ -611,6 +611,44 @@ describe('v6', () => {
       expect(obj.error).to.equal('failed to parse address with port');
       expect(obj.port).to.equal(null);
     });
+
+    it('should reject trailing junk in a bracketed URL (#158)', () => {
+      const obj = Address6.fromURL('http://[1234:5678::abcdxyz]');
+
+      expect(obj.error).to.equal('failed to parse address from URL');
+      expect(obj.address).to.equal(null);
+      expect(obj.port).to.equal(null);
+    });
+
+    it('should reject trailing junk in an unbracketed URL (#158)', () => {
+      const obj = Address6.fromURL('http://1234:5678::abcdxyz');
+
+      expect(obj.error).to.equal('failed to parse address from URL');
+      expect(obj.address).to.equal(null);
+      expect(obj.port).to.equal(null);
+    });
+
+    it('should reject trailing junk in a bracketed URL with a port', () => {
+      const obj = Address6.fromURL('http://[1234:5678::abcdxyz]:80');
+
+      expect(obj.error).to.equal('failed to parse address with port');
+      expect(obj.address).to.equal(null);
+      expect(obj.port).to.equal(null);
+    });
+
+    it('should accept v4-in-v6 addresses in URLs', () => {
+      const obj = Address6.fromURL('http://[::ffff:192.168.1.1]/foo');
+
+      expect(obj.address?.address).to.equal('::ffff:192.168.1.1');
+      expect(obj.port).to.equal(null);
+    });
+
+    it('should accept v4-in-v6 addresses in URLs with a port', () => {
+      const obj = Address6.fromURL('http://[::ffff:192.168.1.1]:8080/foo');
+
+      expect(obj.address?.address).to.equal('::ffff:192.168.1.1');
+      expect(obj.port).to.equal(8080);
+    });
   });
 
   describe('regularExpressionString', () => {
