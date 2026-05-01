@@ -911,6 +911,46 @@ describe('v6', () => {
     });
   });
 
+  describe('isMapped4', () => {
+    it('detects ::ffff:0:0/96 regardless of notation', () => {
+      notationsToAddresseses([
+        '::ffff:0:0',
+        '::ffff:127.0.0.1',
+        '::ffff:7f00:1',
+        '::ffff:7f00:0001',
+        '::ffff:c0a8:1',
+        '::ffff:192.168.0.1',
+        '::ffff:ffff:ffff',
+      ]).forEach((topic) => {
+        should.equal(topic.isMapped4(), true);
+      });
+    });
+
+    it('rejects addresses outside ::ffff:0:0/96', () => {
+      notationsToAddresseses([
+        '::',
+        '::1',
+        '::1.2.3.4',
+        '::1:ffff:0:0',
+        '64:ff9b::192.0.2.1',
+        '2001:db8::1',
+        'fc00::',
+      ]).forEach((topic) => {
+        should.equal(topic.isMapped4(), false);
+      });
+    });
+
+    it('agrees with is4 for IPv4-mapped addresses written in dotted-quad', () => {
+      const dotted = new Address6('::ffff:127.0.0.1');
+      const hex = new Address6('::ffff:7f00:1');
+
+      should.equal(dotted.isMapped4(), true);
+      should.equal(hex.isMapped4(), true);
+      should.equal(dotted.is4(), true);
+      should.equal(hex.is4(), false);
+    });
+  });
+
   describe('isDocumentation', () => {
     it('detects 2001:db8::/32', () => {
       notationsToAddresseses([
