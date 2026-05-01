@@ -528,17 +528,34 @@ export class Address6 {
   }
 
   /**
-   * Return the scope of the address
+   * Return the scope of the address. The 4-bit scope field
+   * ([RFC 4291 §2.7](https://datatracker.ietf.org/doc/html/rfc4291#section-2.7))
+   * is only defined for multicast addresses; for unicast addresses the scope
+   * is derived from the address type per
+   * [RFC 4007 §6](https://datatracker.ietf.org/doc/html/rfc4007#section-6).
    * @returns {String}
    */
   getScope(): string {
-    let scope = constants6.SCOPES[parseInt(this.getBits(12, 16).toString(10), 10)];
+    const type = this.getType();
 
-    if (this.getType() === 'Global unicast' && scope !== 'Link local') {
-      scope = 'Global';
+    if (type === 'Multicast' || type.startsWith('Multicast ')) {
+      const scope = constants6.SCOPES[parseInt(this.getBits(12, 16).toString(10), 10)];
+      return scope || 'Unknown';
     }
 
-    return scope || 'Unknown';
+    if (type === 'Link-local unicast') {
+      return 'Link local';
+    }
+
+    if (type === 'Loopback') {
+      return 'Interface local';
+    }
+
+    if (type === 'Unspecified') {
+      return 'Unknown';
+    }
+
+    return 'Global';
   }
 
   /**
@@ -1179,7 +1196,8 @@ export class Address6 {
    * @returns {boolean}
    */
   isMulticast(): boolean {
-    return this.getType() === 'Multicast';
+    const type = this.getType();
+    return type === 'Multicast' || type.startsWith('Multicast ');
   }
 
   /**
