@@ -151,6 +151,44 @@ describe('v4', () => {
     });
   });
 
+  describe('fromAddressAndMask', () => {
+    it('translates 255.255.255.0 to /24', () => {
+      const topic = Address4.fromAddressAndMask('192.168.1.1', '255.255.255.0');
+      topic.subnetMask.should.equal(24);
+      topic.subnet.should.equal('/24');
+      should.equal(topic.addressMinusSuffix, '192.168.1.1');
+    });
+
+    it('translates 0.0.0.0 to /0', () => {
+      Address4.fromAddressAndMask('192.168.1.1', '0.0.0.0').subnetMask.should.equal(0);
+    });
+
+    it('translates 255.255.255.255 to /32', () => {
+      Address4.fromAddressAndMask('192.168.1.1', '255.255.255.255').subnetMask.should.equal(32);
+    });
+
+    it('round-trips through subnetMaskAddress()', () => {
+      const original = new Address4('10.0.0.1/20');
+      const mask = original.subnetMaskAddress().correctForm();
+      Address4.fromAddressAndMask('10.0.0.1', mask).subnetMask.should.equal(20);
+    });
+
+    it('rejects a non-contiguous mask', () => {
+      (() =>
+        Address4.fromAddressAndMask('192.168.1.1', '255.0.255.0')).should.throw(
+        'Invalid subnet mask.',
+      );
+    });
+
+    it('rejects a mask with bytes out of range', () => {
+      (() => Address4.fromAddressAndMask('192.168.1.1', '256.0.0.0')).should.throw();
+    });
+
+    it('does not change isValid() behavior for mask-form input', () => {
+      Address4.isValid('192.168.1.1/255.255.255.0').should.equal(false);
+    });
+  });
+
   describe('Creating an address from a BigInt', () => {
     const topic = Address4.fromBigInt(BigInt('2130706433'));
 

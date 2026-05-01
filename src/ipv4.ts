@@ -90,6 +90,20 @@ export class Address4 {
   isCorrect = isCorrect4;
 
   /**
+   * Construct an `Address4` from an address and a dotted-decimal subnet
+   * mask given as separate strings (e.g. as returned by Node's
+   * `os.networkInterfaces()`). Throws `AddressError` if the mask is
+   * non-contiguous (e.g. `255.0.255.0`).
+   * @example
+   * var address = Address4.fromAddressAndMask('192.168.1.1', '255.255.255.0');
+   * address.subnetMask; // 24
+   */
+  static fromAddressAndMask(address: string, mask: string): Address4 {
+    const bits = common.prefixLengthFromMask(new Address4(mask).bigInt(), constants.BITS);
+    return new Address4(`${address}/${bits}`);
+  }
+
+  /**
    * Converts a hex string to an IPv4 address object
    * @param {string} hex - a hex string to convert
    * @returns {Address4}
