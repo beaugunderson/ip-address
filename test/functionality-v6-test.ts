@@ -1241,4 +1241,26 @@ describe('v6', () => {
       });
     });
   });
+
+  describe('toByteArray', () => {
+    it('always returns 16 bytes, including for addresses with leading zero bytes', () => {
+      // RFC 4291 section 2: an IPv6 address is a 128-bit (16-octet) identifier,
+      // so its byte array must always be 16 bytes long.
+      new Address6('::').toByteArray().length.should.equal(16);
+      new Address6('::1').toByteArray().length.should.equal(16);
+      new Address6('::ffff:192.168.0.1').toByteArray().length.should.equal(16);
+      new Address6('64:ff9b::c000:221').toByteArray().length.should.equal(16);
+      new Address6('a:b:c:d:e:f:0:1').toByteArray().length.should.equal(16);
+      new Address6('::1').toUnsignedByteArray().length.should.equal(16);
+    });
+
+    it('preserves the high-order zero bytes', () => {
+      new Address6('::1')
+        .toByteArray()
+        .should.deep.equal([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1]);
+      new Address6('::ffff:192.168.0.1')
+        .toByteArray()
+        .should.deep.equal([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 255, 255, 192, 168, 0, 1]);
+    });
+  });
 });
