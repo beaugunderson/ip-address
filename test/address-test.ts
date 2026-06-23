@@ -90,7 +90,7 @@ function addressIs(addressString: string, descriptors: string[]) {
         it('converts to a byte array and back', () => {
           const byteArray = address6.toByteArray();
 
-          byteArray.length.should.be.at.most(16);
+          byteArray.length.should.equal(16);
 
           const converted = Address6.fromByteArray(byteArray);
 
@@ -100,7 +100,7 @@ function addressIs(addressString: string, descriptors: string[]) {
         it('converts to an unsigned byte array and back', () => {
           const byteArray = address6.toUnsignedByteArray();
 
-          byteArray.length.should.be.at.most(16);
+          byteArray.length.should.equal(16);
 
           const converted = Address6.fromUnsignedByteArray(byteArray);
 

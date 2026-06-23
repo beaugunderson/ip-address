@@ -1122,10 +1122,7 @@ export class Address6 {
    * @returns {Array}
    */
   toByteArray(): number[] {
-    const valueWithoutPadding = this.bigInt().toString(16);
-    const leadingPad = '0'.repeat(valueWithoutPadding.length % 2);
-
-    const value = `${leadingPad}${valueWithoutPadding}`;
+    const value = this.bigInt().toString(16).padStart(constants6.BITS / 4, '0');
 
     const bytes = [];
     for (let i = 0, length = value.length; i < length; i += 2) {
