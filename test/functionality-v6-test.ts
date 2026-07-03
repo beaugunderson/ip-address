@@ -608,11 +608,18 @@ describe('v6', () => {
       expect(obj.port).to.equal(80);
     });
 
-    it('should work with a URL with a long port number', () => {
+    it('should work with the highest valid port number', () => {
+      const obj = Address6.fromURL('http://[2001:db8::5]:65535/foo');
+
+      expect(obj.address?.address).to.equal('2001:db8::5');
+      expect(obj.port).to.equal(65535);
+    });
+
+    it('should parse the address but fail with a port number one past the valid range', () => {
       const obj = Address6.fromURL('http://[2001:db8::5]:65536/foo');
 
       expect(obj.address?.address).to.equal('2001:db8::5');
-      expect(obj.port).to.equal(65536);
+      expect(obj.port).to.equal(null);
     });
 
     it('should work with a address with a port', () => {
@@ -622,11 +629,11 @@ describe('v6', () => {
       expect(obj.port).to.equal(80);
     });
 
-    it('should work with an address with a long port', () => {
+    it('should parse the address but fail with an out of range port', () => {
       const obj = Address6.fromURL('[2001:db8::5]:65536');
 
       expect(obj.address?.address).to.equal('2001:db8::5');
-      expect(obj.port).to.equal(65536);
+      expect(obj.port).to.equal(null);
     });
 
     it('should parse the address but fail with an invalid port', () => {

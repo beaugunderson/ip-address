@@ -246,8 +246,8 @@ export class Address6 {
     if (port) {
       port = parseInt(port, 10);
 
-      // squelch out of range ports
-      if (port < 0 || port > 65536) {
+      // squelch out of range ports (valid ports are 0-65535)
+      if (port < 0 || port > 65535) {
         port = null;
       }
     } else {
