@@ -98,7 +98,8 @@ A few terms used throughout the API can be confusing if you haven't worked deepl
 
 <!-- API:START -->
 
-#### AddressError
+<details>
+<summary><a id="addresserror"></a><strong>AddressError</strong></summary>
 
 **Constructor**
 
@@ -108,9 +109,10 @@ A few terms used throughout the API can be confusing if you haven't worked deepl
 
 - `parseMessage: string` — [src](https://github.com/beaugunderson/ip-address/blob/master/src/address-error.ts#L2)
 
-#### Address4
+</details>
 
-Represents an IPv4 address
+<details>
+<summary><a id="address4"></a><strong>Address4</strong> — Represents an IPv4 address</summary>
 
 **Constructor**
 
@@ -171,9 +173,10 @@ Represents an IPv4 address
 - `isInSubnet: (this: Address4 | Address6, address: Address4 | Address6) => boolean` — Returns true if the given address is in the subnet of the current address [src](https://github.com/beaugunderson/ip-address/blob/master/src/ipv4.ts#L456)
 - `isHostInSubnet: (this: Address4 | Address6, address: Address4 | Address6) => boolean` — Returns true if this address's host bits fall inside the given subnet, ignoring this address's own subnet mask. See common.isHostInSubnet. [src](https://github.com/beaugunderson/ip-address/blob/master/src/ipv4.ts#L464)
 
-#### Address6
+</details>
 
-Represents an IPv6 address
+<details>
+<summary><a id="address6"></a><strong>Address6</strong> — Represents an IPv6 address</summary>
 
 **Constructor**
 
@@ -267,6 +270,8 @@ Represents an IPv6 address
 - `isInSubnet: (this: Address4 | Address6, address: Address4 | Address6) => boolean` — Returns true if the given address is in the subnet of the current address [src](https://github.com/beaugunderson/ip-address/blob/master/src/ipv6.ts#L1191)
 - `isHostInSubnet: (this: Address4 | Address6, address: Address4 | Address6) => boolean` — Returns true if this address's host bits fall inside the given subnet, ignoring this address's own subnet mask. See common.isHostInSubnet. [src](https://github.com/beaugunderson/ip-address/blob/master/src/ipv6.ts#L1199)
 - `isCorrect: (this: Address4 | Address6) => boolean` — Returns true if the address is correct, false otherwise [src](https://github.com/beaugunderson/ip-address/blob/master/src/ipv6.ts#L1205)
+
+</details>
 
 <!-- API:END -->
 

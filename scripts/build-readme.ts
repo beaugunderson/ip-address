@@ -76,12 +76,53 @@ function renderProperty(prop: TypeDoc.DeclarationReflection): string {
   return `- ${code}${tail ? ' — ' + tail : ''}`;
 }
 
+function escapeHtml(text: string): string {
+  return text
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
+}
+
+/**
+ * The one-line blurb shown next to the class name on the collapsed row. The
+ * summary is markdown, but a `<summary>` element renders HTML rather than
+ * markdown, so backtick spans become `<code>` and the rest is escaped.
+ */
+function renderSummaryLine(summary: string): string {
+  return summary
+    .split(/(`[^`]+`)/)
+    .map((part) =>
+      part.startsWith('`') && part.endsWith('`') && part.length > 1
+        ? `<code>${escapeHtml(part.slice(1, -1))}</code>`
+        : escapeHtml(part),
+    )
+    .join('');
+}
+
+function firstSentence(summary: string): string {
+  const match = summary.match(/^(.*?[.!?])(\s|$)/);
+  return match ? match[1] : summary;
+}
+
 function renderClass(cls: TypeDoc.DeclarationReflection): string {
   const out: string[] = [];
-  out.push(`#### ${cls.name}`);
-  out.push('');
   const summary = summaryFor(cls);
-  if (summary) {
+  const anchor = cls.name.toLowerCase();
+
+  // Each class is collapsed so the reader can open one at a time; the API
+  // block is tens of thousands of characters when laid out flat. The anchor
+  // keeps `README.md#address6` style deep links working now that the class
+  // name lives in a `<summary>` rather than a markdown heading.
+  const lead = summary ? firstSentence(summary) : '';
+  const blurb = lead ? ` — ${renderSummaryLine(lead)}` : '';
+  out.push('<details>');
+  out.push(`<summary><a id="${anchor}"></a><strong>${escapeHtml(cls.name)}</strong>${blurb}</summary>`);
+  out.push('');
+
+  // The collapsed row already carries the first sentence, so the body repeats
+  // the summary only when there is more to it than that.
+  if (summary && summary !== lead) {
     out.push(summary);
     out.push('');
   }
@@ -131,6 +172,9 @@ function renderClass(cls: TypeDoc.DeclarationReflection): string {
     out.push(...properties);
     out.push('');
   }
+
+  out.push('</details>');
+  out.push('');
 
   return out.join('\n');
 }
