@@ -6,16 +6,38 @@ export interface ReverseFormOptions {
   omitSuffix?: boolean;
 }
 
+/**
+ * Returns whether this address's *network* is contained within `address`,
+ * i.e. whether every address this one can represent also falls inside
+ * `address`. A network wider than `address` is not contained in it, so
+ * `10.0.0.0/8` is not in `10.0.0.0/16`.
+ *
+ * To ask whether the address itself falls inside a range, ignoring any CIDR
+ * suffix it was written with, use {@link isHostInSubnet} instead. That is the
+ * question the special-use classifiers ask.
+ */
 export function isInSubnet(this: Address4 | Address6, address: Address4 | Address6) {
   if (this.subnetMask < address.subnetMask) {
     return false;
   }
 
-  if (this.mask(address.subnetMask) === address.mask()) {
-    return true;
-  }
+  return isHostInSubnet.call(this, address);
+}
 
-  return false;
+/**
+ * Returns whether this address's host bits fall inside `address`, ignoring
+ * this address's own subnet mask.
+ *
+ * This is the primitive the special-use classifiers (`isLoopback`,
+ * `isPrivate`, `isLinkLocal`, `getType`, …) are built on: they answer a
+ * question about the address, so the answer must not change with the CIDR
+ * suffix the caller happened to write. Use this rather than
+ * {@link isInSubnet} when classifying a single address — notably when the
+ * address came from untrusted input and the result backs a trust-boundary
+ * decision such as an SSRF allow/deny filter.
+ */
+export function isHostInSubnet(this: Address4 | Address6, address: Address4 | Address6) {
+  return this.mask(address.subnetMask) === address.mask();
 }
 
 export function isCorrect(defaultBits: number) {

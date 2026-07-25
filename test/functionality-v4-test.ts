@@ -674,4 +674,65 @@ describe('v4', () => {
       });
     });
   });
+
+  describe('classification ignores the address own subnet mask', () => {
+    // A classifier answers a question about the address, so a CIDR suffix on
+    // the input must not change the answer. Suffixes shorter than the
+    // reference range's prefix are the interesting case.
+    const cases: [string, 'isLoopback' | 'isPrivate' | 'isLinkLocal' | 'isCGNAT' | 'isUnspecified' | 'isBroadcast' | 'isMulticast'][] =
+      [
+        ['127.0.0.1', 'isLoopback'],
+        ['10.0.0.1', 'isPrivate'],
+        ['172.16.5.5', 'isPrivate'],
+        ['192.168.1.1', 'isPrivate'],
+        ['169.254.169.254', 'isLinkLocal'],
+        ['100.64.0.1', 'isCGNAT'],
+        ['0.0.0.0', 'isUnspecified'],
+        ['255.255.255.255', 'isBroadcast'],
+        ['224.0.0.1', 'isMulticast'],
+      ];
+
+    it('classifies the host identically with and without a /0 suffix', () => {
+      cases.forEach(([notation, method]) => {
+        should.equal(new Address4(notation)[method](), true, `${notation} ${method}`);
+        should.equal(new Address4(`${notation}/0`)[method](), true, `${notation}/0 ${method}`);
+      });
+    });
+
+    it('classifies the host identically for every prefix length', () => {
+      for (let prefix = 0; prefix <= 32; prefix++) {
+        should.equal(new Address4(`127.0.0.1/${prefix}`).isLoopback(), true, `/${prefix}`);
+        should.equal(new Address4(`10.0.0.5/${prefix}`).isPrivate(), true, `/${prefix}`);
+        should.equal(
+          new Address4(`169.254.169.254/${prefix}`).isLinkLocal(),
+          true,
+          `/${prefix}`,
+        );
+      }
+    });
+
+    it('does not start misclassifying public addresses', () => {
+      for (let prefix = 0; prefix <= 32; prefix++) {
+        should.equal(new Address4(`8.8.8.8/${prefix}`).isLoopback(), false, `/${prefix}`);
+        should.equal(new Address4(`8.8.8.8/${prefix}`).isPrivate(), false, `/${prefix}`);
+        should.equal(new Address4(`8.8.8.8/${prefix}`).isLinkLocal(), false, `/${prefix}`);
+        should.equal(new Address4(`8.8.8.8/${prefix}`).isCGNAT(), false, `/${prefix}`);
+      }
+    });
+  });
+
+  describe('isInSubnet retains subnet-containment semantics', () => {
+    // isInSubnet answers "is my network inside yours", which is a different
+    // question from classification and must keep rejecting wider networks.
+    it('reports a wider network as not contained in a narrower one', () => {
+      should.equal(new Address4('127.0.0.1/0').isInSubnet(new Address4('127.0.0.0/8')), false);
+      should.equal(new Address4('10.0.0.0/8').isInSubnet(new Address4('10.0.0.0/16')), false);
+    });
+
+    it('still reports genuine containment', () => {
+      should.equal(new Address4('10.1.0.0/16').isInSubnet(new Address4('10.0.0.0/8')), true);
+      should.equal(new Address4('127.0.0.1/32').isInSubnet(new Address4('127.0.0.0/8')), true);
+      should.equal(new Address4('11.0.0.0/16').isInSubnet(new Address4('10.0.0.0/8')), false);
+    });
+  });
 });

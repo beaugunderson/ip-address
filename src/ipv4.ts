@@ -450,11 +450,19 @@ export class Address4 {
   isInSubnet = common.isInSubnet;
 
   /**
+   * Returns true if this address's host bits fall inside the given subnet,
+   * ignoring this address's own subnet mask. See
+   * {@link common.isHostInSubnet}.
+   * @returns {boolean}
+   */
+  isHostInSubnet = common.isHostInSubnet;
+
+  /**
    * Returns true if the given address is a multicast address
    * @returns {boolean}
    */
   isMulticast(): boolean {
-    return this.isInSubnet(MULTICAST_V4);
+    return this.isHostInSubnet(MULTICAST_V4);
   }
 
   /**
@@ -462,7 +470,7 @@ export class Address4 {
    * @returns {boolean}
    */
   isPrivate(): boolean {
-    return PRIVATE_V4.some((subnet) => this.isInSubnet(subnet));
+    return PRIVATE_V4.some((subnet) => this.isHostInSubnet(subnet));
   }
 
   /**
@@ -470,7 +478,7 @@ export class Address4 {
    * @returns {boolean}
    */
   isLoopback(): boolean {
-    return this.isInSubnet(LOOPBACK_V4);
+    return this.isHostInSubnet(LOOPBACK_V4);
   }
 
   /**
@@ -478,7 +486,7 @@ export class Address4 {
    * @returns {boolean}
    */
   isLinkLocal(): boolean {
-    return this.isInSubnet(LINK_LOCAL_V4);
+    return this.isHostInSubnet(LINK_LOCAL_V4);
   }
 
   /**
@@ -486,7 +494,7 @@ export class Address4 {
    * @returns {boolean}
    */
   isUnspecified(): boolean {
-    return this.isInSubnet(UNSPECIFIED_V4);
+    return this.isHostInSubnet(UNSPECIFIED_V4);
   }
 
   /**
@@ -494,7 +502,7 @@ export class Address4 {
    * @returns {boolean}
    */
   isBroadcast(): boolean {
-    return this.isInSubnet(BROADCAST_V4);
+    return this.isHostInSubnet(BROADCAST_V4);
   }
 
   /**
@@ -502,7 +510,7 @@ export class Address4 {
    * @returns {boolean}
    */
   isCGNAT(): boolean {
-    return this.isInSubnet(CGNAT_V4);
+    return this.isHostInSubnet(CGNAT_V4);
   }
 
   /**

@@ -567,7 +567,7 @@ export class Address6 {
   getType(): string {
     for (let i = 0; i < TYPE_SUBNETS.length; i++) {
       const entry = TYPE_SUBNETS[i];
-      if (this.isInSubnet(entry[0])) {
+      if (this.isHostInSubnet(entry[0])) {
         return entry[1];
       }
     }
@@ -1094,7 +1094,7 @@ export class Address6 {
       throw new AddressError('NAT64 prefix length must be 32, 40, 48, 56, 64, or 96');
     }
 
-    if (!this.isInSubnet(prefix6)) {
+    if (!this.isHostInSubnet(prefix6)) {
       return null;
     }
 
@@ -1183,6 +1183,14 @@ export class Address6 {
   isInSubnet = common.isInSubnet;
 
   /**
+   * Returns true if this address's host bits fall inside the given subnet,
+   * ignoring this address's own subnet mask. See
+   * {@link common.isHostInSubnet}.
+   * @returns {boolean}
+   */
+  isHostInSubnet = common.isHostInSubnet;
+
+  /**
    * Returns true if the address is correct, false otherwise
    * @returns {boolean}
    */
@@ -1206,7 +1214,7 @@ export class Address6 {
       return embedded.isLinkLocal();
     }
 
-    // Zeroes are required, i.e. we can't check isInSubnet with 'fe80::/10'
+    // Zeroes are required, i.e. we can't check isHostInSubnet with 'fe80::/10'
     if (
       this.getBitsBase2(0, 64) ===
       '1111111010000000000000000000000000000000000000000000000000000000'
@@ -1251,7 +1259,7 @@ export class Address6 {
    * @returns {boolean}
    */
   isMapped4(): boolean {
-    return this.isInSubnet(IPV4_MAPPED_SUBNET);
+    return this.isHostInSubnet(IPV4_MAPPED_SUBNET);
   }
 
   /**
@@ -1272,7 +1280,7 @@ export class Address6 {
    * @returns {Address4 | null}
    */
   embeddedIPv4(): Address4 | null {
-    if (this.isMapped4() || this.isInSubnet(NAT64_WELL_KNOWN_SUBNET)) {
+    if (this.isMapped4() || this.isHostInSubnet(NAT64_WELL_KNOWN_SUBNET)) {
       return this.to4();
     }
 
@@ -1284,7 +1292,7 @@ export class Address6 {
    * @returns {boolean}
    */
   isTeredo(): boolean {
-    return this.isInSubnet(TEREDO_SUBNET);
+    return this.isHostInSubnet(TEREDO_SUBNET);
   }
 
   /**
@@ -1292,7 +1300,7 @@ export class Address6 {
    * @returns {boolean}
    */
   is6to4(): boolean {
-    return this.isInSubnet(SIX_TO_FOUR_SUBNET);
+    return this.isHostInSubnet(SIX_TO_FOUR_SUBNET);
   }
 
   /**
@@ -1313,7 +1321,7 @@ export class Address6 {
    * @returns {boolean}
    */
   isULA(): boolean {
-    return this.isInSubnet(ULA_SUBNET);
+    return this.isHostInSubnet(ULA_SUBNET);
   }
 
   /**
@@ -1387,7 +1395,7 @@ export class Address6 {
    * @returns {boolean}
    */
   isDocumentation(): boolean {
-    return this.isInSubnet(DOCUMENTATION_SUBNET);
+    return this.isHostInSubnet(DOCUMENTATION_SUBNET);
   }
   // #endregion
 

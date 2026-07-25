@@ -1419,4 +1419,93 @@ describe('v6', () => {
       });
     });
   });
+
+  describe('classification ignores the address own subnet mask', () => {
+    // A classifier answers a question about the address, so a CIDR suffix on
+    // the input must not change the answer. Suffixes shorter than the
+    // reference range's prefix are the interesting case.
+    type Predicate =
+      | 'isLoopback'
+      | 'isLinkLocal'
+      | 'isULA'
+      | 'isPrivate'
+      | 'isUnspecified'
+      | 'isMulticast'
+      | 'isMapped4'
+      | 'isTeredo'
+      | 'is6to4'
+      | 'isDocumentation';
+
+    const cases: [string, Predicate][] = [
+      ['::1', 'isLoopback'],
+      ['fe80::1', 'isLinkLocal'],
+      ['fc00::1', 'isULA'],
+      ['fc00::1', 'isPrivate'],
+      ['::', 'isUnspecified'],
+      ['ff02::1', 'isMulticast'],
+      ['::ffff:1.2.3.4', 'isMapped4'],
+      ['2001::1', 'isTeredo'],
+      ['2002::1', 'is6to4'],
+      ['2001:db8::1', 'isDocumentation'],
+      // IPv4-mapped and NAT64 normalization (GHSA-22jq-vg5j-6vgg) must also
+      // survive a suffix, otherwise that fix is trivially undone.
+      ['::ffff:127.0.0.1', 'isLoopback'],
+      ['::ffff:10.0.0.1', 'isPrivate'],
+      ['::ffff:169.254.169.254', 'isLinkLocal'],
+      ['64:ff9b::7f00:1', 'isLoopback'],
+      ['64:ff9b::a9fe:a9fe', 'isLinkLocal'],
+    ];
+
+    it('classifies the host identically with and without a /0 suffix', () => {
+      cases.forEach(([notation, method]) => {
+        should.equal(new Address6(notation)[method](), true, `${notation} ${method}`);
+        should.equal(new Address6(`${notation}/0`)[method](), true, `${notation}/0 ${method}`);
+      });
+    });
+
+    it('classifies the host identically for every prefix length', () => {
+      for (let prefix = 0; prefix <= 128; prefix++) {
+        should.equal(new Address6(`::1/${prefix}`).isLoopback(), true, `::1/${prefix}`);
+        should.equal(new Address6(`fc00::1/${prefix}`).isPrivate(), true, `fc00::1/${prefix}`);
+        should.equal(
+          new Address6(`::ffff:127.0.0.1/${prefix}`).isLoopback(),
+          true,
+          `::ffff:127.0.0.1/${prefix}`,
+        );
+      }
+    });
+
+    it('reports getType by the host bits regardless of suffix', () => {
+      should.equal(new Address6('::1/0').getType(), 'Loopback');
+      should.equal(new Address6('fe80::1/0').getType(), 'Link-local unicast');
+      should.equal(new Address6('fc00::1/0').getType(), 'Unique local');
+      should.equal(new Address6('::ffff:127.0.0.1/0').getType(), 'IPv4-mapped');
+    });
+
+    it('does not start misclassifying public addresses', () => {
+      for (let prefix = 0; prefix <= 128; prefix++) {
+        const address = new Address6(`2001:4860:4860::8888/${prefix}`);
+        should.equal(address.isLoopback(), false, `/${prefix}`);
+        should.equal(address.isPrivate(), false, `/${prefix}`);
+        should.equal(address.isULA(), false, `/${prefix}`);
+        should.equal(address.isMulticast(), false, `/${prefix}`);
+        should.equal(address.isMapped4(), false, `/${prefix}`);
+      }
+    });
+  });
+
+  describe('isInSubnet retains subnet-containment semantics', () => {
+    // isInSubnet answers "is my network inside yours", which is a different
+    // question from classification and must keep rejecting wider networks.
+    it('reports a wider network as not contained in a narrower one', () => {
+      should.equal(new Address6('::1/0').isInSubnet(new Address6('::1/128')), false);
+      should.equal(new Address6('fc00::/7').isInSubnet(new Address6('fc00::/16')), false);
+    });
+
+    it('still reports genuine containment', () => {
+      should.equal(new Address6('fc00::/16').isInSubnet(new Address6('fc00::/7')), true);
+      should.equal(new Address6('::1/128').isInSubnet(new Address6('::/0')), true);
+      should.equal(new Address6('2001::/16').isInSubnet(new Address6('fc00::/7')), false);
+    });
+  });
 });
