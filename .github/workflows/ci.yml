@@ -1,0 +1,47 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+# Fork pull requests get this same read-only token and no secrets, so a
+# contributor's branch can run the suite without being handed anything.
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    name: test-${{ matrix.node-version }}
+    runs-on: ubuntu-latest
+
+    strategy:
+      fail-fast: false
+      matrix:
+        node-version: ['20', '22', '24', '25']
+
+    steps:
+      # Third-party actions are pinned to a commit, not a tag: a tag is
+      # mutable and this workflow runs on pull requests from forks.
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: npm
+
+      - run: npm ci
+
+      - run: ./coverage.sh
+        name: Run tests
+
+      - uses: codecov/codecov-action@fb8b3582c8e4def4969c97caa2f19720cb33a72f # v7.0.0
+        with:
+          # Tokenless upload; public repositories do not need a token, and a
+          # fork pull request would not have access to one anyway.
+          fail_ci_if_error: false
