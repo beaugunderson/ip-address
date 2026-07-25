@@ -136,7 +136,12 @@ export class Address6 {
       }
 
       address = address.replace(constants6.RE_SUBNET_STRING, '');
-    } else if (/\//.test(address)) {
+    }
+
+    // RE_SUBNET_STRING anchors on the end of the address, so it strips only
+    // the trailing suffix. A second one left behind (`::/0/1`) is malformed
+    // and must be rejected rather than parsed as an address group.
+    if (/\//.test(address)) {
       throw new AddressError('Invalid subnet mask.');
     }
 
@@ -740,27 +745,33 @@ export class Address6 {
     const groups = address.split(':');
     const lastGroup = groups.slice(-1)[0];
 
+    // RE_ADDRESS rejects octets with a leading zero, so a dotted-quad tail is
+    // matched permissively first: that way this notation still gets its own
+    // message with the offending octet highlighted, rather than falling
+    // through as an unrecognized group.
+    const v4Octets = lastGroup.split('.');
+
+    if (v4Octets.length === constants4.GROUPS && v4Octets.every((octet) => /^\d{1,3}$/.test(octet))) {
+      if (v4Octets.some((octet) => /^0\d/.test(octet))) {
+        // The prefix groups haven't been through the bad-character check
+        // yet, so escape them before including in the error HTML.
+        const highlighted = v4Octets.map(spanLeadingZeroes4).join('.');
+        const prefix = groups.slice(0, -1).map(helpers.escapeHtml).join(':');
+        const separator = groups.length > 1 ? ':' : '';
+
+        throw new AddressError(
+          "IPv4 addresses can't have leading zeroes.",
+          `${prefix}${separator}${highlighted}`,
+        );
+      }
+    }
+
     const address4 = lastGroup.match(constants4.RE_ADDRESS);
 
     if (address4) {
       this.parsedAddress4 = address4[0];
       const v4Suffix = this.subnetMask >= 96 ? `/${this.subnetMask - 96}` : '';
       this.address4 = new Address4(`${this.parsedAddress4}${v4Suffix}`);
-
-      for (let i = 0; i < this.address4.groups; i++) {
-        if (/^0[0-9]+/.test(this.address4.parsedAddress[i])) {
-          // The prefix groups haven't been through the bad-character check
-          // yet, so escape them before including in the error HTML.
-          const highlighted = this.address4.parsedAddress.map(spanLeadingZeroes4).join('.');
-          const prefix = groups.slice(0, -1).map(helpers.escapeHtml).join(':');
-          const separator = groups.length > 1 ? ':' : '';
-
-          throw new AddressError(
-            "IPv4 addresses can't have leading zeroes.",
-            `${prefix}${separator}${highlighted}`,
-          );
-        }
-      }
 
       this.v4 = true;
 

@@ -70,6 +70,12 @@ export class Address4 {
   parse(address: string) {
     const groups = address.split('.');
 
+    // Checked before the general match so the error names the actual problem.
+    // Address6 rejects the same notation on its v4-in-v6 path.
+    if (groups.some((group) => /^0\d/.test(group))) {
+      throw new AddressError("IPv4 addresses can't have leading zeroes.");
+    }
+
     if (!address.match(constants.RE_ADDRESS)) {
       throw new AddressError('Invalid IPv4 address.');
     }

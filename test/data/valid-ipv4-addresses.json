@@ -1,9 +1,5 @@
 [
    {
-      "address": "001.002.003.004",
-      "conditions": ["incorrect-ipv4"]
-   },
-   {
       "address": "127.0.0.1",
       "conditions": ["correct-ipv4"]
    },

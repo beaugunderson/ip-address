@@ -1,5 +1,6 @@
 import * as chai from 'chai';
 import { Address4 } from '../src/ipv4';
+import { AddressError } from '../src/address-error';
 
 const should = chai.should();
 
@@ -508,18 +509,20 @@ describe('v4', () => {
   });
 
   describe('A different notation of the same address', () => {
-    const addresses = notationsToAddresseses([
-      '127.0.0.1/32',
-      '127.000.000.001/32',
-      '127.0.0.1',
-      '127.000.000.001',
-      '127.000.0.1',
-    ]);
+    const addresses = notationsToAddresseses(['127.0.0.1/32', '127.0.0.1']);
 
     it('is parsed to the same result', () => {
       addresses.forEach((topic) => {
         should.equal(topic.correctForm(), '127.0.0.1');
         should.equal(topic.subnetMask, 32);
+      });
+    });
+
+    it('does not treat a zero-padded notation as the same address', () => {
+      // A leading zero is octal to every resolver, so these are not
+      // alternative spellings of 127.0.0.1 and are rejected outright.
+      ['127.000.000.001/32', '127.000.000.001', '127.000.0.1'].forEach((notation) => {
+        should.equal(Address4.isValid(notation), false, notation);
       });
     });
   });
@@ -733,6 +736,55 @@ describe('v4', () => {
       should.equal(new Address4('10.1.0.0/16').isInSubnet(new Address4('10.0.0.0/8')), true);
       should.equal(new Address4('127.0.0.1/32').isInSubnet(new Address4('127.0.0.0/8')), true);
       should.equal(new Address4('11.0.0.0/16').isInSubnet(new Address4('10.0.0.0/8')), false);
+    });
+  });
+
+  describe('octets with a leading zero', () => {
+    // A leading zero is octal to the WHATWG URL parser, inet_aton, and
+    // getaddrinfo, and decimal to parseInt(part, 10). Accepting the notation
+    // means the library and the network stack disagree about which host a
+    // string names, so it is rejected outright. Address6 already rejects it
+    // on the v4-in-v6 path.
+    const ambiguous = [
+      '012.0.0.1',
+      '010.0.0.1',
+      '012.012.012.012',
+      '127.0.0.01',
+      '00.0.0.1',
+      '0.0.0.01',
+      '001.002.003.004',
+    ];
+
+    it('are rejected by isValid', () => {
+      ambiguous.forEach((notation) => {
+        should.equal(Address4.isValid(notation), false, notation);
+      });
+    });
+
+    it('throw from the constructor', () => {
+      ambiguous.forEach((notation) => {
+        should.Throw(() => new Address4(notation), AddressError, undefined, notation);
+      });
+    });
+
+    it('are rejected with a subnet suffix too', () => {
+      should.equal(Address4.isValid('012.0.0.1/24'), false);
+      should.Throw(() => new Address4('010.0.0.0/8'), AddressError);
+    });
+
+    it('still accept a bare zero octet', () => {
+      ['0.0.0.0', '0.0.0.1', '10.0.0.0', '192.168.0.1', '255.255.255.255'].forEach(
+        (notation) => {
+          should.equal(Address4.isValid(notation), true, notation);
+          should.equal(new Address4(notation).correctForm(), notation, notation);
+        },
+      );
+    });
+
+    it('no longer let an octal-ambiguous host read as public', () => {
+      // 012.0.0.1 resolves to 10.0.0.1, so a guard must not see it as public.
+      should.equal(Address4.isValid('012.0.0.1'), false);
+      should.equal(Address4.isValid('012.012.012.012'), false);
     });
   });
 });
