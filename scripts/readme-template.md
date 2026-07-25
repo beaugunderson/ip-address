@@ -99,6 +99,14 @@ A few terms used throughout the API can be confusing if you haven't worked deepl
 <!-- API:START -->
 <!-- API:END -->
 
+### Security
+
+Vulnerabilities go through [GitHub's private vulnerability reporting](https://github.com/beaugunderson/ip-address/security/advisories/new); [SECURITY.md](./SECURITY.md) has the scope and what to expect. Confirmed issues get a fix, a release, and a public [advisory](https://github.com/beaugunderson/ip-address/security/advisories) with a CVE, rather than a quiet patch.
+
+Releases are built and published by CI through npm trusted publishing. Every version from 10.2.1 onward carries a provenance attestation tying the tarball to the commit and workflow that built it. Check it with `npm audit signatures`.
+
+If you are using the address-property checks as a security control, read [that section of SECURITY.md](./SECURITY.md#classifiers-are-not-an-ssrf-defense) first. `isPrivate()`, `isLoopback()`, `isInSubnet()` and their siblings classify an address that has already been parsed, which makes them one layer of an SSRF guard rather than the whole of it. A hostname that resolves to an internal address, a DNS record that changes after your check, or a redirect will all sail past a guard built only on them.
+
 ### Used by
 
 `ip-address` is downloaded ~66 million times per week, mostly via the Node proxy/agent ecosystem. The dependency chain runs through a handful of widely-used packages:
