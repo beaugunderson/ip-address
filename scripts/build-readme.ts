@@ -76,6 +76,8 @@ function renderProperty(prop: TypeDoc.DeclarationReflection): string {
   return `- ${code}${tail ? ' — ' + tail : ''}`;
 }
 
+const CLASS_ORDER = ['Address4', 'Address6', 'AddressError'];
+
 function escapeHtml(text: string): string {
   return text
     .replace(/&/g, '&amp;')
@@ -195,9 +197,9 @@ async function main() {
   const project = await app.convert();
   if (!project) throw new Error('TypeDoc failed to convert the project');
 
-  const classes = (project.children ?? []).filter(
-    (c) => c.kind === TypeDoc.ReflectionKind.Class,
-  );
+  const classes = (project.children ?? [])
+    .filter((c) => c.kind === TypeDoc.ReflectionKind.Class)
+    .sort((a, b) => CLASS_ORDER.indexOf(a.name) - CLASS_ORDER.indexOf(b.name));
 
   const sections: string[] = [];
   for (const cls of classes) {

@@ -99,19 +99,6 @@ A few terms used throughout the API can be confusing if you haven't worked deepl
 <!-- API:START -->
 
 <details>
-<summary><a id="addresserror"></a><strong>AddressError</strong></summary>
-
-**Constructor**
-
-- `new AddressError(message: string, parseMessage?: string): AddressError`
-
-**Properties**
-
-- `parseMessage: string` — [src](https://github.com/beaugunderson/ip-address/blob/master/src/address-error.ts#L2)
-
-</details>
-
-<details>
 <summary><a id="address4"></a><strong>Address4</strong> — Represents an IPv4 address</summary>
 
 **Constructor**
@@ -270,6 +257,19 @@ A few terms used throughout the API can be confusing if you haven't worked deepl
 - `isInSubnet: (this: Address4 | Address6, address: Address4 | Address6) => boolean` — Returns true if the given address is in the subnet of the current address [src](https://github.com/beaugunderson/ip-address/blob/master/src/ipv6.ts#L1191)
 - `isHostInSubnet: (this: Address4 | Address6, address: Address4 | Address6) => boolean` — Returns true if this address's host bits fall inside the given subnet, ignoring this address's own subnet mask. See common.isHostInSubnet. [src](https://github.com/beaugunderson/ip-address/blob/master/src/ipv6.ts#L1199)
 - `isCorrect: (this: Address4 | Address6) => boolean` — Returns true if the address is correct, false otherwise [src](https://github.com/beaugunderson/ip-address/blob/master/src/ipv6.ts#L1205)
+
+</details>
+
+<details>
+<summary><a id="addresserror"></a><strong>AddressError</strong></summary>
+
+**Constructor**
+
+- `new AddressError(message: string, parseMessage?: string): AddressError`
+
+**Properties**
+
+- `parseMessage: string` — [src](https://github.com/beaugunderson/ip-address/blob/master/src/address-error.ts#L2)
 
 </details>
 
