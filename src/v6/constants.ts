@@ -43,6 +43,7 @@ export const TYPES: { [key: string]: string | undefined } = {
   'ff05::1:3/128': 'Multicast (All DHCP servers in this site)',
   '::/128': 'Unspecified',
   '::1/128': 'Loopback',
+  '::ffff:0:0/96': 'IPv4-mapped',
   'ff00::/8': 'Multicast',
   'fe80::/10': 'Link-local unicast',
   'fc00::/7': 'Unique local',

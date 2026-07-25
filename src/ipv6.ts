@@ -1201,6 +1201,11 @@ export class Address6 {
    * @returns {boolean}
    */
   isLinkLocal(): boolean {
+    const embedded = this.embeddedIPv4();
+    if (embedded) {
+      return embedded.isLinkLocal();
+    }
+
     // Zeroes are required, i.e. we can't check isInSubnet with 'fe80::/10'
     if (
       this.getBitsBase2(0, 64) ===
@@ -1217,6 +1222,11 @@ export class Address6 {
    * @returns {boolean}
    */
   isMulticast(): boolean {
+    const embedded = this.embeddedIPv4();
+    if (embedded) {
+      return embedded.isMulticast();
+    }
+
     const type = this.getType();
     return type === 'Multicast' || type.startsWith('Multicast ');
   }
@@ -1245,6 +1255,31 @@ export class Address6 {
   }
 
   /**
+   * If this address embeds a routable IPv4 address — i.e. it is IPv4-mapped
+   * (`::ffff:0:0/96`) or sits in the NAT64 well-known prefix (`64:ff9b::/96`,
+   * [RFC 6052](https://datatracker.ietf.org/doc/html/rfc6052)) — return that
+   * embedded address as an {@link Address4}; otherwise return null.
+   *
+   * The special-property checks (`isLoopback`, `isLinkLocal`, `isMulticast`,
+   * `isUnspecified`, `isPrivate`, `isCGNAT`, `isBroadcast`) call this first and
+   * delegate to the embedded {@link Address4} when present, so a literal such as
+   * `::ffff:127.0.0.1` is classified by what it actually reaches (loopback)
+   * rather than by its IPv6 wrapper (which `getType()` reports as IPv4-mapped).
+   * This matters wherever the checks back a trust-boundary decision (e.g. an
+   * SSRF allow/deny filter): without normalization, `::ffff:10.0.0.1`,
+   * `::ffff:169.254.169.254`, `64:ff9b::7f00:1`, etc. would all read as
+   * non-internal.
+   * @returns {Address4 | null}
+   */
+  embeddedIPv4(): Address4 | null {
+    if (this.isMapped4() || this.isInSubnet(NAT64_WELL_KNOWN_SUBNET)) {
+      return this.to4();
+    }
+
+    return null;
+  }
+
+  /**
    * Returns true if the address is a Teredo address, false otherwise
    * @returns {boolean}
    */
@@ -1265,6 +1300,11 @@ export class Address6 {
    * @returns {boolean}
    */
   isLoopback(): boolean {
+    const embedded = this.embeddedIPv4();
+    if (embedded) {
+      return embedded.isLoopback();
+    }
+
     return this.getType() === 'Loopback';
   }
 
@@ -1277,10 +1317,68 @@ export class Address6 {
   }
 
   /**
+   * Returns true if the address is private, i.e. a Unique Local Address in
+   * `fc00::/7` ([RFC 4193](https://datatracker.ietf.org/doc/html/rfc4193)) or an
+   * IPv4-mapped / NAT64 address whose embedded IPv4 address is in one of the
+   * [RFC 1918](https://datatracker.ietf.org/doc/html/rfc1918) private ranges
+   * (e.g. `::ffff:10.0.0.1`). This is the IPv6 counterpart to
+   * {@link Address4.isPrivate}; use it instead of {@link isULA} when you need to
+   * catch mapped RFC 1918 addresses as well as native ULAs.
+   * @returns {boolean}
+   */
+  isPrivate(): boolean {
+    const embedded = this.embeddedIPv4();
+    if (embedded) {
+      return embedded.isPrivate();
+    }
+
+    return this.isULA();
+  }
+
+  /**
+   * Returns true if the address is an IPv4-mapped / NAT64 address whose embedded
+   * IPv4 address is in the carrier-grade NAT range `100.64.0.0/10`
+   * ([RFC 6598](https://datatracker.ietf.org/doc/html/rfc6598)), false
+   * otherwise. There is no native IPv6 CGNAT range, so this only ever returns
+   * true for an embedded IPv4 address (e.g. `::ffff:100.64.0.1`).
+   * @returns {boolean}
+   */
+  isCGNAT(): boolean {
+    const embedded = this.embeddedIPv4();
+    if (embedded) {
+      return embedded.isCGNAT();
+    }
+
+    return false;
+  }
+
+  /**
+   * Returns true if the address is an IPv4-mapped / NAT64 address whose embedded
+   * IPv4 address is the limited broadcast address `255.255.255.255`
+   * ([RFC 919](https://datatracker.ietf.org/doc/html/rfc919)), false otherwise.
+   * There is no IPv6 broadcast, so this only ever returns true for an embedded
+   * IPv4 address (e.g. `::ffff:255.255.255.255`).
+   * @returns {boolean}
+   */
+  isBroadcast(): boolean {
+    const embedded = this.embeddedIPv4();
+    if (embedded) {
+      return embedded.isBroadcast();
+    }
+
+    return false;
+  }
+
+  /**
    * Returns true if the address is the unspecified address `::`.
    * @returns {boolean}
    */
   isUnspecified(): boolean {
+    const embedded = this.embeddedIPv4();
+    if (embedded) {
+      return embedded.isUnspecified();
+    }
+
     return this.getType() === 'Unspecified';
   }
 
@@ -1478,3 +1576,4 @@ const SIX_TO_FOUR_SUBNET = new Address6('2002::/16');
 const ULA_SUBNET = new Address6('fc00::/7');
 const DOCUMENTATION_SUBNET = new Address6('2001:db8::/32');
 const IPV4_MAPPED_SUBNET = new Address6('::ffff:0:0/96');
+const NAT64_WELL_KNOWN_SUBNET = new Address6('64:ff9b::/96');

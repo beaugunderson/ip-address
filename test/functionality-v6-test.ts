@@ -1241,4 +1241,182 @@ describe('v6', () => {
       });
     });
   });
+
+  // Regression tests for GHSA-22jq-vg5j-6vgg: IPv4-mapped (`::ffff:0:0/96`) and
+  // NAT64 well-known (`64:ff9b::/96`) addresses must be classified by the IPv4
+  // address they embed, not by their IPv6 wrapper. Before the fix every literal
+  // below read as "Global unicast" / non-internal, bypassing any guard built on
+  // these checks.
+  describe('embedded-IPv4 classification (GHSA-22jq-vg5j-6vgg)', () => {
+    describe('embeddedIPv4', () => {
+      it('returns the embedded address for IPv4-mapped and NAT64 well-known', () => {
+        const cases: [string, string][] = [
+          ['::ffff:127.0.0.1', '127.0.0.1'],
+          ['::ffff:7f00:1', '127.0.0.1'],
+          ['::ffff:10.0.0.1', '10.0.0.1'],
+          ['::ffff:169.254.169.254', '169.254.169.254'],
+          ['::ffff:a9fe:a9fe', '169.254.169.254'],
+          ['64:ff9b::7f00:1', '127.0.0.1'],
+          ['64:ff9b::a9fe:a9fe', '169.254.169.254'],
+        ];
+
+        cases.forEach(([notation, expected]) => {
+          const embedded = new Address6(notation).embeddedIPv4();
+          should.exist(embedded);
+          should.equal(embedded?.correctForm(), expected);
+        });
+      });
+
+      it('returns null for addresses that embed no routable IPv4 address', () => {
+        notationsToAddresseses([
+          '::1',
+          '::',
+          '2001:db8::1',
+          'fe80::1',
+          'fc00::1',
+          'ff02::1',
+          '64:ff9b:1::1', // NAT64 local-use /48 is not extracted via the trailing 32 bits
+        ]).forEach((topic) => {
+          should.equal(topic.embeddedIPv4(), null);
+        });
+      });
+    });
+
+    describe('isLoopback', () => {
+      it('detects mapped/NAT64 loopback', () => {
+        notationsToAddresseses([
+          '::ffff:127.0.0.1',
+          '::ffff:7f00:1',
+          '::ffff:127.255.255.254',
+          '64:ff9b::7f00:1',
+        ]).forEach((topic) => {
+          should.equal(topic.isLoopback(), true);
+        });
+      });
+
+      it('still reports ::1 and rejects mapped public addresses', () => {
+        should.equal(new Address6('::1').isLoopback(), true);
+        should.equal(new Address6('::ffff:8.8.8.8').isLoopback(), false);
+      });
+    });
+
+    describe('isLinkLocal', () => {
+      it('detects mapped/NAT64 cloud-metadata link-local', () => {
+        notationsToAddresseses([
+          '::ffff:169.254.169.254',
+          '::ffff:a9fe:a9fe',
+          '64:ff9b::a9fe:a9fe',
+        ]).forEach((topic) => {
+          should.equal(topic.isLinkLocal(), true);
+        });
+      });
+
+      it('still reports native fe80::/10 and rejects mapped public addresses', () => {
+        should.equal(new Address6('fe80::1').isLinkLocal(), true);
+        should.equal(new Address6('::ffff:8.8.8.8').isLinkLocal(), false);
+      });
+    });
+
+    describe('isPrivate', () => {
+      it('detects mapped RFC 1918 addresses', () => {
+        notationsToAddresseses([
+          '::ffff:10.0.0.1',
+          '::ffff:172.16.5.5',
+          '::ffff:192.168.1.1',
+          '64:ff9b::c0a8:101', // ::ffff:192.168.1.1 over NAT64
+        ]).forEach((topic) => {
+          should.equal(topic.isPrivate(), true);
+        });
+      });
+
+      it('detects native ULAs and rejects mapped public addresses', () => {
+        should.equal(new Address6('fc00::1').isPrivate(), true);
+        should.equal(new Address6('fd12:3456:789a::1').isPrivate(), true);
+        should.equal(new Address6('::ffff:8.8.8.8').isPrivate(), false);
+        should.equal(new Address6('2001:db8::1').isPrivate(), false);
+      });
+    });
+
+    describe('isCGNAT', () => {
+      it('detects mapped CGNAT and rejects everything else', () => {
+        should.equal(new Address6('::ffff:100.64.0.1').isCGNAT(), true);
+        should.equal(new Address6('::ffff:8.8.8.8').isCGNAT(), false);
+        should.equal(new Address6('2001:db8::1').isCGNAT(), false);
+      });
+    });
+
+    describe('isBroadcast', () => {
+      it('detects mapped broadcast and rejects everything else', () => {
+        should.equal(new Address6('::ffff:255.255.255.255').isBroadcast(), true);
+        should.equal(new Address6('::ffff:8.8.8.8').isBroadcast(), false);
+        should.equal(new Address6('2001:db8::1').isBroadcast(), false);
+      });
+    });
+
+    describe('isUnspecified', () => {
+      it('detects mapped 0.0.0.0 and rejects mapped non-zero addresses', () => {
+        should.equal(new Address6('::ffff:0.0.0.0').isUnspecified(), true);
+        should.equal(new Address6('::ffff:127.0.0.1').isUnspecified(), false);
+      });
+    });
+
+    describe('isMulticast', () => {
+      it('detects mapped IPv4 multicast and rejects mapped unicast', () => {
+        should.equal(new Address6('::ffff:224.0.0.1').isMulticast(), true);
+        should.equal(new Address6('::ffff:8.8.8.8').isMulticast(), false);
+      });
+    });
+
+    describe('getType', () => {
+      it('labels IPv4-mapped addresses', () => {
+        should.equal(new Address6('::ffff:127.0.0.1').getType(), 'IPv4-mapped');
+        should.equal(new Address6('::ffff:8.8.8.8').getType(), 'IPv4-mapped');
+      });
+    });
+
+    it('a README-style SSRF guard blocks every mapped/NAT64 internal target', () => {
+      // Mirrors the guard from the advisory PoC, now using Address6.isPrivate().
+      function isBlocked(host: string): boolean {
+        let address: Address6;
+
+        try {
+          address = new Address6(host);
+        } catch {
+          return false;
+        }
+
+        return (
+          address.isLoopback() ||
+          address.isLinkLocal() ||
+          address.isPrivate() ||
+          address.isCGNAT() ||
+          address.isMulticast() ||
+          address.isUnspecified() ||
+          address.isBroadcast()
+        );
+      }
+
+      [
+        '::ffff:127.0.0.1',
+        '::ffff:7f00:1',
+        '::ffff:10.0.0.1',
+        '::ffff:172.16.5.5',
+        '::ffff:192.168.1.1',
+        '::ffff:169.254.169.254',
+        '::ffff:a9fe:a9fe',
+        '::ffff:100.64.0.1',
+        '::ffff:0.0.0.0',
+        '::ffff:255.255.255.255',
+        '64:ff9b::7f00:1',
+        '64:ff9b::a9fe:a9fe',
+      ].forEach((host) => {
+        should.equal(isBlocked(host), true, `expected ${host} to be blocked`);
+      });
+
+      // Genuinely public hosts still pass through.
+      ['::ffff:8.8.8.8', '2001:4860:4860::8888'].forEach((host) => {
+        should.equal(isBlocked(host), false, `expected ${host} to be allowed`);
+      });
+    });
+  });
 });
