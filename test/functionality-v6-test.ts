@@ -1539,6 +1539,102 @@ describe('v6', () => {
     });
   });
 
+  describe('Creating an address from a byte array', () => {
+    const valid = [32, 1, 13, 184, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1];
+
+    it('should parse correctly from a valid 16-byte array', () => {
+      Address6.fromByteArray(valid).correctForm().should.equal('2001:db8::1');
+      Address6.fromByteArray([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1])
+        .correctForm()
+        .should.equal('::1');
+    });
+
+    it('should round-trip through toByteArray', () => {
+      const topic = new Address6('2001:db8::1');
+      Address6.fromByteArray(topic.toByteArray()).correctForm().should.equal(topic.correctForm());
+    });
+
+    it('should throw for arrays that are not exactly 16 bytes', () => {
+      // RFC 4291 section 2: an IPv6 address is exactly 16 octets.
+      should.Throw(() => Address6.fromByteArray([]), 'IPv6 addresses require exactly 16 bytes');
+      should.Throw(
+        () => Address6.fromByteArray([1, 2, 3]),
+        'IPv6 addresses require exactly 16 bytes',
+      );
+      // 17 bytes with a leading zero has the same magnitude as the 16-byte
+      // value, so a result-only bounds check on the BigInt never catches it.
+      should.Throw(
+        () => Address6.fromByteArray([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1]),
+        'IPv6 addresses require exactly 16 bytes',
+      );
+    });
+
+    it('should throw for out-of-range bytes', () => {
+      // 300 in the low byte does not overflow 2**128-1, so fromBigInt accepted it.
+      should.Throw(
+        () => Address6.fromByteArray([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 300]),
+        'All bytes must be integers between 0 and 255',
+      );
+      // A high out-of-range byte does overflow; it is now rejected per-byte first.
+      should.Throw(
+        () => Address6.fromByteArray([300, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]),
+        'All bytes must be integers between 0 and 255',
+      );
+      should.Throw(
+        () => Address6.fromByteArray([-1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]),
+        'All bytes must be integers between 0 and 255',
+      );
+    });
+
+    it('should throw for non-integer bytes', () => {
+      should.Throw(
+        () => Address6.fromByteArray([1.5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]),
+        'All bytes must be integers between 0 and 255',
+      );
+    });
+  });
+
+  describe('Creating an address from an unsigned byte array', () => {
+    const valid = [32, 1, 13, 184, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1];
+
+    it('should parse correctly from a valid 16-byte array', () => {
+      Address6.fromUnsignedByteArray(valid).correctForm().should.equal('2001:db8::1');
+    });
+
+    it('should throw for arrays that are not exactly 16 bytes', () => {
+      should.Throw(
+        () => Address6.fromUnsignedByteArray([]),
+        'IPv6 addresses require exactly 16 bytes',
+      );
+      should.Throw(
+        () => Address6.fromUnsignedByteArray([1, 2, 3]),
+        'IPv6 addresses require exactly 16 bytes',
+      );
+      should.Throw(
+        () => Address6.fromUnsignedByteArray([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1]),
+        'IPv6 addresses require exactly 16 bytes',
+      );
+    });
+
+    it('should throw for out-of-range bytes', () => {
+      should.Throw(
+        () => Address6.fromUnsignedByteArray([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 300]),
+        'All bytes must be integers between 0 and 255',
+      );
+      should.Throw(
+        () => Address6.fromUnsignedByteArray([-1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]),
+        'All bytes must be integers between 0 and 255',
+      );
+    });
+
+    it('should throw for non-integer bytes', () => {
+      should.Throw(
+        () => Address6.fromUnsignedByteArray([1.5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]),
+        'All bytes must be integers between 0 and 255',
+      );
+    });
+  });
+
   describe('an address with more than one subnet suffix', () => {
     // RE_SUBNET_STRING anchors on the end of the address, so it strips only
     // the trailing suffix. Anything left over is malformed and must be

@@ -1159,8 +1159,19 @@ export class Address6 {
    * To convert from a Node.js `Buffer`, spread it: `Address6.fromByteArray([...buf])`.
    * @returns {Address6}
    */
-  static fromByteArray(bytes: Array<any>): Address6 {
-    return this.fromUnsignedByteArray(bytes.map(unsignByte));
+  static fromByteArray(bytes: Array<number>): Address6 {
+    if (bytes.length !== 16) {
+      throw new AddressError('IPv6 addresses require exactly 16 bytes');
+    }
+
+    // Validate that all bytes are within valid range (0-255)
+    for (let i = 0; i < bytes.length; i++) {
+      if (!Number.isInteger(bytes[i]) || bytes[i] < 0 || bytes[i] > 255) {
+        throw new AddressError('All bytes must be integers between 0 and 255');
+      }
+    }
+
+    return this.fromUnsignedByteArray(bytes);
   }
 
   /**
@@ -1169,7 +1180,18 @@ export class Address6 {
    * To convert from a Node.js `Buffer`, spread it: `Address6.fromUnsignedByteArray([...buf])`.
    * @returns {Address6}
    */
-  static fromUnsignedByteArray(bytes: Array<any>): Address6 {
+  static fromUnsignedByteArray(bytes: Array<number>): Address6 {
+    if (bytes.length !== 16) {
+      throw new AddressError('IPv6 addresses require exactly 16 bytes');
+    }
+
+    // Validate that all bytes are within valid range (0-255)
+    for (let i = 0; i < bytes.length; i++) {
+      if (!Number.isInteger(bytes[i]) || bytes[i] < 0 || bytes[i] > 255) {
+        throw new AddressError('All bytes must be integers between 0 and 255');
+      }
+    }
+
     const BYTE_MAX = BigInt('256');
     let result = BigInt('0');
     let multiplier = BigInt('1');
