@@ -1,7 +1,7 @@
 import * as chai from 'chai';
 import { Address6 } from '../src/ipv6';
-import { v6 } from '../src/ip-address';
 import { AddressError } from '../src/address-error';
+import { v6 } from '../src/ip-address';
 
 const { expect } = chai;
 const should = chai.should();
@@ -358,7 +358,7 @@ describe('v6', () => {
         new Address6('<b>:10.0.01.1');
         throw new Error('expected Address6 constructor to throw');
       } catch (e) {
-        const parseMessage = (e as any).parseMessage;
+        const { parseMessage } = e as any;
         parseMessage.should.not.include('<b>');
         parseMessage.should.include('&lt;b&gt;');
       }
@@ -537,11 +537,11 @@ describe('v6', () => {
 
   describe('to4() subnet derivation', () => {
     it('derives /24 from a /120 v4-mapped address', () => {
-      const v6 = Address6.fromAddress4('192.168.0.1/24');
+      const mapped = Address6.fromAddress4('192.168.0.1/24');
 
-      expect(v6.subnetMask).to.equal(120);
-      expect(v6.to4().subnetMask).to.equal(24);
-      expect(v6.to4().subnet).to.equal('/24');
+      expect(mapped.subnetMask).to.equal(120);
+      expect(mapped.to4().subnetMask).to.equal(24);
+      expect(mapped.to4().subnet).to.equal('/24');
     });
 
     it('keeps /32 for an unprefixed v4-mapped address', () => {
@@ -834,9 +834,7 @@ describe('v6', () => {
         const topic = new Address6(`2001:db8::1/${i}`);
         const mask = topic.subnetMaskAddress().bigInt();
         const wildcard = topic.wildcardMask().bigInt();
-        // eslint-disable-next-line no-bitwise
         const allOnes = (BigInt(1) << BigInt(128)) - BigInt(1);
-        // eslint-disable-next-line no-bitwise
         (mask ^ wildcard).should.equal(allOnes);
       }
     });

@@ -44,12 +44,12 @@ function renderSignature(name: string, sig: TypeDoc.SignatureReflection): string
 function sourceLink(sources: SourceRef[] | undefined): string {
   if (!sources || sources.length === 0) return '';
   const { fileName, line } = sources[0];
-  const path = fileName.startsWith('src/') ? fileName : `src/${fileName}`;
-  return `[src](${REPO_BLOB_BASE}/${path}#L${line})`;
+  const relativePath = fileName.startsWith('src/') ? fileName : `src/${fileName}`;
+  return `[src](${REPO_BLOB_BASE}/${relativePath}#L${line})`;
 }
 
 function renderMethod(method: TypeDoc.DeclarationReflection): string[] {
-  const isStatic = method.flags.isStatic;
+  const { isStatic } = method.flags;
   const sigs = method.signatures ?? [];
   const lines: string[] = [];
 
@@ -59,21 +59,21 @@ function renderMethod(method: TypeDoc.DeclarationReflection): string[] {
     const summary = summaryFor(sig) || summaryFor(method);
     const link = sourceLink(method.sources as SourceRef[] | undefined);
     const tail = [summary, link].filter(Boolean).join(' ');
-    lines.push(`- ${code}${tail ? ' — ' + tail : ''}`);
+    lines.push(`- ${code}${tail ? ` — ${tail}` : ''}`);
   }
 
   return lines;
 }
 
 function renderProperty(prop: TypeDoc.DeclarationReflection): string {
-  const isStatic = prop.flags.isStatic;
+  const { isStatic } = prop.flags;
   const prefix = isStatic ? 'static ' : '';
   const typeStr = renderType(prop.type);
   const code = `\`${prefix}${prop.name}: ${typeStr}\``;
   const summary = summaryFor(prop);
   const link = sourceLink(prop.sources as SourceRef[] | undefined);
   const tail = [summary, link].filter(Boolean).join(' ');
-  return `- ${code}${tail ? ' — ' + tail : ''}`;
+  return `- ${code}${tail ? ` — ${tail}` : ''}`;
 }
 
 const CLASS_ORDER = ['Address4', 'Address6', 'AddressError'];

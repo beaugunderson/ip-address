@@ -215,9 +215,7 @@ describe('v4', () => {
         const topic = new Address4(`10.0.0.1/${i}`);
         const mask = topic.subnetMaskAddress().bigInt();
         const wildcard = topic.wildcardMask().bigInt();
-        // eslint-disable-next-line no-bitwise
         const allOnes = (BigInt(1) << BigInt(32)) - BigInt(1);
-        // eslint-disable-next-line no-bitwise
         (mask ^ wildcard).should.equal(allOnes);
       }
     });

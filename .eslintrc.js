@@ -31,6 +31,10 @@ module.exports = {
     'import/order': 'off',
     'import/prefer-default-export': 'off',
     'lines-between-class-members': 'off',
+    // Masks, prefix lengths and the NAT64 and Teredo encodings are all defined
+    // in terms of shifts and xors, so the rule fires on correct code
+    // throughout and its inline suppressions outnumbered its findings.
+    'no-bitwise': 'off',
     'no-case-declarations': 'off',
     'no-cond-assign': ['error', 'except-parens'],
     'no-continue': 'off',
@@ -85,4 +89,14 @@ module.exports = {
       { ignoreCase: true, memberSyntaxSortOrder: ['none', 'all', 'single', 'multiple'] },
     ],
   },
+
+  overrides: [
+    {
+      // Build scripts report progress on stdout.
+      files: ['scripts/**/*.ts'],
+      rules: {
+        'no-console': 'off',
+      },
+    },
+  ],
 };

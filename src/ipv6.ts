@@ -63,7 +63,6 @@ function paddedHex(octet: string): string {
 }
 
 function unsignByte(b: number) {
-  // eslint-disable-next-line no-bitwise
   return b & 0xff;
 }
 
@@ -171,7 +170,7 @@ export class Address6 {
       new Address6(address);
 
       return true;
-    } catch (e) {
+    } catch {
       return false;
     }
   }
@@ -292,7 +291,6 @@ export class Address6 {
   static fromAddressAndWildcardMask(address: string, wildcardMask: string): Address6 {
     const wildcard = new Address6(wildcardMask).bigInt();
     const allOnes = (BigInt(1) << BigInt(constants6.BITS)) - BigInt(1);
-    // eslint-disable-next-line no-bitwise
     const mask = wildcard ^ allOnes;
     const bits = common.prefixLengthFromMask(mask, constants6.BITS);
     return new Address6(`${address}/${bits}`);
@@ -975,13 +973,11 @@ export class Address6 {
     const prefix = this.getBitsBase16(0, 32);
 
     const bitsForUdpPort: bigint = this.getBits(80, 96);
-    // eslint-disable-next-line no-bitwise
     const udpPort = (bitsForUdpPort ^ BigInt('0xffff')).toString();
 
     const server4 = Address4.fromHex(this.getBitsBase16(32, 64));
 
     const bitsForClient4 = this.getBits(96, 128);
-    // eslint-disable-next-line no-bitwise
     const client4 = Address4.fromHex(
       (bitsForClient4 ^ BigInt('0xffffffff')).toString(16).padStart(8, '0'),
     );
@@ -1078,12 +1074,14 @@ export class Address6 {
       bits = prefixBits.slice(0, 96) + v4Bits;
     } else {
       const beforeU = 64 - pl;
-      bits =
-        prefixBits.slice(0, pl) +
-        v4Bits.slice(0, beforeU) +
-        '00000000' +
-        v4Bits.slice(beforeU) +
-        '0'.repeat(128 - 72 - (32 - beforeU));
+      bits = [
+        prefixBits.slice(0, pl),
+        v4Bits.slice(0, beforeU),
+        // Bits 64 to 71 are the reserved u octet and are always zero.
+        '00000000',
+        v4Bits.slice(beforeU),
+        '0'.repeat(128 - 72 - (32 - beforeU)),
+      ].join('');
     }
 
     const hex = BigInt(`0b${bits}`).toString(16).padStart(32, '0');

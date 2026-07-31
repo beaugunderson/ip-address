@@ -56,7 +56,7 @@ export class Address4 {
       new Address4(address);
 
       return true;
-    } catch (e) {
+    } catch {
       return false;
     }
   }
@@ -124,7 +124,6 @@ export class Address4 {
   static fromAddressAndWildcardMask(address: string, wildcardMask: string): Address4 {
     const wildcard = new Address4(wildcardMask).bigInt();
     const allOnes = (BigInt(1) << BigInt(constants.BITS)) - BigInt(1);
-    // eslint-disable-next-line no-bitwise
     const mask = wildcard ^ allOnes;
     const bits = common.prefixLengthFromMask(mask, constants.BITS);
     return new Address4(`${address}/${bits}`);
