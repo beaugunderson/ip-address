@@ -365,7 +365,7 @@ export class Address4 {
    * @returns {Address4}
    */
   static fromBigInt(bigInt: bigint): Address4 {
-    if (bigInt < 0n || bigInt > 0xffffffffn) {
+    if (bigInt < BigInt(0) || bigInt > BigInt(0xffffffff)) {
       throw new AddressError('IPv4 BigInt must be in the range 0 to 2**32 - 1');
     }
 

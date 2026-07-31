@@ -187,7 +187,7 @@ export class Address6 {
    * address.correctForm(); // '::e8:d4a5:1000'
    */
   static fromBigInt(bigInt: bigint): Address6 {
-    if (bigInt < 0n || bigInt > (1n << BigInt(constants6.BITS)) - 1n) {
+    if (bigInt < BigInt(0) || bigInt > (BigInt(1) << BigInt(constants6.BITS)) - BigInt(1)) {
       throw new AddressError('IPv6 BigInt must be in the range 0 to 2**128 - 1');
     }
 
