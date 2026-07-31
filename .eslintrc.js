@@ -10,7 +10,7 @@ module.exports = {
 
   plugins: ['filenames', 'import', 'prettier', 'sort-imports-es6-autofix', '@typescript-eslint'],
 
-  extends: ['airbnb', 'prettier'],
+  extends: ['airbnb-base', 'prettier'],
 
   rules: {
     'array-callback-return': 'off',

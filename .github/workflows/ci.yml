@@ -16,6 +16,25 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  # Formatting and lint findings are reported, not corrected, in CI. Correcting
+  # them here would mean granting a workflow write access to the repository and
+  # would still leave fork pull requests to fix by hand, so the same check runs
+  # from a pre-commit hook, where `npm run lint:fix` is one command away.
+  lint:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: '22'
+          cache: npm
+
+      - run: npm ci
+
+      - run: npm run lint
+
   test:
     name: test-${{ matrix.node-version }}
     runs-on: ubuntu-latest
