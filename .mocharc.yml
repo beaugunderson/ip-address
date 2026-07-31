@@ -1,7 +1,7 @@
 recursive: true
 reporter: spec
 node-option:
-- import=tsx
-- import=source-map-support/register
+  - import=tsx
+  - import=source-map-support/register
 inline-diffs: false
 spec: test/**/*.ts

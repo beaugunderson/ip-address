@@ -1,6 +1,11 @@
 {
   "compilerOptions": {
-    "target": "es2020",
+    // Node 12 is the oldest runtime `engines` claims, and it predates
+    // nullish coalescing and optional chaining. Emitting for es2019 makes tsc
+    // downlevel those and reject any newer syntax at compile time, so the
+    // published output cannot drift past what node 12 can parse. `lib` stays
+    // at es2020 for the BigInt types; BigInt itself exists in node 12.
+    "target": "es2019",
     "module": "commonjs",
     "allowJs": true,
     "declaration": true,
@@ -33,7 +38,5 @@
     "lib": ["es2020"]
   },
 
-  "include": [
-    "./src/**/*.ts"
-  ]
+  "include": ["./src/**/*.ts"]
 }

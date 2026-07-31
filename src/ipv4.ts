@@ -56,7 +56,7 @@ export class Address4 {
       new Address4(address);
 
       return true;
-    } catch (e) {
+    } catch {
       return false;
     }
   }
@@ -124,7 +124,6 @@ export class Address4 {
   static fromAddressAndWildcardMask(address: string, wildcardMask: string): Address4 {
     const wildcard = new Address4(wildcardMask).bigInt();
     const allOnes = (BigInt(1) << BigInt(constants.BITS)) - BigInt(1);
-    // eslint-disable-next-line no-bitwise
     const mask = wildcard ^ allOnes;
     const bits = common.prefixLengthFromMask(mask, constants.BITS);
     return new Address4(`${address}/${bits}`);
@@ -365,7 +364,7 @@ export class Address4 {
    * @returns {Address4}
    */
   static fromBigInt(bigInt: bigint): Address4 {
-    if (bigInt < 0n || bigInt > 0xffffffffn) {
+    if (bigInt < BigInt(0) || bigInt > BigInt(0xffffffff)) {
       throw new AddressError('IPv4 BigInt must be in the range 0 to 2**32 - 1');
     }
 

@@ -63,7 +63,6 @@ function paddedHex(octet: string): string {
 }
 
 function unsignByte(b: number) {
-  // eslint-disable-next-line no-bitwise
   return b & 0xff;
 }
 
@@ -171,7 +170,7 @@ export class Address6 {
       new Address6(address);
 
       return true;
-    } catch (e) {
+    } catch {
       return false;
     }
   }
@@ -187,7 +186,7 @@ export class Address6 {
    * address.correctForm(); // '::e8:d4a5:1000'
    */
   static fromBigInt(bigInt: bigint): Address6 {
-    if (bigInt < 0n || bigInt > (1n << BigInt(constants6.BITS)) - 1n) {
+    if (bigInt < BigInt(0) || bigInt > (BigInt(1) << BigInt(constants6.BITS)) - BigInt(1)) {
       throw new AddressError('IPv6 BigInt must be in the range 0 to 2**128 - 1');
     }
 
@@ -292,7 +291,6 @@ export class Address6 {
   static fromAddressAndWildcardMask(address: string, wildcardMask: string): Address6 {
     const wildcard = new Address6(wildcardMask).bigInt();
     const allOnes = (BigInt(1) << BigInt(constants6.BITS)) - BigInt(1);
-    // eslint-disable-next-line no-bitwise
     const mask = wildcard ^ allOnes;
     const bits = common.prefixLengthFromMask(mask, constants6.BITS);
     return new Address6(`${address}/${bits}`);
@@ -751,7 +749,10 @@ export class Address6 {
     // through as an unrecognized group.
     const v4Octets = lastGroup.split('.');
 
-    if (v4Octets.length === constants4.GROUPS && v4Octets.every((octet) => /^\d{1,3}$/.test(octet))) {
+    if (
+      v4Octets.length === constants4.GROUPS &&
+      v4Octets.every((octet) => /^\d{1,3}$/.test(octet))
+    ) {
       if (v4Octets.some((octet) => /^0\d/.test(octet))) {
         // The prefix groups haven't been through the bad-character check
         // yet, so escape them before including in the error HTML.
@@ -904,7 +905,9 @@ export class Address6 {
    */
   to4(): Address4 {
     const binary = this.binaryZeroPad().split('');
-    const hex = BigInt(`0b${binary.slice(96, 128).join('')}`).toString(16).padStart(8, '0');
+    const hex = BigInt(`0b${binary.slice(96, 128).join('')}`)
+      .toString(16)
+      .padStart(8, '0');
 
     if (this.subnetMask >= 96) {
       const v4Mask = this.subnetMask - 96;
@@ -970,13 +973,11 @@ export class Address6 {
     const prefix = this.getBitsBase16(0, 32);
 
     const bitsForUdpPort: bigint = this.getBits(80, 96);
-    // eslint-disable-next-line no-bitwise
     const udpPort = (bitsForUdpPort ^ BigInt('0xffff')).toString();
 
     const server4 = Address4.fromHex(this.getBitsBase16(32, 64));
 
     const bitsForClient4 = this.getBits(96, 128);
-    // eslint-disable-next-line no-bitwise
     const client4 = Address4.fromHex(
       (bitsForClient4 ^ BigInt('0xffffffff')).toString(16).padStart(8, '0'),
     );
@@ -1073,12 +1074,14 @@ export class Address6 {
       bits = prefixBits.slice(0, 96) + v4Bits;
     } else {
       const beforeU = 64 - pl;
-      bits =
-        prefixBits.slice(0, pl) +
-        v4Bits.slice(0, beforeU) +
-        '00000000' +
-        v4Bits.slice(beforeU) +
-        '0'.repeat(128 - 72 - (32 - beforeU));
+      bits = [
+        prefixBits.slice(0, pl),
+        v4Bits.slice(0, beforeU),
+        // Bits 64 to 71 are the reserved u octet and are always zero.
+        '00000000',
+        v4Bits.slice(beforeU),
+        '0'.repeat(128 - 72 - (32 - beforeU)),
+      ].join('');
     }
 
     const hex = BigInt(`0b${bits}`).toString(16).padStart(32, '0');
@@ -1133,7 +1136,9 @@ export class Address6 {
    * @returns {Array}
    */
   toByteArray(): number[] {
-    const value = this.bigInt().toString(16).padStart(constants6.BITS / 4, '0');
+    const value = this.bigInt()
+      .toString(16)
+      .padStart(constants6.BITS / 4, '0');
 
     const bytes = [];
     for (let i = 0, length = value.length; i < length; i += 2) {

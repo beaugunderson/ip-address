@@ -16,6 +16,36 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  # Formatting and lint findings are reported, not corrected, in CI. Correcting
+  # them here would mean granting a workflow write access to the repository and
+  # would still leave fork pull requests to fix by hand, so the same check runs
+  # from a pre-commit hook, where `npm run lint:fix` is one command away.
+  lint:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: '22'
+          cache: npm
+
+      - run: npm ci
+
+      - run: npm run lint
+
+      # The API reference in the README is generated from the source, down to
+      # the line numbers its links point at, so any change under src leaves it
+      # stale until it is rebuilt.
+      - name: Check the generated README is current
+        run: |
+          npm run docs
+          git diff --exit-code README.md || {
+            echo 'README.md is out of date; run `npm run docs` and commit the result.'
+            exit 1
+          }
+
   test:
     name: test-${{ matrix.node-version }}
     runs-on: ubuntu-latest
@@ -45,3 +75,33 @@ jobs:
           # Tokenless upload; public repositories do not need a token, and a
           # fork pull request would not have access to one anyway.
           fail_ci_if_error: false
+
+  # The oldest node `engines` claims. The dev toolchain (mocha, tsx, c8) and the
+  # lockfile's npm version both need a modern node, so the suite itself cannot
+  # run here; instead this builds dist on a current node and requires it under
+  # node 12, which is what a consumer on an old runtime does and the only place
+  # emitted-syntax regressions show up.
+  smoke:
+    name: smoke-12
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: '22'
+          cache: npm
+
+      - run: npm ci
+
+      - run: npm run build
+
+      # Switching the active node after the build; nothing below runs npm, so
+      # node 12's bundled npm 6 never has to read the lockfile.
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: '12'
+
+      - run: node test/node-12-smoke.js
+        name: Run dist smoke test

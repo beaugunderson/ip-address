@@ -19,6 +19,7 @@ npm install ip-address
 
 ### Examples
 
+<!-- prettier-ignore -->
 ```ts
 import { Address4, Address6 } from 'ip-address';
 

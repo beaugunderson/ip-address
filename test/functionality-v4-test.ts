@@ -175,8 +175,7 @@ describe('v4', () => {
     });
 
     it('rejects a non-contiguous mask', () => {
-      (() =>
-        Address4.fromAddressAndMask('192.168.1.1', '255.0.255.0')).should.throw(
+      (() => Address4.fromAddressAndMask('192.168.1.1', '255.0.255.0')).should.throw(
         'Invalid subnet mask.',
       );
     });
@@ -216,9 +215,7 @@ describe('v4', () => {
         const topic = new Address4(`10.0.0.1/${i}`);
         const mask = topic.subnetMaskAddress().bigInt();
         const wildcard = topic.wildcardMask().bigInt();
-        // eslint-disable-next-line no-bitwise
         const allOnes = (BigInt(1) << BigInt(32)) - BigInt(1);
-        // eslint-disable-next-line no-bitwise
         (mask ^ wildcard).should.equal(allOnes);
       }
     });
@@ -262,10 +259,7 @@ describe('v4', () => {
     });
 
     it('translates 0.0.0.3 to /30 (Cisco ACL example)', () => {
-      Address4.fromAddressAndWildcardMask(
-        '192.168.1.1',
-        '0.0.0.3',
-      ).subnetMask.should.equal(30);
+      Address4.fromAddressAndWildcardMask('192.168.1.1', '0.0.0.3').subnetMask.should.equal(30);
     });
 
     it('translates 255.255.255.255 to /0', () => {
@@ -276,10 +270,7 @@ describe('v4', () => {
     });
 
     it('translates 0.0.0.0 to /32', () => {
-      Address4.fromAddressAndWildcardMask(
-        '192.168.1.1',
-        '0.0.0.0',
-      ).subnetMask.should.equal(32);
+      Address4.fromAddressAndWildcardMask('192.168.1.1', '0.0.0.0').subnetMask.should.equal(32);
     });
 
     it('round-trips through wildcardMask()', () => {
@@ -289,8 +280,7 @@ describe('v4', () => {
     });
 
     it('rejects a non-contiguous wildcard mask', () => {
-      (() =>
-        Address4.fromAddressAndWildcardMask('192.168.1.1', '0.255.0.255')).should.throw(
+      (() => Address4.fromAddressAndWildcardMask('192.168.1.1', '0.255.0.255')).should.throw(
         'Invalid subnet mask.',
       );
     });
@@ -420,9 +410,7 @@ describe('v4', () => {
     });
 
     it('should reject hex strings shorter than 8 digits', () => {
-      (() => Address4.fromHex('ff:ff')).should.throw(
-        'IPv4 hex must be exactly 8 hex digits',
-      );
+      (() => Address4.fromHex('ff:ff')).should.throw('IPv4 hex must be exactly 8 hex digits');
     });
 
     it('should reject hex strings longer than 8 digits', () => {
@@ -478,20 +466,35 @@ describe('v4', () => {
     });
 
     it('should throw error for negative bytes', () => {
-      should.Throw(() => Address4.fromByteArray([-1, -128, 0, 1]), 'All bytes must be integers between 0 and 255');
+      should.Throw(
+        () => Address4.fromByteArray([-1, -128, 0, 1]),
+        'All bytes must be integers between 0 and 255',
+      );
     });
 
     it('should throw error for bytes over 255', () => {
-      should.Throw(() => Address4.fromByteArray([256, 0, 0, 1]), 'All bytes must be integers between 0 and 255');
+      should.Throw(
+        () => Address4.fromByteArray([256, 0, 0, 1]),
+        'All bytes must be integers between 0 and 255',
+      );
     });
 
     it('should throw error for non-integer bytes', () => {
-      should.Throw(() => Address4.fromByteArray([127.5, 0, 0, 1]), 'All bytes must be integers between 0 and 255');
+      should.Throw(
+        () => Address4.fromByteArray([127.5, 0, 0, 1]),
+        'All bytes must be integers between 0 and 255',
+      );
     });
 
     it('should throw error for array with wrong length', () => {
-      should.Throw(() => Address4.fromByteArray([127, 0, 0]), 'IPv4 addresses require exactly 4 bytes');
-      should.Throw(() => Address4.fromByteArray([127, 0, 0, 1, 2]), 'IPv4 addresses require exactly 4 bytes');
+      should.Throw(
+        () => Address4.fromByteArray([127, 0, 0]),
+        'IPv4 addresses require exactly 4 bytes',
+      );
+      should.Throw(
+        () => Address4.fromByteArray([127, 0, 0, 1, 2]),
+        'IPv4 addresses require exactly 4 bytes',
+      );
       should.Throw(() => Address4.fromByteArray([]), 'IPv4 addresses require exactly 4 bytes');
     });
   });
@@ -503,8 +506,14 @@ describe('v4', () => {
     });
 
     it('should throw error for array with wrong length', () => {
-      should.Throw(() => Address4.fromUnsignedByteArray([127, 0, 0]), 'IPv4 addresses require exactly 4 bytes');
-      should.Throw(() => Address4.fromUnsignedByteArray([127, 0, 0, 1, 2]), 'IPv4 addresses require exactly 4 bytes');
+      should.Throw(
+        () => Address4.fromUnsignedByteArray([127, 0, 0]),
+        'IPv4 addresses require exactly 4 bytes',
+      );
+      should.Throw(
+        () => Address4.fromUnsignedByteArray([127, 0, 0, 1, 2]),
+        'IPv4 addresses require exactly 4 bytes',
+      );
     });
   });
 
@@ -628,9 +637,11 @@ describe('v4', () => {
 
   describe('isLinkLocal', () => {
     it('detects 169.254.0.0/16', () => {
-      notationsToAddresseses(['169.254.0.0', '169.254.1.1', '169.254.255.255']).forEach((topic) => {
-        should.equal(topic.isLinkLocal(), true);
-      });
+      notationsToAddresseses(['169.254.0.0', '169.254.1.1', '169.254.255.255']).forEach(
+        (topic) => {
+          should.equal(topic.isLinkLocal(), true);
+        },
+      );
     });
 
     it('rejects addresses outside 169.254.0.0/16', () => {
@@ -682,18 +693,28 @@ describe('v4', () => {
     // A classifier answers a question about the address, so a CIDR suffix on
     // the input must not change the answer. Suffixes shorter than the
     // reference range's prefix are the interesting case.
-    const cases: [string, 'isLoopback' | 'isPrivate' | 'isLinkLocal' | 'isCGNAT' | 'isUnspecified' | 'isBroadcast' | 'isMulticast'][] =
-      [
-        ['127.0.0.1', 'isLoopback'],
-        ['10.0.0.1', 'isPrivate'],
-        ['172.16.5.5', 'isPrivate'],
-        ['192.168.1.1', 'isPrivate'],
-        ['169.254.169.254', 'isLinkLocal'],
-        ['100.64.0.1', 'isCGNAT'],
-        ['0.0.0.0', 'isUnspecified'],
-        ['255.255.255.255', 'isBroadcast'],
-        ['224.0.0.1', 'isMulticast'],
-      ];
+    const cases: [
+      string,
+      (
+        | 'isLoopback'
+        | 'isPrivate'
+        | 'isLinkLocal'
+        | 'isCGNAT'
+        | 'isUnspecified'
+        | 'isBroadcast'
+        | 'isMulticast'
+      ),
+    ][] = [
+      ['127.0.0.1', 'isLoopback'],
+      ['10.0.0.1', 'isPrivate'],
+      ['172.16.5.5', 'isPrivate'],
+      ['192.168.1.1', 'isPrivate'],
+      ['169.254.169.254', 'isLinkLocal'],
+      ['100.64.0.1', 'isCGNAT'],
+      ['0.0.0.0', 'isUnspecified'],
+      ['255.255.255.255', 'isBroadcast'],
+      ['224.0.0.1', 'isMulticast'],
+    ];
 
     it('classifies the host identically with and without a /0 suffix', () => {
       cases.forEach(([notation, method]) => {
@@ -706,11 +727,7 @@ describe('v4', () => {
       for (let prefix = 0; prefix <= 32; prefix++) {
         should.equal(new Address4(`127.0.0.1/${prefix}`).isLoopback(), true, `/${prefix}`);
         should.equal(new Address4(`10.0.0.5/${prefix}`).isPrivate(), true, `/${prefix}`);
-        should.equal(
-          new Address4(`169.254.169.254/${prefix}`).isLinkLocal(),
-          true,
-          `/${prefix}`,
-        );
+        should.equal(new Address4(`169.254.169.254/${prefix}`).isLinkLocal(), true, `/${prefix}`);
       }
     });
 
@@ -773,12 +790,10 @@ describe('v4', () => {
     });
 
     it('still accept a bare zero octet', () => {
-      ['0.0.0.0', '0.0.0.1', '10.0.0.0', '192.168.0.1', '255.255.255.255'].forEach(
-        (notation) => {
-          should.equal(Address4.isValid(notation), true, notation);
-          should.equal(new Address4(notation).correctForm(), notation, notation);
-        },
-      );
+      ['0.0.0.0', '0.0.0.1', '10.0.0.0', '192.168.0.1', '255.255.255.255'].forEach((notation) => {
+        should.equal(Address4.isValid(notation), true, notation);
+        should.equal(new Address4(notation).correctForm(), notation, notation);
+      });
     });
 
     it('no longer let an octal-ambiguous host read as public', () => {

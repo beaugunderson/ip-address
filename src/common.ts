@@ -41,7 +41,7 @@ export function isHostInSubnet(this: Address4 | Address6, address: Address4 | Ad
 }
 
 export function isCorrect(defaultBits: number) {
-  return function (this: Address4 | Address6) {
+  return function isCorrectForm(this: Address4 | Address6) {
     if (this.addressMinusSuffix !== this.correctForm()) {
       return false;
     }

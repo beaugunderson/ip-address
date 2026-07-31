@@ -1,7 +1,7 @@
 import * as chai from 'chai';
 import { Address6 } from '../src/ipv6';
-import { v6 } from '../src/ip-address';
 import { AddressError } from '../src/address-error';
+import { v6 } from '../src/ip-address';
 
 const { expect } = chai;
 const should = chai.should();
@@ -358,7 +358,7 @@ describe('v6', () => {
         new Address6('<b>:10.0.01.1');
         throw new Error('expected Address6 constructor to throw');
       } catch (e) {
-        const parseMessage = (e as any).parseMessage;
+        const { parseMessage } = e as any;
         parseMessage.should.not.include('<b>');
         parseMessage.should.include('&lt;b&gt;');
       }
@@ -410,7 +410,6 @@ describe('v6', () => {
       (topic as any).elidedGroups = undefined;
       should.Throw(() => topic.group(), 'Assertion failed.');
     });
-
   });
 
   describe('to6to4 on a non-v4 address', () => {
@@ -446,7 +445,10 @@ describe('v6', () => {
 
     it('uses the well-known prefix 64:ff9b::/96 by default', () => {
       Address6.fromAddress4Nat64('192.0.2.33').correctForm().should.equal('64:ff9b::c000:221');
-      new Address6('64:ff9b::c000:221').toAddress4Nat64()!.correctForm().should.equal('192.0.2.33');
+      new Address6('64:ff9b::c000:221')
+        .toAddress4Nat64()!
+        .correctForm()
+        .should.equal('192.0.2.33');
     });
 
     it('encodes the example from issue #72', () => {
@@ -535,11 +537,11 @@ describe('v6', () => {
 
   describe('to4() subnet derivation', () => {
     it('derives /24 from a /120 v4-mapped address', () => {
-      const v6 = Address6.fromAddress4('192.168.0.1/24');
+      const mapped = Address6.fromAddress4('192.168.0.1/24');
 
-      expect(v6.subnetMask).to.equal(120);
-      expect(v6.to4().subnetMask).to.equal(24);
-      expect(v6.to4().subnet).to.equal('/24');
+      expect(mapped.subnetMask).to.equal(120);
+      expect(mapped.to4().subnetMask).to.equal(24);
+      expect(mapped.to4().subnet).to.equal('/24');
     });
 
     it('keeps /32 for an unprefixed v4-mapped address', () => {
@@ -743,10 +745,7 @@ describe('v6', () => {
     });
 
     it('returns ffff:ffff:: for /32', () => {
-      should.equal(
-        new Address6('2001:db8::/32').subnetMaskAddress().correctForm(),
-        'ffff:ffff::',
-      );
+      should.equal(new Address6('2001:db8::/32').subnetMaskAddress().correctForm(), 'ffff:ffff::');
     });
 
     it('returns ffff:ffff:ffff:ffff:: for /64', () => {
@@ -790,8 +789,7 @@ describe('v6', () => {
     });
 
     it('rejects a non-contiguous mask', () => {
-      (() =>
-        Address6.fromAddressAndMask('2001:db8::1', 'ffff::ffff')).should.throw(
+      (() => Address6.fromAddressAndMask('2001:db8::1', 'ffff::ffff')).should.throw(
         'Invalid subnet mask.',
       );
     });
@@ -836,9 +834,7 @@ describe('v6', () => {
         const topic = new Address6(`2001:db8::1/${i}`);
         const mask = topic.subnetMaskAddress().bigInt();
         const wildcard = topic.wildcardMask().bigInt();
-        // eslint-disable-next-line no-bitwise
         const allOnes = (BigInt(1) << BigInt(128)) - BigInt(1);
-        // eslint-disable-next-line no-bitwise
         (mask ^ wildcard).should.equal(allOnes);
       }
     });
@@ -869,8 +865,7 @@ describe('v6', () => {
     });
 
     it('rejects a non-contiguous wildcard mask', () => {
-      (() =>
-        Address6.fromAddressAndWildcardMask('2001:db8::1', 'ffff::ffff')).should.throw(
+      (() => Address6.fromAddressAndWildcardMask('2001:db8::1', 'ffff::ffff')).should.throw(
         'Invalid subnet mask.',
       );
     });
@@ -1186,9 +1181,7 @@ describe('v6', () => {
           'ffff:<span class="hover-group group-v4 group-6">192.168</span>.<span class="hover-group group-v4 group-7">0.1</span>',
         );
 
-        topic[0].should.equal(
-          '<span class="hover-group group-0">ffff</span>',
-        );
+        topic[0].should.equal('<span class="hover-group group-0">ffff</span>');
 
         // The group-v4 segment should pass through unchanged
         topic[1].should.equal(
@@ -1199,9 +1192,7 @@ describe('v6', () => {
       it('should HTML-escape non-pass-through segments', () => {
         const topic = v6.helpers.simpleGroup('<b>bold</b>');
 
-        topic[0].should.equal(
-          '<span class="hover-group group-0">&lt;b&gt;bold&lt;/b&gt;</span>',
-        );
+        topic[0].should.equal('<span class="hover-group group-0">&lt;b&gt;bold&lt;/b&gt;</span>');
       });
     });
 
@@ -1209,9 +1200,7 @@ describe('v6', () => {
       it('should HTML-escape characters in the class attribute', () => {
         const topic = v6.helpers.spanAll('"');
 
-        topic.should.equal(
-          '<span class="digit value-&quot; position-0">&quot;</span>',
-        );
+        topic.should.equal('<span class="digit value-&quot; position-0">&quot;</span>');
       });
 
       it('should span leading zeroes', () => {

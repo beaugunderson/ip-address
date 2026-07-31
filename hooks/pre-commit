@@ -1,0 +1,12 @@
+#!/usr/bin/env sh
+
+# Installed by the prepare script, which points core.hooksPath at this
+# directory. CI runs the same check, so catching it here saves a round trip.
+
+set -e
+
+if ! npm run --silent lint; then
+  echo
+  echo 'Lint failed. Run `npm run lint:fix` to correct what is mechanical.'
+  exit 1
+fi
