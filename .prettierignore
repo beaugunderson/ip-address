@@ -1,0 +1,8 @@
+# Vendored test fixtures, kept in the shape they arrived in so they stay
+# comparable against their source.
+test/data/
+
+# Build output.
+dist/
+coverage/
+docs/

@@ -119,7 +119,9 @@ function renderClass(cls: TypeDoc.DeclarationReflection): string {
   const lead = summary ? firstSentence(summary) : '';
   const blurb = lead ? ` — ${renderSummaryLine(lead)}` : '';
   out.push('<details>');
-  out.push(`<summary><a id="${anchor}"></a><strong>${escapeHtml(cls.name)}</strong>${blurb}</summary>`);
+  out.push(
+    `<summary><a id="${anchor}"></a><strong>${escapeHtml(cls.name)}</strong>${blurb}</summary>`,
+  );
   out.push('');
 
   // The collapsed row already carries the first sentence, so the body repeats

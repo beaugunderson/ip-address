@@ -38,7 +38,5 @@
     "lib": ["es2020"]
   },
 
-  "include": [
-    "./src/**/*.ts"
-  ]
+  "include": ["./src/**/*.ts"]
 }

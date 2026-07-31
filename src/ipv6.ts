@@ -751,7 +751,10 @@ export class Address6 {
     // through as an unrecognized group.
     const v4Octets = lastGroup.split('.');
 
-    if (v4Octets.length === constants4.GROUPS && v4Octets.every((octet) => /^\d{1,3}$/.test(octet))) {
+    if (
+      v4Octets.length === constants4.GROUPS &&
+      v4Octets.every((octet) => /^\d{1,3}$/.test(octet))
+    ) {
       if (v4Octets.some((octet) => /^0\d/.test(octet))) {
         // The prefix groups haven't been through the bad-character check
         // yet, so escape them before including in the error HTML.
@@ -904,7 +907,9 @@ export class Address6 {
    */
   to4(): Address4 {
     const binary = this.binaryZeroPad().split('');
-    const hex = BigInt(`0b${binary.slice(96, 128).join('')}`).toString(16).padStart(8, '0');
+    const hex = BigInt(`0b${binary.slice(96, 128).join('')}`)
+      .toString(16)
+      .padStart(8, '0');
 
     if (this.subnetMask >= 96) {
       const v4Mask = this.subnetMask - 96;
@@ -1133,7 +1138,9 @@ export class Address6 {
    * @returns {Array}
    */
   toByteArray(): number[] {
-    const value = this.bigInt().toString(16).padStart(constants6.BITS / 4, '0');
+    const value = this.bigInt()
+      .toString(16)
+      .padStart(constants6.BITS / 4, '0');
 
     const bytes = [];
     for (let i = 0, length = value.length; i < length; i += 2) {

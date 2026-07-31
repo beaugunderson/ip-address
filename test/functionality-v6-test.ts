@@ -410,7 +410,6 @@ describe('v6', () => {
       (topic as any).elidedGroups = undefined;
       should.Throw(() => topic.group(), 'Assertion failed.');
     });
-
   });
 
   describe('to6to4 on a non-v4 address', () => {
@@ -446,7 +445,10 @@ describe('v6', () => {
 
     it('uses the well-known prefix 64:ff9b::/96 by default', () => {
       Address6.fromAddress4Nat64('192.0.2.33').correctForm().should.equal('64:ff9b::c000:221');
-      new Address6('64:ff9b::c000:221').toAddress4Nat64()!.correctForm().should.equal('192.0.2.33');
+      new Address6('64:ff9b::c000:221')
+        .toAddress4Nat64()!
+        .correctForm()
+        .should.equal('192.0.2.33');
     });
 
     it('encodes the example from issue #72', () => {
@@ -743,10 +745,7 @@ describe('v6', () => {
     });
 
     it('returns ffff:ffff:: for /32', () => {
-      should.equal(
-        new Address6('2001:db8::/32').subnetMaskAddress().correctForm(),
-        'ffff:ffff::',
-      );
+      should.equal(new Address6('2001:db8::/32').subnetMaskAddress().correctForm(), 'ffff:ffff::');
     });
 
     it('returns ffff:ffff:ffff:ffff:: for /64', () => {
@@ -790,8 +789,7 @@ describe('v6', () => {
     });
 
     it('rejects a non-contiguous mask', () => {
-      (() =>
-        Address6.fromAddressAndMask('2001:db8::1', 'ffff::ffff')).should.throw(
+      (() => Address6.fromAddressAndMask('2001:db8::1', 'ffff::ffff')).should.throw(
         'Invalid subnet mask.',
       );
     });
@@ -869,8 +867,7 @@ describe('v6', () => {
     });
 
     it('rejects a non-contiguous wildcard mask', () => {
-      (() =>
-        Address6.fromAddressAndWildcardMask('2001:db8::1', 'ffff::ffff')).should.throw(
+      (() => Address6.fromAddressAndWildcardMask('2001:db8::1', 'ffff::ffff')).should.throw(
         'Invalid subnet mask.',
       );
     });
@@ -1186,9 +1183,7 @@ describe('v6', () => {
           'ffff:<span class="hover-group group-v4 group-6">192.168</span>.<span class="hover-group group-v4 group-7">0.1</span>',
         );
 
-        topic[0].should.equal(
-          '<span class="hover-group group-0">ffff</span>',
-        );
+        topic[0].should.equal('<span class="hover-group group-0">ffff</span>');
 
         // The group-v4 segment should pass through unchanged
         topic[1].should.equal(
@@ -1199,9 +1194,7 @@ describe('v6', () => {
       it('should HTML-escape non-pass-through segments', () => {
         const topic = v6.helpers.simpleGroup('<b>bold</b>');
 
-        topic[0].should.equal(
-          '<span class="hover-group group-0">&lt;b&gt;bold&lt;/b&gt;</span>',
-        );
+        topic[0].should.equal('<span class="hover-group group-0">&lt;b&gt;bold&lt;/b&gt;</span>');
       });
     });
 
@@ -1209,9 +1202,7 @@ describe('v6', () => {
       it('should HTML-escape characters in the class attribute', () => {
         const topic = v6.helpers.spanAll('"');
 
-        topic.should.equal(
-          '<span class="digit value-&quot; position-0">&quot;</span>',
-        );
+        topic.should.equal('<span class="digit value-&quot; position-0">&quot;</span>');
       });
 
       it('should span leading zeroes', () => {
