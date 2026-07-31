@@ -379,16 +379,7 @@ export class Address4 {
    * @returns {Address4}
    */
   static fromByteArray(bytes: Array<number>): Address4 {
-    if (bytes.length !== 4) {
-      throw new AddressError('IPv4 addresses require exactly 4 bytes');
-    }
-
-    // Validate that all bytes are within valid range (0-255)
-    for (let i = 0; i < bytes.length; i++) {
-      if (!Number.isInteger(bytes[i]) || bytes[i] < 0 || bytes[i] > 255) {
-        throw new AddressError('All bytes must be integers between 0 and 255');
-      }
-    }
+    common.assertByteArray(bytes, 4, 'IPv4', 0);
 
     return this.fromUnsignedByteArray(bytes);
   }

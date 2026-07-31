@@ -1528,6 +1528,132 @@ describe('v6', () => {
     });
   });
 
+  describe('fromByteArray', () => {
+    const zeros = (count: number) => Array(count).fill(0);
+
+    it('parses a valid 16-byte array', () => {
+      should.equal(
+        Address6.fromByteArray([32, 1, 13, 184, ...zeros(12)]).correctForm(),
+        '2001:db8::',
+      );
+      should.equal(Address6.fromByteArray([...zeros(15), 1]).correctForm(), '::1');
+      should.equal(
+        Address6.fromByteArray(Array(16).fill(255)).correctForm(),
+        'ffff:ffff:ffff:ffff:ffff:ffff:ffff:ffff',
+      );
+    });
+
+    it('round-trips through toByteArray', () => {
+      const topic = new Address6('2001:db8::1');
+
+      Address6.fromByteArray(topic.toByteArray()).correctForm().should.equal(topic.correctForm());
+    });
+
+    it('folds signed bytes to their unsigned equivalent', () => {
+      // An Int8Array or a Java byte[] carries 128 to 255 as -128 to -1.
+      should.equal(
+        Address6.fromByteArray(Array(16).fill(-1)).correctForm(),
+        'ffff:ffff:ffff:ffff:ffff:ffff:ffff:ffff',
+      );
+      should.equal(Address6.fromByteArray([-1, ...zeros(15)]).correctForm(), 'ff00::');
+      should.equal(Address6.fromByteArray([-128, ...zeros(15)]).correctForm(), '8000::');
+    });
+
+    it('throws unless given exactly 16 bytes', () => {
+      // RFC 4291 section 2: an IPv6 address is exactly 16 octets.
+      should.Throw(() => Address6.fromByteArray([]), 'IPv6 addresses require exactly 16 bytes');
+      should.Throw(
+        () => Address6.fromByteArray([1, 2, 3]),
+        'IPv6 addresses require exactly 16 bytes',
+      );
+      // A 17-byte array with a leading zero has the same magnitude as the
+      // 16-byte value, so bounds-checking the folded BigInt never catches it.
+      should.Throw(
+        () => Address6.fromByteArray([...zeros(16), 1]),
+        'IPv6 addresses require exactly 16 bytes',
+      );
+    });
+
+    it('throws for bytes outside -128 to 255', () => {
+      // 300 in the low byte stays under 2**128-1, so a result-only bound misses it.
+      should.Throw(
+        () => Address6.fromByteArray([...zeros(15), 300]),
+        'All bytes must be integers between -128 and 255',
+      );
+      should.Throw(
+        () => Address6.fromByteArray([256, ...zeros(15)]),
+        'All bytes must be integers between -128 and 255',
+      );
+      // -129 would fold to 127 rather than to anything the caller meant.
+      should.Throw(
+        () => Address6.fromByteArray([-129, ...zeros(15)]),
+        'All bytes must be integers between -128 and 255',
+      );
+    });
+
+    it('throws for non-integer bytes', () => {
+      should.Throw(
+        () => Address6.fromByteArray([1.5, ...zeros(15)]),
+        'All bytes must be integers between -128 and 255',
+      );
+      should.Throw(
+        () => Address6.fromByteArray([Number.NaN, ...zeros(15)]),
+        'All bytes must be integers between -128 and 255',
+      );
+    });
+  });
+
+  describe('fromUnsignedByteArray', () => {
+    const zeros = (count: number) => Array(count).fill(0);
+
+    it('parses a valid 16-byte array', () => {
+      Address6.fromUnsignedByteArray([32, 1, 13, 184, ...zeros(12)])
+        .correctForm()
+        .should.equal('2001:db8::');
+    });
+
+    it('round-trips through toUnsignedByteArray', () => {
+      const topic = new Address6('ffff::1');
+
+      Address6.fromUnsignedByteArray(topic.toUnsignedByteArray())
+        .correctForm()
+        .should.equal(topic.correctForm());
+    });
+
+    it('throws unless given exactly 16 bytes', () => {
+      should.Throw(
+        () => Address6.fromUnsignedByteArray([]),
+        'IPv6 addresses require exactly 16 bytes',
+      );
+      should.Throw(
+        () => Address6.fromUnsignedByteArray([1, 2, 3]),
+        'IPv6 addresses require exactly 16 bytes',
+      );
+      should.Throw(
+        () => Address6.fromUnsignedByteArray([...zeros(16), 1]),
+        'IPv6 addresses require exactly 16 bytes',
+      );
+    });
+
+    it('throws for bytes outside 0 to 255, signed values included', () => {
+      should.Throw(
+        () => Address6.fromUnsignedByteArray([...zeros(15), 300]),
+        'All bytes must be integers between 0 and 255',
+      );
+      should.Throw(
+        () => Address6.fromUnsignedByteArray([-1, ...zeros(15)]),
+        'All bytes must be integers between 0 and 255',
+      );
+    });
+
+    it('throws for non-integer bytes', () => {
+      should.Throw(
+        () => Address6.fromUnsignedByteArray([1.5, ...zeros(15)]),
+        'All bytes must be integers between 0 and 255',
+      );
+    });
+  });
+
   describe('an address with more than one subnet suffix', () => {
     // RE_SUBNET_STRING anchors on the end of the address, so it strips only
     // the trailing suffix. Anything left over is malformed and must be
