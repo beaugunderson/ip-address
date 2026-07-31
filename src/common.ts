@@ -79,6 +79,28 @@ export function prefixLengthFromMask(value: bigint, totalBits: number): number {
   return firstZero;
 }
 
+/**
+ * Throws `AddressError` unless `bytes` holds exactly `byteCount` integers,
+ * each from `minimum` to 255. Pass a `minimum` of `-128` where signed bytes
+ * are accepted and folded to unsigned, and `0` where they are not.
+ */
+export function assertByteArray(
+  bytes: number[],
+  byteCount: number,
+  family: 'IPv4' | 'IPv6',
+  minimum: number,
+): void {
+  if (bytes.length !== byteCount) {
+    throw new AddressError(`${family} addresses require exactly ${byteCount} bytes`);
+  }
+
+  for (let i = 0; i < bytes.length; i++) {
+    if (!Number.isInteger(bytes[i]) || bytes[i] < minimum || bytes[i] > 255) {
+      throw new AddressError(`All bytes must be integers between ${minimum} and 255`);
+    }
+  }
+}
+
 export function numberToPaddedHex(number: number) {
   return number.toString(16).padStart(2, '0');
 }

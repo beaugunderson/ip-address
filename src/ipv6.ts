@@ -1155,26 +1155,43 @@ export class Address6 {
    * @returns {Array}
    */
   toUnsignedByteArray(): number[] {
+    // toByteArray() emits 0 to 255, so unsigning it is an identity mapping and
+    // the two methods return equal arrays. 11.0.0 keeps one of them and makes
+    // this a deprecated alias; test/common-test.ts fails at that version.
     return this.toByteArray().map(unsignByte);
   }
 
   /**
    * Convert a byte array to an Address6 object.
    *
+   * Accepts unsigned bytes (0 to 255) or signed bytes (-128 to 127, as an
+   * `Int8Array` or a Java `byte[]` holds them), folding signed values to their
+   * unsigned equivalent. Throws `AddressError` unless given exactly 16
+   * integers from -128 to 255.
+   *
    * To convert from a Node.js `Buffer`, spread it: `Address6.fromByteArray([...buf])`.
    * @returns {Address6}
    */
-  static fromByteArray(bytes: Array<any>): Address6 {
+  static fromByteArray(bytes: Array<number>): Address6 {
+    // Address4.fromByteArray takes unsigned bytes only. 11.0.0 aligns this
+    // method with it, at which point the -128 floor here, unsignByte, and the
+    // mapping below all go; test/common-test.ts fails at that version.
+    common.assertByteArray(bytes, 16, 'IPv6', -128);
+
     return this.fromUnsignedByteArray(bytes.map(unsignByte));
   }
 
   /**
    * Convert an unsigned byte array to an Address6 object.
    *
+   * Throws `AddressError` unless given exactly 16 integers from 0 to 255.
+   *
    * To convert from a Node.js `Buffer`, spread it: `Address6.fromUnsignedByteArray([...buf])`.
    * @returns {Address6}
    */
-  static fromUnsignedByteArray(bytes: Array<any>): Address6 {
+  static fromUnsignedByteArray(bytes: Array<number>): Address6 {
+    common.assertByteArray(bytes, 16, 'IPv6', 0);
+
     const BYTE_MAX = BigInt('256');
     let result = BigInt('0');
     let multiplier = BigInt('1');
