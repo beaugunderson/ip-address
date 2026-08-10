@@ -8,7 +8,7 @@ const ROOT = path.resolve(__dirname, '..');
 const TEMPLATE_PATH = path.join(ROOT, 'scripts/readme-template.md');
 const README_PATH = path.join(ROOT, 'README.md');
 const ENTRY_POINTS = [path.join(ROOT, 'src/ip-address.ts')];
-const REPO_BLOB_BASE = 'https://github.com/beaugunderson/ip-address/blob/master';
+const REPO_BLOB_BASE = 'https://github.com/beaugunderson/ip-address/blob/main';
 
 const START_MARKER = '<!-- API:START -->';
 const END_MARKER = '<!-- API:END -->';
@@ -29,16 +29,33 @@ function renderType(type: TypeDoc.SomeType | undefined): string {
   return type ? type.toString() : 'void';
 }
 
+function renderParams(sig: TypeDoc.SignatureReflection): string {
+  return (
+    (sig.parameters ?? [])
+      // `this` is a TypeScript type annotation, not an argument callers pass
+      .filter((p) => p.name !== 'this')
+      .map((p) => {
+        // TypeDoc sets isOptional inconsistently for parameters carrying a
+        // default, so treat the presence of a default as optional too
+        const optional = p.flags.isOptional || p.defaultValue !== undefined ? '?' : '';
+        return `${p.name}${optional}: ${renderType(p.type)}`;
+      })
+      .join(', ')
+  );
+}
+
 function renderSignature(name: string, sig: TypeDoc.SignatureReflection): string {
-  const params = (sig.parameters ?? [])
-    .map((p) => {
-      const optional = p.flags.isOptional ? '?' : '';
-      const typeStr = renderType(p.type);
-      return `${p.name}${optional}: ${typeStr}`;
-    })
-    .join(', ');
-  const returnType = renderType(sig.type);
-  return `${name}(${params}): ${returnType}`;
+  return `${name}(${renderParams(sig)}): ${renderType(sig.type)}`;
+}
+
+/**
+ * Properties holding a function (the prototype-assigned `isInSubnet` and
+ * friends) render through the same parameter rules as methods, so a `this`
+ * annotation doesn't read as a caller-supplied argument.
+ */
+function renderPropertyType(type: TypeDoc.SomeType | undefined): string {
+  const sig = type?.type === 'reflection' ? type.declaration.signatures?.[0] : undefined;
+  return sig ? `(${renderParams(sig)}) => ${renderType(sig.type)}` : renderType(type);
 }
 
 function sourceLink(sources: SourceRef[] | undefined): string {
@@ -68,7 +85,7 @@ function renderMethod(method: TypeDoc.DeclarationReflection): string[] {
 function renderProperty(prop: TypeDoc.DeclarationReflection): string {
   const { isStatic } = prop.flags;
   const prefix = isStatic ? 'static ' : '';
-  const typeStr = renderType(prop.type);
+  const typeStr = renderPropertyType(prop.type);
   const code = `\`${prefix}${prop.name}: ${typeStr}\``;
   const summary = summaryFor(prop);
   const link = sourceLink(prop.sources as SourceRef[] | undefined);

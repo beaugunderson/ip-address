@@ -372,7 +372,10 @@ export class Address4 {
   }
 
   /**
-   * Convert a byte array to an Address4 object.
+   * Convert a byte array to an Address4 object. Throws `AddressError` unless
+   * given exactly 4 integers from 0 to 255. Signed bytes are rejected, so
+   * this differs from `Address6.fromByteArray`, which folds them; the two
+   * contracts converge on this stricter form in the next major version.
    *
    * To convert from a Node.js `Buffer`, spread it: `Address4.fromByteArray([...buf])`.
    * @param {Array<number>} bytes - an array of 4 bytes (0-255)
@@ -385,7 +388,12 @@ export class Address4 {
   }
 
   /**
-   * Convert an unsigned byte array to an Address4 object
+   * Convert an unsigned byte array to an Address4 object. Throws
+   * `AddressError` unless given exactly 4 bytes, and rejects values outside
+   * 0 to 255 when parsing the resulting address.
+   *
+   * To convert from a Node.js `Buffer`, spread it:
+   * `Address4.fromUnsignedByteArray([...buf])`.
    * @param {Array<number>} bytes - an array of 4 unsigned bytes (0-255)
    * @returns {Address4}
    */
@@ -420,7 +428,8 @@ export class Address4 {
   }
 
   /**
-   * Return the reversed ip6.arpa form of the address
+   * Return the reversed in-addr.arpa form of the address, e.g.
+   * `42.2.0.192.in-addr.arpa.` for `192.0.2.42`.
    * @param {Object} options
    * @param {boolean} options.omitSuffix - omit the "in-addr.arpa" suffix
    * @returns {String}
@@ -447,8 +456,10 @@ export class Address4 {
 
   /**
    * Returns true if this address's host bits fall inside the given subnet,
-   * ignoring this address's own subnet mask. See
-   * {@link common.isHostInSubnet}.
+   * ignoring this address's own subnet mask. Prefer this over `isInSubnet`
+   * when classifying a single address, so the answer doesn't change with the
+   * CIDR suffix the caller happened to write — notably when the address came
+   * from untrusted input and the result backs a trust-boundary decision.
    * @returns {boolean}
    */
   isHostInSubnet = common.isHostInSubnet;
@@ -521,7 +532,12 @@ export class Address4 {
   }
 
   /**
-   * Groups an IPv4 address for inclusion at the end of an IPv6 address
+   * Groups an IPv4 address for inclusion at the end of an IPv6 address.
+   *
+   * Returns an HTML fragment: each half of the address is wrapped in a
+   * `<span>` carrying the group classes an address-inspector UI hovers on.
+   * The address content is HTML-escaped; anything you concatenate around it
+   * is your responsibility.
    * @returns {String}
    */
   groupForV6(): string {

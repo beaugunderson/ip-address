@@ -1217,8 +1217,10 @@ export class Address6 {
 
   /**
    * Returns true if this address's host bits fall inside the given subnet,
-   * ignoring this address's own subnet mask. See
-   * {@link common.isHostInSubnet}.
+   * ignoring this address's own subnet mask. Prefer this over `isInSubnet`
+   * when classifying a single address, so the answer doesn't change with the
+   * CIDR suffix the caller happened to write — notably when the address came
+   * from untrusted input and the result backs a trust-boundary decision.
    * @returns {boolean}
    */
   isHostInSubnet = common.isHostInSubnet;
@@ -1493,7 +1495,12 @@ export class Address6 {
   }
 
   /**
-   * Groups an address
+   * Groups an address.
+   *
+   * Returns an HTML fragment: each group is wrapped in a `<span>` carrying
+   * the group classes an address-inspector UI hovers on. The address content
+   * is HTML-escaped; anything you concatenate around it is your
+   * responsibility.
    * @returns {String}
    */
   group(): string {

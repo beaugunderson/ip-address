@@ -1,9 +1,9 @@
 [![CI](https://github.com/beaugunderson/ip-address/actions/workflows/ci.yml/badge.svg)](https://github.com/beaugunderson/ip-address/actions/workflows/ci.yml)
-[![codecov]](https://codecov.io/github/beaugunderson/ip-address?branch=master)
+[![codecov]](https://codecov.io/github/beaugunderson/ip-address?branch=main)
 [![downloads]](https://www.npmjs.com/package/ip-address)
 [![npm]](https://www.npmjs.com/package/ip-address)
 
-[codecov]: https://codecov.io/github/beaugunderson/ip-address/coverage.svg?branch=master
+[codecov]: https://codecov.io/github/beaugunderson/ip-address/coverage.svg?branch=main
 [downloads]: https://img.shields.io/npm/dm/ip-address.svg
 [npm]: https://img.shields.io/npm/v/ip-address.svg
 
@@ -74,7 +74,7 @@ Address6.fromURL('http://[2001:db8::1]:8080/').port;  // 8080
 
 - Written in TypeScript with full type definitions; usable from CommonJS and ESM
 - Zero runtime dependencies
-- Parses all standard IPv4 and IPv6 notations, including subnets and zones
+- Parses dotted-quad IPv4 and [RFC 4291](https://datatracker.ietf.org/doc/html/rfc4291) IPv6 notation, including subnets and zones. The `inet_aton` forms (`2130706433`, `0x7f000001`, `127.1`) and leading-zero octets are rejected by design — see [SECURITY.md](./SECURITY.md#classifiers-are-not-an-ssrf-defense)
 - Parses IPv6 hosts (and ports) from URLs via `Address6.fromURL(url)`
 - Subnet membership checks (`isInSubnet`) and range queries (`startAddress` / `endAddress`)
 - Special-property checks: private (RFC 1918) / ULA (RFC 4193), loopback, link-local, multicast, broadcast, unspecified, CGNAT, documentation, Teredo, 6to4, v4-in-v6
@@ -93,7 +93,7 @@ A few terms used throughout the API can be confusing if you haven't worked deepl
 - **Zone** — the IPv6 scope identifier appended after `%`, used to disambiguate link-local addresses across interfaces (e.g. `fe80::1%eth0`).
 - **v4-in-v6** — mixed notation that embeds an IPv4 address as the last 32 bits of an IPv6 address, e.g. `::ffff:192.168.0.1`. Used for IPv4-mapped IPv6 addresses.
 - **Teredo** — a tunneling protocol that encodes an IPv4 endpoint, port, and flags inside a `2001::/32` IPv6 address. `inspectTeredo()` decodes those fields.
-- **6to4** — a tunneling protocol that embeds an IPv4 address as the second 16 bits of a `2002::/16` IPv6 address. `inspect6to4()` decodes the embedded v4 address.
+- **6to4** — a tunneling protocol that embeds a full 32-bit IPv4 address in bits 16–47 of a `2002::/16` IPv6 address, i.e. the second and third groups (`192.0.2.4` becomes `2002:c000:204::`). `inspect6to4()` decodes the embedded v4 address.
 
 ### API
 
@@ -110,13 +110,13 @@ If you are using the address-property checks as a security control, read [that s
 
 ### Used by
 
-`ip-address` is downloaded ~66 million times per week, mostly via the Node proxy/agent ecosystem. The dependency chain runs through a handful of widely-used packages:
+`ip-address` is downloaded ~86 million times per week, mostly via the Node proxy/agent ecosystem. The dependency chain runs through a handful of widely-used packages:
 
 - [**socks**](https://github.com/JoshGlazebrook/socks) (~53M weekly) — SOCKS4/5 client for Node; depends on `ip-address` directly. The single biggest source of downloads.
-- [**socks-proxy-agent**](https://github.com/TooTallNate/proxy-agents/tree/main/packages/socks-proxy-agent) (~57M weekly) — `http.Agent` for SOCKS proxies; depends on `socks`. Bundled by virtually every CLI that respects `HTTPS_PROXY`.
+- [**socks-proxy-agent**](https://github.com/TooTallNate/proxy-agents/tree/main/packages/socks-proxy-agent) (~55M weekly) — `http.Agent` for SOCKS proxies; depends on `socks`. Bundled by virtually every CLI that respects `HTTPS_PROXY`.
 - [**npm**](https://github.com/npm/cli) and [**pnpm**](https://github.com/pnpm/pnpm) — both bundle `socks-proxy-agent` through their HTTP fetch stack (`make-fetch-happen` → `@npmcli/agent`), so every Node install on the planet pulls in `ip-address` as a transitive dependency.
 - [**Puppeteer**](https://github.com/puppeteer/puppeteer) — `@puppeteer/browsers` uses `proxy-agent` for browser-binary downloads, which routes through `socks-proxy-agent` → `socks` → `ip-address`.
 - [**proxy-agent**](https://github.com/TooTallNate/proxy-agents/tree/main/packages/proxy-agent) (~28M weekly) and [**pac-proxy-agent**](https://github.com/TooTallNate/proxy-agents/tree/main/packages/pac-proxy-agent) (~27M weekly) — auto-detecting proxy agents (HTTP/HTTPS/SOCKS/PAC) used widely in scraping, headless-browser, and CI tooling.
-- [**cacache**](https://github.com/npm/cacache) (~44M weekly) — npm's content-addressable cache; pulls in the same fetch stack.
+- [**cacache**](https://github.com/npm/cacache) (~40M weekly) — npm's content-addressable cache; pulls in the same fetch stack.
 
 Beyond the proxy chain, `ip-address` has been used by Juniper Networks' Contrail, Ably's proxy-protocol implementation, Rackspace's serialization framework, IPFS, and the [SwitchyOmega](https://github.com/FelisCatus/SwitchyOmega) Chrome extension, among many others.
