@@ -690,6 +690,75 @@ describe('v6', () => {
       expect(obj.address?.address).to.equal('::ffff:192.168.1.1');
       expect(obj.port).to.equal(8080);
     });
+
+    it('should fail gracefully for an IPv4 host', () => {
+      const obj = Address6.fromURL('http://127.0.0.1/admin');
+
+      expect(obj.error).to.equal('failed to parse address from URL');
+      expect(obj.address).to.equal(null);
+      expect(obj.port).to.equal(null);
+    });
+
+    it('should fail gracefully for a bracketed IPv4 host with a port', () => {
+      const obj = Address6.fromURL('http://[169.254.169.254]:8080/latest');
+
+      expect(obj.error).to.equal('failed to parse address with port');
+      expect(obj.address).to.equal(null);
+      expect(obj.port).to.equal(null);
+    });
+
+    it('should fail gracefully for a bare IPv4 address', () => {
+      const obj = Address6.fromURL('0.0.0.0');
+
+      expect(obj.error).to.equal('failed to parse address from URL');
+      expect(obj.address).to.equal(null);
+      expect(obj.port).to.equal(null);
+    });
+
+    it('should fail gracefully for too many colons', () => {
+      const obj = Address6.fromURL('http://[:::]/foo');
+
+      expect(obj.error).to.equal('failed to parse address from URL');
+      expect(obj.address).to.equal(null);
+      expect(obj.port).to.equal(null);
+    });
+
+    it('should fail gracefully for too many groups', () => {
+      const obj = Address6.fromURL('http://[1:2:3:4:5:6:7:8:9]:80/foo');
+
+      expect(obj.error).to.equal('failed to parse address with port');
+      expect(obj.address).to.equal(null);
+      expect(obj.port).to.equal(null);
+    });
+
+    it('should fail gracefully for out of range v4-in-v6 octets', () => {
+      const obj = Address6.fromURL('http://[::ffff:999.1.1.1]/foo');
+
+      expect(obj.error).to.equal('failed to parse address from URL');
+      expect(obj.address).to.equal(null);
+      expect(obj.port).to.equal(null);
+    });
+
+    it('should never throw for a host matching the URL character class', () => {
+      const hosts = [
+        '1.2.3.4',
+        '255.255.255.255',
+        '[127.0.0.1]:65535',
+        '.',
+        '..',
+        ':',
+        '::::',
+        'ffff',
+        'abcdef',
+        '1:2',
+        '[::ffff:1.2.3.4.5]:80',
+      ];
+
+      hosts.forEach((host) => {
+        expect(() => Address6.fromURL(`http://${host}/`), host).to.not.throw();
+        expect(() => Address6.fromURL(host), host).to.not.throw();
+      });
+    });
   });
 
   describe('regularExpressionString', () => {

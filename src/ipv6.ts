@@ -214,33 +214,28 @@ export class Address6 {
     let host: string;
     let port: string | number | null = null;
     let result: RegExpExecArray | null;
+    let error: string;
 
     // Remove the protocol prefix, if any
     const stripped = url.replace(/^[a-z][a-z0-9+.-]*:\/\//i, '');
 
     // If we have brackets parse them and find a port
     if (stripped.indexOf('[') !== -1 && stripped.indexOf(']:') !== -1) {
+      error = 'failed to parse address with port';
       result = constants6.RE_URL_WITH_PORT.exec(stripped);
 
       if (result === null) {
-        return {
-          error: 'failed to parse address with port',
-          address: null,
-          port: null,
-        };
+        return { error, address: null, port: null };
       }
 
       host = result[1];
       port = result[2];
     } else {
+      error = 'failed to parse address from URL';
       result = constants6.RE_URL.exec(stripped);
 
       if (result === null) {
-        return {
-          error: 'failed to parse address from URL',
-          address: null,
-          port: null,
-        };
+        return { error, address: null, port: null };
       }
 
       host = result[1] ?? result[2];
@@ -259,10 +254,18 @@ export class Address6 {
       port = null;
     }
 
-    return {
-      address: new Address6(host),
-      port,
-    };
+    // The URL character class is a superset of valid IPv6, so a host the
+    // regex accepted (an IPv4 literal, bare punctuation, too many groups)
+    // can still be rejected by the parser
+    let address: Address6;
+
+    try {
+      address = new Address6(host);
+    } catch {
+      return { error, address: null, port: null };
+    }
+
+    return { address, port };
   }
 
   /**
