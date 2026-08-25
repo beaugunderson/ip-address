@@ -1249,15 +1249,7 @@ export class Address6 {
       return embedded.isLinkLocal();
     }
 
-    // Zeroes are required, i.e. we can't check isHostInSubnet with 'fe80::/10'
-    if (
-      this.getBitsBase2(0, 64) ===
-      '1111111010000000000000000000000000000000000000000000000000000000'
-    ) {
-      return true;
-    }
-
-    return false;
+    return this.isHostInSubnet(LINK_LOCAL_UNICAST_SUBNET);
   }
 
   /**
@@ -1622,6 +1614,7 @@ const TYPE_SUBNETS: Array<[Address6, string]> = Object.keys(constants6.TYPES).ma
 const TEREDO_SUBNET = new Address6('2001::/32');
 const SIX_TO_FOUR_SUBNET = new Address6('2002::/16');
 const ULA_SUBNET = new Address6('fc00::/7');
+const LINK_LOCAL_UNICAST_SUBNET = new Address6('fe80::/10');
 const DOCUMENTATION_SUBNET = new Address6('2001:db8::/32');
 const IPV4_MAPPED_SUBNET = new Address6('::ffff:0:0/96');
 const NAT64_WELL_KNOWN_SUBNET = new Address6('64:ff9b::/96');

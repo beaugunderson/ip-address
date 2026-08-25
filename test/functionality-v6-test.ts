@@ -1381,6 +1381,18 @@ describe('v6', () => {
         should.equal(new Address6('fe80::1').isLinkLocal(), true);
         should.equal(new Address6('::ffff:8.8.8.8').isLinkLocal(), false);
       });
+
+      it('reports the whole fe80::/10 range, matching getType', () => {
+        ['fe80::1', 'fe80:0:0:1::1', 'fe90::1', 'fea0::1', 'febf::1', 'fe80:1::1%eth0'].forEach(
+          (notation) => {
+            const topic = new Address6(notation);
+            should.equal(topic.isLinkLocal(), true, notation);
+            should.equal(topic.getType(), 'Link-local unicast', notation);
+          },
+        );
+
+        should.equal(new Address6('fec0::1').isLinkLocal(), false);
+      });
     });
 
     describe('isPrivate', () => {
