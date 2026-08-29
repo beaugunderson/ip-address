@@ -383,33 +383,35 @@ export class Address6 {
   }
 
   /**
-   * Return an address from ip6.arpa form
+   * Return an address from ip6.arpa form. A full 32-nibble name gives a /128
+   * address; a shorter name, as used for a delegated reverse zone, gives the
+   * network it covers, with a subnet mask of four bits per nibble, so
+   * `fromArpa(x.reverseForm())` round-trips {@link reverseForm} for any prefix.
    * @param {string} arpaFormAddress - an 'ip6.arpa' form address
    * @returns {Adress6}
    * @example
    * var address = Address6.fromArpa(e.f.f.f.3.c.2.6.f.f.f.e.6.6.8.e.1.0.6.7.9.4.e.c.0.0.0.0.1.0.0.2.ip6.arpa.)
    * address.correctForm(); // '2001:0:ce49:7601:e866:efff:62c3:fffe'
+   * Address6.fromArpa('8.b.d.0.1.0.0.2.ip6.arpa.').networkForm(); // '2001:db8::/32'
    */
   static fromArpa(arpaFormAddress: string): Address6 {
-    // remove ending ".ip6.arpa." or just "."
-    let address = arpaFormAddress.replace(/(\.ip6\.arpa)?\.$/, '');
-    const semicolonAmount = 7;
+    // remove an ending ".ip6.arpa", with or without the root dot
+    const nibbles = arpaFormAddress.replace(/(\.ip6\.arpa)?\.?$/, '');
 
-    // correct ip6.arpa form with ending removed will be 63 characters
-    if (address.length !== 63) {
+    if (!/^[0-9a-f](\.[0-9a-f]){0,31}$/i.test(nibbles)) {
       throw new AddressError("Invalid 'ip6.arpa' form.");
     }
 
-    const parts = address.split('.').reverse();
+    const reversed = nibbles.split('.').reverse();
+    const subnetMask = reversed.length * 4;
+    const hex = reversed.join('').padEnd(32, '0');
+    const groups = [];
 
-    for (let i = semicolonAmount; i > 0; i--) {
-      const insertIndex = i * 4;
-      parts.splice(insertIndex, 0, ':');
+    for (let i = 0; i < constants6.GROUPS; i++) {
+      groups.push(hex.slice(i * 4, (i + 1) * 4));
     }
 
-    address = parts.join('');
-
-    return new Address6(address);
+    return new Address6(`${groups.join(':')}/${subnetMask}`);
   }
 
   /**
@@ -483,8 +485,10 @@ export class Address6 {
   }
 
   /**
-   * The last address in the range given by this address' subnet
-   * Often referred to as the Broadcast
+   * The last address in the range given by this address's subnet. IPv6 has
+   * no broadcast address, so this is an ordinary assignable address (in a
+   * 64-bit-interface-identifier subnet it falls inside the reserved
+   * subnet-anycast block of [RFC 2526](https://datatracker.ietf.org/doc/html/rfc2526)).
    * @returns {Address6}
    */
   endAddress(): Address6 {
@@ -492,13 +496,49 @@ export class Address6 {
   }
 
   /**
-   * The last host address in the range given by this address's subnet ie
-   * the last address prior to the Broadcast Address
+   * The address one before {@link endAddress}. This is the IPv6 counterpart
+   * of the IPv4 method that skips the broadcast address; IPv6 has no broadcast,
+   * so it drops exactly one address and does not model the 128 reserved
+   * subnet-anycast identifiers of [RFC 2526](https://datatracker.ietf.org/doc/html/rfc2526).
    * @returns {Address6}
    */
   endAddressExclusive(): Address6 {
     const adjust = BigInt('1');
     return Address6.fromBigInt(this._endAddress() - adjust);
+  }
+
+  /**
+   * Returns the address `n` addresses after this one (or before, when `n` is
+   * negative), keeping this address's subnet mask. Throws `AddressError` when
+   * the result would fall outside the IPv6 address space or `n` is not an
+   * integer.
+   * @param {number | bigint} n
+   * @returns {Address6}
+   * @example
+   * new Address6('2001:db8::/64').offset(1).correctForm(); // '2001:db8::1'
+   */
+  offset(n: number | bigint): Address6 {
+    return Address6.fromBigInt(
+      common.offsetBigInt(this.bigInt(), n, constants6.BITS, 'IPv6'),
+    ).withSubnetMask(this.subnetMask);
+  }
+
+  /**
+   * Returns the network that follows this address's network: the address after
+   * {@link endAddress}, with the same subnet mask. Throws `AddressError` when
+   * this network is the last one in the address space.
+   * @returns {Address6}
+   * @example
+   * new Address6('2001:db8::/64').nextNetwork().networkForm(); // '2001:db8:0:1::/64'
+   */
+  nextNetwork(): Address6 {
+    return Address6.fromBigInt(
+      common.offsetBigInt(this._endAddress(), 1, constants6.BITS, 'IPv6'),
+    ).withSubnetMask(this.subnetMask);
+  }
+
+  private withSubnetMask(subnetMask: number): Address6 {
+    return new Address6(`${this.correctForm()}/${subnetMask}`);
   }
 
   /**

@@ -573,9 +573,11 @@ describe('v6', () => {
       expect(obj.correctForm()).to.equal('2001:0:ce49:7601:e866:efff:62c3:fffe');
     });
 
-    it('should fail with an invalid ip6.arpa length', () => {
+    it('should fail with more than 32 nibbles', () => {
       should.Throw(() =>
-        Address6.fromArpa('e.f.f.f.3.c.2.6.f.f.f.e.6.6.8.0.6.7.9.4.e.c.0.0.0.0.1.0.0.2.ip6.arpa.'),
+        Address6.fromArpa(
+          '0.e.f.f.f.3.c.2.6.f.f.f.e.6.6.8.e.1.0.6.7.9.4.e.c.0.0.0.0.1.0.0.2.ip6.arpa.',
+        ),
       );
     });
   });
@@ -1454,6 +1456,105 @@ describe('v6', () => {
             should.equal(topic.isPrivate(), false, topic.address);
           },
         );
+      });
+    });
+
+    describe('offset', () => {
+      it('moves by n and keeps the subnet mask', () => {
+        should.equal(new Address6('2001:db8::/64').offset(1).correctForm(), '2001:db8::1');
+        should.equal(new Address6('2001:db8::/64').offset(1).subnetMask, 64);
+        should.equal(new Address6('2001:db8::1').offset(-1).correctForm(), '2001:db8::');
+        should.equal(
+          new Address6('2001:db8::').offset(BigInt(1) << BigInt(64)).correctForm(),
+          '2001:db8:0:1::',
+        );
+        should.equal(
+          new Address6('::').offset((BigInt(1) << BigInt(128)) - BigInt(1)).correctForm(),
+          'ffff:ffff:ffff:ffff:ffff:ffff:ffff:ffff',
+        );
+      });
+
+      it('rejects leaving the address space or a non-integer n', () => {
+        should.Throw(
+          () => new Address6('ffff:ffff:ffff:ffff:ffff:ffff:ffff:ffff').offset(1),
+          AddressError,
+        );
+        should.Throw(() => new Address6('::').offset(-1), AddressError);
+        should.Throw(() => new Address6('::1').offset(0.5), AddressError);
+        should.Throw(() => new Address6('::1').offset(NaN), AddressError);
+        should.Throw(() => new Address6('::1').offset(2 ** 53), AddressError);
+        should.Throw(() => new Address6('::1').offset(null as never), AddressError);
+      });
+    });
+
+    describe('nextNetwork', () => {
+      it('returns the network after this one with the same mask', () => {
+        should.equal(
+          new Address6('2001:db8::/64').nextNetwork().networkForm(),
+          '2001:db8:0:1::/64',
+        );
+        should.equal(
+          new Address6('2001:db8::abcd/64').nextNetwork().networkForm(),
+          '2001:db8:0:1::/64',
+        );
+        should.equal(new Address6('2001:db8::/32').nextNetwork().networkForm(), '2001:db9::/32');
+        should.equal(new Address6('::1').nextNetwork().correctForm(), '::2');
+      });
+
+      it('rejects the last network in the address space', () => {
+        should.Throw(() => new Address6('ffff::/16').nextNetwork(), AddressError);
+        should.Throw(() => new Address6('::/0').nextNetwork(), AddressError);
+      });
+    });
+
+    describe('fromArpa with a prefix-length name', () => {
+      it('returns the delegated network and round-trips reverseForm', () => {
+        should.equal(
+          Address6.fromArpa('8.b.d.0.1.0.0.2.ip6.arpa.').networkForm(),
+          '2001:db8::/32',
+        );
+        should.equal(Address6.fromArpa('8.b.d.0.1.0.0.2.ip6.arpa').networkForm(), '2001:db8::/32');
+        should.equal(Address6.fromArpa('8.b.d.0.1.0.0.2').networkForm(), '2001:db8::/32');
+        should.equal(Address6.fromArpa('2.ip6.arpa.').networkForm(), '2000::/4');
+        [
+          '2001:db8::/32',
+          '2001:db8:1234::/48',
+          '2001:db8::/64',
+          '2001:db8::1',
+          'fe80::1/12',
+        ].forEach((n) => {
+          const address = new Address6(n);
+          should.equal(
+            Address6.fromArpa(address.reverseForm()).networkForm(),
+            address.networkForm(),
+            n,
+          );
+        });
+      });
+
+      it('still gives a /128 for a full-length name', () => {
+        const full = Address6.fromArpa(
+          '1.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.8.b.d.0.1.0.0.2.ip6.arpa.',
+        );
+        should.equal(full.correctForm(), '2001:db8::1');
+        should.equal(full.subnetMask, 128);
+      });
+
+      it('rejects malformed names', () => {
+        [
+          '',
+          '.',
+          'ip6.arpa.',
+          'g.ip6.arpa.',
+          '1..2.ip6.arpa.',
+          '12.ip6.arpa.',
+          '1.0.0.127.in-addr.arpa.',
+          `${'1.'.repeat(32)}1.ip6.arpa.`,
+          '1.ip6.arpa..',
+          ' 1.ip6.arpa.',
+        ].forEach((s) => {
+          should.Throw(() => Address6.fromArpa(s), AddressError, undefined, JSON.stringify(s));
+        });
       });
     });
 
