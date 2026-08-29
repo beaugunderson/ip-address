@@ -40,6 +40,42 @@ export function isHostInSubnet(this: Address4 | Address6, address: Address4 | Ad
   return this.mask(address.subnetMask) === address.mask();
 }
 
+/**
+ * One parsed row of an IANA special-purpose address registry: the block, and
+ * whether the registry marks it globally reachable (`null` when the column is
+ * blank, in which case the containing block answers).
+ */
+export interface SpecialPurposeEntry<A extends Address4 | Address6> {
+  subnet: A;
+  reachable: boolean | null;
+}
+
+/**
+ * Returns whether the registry marks this address globally reachable: the
+ * answer of the most specific entry containing it that has one, or `true`
+ * when no entry contains it.
+ */
+export function isGloballyReachable<A extends Address4 | Address6>(
+  this: A,
+  entries: ReadonlyArray<SpecialPurposeEntry<A>>,
+): boolean {
+  let best: SpecialPurposeEntry<A> | null = null;
+
+  for (let i = 0; i < entries.length; i++) {
+    const entry = entries[i];
+
+    if (
+      entry.reachable !== null &&
+      isHostInSubnet.call(this, entry.subnet) &&
+      (best === null || entry.subnet.subnetMask > best.subnet.subnetMask)
+    ) {
+      best = entry;
+    }
+  }
+
+  return best === null ? true : (best.reachable as boolean);
+}
+
 export function isCorrect(defaultBits: number) {
   return function isCorrectForm(this: Address4 | Address6) {
     if (this.addressMinusSuffix !== this.correctForm()) {

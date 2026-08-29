@@ -689,6 +689,95 @@ describe('v4', () => {
     });
   });
 
+  describe('isDocumentation', () => {
+    it('detects the three RFC 5737 ranges', () => {
+      notationsToAddresseses([
+        '192.0.2.0',
+        '192.0.2.255',
+        '198.51.100.1',
+        '203.0.113.254',
+      ]).forEach((topic) => {
+        should.equal(topic.isDocumentation(), true, topic.address);
+      });
+    });
+
+    it('rejects their neighbors', () => {
+      notationsToAddresseses(['192.0.1.255', '192.0.3.0', '198.51.99.255', '203.0.114.0']).forEach(
+        (topic) => {
+          should.equal(topic.isDocumentation(), false, topic.address);
+        },
+      );
+    });
+  });
+
+  describe('isBenchmarking', () => {
+    it('detects 198.18.0.0/15 and rejects its neighbors', () => {
+      should.equal(new Address4('198.18.0.0').isBenchmarking(), true);
+      should.equal(new Address4('198.19.255.255').isBenchmarking(), true);
+      should.equal(new Address4('198.17.255.255').isBenchmarking(), false);
+      should.equal(new Address4('198.20.0.0').isBenchmarking(), false);
+    });
+  });
+
+  describe('isReserved', () => {
+    it('detects 240.0.0.0/4 including limited broadcast', () => {
+      should.equal(new Address4('240.0.0.0').isReserved(), true);
+      should.equal(new Address4('255.255.255.254').isReserved(), true);
+      should.equal(new Address4('255.255.255.255').isReserved(), true);
+      should.equal(new Address4('239.255.255.255').isReserved(), false);
+    });
+  });
+
+  describe('isGlobal', () => {
+    it('is false for every special-purpose block, named or not', () => {
+      notationsToAddresseses([
+        '0.0.0.1', // "this network", only 0.0.0.0 has a classifier
+        '10.0.0.1',
+        '100.64.0.1',
+        '127.0.0.1',
+        '169.254.169.254',
+        '172.16.0.1',
+        '192.0.0.1', // IETF protocol assignments
+        '192.0.0.170', // NAT64/DNS64 discovery
+        '192.0.2.1',
+        '192.88.99.2', // 6a44 relay anycast
+        '192.168.0.1',
+        '198.18.0.1',
+        '198.51.100.1',
+        '203.0.113.1',
+        '224.0.0.1', // multicast
+        '240.0.0.1',
+        '255.255.255.255',
+      ]).forEach((topic) => {
+        should.equal(topic.isGlobal(), false, topic.address);
+      });
+    });
+
+    it('honors the registry entries that are globally reachable inside a non-reachable block', () => {
+      should.equal(new Address4('192.0.0.9').isGlobal(), true); // PCP anycast
+      should.equal(new Address4('192.0.0.10').isGlobal(), true); // TURN anycast
+      should.equal(new Address4('192.0.0.8').isGlobal(), false);
+      should.equal(new Address4('192.0.0.11').isGlobal(), false);
+    });
+
+    it('is true for ordinary addresses and the deprecated 6to4 relay block', () => {
+      notationsToAddresseses([
+        '1.1.1.1',
+        '8.8.8.8',
+        '192.88.99.1',
+        '192.31.196.1',
+        '11.0.0.0',
+      ]).forEach((topic) => {
+        should.equal(topic.isGlobal(), true, topic.address);
+      });
+    });
+
+    it('ignores the address own subnet mask', () => {
+      should.equal(new Address4('127.0.0.1/0').isGlobal(), false);
+      should.equal(new Address4('8.8.8.8/0').isGlobal(), true);
+    });
+  });
+
   describe('classification ignores the address own subnet mask', () => {
     // A classifier answers a question about the address, so a CIDR suffix on
     // the input must not change the answer. Suffixes shorter than the

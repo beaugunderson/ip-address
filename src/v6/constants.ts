@@ -48,8 +48,11 @@ export const TYPES: { [key: string]: string | undefined } = {
   'fe80::/10': 'Link-local unicast',
   'fc00::/7': 'Unique local',
   '2001::/32': 'Teredo',
+  '2001:2::/48': 'Benchmarking',
   '2002::/16': '6to4',
   '2001:db8::/32': 'Documentation',
+  '3fff::/20': 'Documentation',
+  '100::/64': 'Discard-only',
   '64:ff9b::/96': 'NAT64 (well-known)',
   '64:ff9b:1::/48': 'NAT64 (local-use)',
 } as const;
@@ -84,3 +87,44 @@ export const RE_ZONE_STRING = /%.*$/;
 
 export const RE_URL = /^(?:\[([0-9a-f:.]+)\]|([0-9a-f:.]+))(?:[/?#].*)?$/i;
 export const RE_URL_WITH_PORT = /^\[([0-9a-f:.]+)\]:([0-9]{1,5})(?:[/?#].*)?$/i;
+
+/**
+ * The IANA IPv6 Special-Purpose Address Registry
+ * (https://www.iana.org/assignments/iana-ipv6-special-registry/), one entry
+ * per block: `[cidr, name, globallyReachable]`. A `null` reachability means
+ * the registry says N/A or leaves the column blank; N/A blocks (Teredo, 6to4)
+ * are treated as not globally reachable, since a packet to one needs a relay,
+ * and blank blocks inherit the answer of the block containing them.
+ *
+ * `Address6.isGlobal()` answers from the most specific entry containing the
+ * address, after delegating IPv4-mapped and NAT64 well-known addresses to the
+ * embedded IPv4 address. `test/data/iana-corpus.json` is generated from the
+ * registry's CSV and pins this table to it.
+ */
+export const SPECIAL_PURPOSE: ReadonlyArray<readonly [string, string, boolean | null]> = [
+  ['::1/128', 'Loopback Address', false],
+  ['::/128', 'Unspecified Address', false],
+  ['::ffff:0:0/96', 'IPv4-mapped Address', false],
+  ['64:ff9b::/96', 'IPv4-IPv6 Translat.', true],
+  ['64:ff9b:1::/48', 'IPv4-IPv6 Translat.', false],
+  ['100::/64', 'Discard-Only Address Block', false],
+  ['100:0:0:1::/64', 'Dummy IPv6 Prefix', false],
+  ['2001::/23', 'IETF Protocol Assignments', false],
+  ['2001::/32', 'TEREDO', false],
+  ['2001:1::1/128', 'Port Control Protocol Anycast', true],
+  ['2001:1::2/128', 'Traversal Using Relays around NAT Anycast', true],
+  ['2001:1::3/128', 'DNS-SD Service Registration Protocol Anycast', true],
+  ['2001:2::/48', 'Benchmarking', false],
+  ['2001:3::/32', 'AMT', true],
+  ['2001:4:112::/48', 'AS112-v6', true],
+  ['2001:10::/28', 'Deprecated (previously ORCHID)', null],
+  ['2001:20::/28', 'ORCHIDv2', true],
+  ['2001:30::/28', 'Drone Remote ID Protocol Entity Tags (DETs) Prefix', true],
+  ['2001:db8::/32', 'Documentation', false],
+  ['2002::/16', '6to4', false],
+  ['2620:4f:8000::/48', 'Direct Delegation AS112 Service', true],
+  ['3fff::/20', 'Documentation', false],
+  ['5f00::/16', 'Segment Routing (SRv6) SIDs', false],
+  ['fc00::/7', 'Unique-Local', false],
+  ['fe80::/10', 'Link-Local Unicast', false],
+];
