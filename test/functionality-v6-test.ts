@@ -1341,7 +1341,7 @@ describe('v6', () => {
           'fe80::1',
           'fc00::1',
           'ff02::1',
-          '64:ff9b:1::1', // NAT64 local-use /48 is not extracted via the trailing 32 bits
+          '64:ff9b:1::1', // NAT64 local-use /48 has no single decoding; isPrivate() covers it
         ]).forEach((topic) => {
           should.equal(topic.embeddedIPv4(), null);
         });
@@ -1400,6 +1400,31 @@ describe('v6', () => {
         should.equal(new Address6('fd12:3456:789a::1').isPrivate(), true);
         should.equal(new Address6('::ffff:8.8.8.8').isPrivate(), false);
         should.equal(new Address6('2001:db8::1').isPrivate(), false);
+      });
+
+      // RFC 8215 reserves 64:ff9b:1::/48 for local-use NAT64. An operator may
+      // carve a prefix of any RFC 6052 length out of it, so there is no single
+      // embedded IPv4 address to decode; the whole range is not globally
+      // reachable and is private.
+      it('detects the NAT64 local-use range 64:ff9b:1::/48 (RFC 8215)', () => {
+        notationsToAddresseses([
+          '64:ff9b:1::1',
+          '64:ff9b:1:7f00:0:100::', // 127.0.0.1 under a /48 prefix
+          '64:ff9b:1::7f00:1', // 127.0.0.1 under a /96 prefix
+          '64:ff9b:1:a9fe:a9:fe00::', // 169.254.169.254 under a /48 prefix
+          '64:ff9b:1::a9fe:a9fe', // 169.254.169.254 under a /96 prefix
+          '64:ff9b:1:ffff:ffff:ffff:ffff:ffff',
+        ]).forEach((topic) => {
+          should.equal(topic.isPrivate(), true, topic.address);
+        });
+      });
+
+      it('rejects the neighbors of 64:ff9b:1::/48', () => {
+        notationsToAddresseses(['64:ff9b:0:ffff::1', '64:ff9b:2::1', '64:ff9c::1']).forEach(
+          (topic) => {
+            should.equal(topic.isPrivate(), false, topic.address);
+          },
+        );
       });
     });
 

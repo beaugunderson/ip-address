@@ -1361,12 +1361,20 @@ export class Address6 {
 
   /**
    * Returns true if the address is private, i.e. a Unique Local Address in
-   * `fc00::/7` ([RFC 4193](https://datatracker.ietf.org/doc/html/rfc4193)) or an
-   * IPv4-mapped / NAT64 address whose embedded IPv4 address is in one of the
-   * [RFC 1918](https://datatracker.ietf.org/doc/html/rfc1918) private ranges
-   * (e.g. `::ffff:10.0.0.1`). This is the IPv6 counterpart to
+   * `fc00::/7` ([RFC 4193](https://datatracker.ietf.org/doc/html/rfc4193)), an
+   * address in the NAT64 local-use range `64:ff9b:1::/48`
+   * ([RFC 8215](https://datatracker.ietf.org/doc/html/rfc8215)), or an
+   * IPv4-mapped / NAT64 well-known address whose embedded IPv4 address is in
+   * one of the [RFC 1918](https://datatracker.ietf.org/doc/html/rfc1918)
+   * private ranges (e.g. `::ffff:10.0.0.1`). This is the IPv6 counterpart to
    * {@link Address4.isPrivate}; use it instead of {@link isULA} when you need to
    * catch mapped RFC 1918 addresses as well as native ULAs.
+   *
+   * The local-use NAT64 range is reported private as a whole rather than by
+   * its embedded IPv4 address: an operator may carve a prefix of any RFC 6052
+   * length out of `64:ff9b:1::/48`, so the same bits decode to different IPv4
+   * addresses under different deployments and no single decoding is correct.
+   * Use {@link toAddress4Nat64} with the deployment's prefix to decode one.
    * @returns {boolean}
    */
   isPrivate(): boolean {
@@ -1375,7 +1383,7 @@ export class Address6 {
       return embedded.isPrivate();
     }
 
-    return this.isULA();
+    return this.isULA() || this.isHostInSubnet(NAT64_LOCAL_USE_SUBNET);
   }
 
   /**
@@ -1625,3 +1633,4 @@ const ULA_SUBNET = new Address6('fc00::/7');
 const DOCUMENTATION_SUBNET = new Address6('2001:db8::/32');
 const IPV4_MAPPED_SUBNET = new Address6('::ffff:0:0/96');
 const NAT64_WELL_KNOWN_SUBNET = new Address6('64:ff9b::/96');
+const NAT64_LOCAL_USE_SUBNET = new Address6('64:ff9b:1::/48');
