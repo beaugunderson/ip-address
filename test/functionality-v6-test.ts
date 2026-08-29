@@ -1457,6 +1457,95 @@ describe('v6', () => {
       });
     });
 
+    describe('isDocumentation', () => {
+      it('detects 2001:db8::/32 and 3fff::/20 (RFC 9637)', () => {
+        notationsToAddresseses([
+          '2001:db8::1',
+          '3fff::1',
+          '3fff:fff:ffff:ffff:ffff:ffff:ffff:ffff',
+        ]).forEach((topic) => {
+          should.equal(topic.isDocumentation(), true, topic.address);
+        });
+        should.equal(new Address6('3ffe:ffff::1').isDocumentation(), false);
+        should.equal(new Address6('4000::1').isDocumentation(), false);
+        should.equal(new Address6('3fff::1').getType(), 'Documentation');
+      });
+    });
+
+    describe('isBenchmarking', () => {
+      it('detects 2001:2::/48 and mapped 198.18.0.0/15', () => {
+        should.equal(new Address6('2001:2::1').isBenchmarking(), true);
+        should.equal(new Address6('2001:2:0:ffff::1').isBenchmarking(), true);
+        should.equal(new Address6('2001:2:1::1').isBenchmarking(), false);
+        should.equal(new Address6('::ffff:198.18.0.1').isBenchmarking(), true);
+        should.equal(new Address6('::ffff:8.8.8.8').isBenchmarking(), false);
+        should.equal(new Address6('2001:2::1').getType(), 'Benchmarking');
+      });
+    });
+
+    describe('isGlobal', () => {
+      it('is false for every special-purpose block, named or not', () => {
+        notationsToAddresseses([
+          '::',
+          '::1',
+          '64:ff9b:1::1', // NAT64 local-use
+          '100::1', // discard-only
+          '100:0:0:1::1', // dummy prefix
+          '2001::1', // Teredo
+          '2001:1::4', // IETF protocol assignments
+          '2001:2::1', // benchmarking
+          '2001:10::1', // deprecated ORCHID, inherits 2001::/23
+          '2001:db8::1',
+          '2002::1', // 6to4
+          '3fff::1',
+          '5f00::1', // SRv6 SIDs
+          'fec0::1', // deprecated site-local, reserved
+          '::127.0.0.1', // deprecated IPv4-compatible, reserved
+          '::2', // reserved ::/8
+          '1fff:ffff:ffff:ffff:ffff:ffff:ffff:ffff', // last address before 2000::/3
+          '4000::1', // unallocated
+          'fc00::1',
+          'fe81::1',
+          'ff02::1', // multicast
+          '::ffff:10.0.0.1', // mapped private
+          '::ffff:192.0.2.1', // mapped documentation
+          '64:ff9b::7f00:1', // NAT64 well-known loopback
+        ]).forEach((topic) => {
+          should.equal(topic.isGlobal(), false, topic.address);
+        });
+      });
+
+      it('honors the registry entries that are globally reachable inside 2001::/23', () => {
+        notationsToAddresseses([
+          '2001:1::1', // PCP anycast
+          '2001:1::2', // TURN anycast
+          '2001:1::3', // DNS-SD SRP anycast
+          '2001:3::1', // AMT
+          '2001:4:112::1', // AS112
+          '2001:20::1', // ORCHIDv2
+          '2001:30::1', // DETs
+        ]).forEach((topic) => {
+          should.equal(topic.isGlobal(), true, topic.address);
+        });
+      });
+
+      it('is true for ordinary addresses, including mapped and NAT64 forms of them', () => {
+        notationsToAddresseses([
+          '2606:4700::1111',
+          '2001:4860:4860::8888',
+          '::ffff:8.8.8.8',
+          '64:ff9b::808:808',
+        ]).forEach((topic) => {
+          should.equal(topic.isGlobal(), true, topic.address);
+        });
+      });
+
+      it('ignores the address own subnet mask', () => {
+        should.equal(new Address6('::1/0').isGlobal(), false);
+        should.equal(new Address6('2606:4700::1111/0').isGlobal(), true);
+      });
+    });
+
     describe('isCGNAT', () => {
       it('detects mapped CGNAT and rejects everything else', () => {
         should.equal(new Address6('::ffff:100.64.0.1').isCGNAT(), true);

@@ -106,7 +106,7 @@ Vulnerabilities go through [GitHub's private vulnerability reporting](https://gi
 
 Releases are built and published by CI through npm trusted publishing. Every version from 10.2.1 onward carries a provenance attestation tying the tarball to the commit and workflow that built it. Check it with `npm audit signatures`.
 
-If you are using the address-property checks as a security control, read [that section of SECURITY.md](./SECURITY.md#classifiers-are-not-an-ssrf-defense) first. `isPrivate()`, `isLoopback()`, `isInSubnet()` and their siblings classify an address that has already been parsed, which makes them one layer of an SSRF guard rather than the whole of it. A hostname that resolves to an internal address, a DNS record that changes after your check, or a redirect will all sail past a guard built only on them.
+If you are using the address-property checks as a security control, read [that section of SECURITY.md](./SECURITY.md#classifiers-are-not-an-ssrf-defense) first. `isPrivate()`, `isLoopback()`, `isInSubnet()` and their siblings classify an address that has already been parsed, which makes them one layer of an SSRF guard rather than the whole of it. A hostname that resolves to an internal address, a DNS record that changes after your check, or a redirect will all sail past a guard built only on them. Within that layer, use `isGlobal()` rather than an OR of the named classifiers: it is false for every block the IANA special-purpose registries mark as not globally reachable, including the ones with no classifier of their own.
 
 ### Used by
 

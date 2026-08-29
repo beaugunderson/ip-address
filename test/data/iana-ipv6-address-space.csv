@@ -1,0 +1,25 @@
+IPv6 Prefix,Allocation,Reference,Notes
+::/8,Reserved by IETF,[RFC3513][RFC4291],"This range has been partially allocated. See [IPv6 Special-Purpose Address Space] for details. ::/96, formerly defined as the ""IPv4-compatible IPv6 address"" prefix, was deprecated by [RFC4291]."
+100::/8,Reserved by IETF,[RFC3513][RFC4291],This range has been partially allocated. See [IPv6 Special-Purpose Address Space] for details.
+200::/7,Reserved by IETF,[RFC4048],Deprecated as of December 2004 [RFC4048]. Formerly an OSI NSAP-mapped prefix set [RFC4548].
+400::/6,Reserved by IETF,[RFC3513][RFC4291],
+800::/5,Reserved by IETF,[RFC3513][RFC4291],
+1000::/4,Reserved by IETF,[RFC3513][RFC4291],
+2000::/3,Global Unicast,[RFC3513][RFC4291],"The IPv6 Unicast space encompasses the entire IPv6 address range 
+with the exception of ff00::/8, per [RFC4291]. IANA unicast address 
+assignments are currently limited to the IPv6 unicast address 
+range of 2000::/3. IANA assignments from this block are registered 
+in [IPv6 Global Unicast Address Space]."
+4000::/3,Reserved by IETF,[RFC3513][RFC4291],"This range has been partially allocated. See [IPv6 Special-Purpose Address Space] for details. 5f00::/8 (with 3ffe::/16, as noted at [IPv6 Global Unicast Address Space]) was used for the 6bone, but returned [RFC5156]."
+6000::/3,Reserved by IETF,[RFC3513][RFC4291],
+8000::/3,Reserved by IETF,[RFC3513][RFC4291],
+a000::/3,Reserved by IETF,[RFC3513][RFC4291],
+c000::/3,Reserved by IETF,[RFC3513][RFC4291],
+e000::/4,Reserved by IETF,[RFC3513][RFC4291],
+f000::/5,Reserved by IETF,[RFC3513][RFC4291],
+f800::/6,Reserved by IETF,[RFC3513][RFC4291],
+fc00::/7,Unique Local Unicast,[RFC4193],See [IPv6 Special-Purpose Address Space] for details.
+fe00::/9,Reserved by IETF,[RFC3513][RFC4291],
+fe80::/10,Link-Scoped Unicast,[RFC3513][RFC4291],See [IPv6 Special-Purpose Address Space] for details.
+fec0::/10,Reserved by IETF,[RFC3879],Deprecated by [RFC3879] in September 2004. Formerly a Site-Local scoped address prefix.
+ff00::/8,Multicast,[RFC3513][RFC4291],See [IPv6 Multicast Address Space] for details.

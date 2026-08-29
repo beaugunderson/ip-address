@@ -521,6 +521,47 @@ export class Address4 {
   }
 
   /**
+   * Returns true if the address is in one of the documentation ranges
+   * `192.0.2.0/24`, `198.51.100.0/24`, or `203.0.113.0/24` ([RFC 5737](https://datatracker.ietf.org/doc/html/rfc5737)).
+   * @returns {boolean}
+   */
+  isDocumentation(): boolean {
+    return DOCUMENTATION_V4.some((subnet) => this.isHostInSubnet(subnet));
+  }
+
+  /**
+   * Returns true if the address is in the benchmarking range `198.18.0.0/15` ([RFC 2544](https://datatracker.ietf.org/doc/html/rfc2544)).
+   * @returns {boolean}
+   */
+  isBenchmarking(): boolean {
+    return this.isHostInSubnet(BENCHMARKING_V4);
+  }
+
+  /**
+   * Returns true if the address is in the reserved range `240.0.0.0/4` ([RFC 1112](https://datatracker.ietf.org/doc/html/rfc1112)),
+   * which includes the limited broadcast address.
+   * @returns {boolean}
+   */
+  isReserved(): boolean {
+    return this.isHostInSubnet(RESERVED_V4);
+  }
+
+  /**
+   * Returns true if the address is globally reachable: not multicast, and not
+   * in any block the [IANA IPv4 Special-Purpose Address Registry](https://www.iana.org/assignments/iana-ipv4-special-registry/)
+   * marks as not globally reachable. That covers everything the individual
+   * classifiers name (private, loopback, link-local, CGNAT, unspecified,
+   * broadcast, documentation, benchmarking, reserved) and the blocks they do
+   * not, such as `0.0.0.0/8` and the IETF protocol assignments in
+   * `192.0.0.0/24`. This is the single predicate to use where a request must
+   * not reach an internal or special-purpose destination; see SECURITY.md.
+   * @returns {boolean}
+   */
+  isGlobal(): boolean {
+    return !this.isMulticast() && common.isGloballyReachable.call(this, SPECIAL_PURPOSE_V4);
+  }
+
+  /**
    * Returns a zero-padded base-2 string representation of the address
    * @returns {string}
    */
@@ -565,3 +606,14 @@ const LINK_LOCAL_V4 = new Address4('169.254.0.0/16');
 const UNSPECIFIED_V4 = new Address4('0.0.0.0/32');
 const BROADCAST_V4 = new Address4('255.255.255.255/32');
 const CGNAT_V4 = new Address4('100.64.0.0/10');
+const DOCUMENTATION_V4 = [
+  new Address4('192.0.2.0/24'),
+  new Address4('198.51.100.0/24'),
+  new Address4('203.0.113.0/24'),
+];
+const BENCHMARKING_V4 = new Address4('198.18.0.0/15');
+const RESERVED_V4 = new Address4('240.0.0.0/4');
+const SPECIAL_PURPOSE_V4 = constants.SPECIAL_PURPOSE.map(([cidr, , reachable]) => ({
+  subnet: new Address4(cidr),
+  reachable,
+}));
