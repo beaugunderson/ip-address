@@ -372,6 +372,12 @@ describe('v6', () => {
       topic.isTeredo().should.equal(true);
     });
 
+    it('gets the Teredo type', () => {
+      topic.getType().should.equal('Teredo');
+      new Address6('2001::1').getType().should.equal('Teredo');
+      new Address6('2001:1::1').getType().should.equal('Global unicast');
+    });
+
     it('contains valid Teredo information', () => {
       const teredo = topic.inspectTeredo();
 
@@ -1380,6 +1386,29 @@ describe('v6', () => {
       it('still reports native fe80::/10 and rejects mapped public addresses', () => {
         should.equal(new Address6('fe80::1').isLinkLocal(), true);
         should.equal(new Address6('::ffff:8.8.8.8').isLinkLocal(), false);
+      });
+
+      // RFC 4291 §2.4 assigns the whole of fe80::/10 to link-local unicast, not
+      // only the fe80::/64 that stateless autoconfiguration happens to land in.
+      it('covers all of fe80::/10, not only fe80::/64', () => {
+        notationsToAddresseses([
+          'fe81::1',
+          'fe8f::1',
+          'fe90::1',
+          'fea0::1',
+          'febf::1',
+          'febf:ffff:ffff:ffff:ffff:ffff:ffff:ffff',
+          'fe80:0:0:1::1',
+          'fe80::1:0:0:0:1',
+        ]).forEach((topic) => {
+          should.equal(topic.isLinkLocal(), true, topic.address);
+        });
+      });
+
+      it('rejects the neighbors of fe80::/10', () => {
+        notationsToAddresseses(['fe7f::1', 'fec0::1', 'fc00::1', 'ff02::1']).forEach((topic) => {
+          should.equal(topic.isLinkLocal(), false, topic.address);
+        });
       });
     });
 

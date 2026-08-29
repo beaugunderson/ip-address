@@ -1240,7 +1240,10 @@ export class Address6 {
   }
 
   /**
-   * Returns true if the address is a link local address, false otherwise
+   * Returns true if the address is a link-local unicast address in `fe80::/10`
+   * ([RFC 4291 §2.4](https://datatracker.ietf.org/doc/html/rfc4291#section-2.4))
+   * or an IPv4-mapped / NAT64 address whose embedded IPv4 address is link-local
+   * (`169.254.0.0/16`, e.g. `::ffff:169.254.169.254`), false otherwise.
    * @returns {boolean}
    */
   isLinkLocal(): boolean {
@@ -1249,15 +1252,7 @@ export class Address6 {
       return embedded.isLinkLocal();
     }
 
-    // Zeroes are required, i.e. we can't check isHostInSubnet with 'fe80::/10'
-    if (
-      this.getBitsBase2(0, 64) ===
-      '1111111010000000000000000000000000000000000000000000000000000000'
-    ) {
-      return true;
-    }
-
-    return false;
+    return this.isHostInSubnet(LINK_LOCAL_SUBNET);
   }
 
   /**
@@ -1630,6 +1625,7 @@ const TYPE_SUBNETS: Array<[Address6, string]> = Object.keys(constants6.TYPES).ma
 const TEREDO_SUBNET = new Address6('2001::/32');
 const SIX_TO_FOUR_SUBNET = new Address6('2002::/16');
 const ULA_SUBNET = new Address6('fc00::/7');
+const LINK_LOCAL_SUBNET = new Address6('fe80::/10');
 const DOCUMENTATION_SUBNET = new Address6('2001:db8::/32');
 const IPV4_MAPPED_SUBNET = new Address6('::ffff:0:0/96');
 const NAT64_WELL_KNOWN_SUBNET = new Address6('64:ff9b::/96');
