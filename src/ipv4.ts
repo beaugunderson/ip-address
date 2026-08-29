@@ -298,6 +298,40 @@ export class Address4 {
   }
 
   /**
+   * Returns the address `n` addresses after this one (or before, when `n` is
+   * negative), keeping this address's subnet mask. Throws `AddressError` when
+   * the result would fall outside the IPv4 address space or `n` is not an
+   * integer.
+   * @param {number | bigint} n
+   * @returns {Address4}
+   * @example
+   * new Address4('10.0.0.0/24').offset(1).correctForm(); // '10.0.0.1'
+   */
+  offset(n: number | bigint): Address4 {
+    return Address4.fromBigInt(
+      common.offsetBigInt(this.bigInt(), n, constants.BITS, 'IPv4'),
+    ).withSubnetMask(this.subnetMask);
+  }
+
+  /**
+   * Returns the network that follows this address's network: the address after
+   * {@link endAddress}, with the same subnet mask. Throws `AddressError` when
+   * this network is the last one in the address space.
+   * @returns {Address4}
+   * @example
+   * new Address4('10.0.0.0/24').nextNetwork().networkForm(); // '10.0.1.0/24'
+   */
+  nextNetwork(): Address4 {
+    return Address4.fromBigInt(
+      common.offsetBigInt(this._endAddress(), 1, constants.BITS, 'IPv4'),
+    ).withSubnetMask(this.subnetMask);
+  }
+
+  private withSubnetMask(subnetMask: number): Address4 {
+    return new Address4(`${this.correctForm()}/${subnetMask}`);
+  }
+
+  /**
    * Helper function getting end address.
    * @returns {bigint}
    */

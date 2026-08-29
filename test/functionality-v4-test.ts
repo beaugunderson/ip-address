@@ -689,6 +689,44 @@ describe('v4', () => {
     });
   });
 
+  describe('offset', () => {
+    it('moves by n and keeps the subnet mask', () => {
+      should.equal(new Address4('10.0.0.0/24').offset(1).correctForm(), '10.0.0.1');
+      should.equal(new Address4('10.0.0.0/24').offset(1).subnetMask, 24);
+      should.equal(new Address4('10.0.0.0/24').offset(256).correctForm(), '10.0.1.0');
+      should.equal(new Address4('10.0.1.0').offset(-1).correctForm(), '10.0.0.255');
+      should.equal(
+        new Address4('0.0.0.0').offset(BigInt(2 ** 32 - 1)).correctForm(),
+        '255.255.255.255',
+      );
+      should.equal(new Address4('1.2.3.4').offset(0).correctForm(), '1.2.3.4');
+    });
+
+    it('rejects leaving the address space or a non-integer n', () => {
+      should.Throw(() => new Address4('255.255.255.255').offset(1), AddressError);
+      should.Throw(() => new Address4('0.0.0.0').offset(-1), AddressError);
+      should.Throw(() => new Address4('1.2.3.4').offset(1.5), AddressError);
+      should.Throw(() => new Address4('1.2.3.4').offset(NaN), AddressError);
+      should.Throw(() => new Address4('1.2.3.4').offset(Infinity), AddressError);
+      should.Throw(() => new Address4('1.2.3.4').offset(2 ** 53), AddressError);
+      should.Throw(() => new Address4('1.2.3.4').offset('1' as never), AddressError);
+    });
+  });
+
+  describe('nextNetwork', () => {
+    it('returns the network after this one with the same mask', () => {
+      should.equal(new Address4('10.0.0.0/24').nextNetwork().networkForm(), '10.0.1.0/24');
+      should.equal(new Address4('10.0.0.77/24').nextNetwork().networkForm(), '10.0.1.0/24');
+      should.equal(new Address4('10.0.0.0/8').nextNetwork().networkForm(), '11.0.0.0/8');
+      should.equal(new Address4('1.2.3.4').nextNetwork().correctForm(), '1.2.3.5');
+    });
+
+    it('rejects the last network in the address space', () => {
+      should.Throw(() => new Address4('255.255.255.0/24').nextNetwork(), AddressError);
+      should.Throw(() => new Address4('0.0.0.0/0').nextNetwork(), AddressError);
+    });
+  });
+
   describe('isDocumentation', () => {
     it('detects the three RFC 5737 ranges', () => {
       notationsToAddresseses([

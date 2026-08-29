@@ -76,6 +76,33 @@ export function isGloballyReachable<A extends Address4 | Address6>(
   return best === null ? true : (best.reachable as boolean);
 }
 
+/**
+ * Adds `n` to `value` and returns the result, throwing `AddressError` unless
+ * `n` is an integer and the result stays within `[0, 2**bits - 1]`.
+ */
+export function offsetBigInt(
+  value: bigint,
+  n: number | bigint,
+  bits: number,
+  family: string,
+): bigint {
+  if (typeof n === 'number' && !Number.isSafeInteger(n)) {
+    throw new AddressError(`${family} offset must be an integer`);
+  }
+
+  if (typeof n !== 'number' && typeof n !== 'bigint') {
+    throw new AddressError(`${family} offset must be an integer`);
+  }
+
+  const result = value + BigInt(n);
+
+  if (result < BigInt(0) || result > (BigInt(1) << BigInt(bits)) - BigInt(1)) {
+    throw new AddressError(`${family} offset leaves the address space`);
+  }
+
+  return result;
+}
+
 export function isCorrect(defaultBits: number) {
   return function isCorrectForm(this: Address4 | Address6) {
     if (this.addressMinusSuffix !== this.correctForm()) {
