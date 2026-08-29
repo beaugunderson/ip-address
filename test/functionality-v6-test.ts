@@ -1499,6 +1499,11 @@ describe('v6', () => {
           '2002::1', // 6to4
           '3fff::1',
           '5f00::1', // SRv6 SIDs
+          'fec0::1', // deprecated site-local, reserved
+          '::127.0.0.1', // deprecated IPv4-compatible, reserved
+          '::2', // reserved ::/8
+          '1fff:ffff:ffff:ffff:ffff:ffff:ffff:ffff', // last address before 2000::/3
+          '4000::1', // unallocated
           'fc00::1',
           'fe81::1',
           'ff02::1', // multicast

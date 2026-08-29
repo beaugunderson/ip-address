@@ -1453,8 +1453,11 @@ export class Address6 {
   }
 
   /**
-   * Returns true if the address is globally reachable: not multicast, and not
-   * in any block the [IANA IPv6 Special-Purpose Address Registry](https://www.iana.org/assignments/iana-ipv6-special-registry/)
+   * Returns true if the address is globally reachable: inside the global
+   * unicast allocation `2000::/3` (the only range the [IANA IPv6 Address Space
+   * Registry](https://www.iana.org/assignments/ipv6-address-space/) assigns
+   * for global unicast; everything else is reserved, ULA, link-local, or
+   * multicast) and not in any block the [IANA IPv6 Special-Purpose Address Registry](https://www.iana.org/assignments/iana-ipv6-special-registry/)
    * marks as not globally reachable. An IPv4-mapped or NAT64 well-known
    * address answers for its embedded IPv4 address, so `::ffff:10.0.0.1` and
    * `64:ff9b::7f00:1` are not global. Teredo (`2001::/32`) and 6to4
@@ -1462,10 +1465,11 @@ export class Address6 {
    * packet to one needs a relay.
    *
    * This covers everything the individual classifiers name and the blocks they
-   * do not, such as the discard-only prefix `100::/64` and the IETF protocol
-   * assignments in `2001::/23`. It is the single predicate to use where a
-   * request must not reach an internal or special-purpose destination; see
-   * SECURITY.md.
+   * do not: the discard-only prefix `100::/64`, the IETF protocol assignments
+   * in `2001::/23`, the deprecated site-local `fec0::/10` and IPv4-compatible
+   * `::/96` ranges, and unallocated space such as `4000::/3`. It is the single
+   * predicate to use where a request must not reach an internal or
+   * special-purpose destination; see SECURITY.md.
    * @returns {boolean}
    */
   isGlobal(): boolean {
@@ -1474,7 +1478,10 @@ export class Address6 {
       return embedded.isGlobal();
     }
 
-    return !this.isMulticast() && common.isGloballyReachable.call(this, SPECIAL_PURPOSE_V6);
+    return (
+      this.isHostInSubnet(GLOBAL_UNICAST_SUBNET) &&
+      common.isGloballyReachable.call(this, SPECIAL_PURPOSE_V6)
+    );
   }
   // #endregion
 
@@ -1669,6 +1676,7 @@ const ULA_SUBNET = new Address6('fc00::/7');
 const LINK_LOCAL_SUBNET = new Address6('fe80::/10');
 const DOCUMENTATION_SUBNETS = [new Address6('2001:db8::/32'), new Address6('3fff::/20')];
 const BENCHMARKING_SUBNET = new Address6('2001:2::/48');
+const GLOBAL_UNICAST_SUBNET = new Address6('2000::/3');
 const SPECIAL_PURPOSE_V6 = constants6.SPECIAL_PURPOSE.map(([cidr, , reachable]) => ({
   subnet: new Address6(cidr),
   reachable,

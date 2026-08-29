@@ -5,9 +5,10 @@ address registries.
     scripts/gen-iana-corpus.py            # regenerate from the checked-in CSVs
     scripts/gen-iana-corpus.py --fetch    # refresh the CSVs from iana.org first
 
-For every block in both registries the corpus holds the block's first and
-last address, the addresses one step outside it on each side, and one in the
-middle, plus every IPv4-mapped and NAT64 well-known form of the IPv4 probes.
+For every block in both special-purpose registries and in the IPv6 Address
+Space Registry, the corpus holds the block's first and last address, the
+addresses one step outside it on each side, and one in the middle, plus every
+IPv4-mapped and NAT64 well-known form of the IPv4 probes.
 Each probe carries the expected answer from the registry (its most specific
 block and whether that block is globally reachable) and Python's own
 classification for cross-checking. test/iana-corpus-test.ts asserts the
@@ -92,9 +93,24 @@ def python_view(address):
 
 
 EMBEDDING = (ipaddress.ip_network("::ffff:0:0/96"), ipaddress.ip_network("64:ff9b::/96"))
+ADDRESS_SPACE_CSV = DATA / "iana-ipv6-address-space.csv"
 
 
-def entry(address, blocks, family):
+def load_address_space():
+    """The IANA IPv6 Address Space Registry: which top-level blocks are
+    allocated for global unicast at all (only 2000::/3 is)."""
+    blocks = []
+    with ADDRESS_SPACE_CSV.open() as f:
+        for row in csv.DictReader(f):
+            blocks.append((ipaddress.ip_network(row["IPv6 Prefix"]), row["Allocation"]))
+    return blocks
+
+
+def allocation(address, space):
+    return next(alloc for net, alloc in space if address in net)
+
+
+def entry(address, blocks, family, space):
     name, reachable = registry_answer(address, blocks[family])
     result = {
         "address": str(address),
@@ -103,6 +119,12 @@ def entry(address, blocks, family):
         "global": reachable and not address.is_multicast,
         "python": python_view(address),
     }
+
+    # Only the Global Unicast allocation can hold a globally reachable IPv6
+    # address; the reserved, ULA, link-local and multicast allocations cannot.
+    if family == 6:
+        result["allocation"] = allocation(address, space)
+        result["global"] = result["global"] and result["allocation"] == "Global Unicast"
 
     # An IPv4-mapped or NAT64 well-known address answers for the IPv4 address
     # it embeds, so a probe of those blocks takes the embedded address's answer.
@@ -120,12 +142,18 @@ def main():
         fetch()
 
     blocks = {4: load_blocks(4), 6: load_blocks(6)}
+    space = load_address_space()
     corpus = []
 
     for version in (4, 6):
         for net, _, _ in blocks[version]:
             for address in probes(net):
-                corpus.append(entry(address, blocks, version))
+                corpus.append(entry(address, blocks, version, space))
+
+    # The address-space allocations' own boundaries (fec0::/10, 4000::/3, ...)
+    for net, _ in space:
+        for address in probes(net):
+            corpus.append(entry(address, blocks, 6, space))
 
     # IPv4-mapped and NAT64 well-known forms answer for the embedded IPv4
     # address, so their expectation is the IPv4 probe's, not the IPv6 block's.

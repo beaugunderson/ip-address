@@ -53,6 +53,8 @@ export const TYPES: { [key: string]: string | undefined } = {
   '2001:db8::/32': 'Documentation',
   '3fff::/20': 'Documentation',
   '100::/64': 'Discard-only',
+  'fec0::/10': 'Site-local unicast (deprecated)',
+  '::/96': 'IPv4-compatible (deprecated)',
   '64:ff9b::/96': 'NAT64 (well-known)',
   '64:ff9b:1::/48': 'NAT64 (local-use)',
 } as const;

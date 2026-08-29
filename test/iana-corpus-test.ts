@@ -20,6 +20,7 @@ interface Probe {
   family: 4 | 6;
   block: string | null;
   embedded?: string;
+  allocation?: string;
   global: boolean;
   python: {
     loopback: boolean;
@@ -47,9 +48,15 @@ function parse(probe: Probe): Address4 | Address6 {
 
 // Python classifies the NAT64 well-known prefix by its IPv6 block; the
 // library, like the mapped form, answers for the embedded IPv4 address, so
-// Python's view of those probes is not comparable.
-function pythonComparable(address: Address4 | Address6): boolean {
-  return !(address instanceof Address6 && address.embeddedIPv4() && !address.isMapped4());
+// Python's view of those probes is not comparable. Python also treats any
+// IPv6 address outside a special-purpose block as global, including reserved
+// space the IANA IPv6 Address Space Registry never allocated (fec0::/10,
+// 4000::/3, ::/96), which the library reports as not global.
+function pythonComparable(probe: Probe, address: Address4 | Address6): boolean {
+  if (address instanceof Address6 && address.embeddedIPv4() && !address.isMapped4()) {
+    return false;
+  }
+  return !(probe.family === 6 && probe.block === null && probe.allocation !== 'Global Unicast');
 }
 
 function inException(address: Address4 | Address6): boolean {
@@ -76,7 +83,7 @@ describe('IANA special-purpose registry corpus', () => {
   it('isLoopback, isLinkLocal, isMulticast, and isUnspecified agree with Python', () => {
     probes.forEach((probe) => {
       const address = parse(probe);
-      if (!pythonComparable(address)) {
+      if (!pythonComparable(probe, address)) {
         return;
       }
 
@@ -91,7 +98,7 @@ describe('IANA special-purpose registry corpus', () => {
   it('isGlobal() agrees with Python outside the documented exceptions', () => {
     probes.forEach((probe) => {
       const address = parse(probe);
-      if (!pythonComparable(address) || inException(address)) {
+      if (!pythonComparable(probe, address) || inException(address)) {
         return;
       }
 

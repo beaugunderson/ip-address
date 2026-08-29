@@ -1908,7 +1908,8 @@
    "multicast": false,
    "unspecified": true,
    "global": false
-  }
+  },
+  "allocation": "Reserved by IETF"
  },
  {
   "address": "::1",
@@ -1921,20 +1922,22 @@
    "multicast": false,
    "unspecified": false,
    "global": false
-  }
+  },
+  "allocation": "Reserved by IETF"
  },
  {
   "address": "::2",
   "family": 6,
   "block": null,
-  "global": true,
+  "global": false,
   "python": {
    "loopback": false,
    "linkLocal": false,
    "multicast": false,
    "unspecified": false,
    "global": true
-  }
+  },
+  "allocation": "Reserved by IETF"
  },
  {
   "address": "::",
@@ -1947,7 +1950,8 @@
    "multicast": false,
    "unspecified": true,
    "global": false
-  }
+  },
+  "allocation": "Reserved by IETF"
  },
  {
   "address": "::1",
@@ -1960,20 +1964,22 @@
    "multicast": false,
    "unspecified": false,
    "global": false
-  }
+  },
+  "allocation": "Reserved by IETF"
  },
  {
   "address": "::fffe:ffff:ffff",
   "family": 6,
   "block": null,
-  "global": true,
+  "global": false,
   "python": {
    "loopback": false,
    "linkLocal": false,
    "multicast": false,
    "unspecified": false,
    "global": true
-  }
+  },
+  "allocation": "Reserved by IETF"
  },
  {
   "address": "::ffff:0.0.0.0",
@@ -1987,6 +1993,7 @@
    "unspecified": true,
    "global": false
   },
+  "allocation": "Reserved by IETF",
   "embedded": "0.0.0.0"
  },
  {
@@ -2001,6 +2008,7 @@
    "unspecified": false,
    "global": false
   },
+  "allocation": "Reserved by IETF",
   "embedded": "0.0.0.1"
  },
  {
@@ -2015,6 +2023,7 @@
    "unspecified": false,
    "global": false
   },
+  "allocation": "Reserved by IETF",
   "embedded": "127.255.255.255"
  },
  {
@@ -2029,6 +2038,7 @@
    "unspecified": false,
    "global": false
   },
+  "allocation": "Reserved by IETF",
   "embedded": "255.255.255.254"
  },
  {
@@ -2043,33 +2053,36 @@
    "unspecified": false,
    "global": false
   },
+  "allocation": "Reserved by IETF",
   "embedded": "255.255.255.255"
  },
  {
   "address": "::1:0:0:0",
   "family": 6,
   "block": null,
-  "global": true,
+  "global": false,
   "python": {
    "loopback": false,
    "linkLocal": false,
    "multicast": false,
    "unspecified": false,
    "global": true
-  }
+  },
+  "allocation": "Reserved by IETF"
  },
  {
   "address": "64:ff9a:ffff:ffff:ffff:ffff:ffff:ffff",
   "family": 6,
   "block": null,
-  "global": true,
+  "global": false,
   "python": {
    "loopback": false,
    "linkLocal": false,
    "multicast": false,
    "unspecified": false,
    "global": true
-  }
+  },
+  "allocation": "Reserved by IETF"
  },
  {
   "address": "64:ff9b::",
@@ -2083,6 +2096,7 @@
    "unspecified": false,
    "global": true
   },
+  "allocation": "Reserved by IETF",
   "embedded": "0.0.0.0"
  },
  {
@@ -2097,6 +2111,7 @@
    "unspecified": false,
    "global": true
   },
+  "allocation": "Reserved by IETF",
   "embedded": "0.0.0.1"
  },
  {
@@ -2111,6 +2126,7 @@
    "unspecified": false,
    "global": true
   },
+  "allocation": "Reserved by IETF",
   "embedded": "127.255.255.255"
  },
  {
@@ -2125,6 +2141,7 @@
    "unspecified": false,
    "global": true
   },
+  "allocation": "Reserved by IETF",
   "embedded": "255.255.255.254"
  },
  {
@@ -2139,33 +2156,36 @@
    "unspecified": false,
    "global": true
   },
+  "allocation": "Reserved by IETF",
   "embedded": "255.255.255.255"
  },
  {
   "address": "64:ff9b::1:0:0",
   "family": 6,
   "block": null,
-  "global": true,
+  "global": false,
   "python": {
    "loopback": false,
    "linkLocal": false,
    "multicast": false,
    "unspecified": false,
    "global": true
-  }
+  },
+  "allocation": "Reserved by IETF"
  },
  {
   "address": "64:ff9b:0:ffff:ffff:ffff:ffff:ffff",
   "family": 6,
   "block": null,
-  "global": true,
+  "global": false,
   "python": {
    "loopback": false,
    "linkLocal": false,
    "multicast": false,
    "unspecified": false,
    "global": true
-  }
+  },
+  "allocation": "Reserved by IETF"
  },
  {
   "address": "64:ff9b:1::",
@@ -2178,7 +2198,8 @@
    "multicast": false,
    "unspecified": false,
    "global": false
-  }
+  },
+  "allocation": "Reserved by IETF"
  },
  {
   "address": "64:ff9b:1::1",
@@ -2191,7 +2212,8 @@
    "multicast": false,
    "unspecified": false,
    "global": false
-  }
+  },
+  "allocation": "Reserved by IETF"
  },
  {
   "address": "64:ff9b:1:7fff:ffff:ffff:ffff:ffff",
@@ -2204,7 +2226,8 @@
    "multicast": false,
    "unspecified": false,
    "global": false
-  }
+  },
+  "allocation": "Reserved by IETF"
  },
  {
   "address": "64:ff9b:1:ffff:ffff:ffff:ffff:fffe",
@@ -2217,7 +2240,8 @@
    "multicast": false,
    "unspecified": false,
    "global": false
-  }
+  },
+  "allocation": "Reserved by IETF"
  },
  {
   "address": "64:ff9b:1:ffff:ffff:ffff:ffff:ffff",
@@ -2230,33 +2254,36 @@
    "multicast": false,
    "unspecified": false,
    "global": false
-  }
+  },
+  "allocation": "Reserved by IETF"
  },
  {
   "address": "64:ff9b:2::",
   "family": 6,
   "block": null,
-  "global": true,
+  "global": false,
   "python": {
    "loopback": false,
    "linkLocal": false,
    "multicast": false,
    "unspecified": false,
    "global": true
-  }
+  },
+  "allocation": "Reserved by IETF"
  },
  {
   "address": "ff:ffff:ffff:ffff:ffff:ffff:ffff:ffff",
   "family": 6,
   "block": null,
-  "global": true,
+  "global": false,
   "python": {
    "loopback": false,
    "linkLocal": false,
    "multicast": false,
    "unspecified": false,
    "global": true
-  }
+  },
+  "allocation": "Reserved by IETF"
  },
  {
   "address": "100::",
@@ -2269,7 +2296,8 @@
    "multicast": false,
    "unspecified": false,
    "global": false
-  }
+  },
+  "allocation": "Reserved by IETF"
  },
  {
   "address": "100::1",
@@ -2282,7 +2310,8 @@
    "multicast": false,
    "unspecified": false,
    "global": false
-  }
+  },
+  "allocation": "Reserved by IETF"
  },
  {
   "address": "100::7fff:ffff:ffff:ffff",
@@ -2295,7 +2324,8 @@
    "multicast": false,
    "unspecified": false,
    "global": false
-  }
+  },
+  "allocation": "Reserved by IETF"
  },
  {
   "address": "100::ffff:ffff:ffff:fffe",
@@ -2308,7 +2338,8 @@
    "multicast": false,
    "unspecified": false,
    "global": false
-  }
+  },
+  "allocation": "Reserved by IETF"
  },
  {
   "address": "100::ffff:ffff:ffff:ffff",
@@ -2321,7 +2352,8 @@
    "multicast": false,
    "unspecified": false,
    "global": false
-  }
+  },
+  "allocation": "Reserved by IETF"
  },
  {
   "address": "100:0:0:1::",
@@ -2334,7 +2366,8 @@
    "multicast": false,
    "unspecified": false,
    "global": true
-  }
+  },
+  "allocation": "Reserved by IETF"
  },
  {
   "address": "100::ffff:ffff:ffff:ffff",
@@ -2347,7 +2380,8 @@
    "multicast": false,
    "unspecified": false,
    "global": false
-  }
+  },
+  "allocation": "Reserved by IETF"
  },
  {
   "address": "100:0:0:1::",
@@ -2360,7 +2394,8 @@
    "multicast": false,
    "unspecified": false,
    "global": true
-  }
+  },
+  "allocation": "Reserved by IETF"
  },
  {
   "address": "100:0:0:1::1",
@@ -2373,7 +2408,8 @@
    "multicast": false,
    "unspecified": false,
    "global": true
-  }
+  },
+  "allocation": "Reserved by IETF"
  },
  {
   "address": "100::1:7fff:ffff:ffff:ffff",
@@ -2386,7 +2422,8 @@
    "multicast": false,
    "unspecified": false,
    "global": true
-  }
+  },
+  "allocation": "Reserved by IETF"
  },
  {
   "address": "100::1:ffff:ffff:ffff:fffe",
@@ -2399,7 +2436,8 @@
    "multicast": false,
    "unspecified": false,
    "global": true
-  }
+  },
+  "allocation": "Reserved by IETF"
  },
  {
   "address": "100::1:ffff:ffff:ffff:ffff",
@@ -2412,20 +2450,22 @@
    "multicast": false,
    "unspecified": false,
    "global": true
-  }
+  },
+  "allocation": "Reserved by IETF"
  },
  {
   "address": "100:0:0:2::",
   "family": 6,
   "block": null,
-  "global": true,
+  "global": false,
   "python": {
    "loopback": false,
    "linkLocal": false,
    "multicast": false,
    "unspecified": false,
    "global": true
-  }
+  },
+  "allocation": "Reserved by IETF"
  },
  {
   "address": "2000:ffff:ffff:ffff:ffff:ffff:ffff:ffff",
@@ -2438,7 +2478,8 @@
    "multicast": false,
    "unspecified": false,
    "global": true
-  }
+  },
+  "allocation": "Global Unicast"
  },
  {
   "address": "2001::",
@@ -2451,7 +2492,8 @@
    "multicast": false,
    "unspecified": false,
    "global": false
-  }
+  },
+  "allocation": "Global Unicast"
  },
  {
   "address": "2001::1",
@@ -2464,7 +2506,8 @@
    "multicast": false,
    "unspecified": false,
    "global": false
-  }
+  },
+  "allocation": "Global Unicast"
  },
  {
   "address": "2001:ff:ffff:ffff:ffff:ffff:ffff:ffff",
@@ -2477,7 +2520,8 @@
    "multicast": false,
    "unspecified": false,
    "global": false
-  }
+  },
+  "allocation": "Global Unicast"
  },
  {
   "address": "2001:1ff:ffff:ffff:ffff:ffff:ffff:fffe",
@@ -2490,7 +2534,8 @@
    "multicast": false,
    "unspecified": false,
    "global": false
-  }
+  },
+  "allocation": "Global Unicast"
  },
  {
   "address": "2001:1ff:ffff:ffff:ffff:ffff:ffff:ffff",
@@ -2503,7 +2548,8 @@
    "multicast": false,
    "unspecified": false,
    "global": false
-  }
+  },
+  "allocation": "Global Unicast"
  },
  {
   "address": "2001:200::",
@@ -2516,7 +2562,8 @@
    "multicast": false,
    "unspecified": false,
    "global": true
-  }
+  },
+  "allocation": "Global Unicast"
  },
  {
   "address": "2000:ffff:ffff:ffff:ffff:ffff:ffff:ffff",
@@ -2529,7 +2576,8 @@
    "multicast": false,
    "unspecified": false,
    "global": true
-  }
+  },
+  "allocation": "Global Unicast"
  },
  {
   "address": "2001::",
@@ -2542,7 +2590,8 @@
    "multicast": false,
    "unspecified": false,
    "global": false
-  }
+  },
+  "allocation": "Global Unicast"
  },
  {
   "address": "2001::1",
@@ -2555,7 +2604,8 @@
    "multicast": false,
    "unspecified": false,
    "global": false
-  }
+  },
+  "allocation": "Global Unicast"
  },
  {
   "address": "2001:0:7fff:ffff:ffff:ffff:ffff:ffff",
@@ -2568,7 +2618,8 @@
    "multicast": false,
    "unspecified": false,
    "global": false
-  }
+  },
+  "allocation": "Global Unicast"
  },
  {
   "address": "2001:0:ffff:ffff:ffff:ffff:ffff:fffe",
@@ -2581,7 +2632,8 @@
    "multicast": false,
    "unspecified": false,
    "global": false
-  }
+  },
+  "allocation": "Global Unicast"
  },
  {
   "address": "2001:0:ffff:ffff:ffff:ffff:ffff:ffff",
@@ -2594,7 +2646,8 @@
    "multicast": false,
    "unspecified": false,
    "global": false
-  }
+  },
+  "allocation": "Global Unicast"
  },
  {
   "address": "2001:1::",
@@ -2607,7 +2660,8 @@
    "multicast": false,
    "unspecified": false,
    "global": false
-  }
+  },
+  "allocation": "Global Unicast"
  },
  {
   "address": "2001:1::",
@@ -2620,7 +2674,8 @@
    "multicast": false,
    "unspecified": false,
    "global": false
-  }
+  },
+  "allocation": "Global Unicast"
  },
  {
   "address": "2001:1::1",
@@ -2633,7 +2688,8 @@
    "multicast": false,
    "unspecified": false,
    "global": true
-  }
+  },
+  "allocation": "Global Unicast"
  },
  {
   "address": "2001:1::2",
@@ -2646,7 +2702,8 @@
    "multicast": false,
    "unspecified": false,
    "global": true
-  }
+  },
+  "allocation": "Global Unicast"
  },
  {
   "address": "2001:1::1",
@@ -2659,7 +2716,8 @@
    "multicast": false,
    "unspecified": false,
    "global": true
-  }
+  },
+  "allocation": "Global Unicast"
  },
  {
   "address": "2001:1::2",
@@ -2672,7 +2730,8 @@
    "multicast": false,
    "unspecified": false,
    "global": true
-  }
+  },
+  "allocation": "Global Unicast"
  },
  {
   "address": "2001:1::3",
@@ -2685,7 +2744,8 @@
    "multicast": false,
    "unspecified": false,
    "global": false
-  }
+  },
+  "allocation": "Global Unicast"
  },
  {
   "address": "2001:1::2",
@@ -2698,7 +2758,8 @@
    "multicast": false,
    "unspecified": false,
    "global": true
-  }
+  },
+  "allocation": "Global Unicast"
  },
  {
   "address": "2001:1::3",
@@ -2711,7 +2772,8 @@
    "multicast": false,
    "unspecified": false,
    "global": false
-  }
+  },
+  "allocation": "Global Unicast"
  },
  {
   "address": "2001:1::4",
@@ -2724,7 +2786,8 @@
    "multicast": false,
    "unspecified": false,
    "global": false
-  }
+  },
+  "allocation": "Global Unicast"
  },
  {
   "address": "2001:1:ffff:ffff:ffff:ffff:ffff:ffff",
@@ -2737,7 +2800,8 @@
    "multicast": false,
    "unspecified": false,
    "global": false
-  }
+  },
+  "allocation": "Global Unicast"
  },
  {
   "address": "2001:2::",
@@ -2750,7 +2814,8 @@
    "multicast": false,
    "unspecified": false,
    "global": false
-  }
+  },
+  "allocation": "Global Unicast"
  },
  {
   "address": "2001:2::1",
@@ -2763,7 +2828,8 @@
    "multicast": false,
    "unspecified": false,
    "global": false
-  }
+  },
+  "allocation": "Global Unicast"
  },
  {
   "address": "2001:2:0:7fff:ffff:ffff:ffff:ffff",
@@ -2776,7 +2842,8 @@
    "multicast": false,
    "unspecified": false,
    "global": false
-  }
+  },
+  "allocation": "Global Unicast"
  },
  {
   "address": "2001:2:0:ffff:ffff:ffff:ffff:fffe",
@@ -2789,7 +2856,8 @@
    "multicast": false,
    "unspecified": false,
    "global": false
-  }
+  },
+  "allocation": "Global Unicast"
  },
  {
   "address": "2001:2:0:ffff:ffff:ffff:ffff:ffff",
@@ -2802,7 +2870,8 @@
    "multicast": false,
    "unspecified": false,
    "global": false
-  }
+  },
+  "allocation": "Global Unicast"
  },
  {
   "address": "2001:2:1::",
@@ -2815,7 +2884,8 @@
    "multicast": false,
    "unspecified": false,
    "global": false
-  }
+  },
+  "allocation": "Global Unicast"
  },
  {
   "address": "2001:2:ffff:ffff:ffff:ffff:ffff:ffff",
@@ -2828,7 +2898,8 @@
    "multicast": false,
    "unspecified": false,
    "global": false
-  }
+  },
+  "allocation": "Global Unicast"
  },
  {
   "address": "2001:3::",
@@ -2841,7 +2912,8 @@
    "multicast": false,
    "unspecified": false,
    "global": true
-  }
+  },
+  "allocation": "Global Unicast"
  },
  {
   "address": "2001:3::1",
@@ -2854,7 +2926,8 @@
    "multicast": false,
    "unspecified": false,
    "global": true
-  }
+  },
+  "allocation": "Global Unicast"
  },
  {
   "address": "2001:3:7fff:ffff:ffff:ffff:ffff:ffff",
@@ -2867,7 +2940,8 @@
    "multicast": false,
    "unspecified": false,
    "global": true
-  }
+  },
+  "allocation": "Global Unicast"
  },
  {
   "address": "2001:3:ffff:ffff:ffff:ffff:ffff:fffe",
@@ -2880,7 +2954,8 @@
    "multicast": false,
    "unspecified": false,
    "global": true
-  }
+  },
+  "allocation": "Global Unicast"
  },
  {
   "address": "2001:3:ffff:ffff:ffff:ffff:ffff:ffff",
@@ -2893,7 +2968,8 @@
    "multicast": false,
    "unspecified": false,
    "global": true
-  }
+  },
+  "allocation": "Global Unicast"
  },
  {
   "address": "2001:4::",
@@ -2906,7 +2982,8 @@
    "multicast": false,
    "unspecified": false,
    "global": false
-  }
+  },
+  "allocation": "Global Unicast"
  },
  {
   "address": "2001:4:111:ffff:ffff:ffff:ffff:ffff",
@@ -2919,7 +2996,8 @@
    "multicast": false,
    "unspecified": false,
    "global": false
-  }
+  },
+  "allocation": "Global Unicast"
  },
  {
   "address": "2001:4:112::",
@@ -2932,7 +3010,8 @@
    "multicast": false,
    "unspecified": false,
    "global": true
-  }
+  },
+  "allocation": "Global Unicast"
  },
  {
   "address": "2001:4:112::1",
@@ -2945,7 +3024,8 @@
    "multicast": false,
    "unspecified": false,
    "global": true
-  }
+  },
+  "allocation": "Global Unicast"
  },
  {
   "address": "2001:4:112:7fff:ffff:ffff:ffff:ffff",
@@ -2958,7 +3038,8 @@
    "multicast": false,
    "unspecified": false,
    "global": true
-  }
+  },
+  "allocation": "Global Unicast"
  },
  {
   "address": "2001:4:112:ffff:ffff:ffff:ffff:fffe",
@@ -2971,7 +3052,8 @@
    "multicast": false,
    "unspecified": false,
    "global": true
-  }
+  },
+  "allocation": "Global Unicast"
  },
  {
   "address": "2001:4:112:ffff:ffff:ffff:ffff:ffff",
@@ -2984,7 +3066,8 @@
    "multicast": false,
    "unspecified": false,
    "global": true
-  }
+  },
+  "allocation": "Global Unicast"
  },
  {
   "address": "2001:4:113::",
@@ -2997,7 +3080,8 @@
    "multicast": false,
    "unspecified": false,
    "global": false
-  }
+  },
+  "allocation": "Global Unicast"
  },
  {
   "address": "2001:f:ffff:ffff:ffff:ffff:ffff:ffff",
@@ -3010,7 +3094,8 @@
    "multicast": false,
    "unspecified": false,
    "global": false
-  }
+  },
+  "allocation": "Global Unicast"
  },
  {
   "address": "2001:10::",
@@ -3023,7 +3108,8 @@
    "multicast": false,
    "unspecified": false,
    "global": false
-  }
+  },
+  "allocation": "Global Unicast"
  },
  {
   "address": "2001:10::1",
@@ -3036,7 +3122,8 @@
    "multicast": false,
    "unspecified": false,
    "global": false
-  }
+  },
+  "allocation": "Global Unicast"
  },
  {
   "address": "2001:17:ffff:ffff:ffff:ffff:ffff:ffff",
@@ -3049,7 +3136,8 @@
    "multicast": false,
    "unspecified": false,
    "global": false
-  }
+  },
+  "allocation": "Global Unicast"
  },
  {
   "address": "2001:1f:ffff:ffff:ffff:ffff:ffff:fffe",
@@ -3062,7 +3150,8 @@
    "multicast": false,
    "unspecified": false,
    "global": false
-  }
+  },
+  "allocation": "Global Unicast"
  },
  {
   "address": "2001:1f:ffff:ffff:ffff:ffff:ffff:ffff",
@@ -3075,7 +3164,8 @@
    "multicast": false,
    "unspecified": false,
    "global": false
-  }
+  },
+  "allocation": "Global Unicast"
  },
  {
   "address": "2001:20::",
@@ -3088,7 +3178,8 @@
    "multicast": false,
    "unspecified": false,
    "global": true
-  }
+  },
+  "allocation": "Global Unicast"
  },
  {
   "address": "2001:1f:ffff:ffff:ffff:ffff:ffff:ffff",
@@ -3101,7 +3192,8 @@
    "multicast": false,
    "unspecified": false,
    "global": false
-  }
+  },
+  "allocation": "Global Unicast"
  },
  {
   "address": "2001:20::",
@@ -3114,7 +3206,8 @@
    "multicast": false,
    "unspecified": false,
    "global": true
-  }
+  },
+  "allocation": "Global Unicast"
  },
  {
   "address": "2001:20::1",
@@ -3127,7 +3220,8 @@
    "multicast": false,
    "unspecified": false,
    "global": true
-  }
+  },
+  "allocation": "Global Unicast"
  },
  {
   "address": "2001:27:ffff:ffff:ffff:ffff:ffff:ffff",
@@ -3140,7 +3234,8 @@
    "multicast": false,
    "unspecified": false,
    "global": true
-  }
+  },
+  "allocation": "Global Unicast"
  },
  {
   "address": "2001:2f:ffff:ffff:ffff:ffff:ffff:fffe",
@@ -3153,7 +3248,8 @@
    "multicast": false,
    "unspecified": false,
    "global": true
-  }
+  },
+  "allocation": "Global Unicast"
  },
  {
   "address": "2001:2f:ffff:ffff:ffff:ffff:ffff:ffff",
@@ -3166,7 +3262,8 @@
    "multicast": false,
    "unspecified": false,
    "global": true
-  }
+  },
+  "allocation": "Global Unicast"
  },
  {
   "address": "2001:30::",
@@ -3179,7 +3276,8 @@
    "multicast": false,
    "unspecified": false,
    "global": true
-  }
+  },
+  "allocation": "Global Unicast"
  },
  {
   "address": "2001:2f:ffff:ffff:ffff:ffff:ffff:ffff",
@@ -3192,7 +3290,8 @@
    "multicast": false,
    "unspecified": false,
    "global": true
-  }
+  },
+  "allocation": "Global Unicast"
  },
  {
   "address": "2001:30::",
@@ -3205,7 +3304,8 @@
    "multicast": false,
    "unspecified": false,
    "global": true
-  }
+  },
+  "allocation": "Global Unicast"
  },
  {
   "address": "2001:30::1",
@@ -3218,7 +3318,8 @@
    "multicast": false,
    "unspecified": false,
    "global": true
-  }
+  },
+  "allocation": "Global Unicast"
  },
  {
   "address": "2001:37:ffff:ffff:ffff:ffff:ffff:ffff",
@@ -3231,7 +3332,8 @@
    "multicast": false,
    "unspecified": false,
    "global": true
-  }
+  },
+  "allocation": "Global Unicast"
  },
  {
   "address": "2001:3f:ffff:ffff:ffff:ffff:ffff:fffe",
@@ -3244,7 +3346,8 @@
    "multicast": false,
    "unspecified": false,
    "global": true
-  }
+  },
+  "allocation": "Global Unicast"
  },
  {
   "address": "2001:3f:ffff:ffff:ffff:ffff:ffff:ffff",
@@ -3257,7 +3360,8 @@
    "multicast": false,
    "unspecified": false,
    "global": true
-  }
+  },
+  "allocation": "Global Unicast"
  },
  {
   "address": "2001:40::",
@@ -3270,7 +3374,8 @@
    "multicast": false,
    "unspecified": false,
    "global": false
-  }
+  },
+  "allocation": "Global Unicast"
  },
  {
   "address": "2001:db7:ffff:ffff:ffff:ffff:ffff:ffff",
@@ -3283,7 +3388,8 @@
    "multicast": false,
    "unspecified": false,
    "global": true
-  }
+  },
+  "allocation": "Global Unicast"
  },
  {
   "address": "2001:db8::",
@@ -3296,7 +3402,8 @@
    "multicast": false,
    "unspecified": false,
    "global": false
-  }
+  },
+  "allocation": "Global Unicast"
  },
  {
   "address": "2001:db8::1",
@@ -3309,7 +3416,8 @@
    "multicast": false,
    "unspecified": false,
    "global": false
-  }
+  },
+  "allocation": "Global Unicast"
  },
  {
   "address": "2001:db8:7fff:ffff:ffff:ffff:ffff:ffff",
@@ -3322,7 +3430,8 @@
    "multicast": false,
    "unspecified": false,
    "global": false
-  }
+  },
+  "allocation": "Global Unicast"
  },
  {
   "address": "2001:db8:ffff:ffff:ffff:ffff:ffff:fffe",
@@ -3335,7 +3444,8 @@
    "multicast": false,
    "unspecified": false,
    "global": false
-  }
+  },
+  "allocation": "Global Unicast"
  },
  {
   "address": "2001:db8:ffff:ffff:ffff:ffff:ffff:ffff",
@@ -3348,7 +3458,8 @@
    "multicast": false,
    "unspecified": false,
    "global": false
-  }
+  },
+  "allocation": "Global Unicast"
  },
  {
   "address": "2001:db9::",
@@ -3361,7 +3472,8 @@
    "multicast": false,
    "unspecified": false,
    "global": true
-  }
+  },
+  "allocation": "Global Unicast"
  },
  {
   "address": "2001:ffff:ffff:ffff:ffff:ffff:ffff:ffff",
@@ -3374,7 +3486,8 @@
    "multicast": false,
    "unspecified": false,
    "global": true
-  }
+  },
+  "allocation": "Global Unicast"
  },
  {
   "address": "2002::",
@@ -3387,7 +3500,8 @@
    "multicast": false,
    "unspecified": false,
    "global": false
-  }
+  },
+  "allocation": "Global Unicast"
  },
  {
   "address": "2002::1",
@@ -3400,7 +3514,8 @@
    "multicast": false,
    "unspecified": false,
    "global": false
-  }
+  },
+  "allocation": "Global Unicast"
  },
  {
   "address": "2002:7fff:ffff:ffff:ffff:ffff:ffff:ffff",
@@ -3413,7 +3528,8 @@
    "multicast": false,
    "unspecified": false,
    "global": false
-  }
+  },
+  "allocation": "Global Unicast"
  },
  {
   "address": "2002:ffff:ffff:ffff:ffff:ffff:ffff:fffe",
@@ -3426,7 +3542,8 @@
    "multicast": false,
    "unspecified": false,
    "global": false
-  }
+  },
+  "allocation": "Global Unicast"
  },
  {
   "address": "2002:ffff:ffff:ffff:ffff:ffff:ffff:ffff",
@@ -3439,7 +3556,8 @@
    "multicast": false,
    "unspecified": false,
    "global": false
-  }
+  },
+  "allocation": "Global Unicast"
  },
  {
   "address": "2003::",
@@ -3452,7 +3570,8 @@
    "multicast": false,
    "unspecified": false,
    "global": true
-  }
+  },
+  "allocation": "Global Unicast"
  },
  {
   "address": "2620:4f:7fff:ffff:ffff:ffff:ffff:ffff",
@@ -3465,7 +3584,8 @@
    "multicast": false,
    "unspecified": false,
    "global": true
-  }
+  },
+  "allocation": "Global Unicast"
  },
  {
   "address": "2620:4f:8000::",
@@ -3478,7 +3598,8 @@
    "multicast": false,
    "unspecified": false,
    "global": true
-  }
+  },
+  "allocation": "Global Unicast"
  },
  {
   "address": "2620:4f:8000::1",
@@ -3491,7 +3612,8 @@
    "multicast": false,
    "unspecified": false,
    "global": true
-  }
+  },
+  "allocation": "Global Unicast"
  },
  {
   "address": "2620:4f:8000:7fff:ffff:ffff:ffff:ffff",
@@ -3504,7 +3626,8 @@
    "multicast": false,
    "unspecified": false,
    "global": true
-  }
+  },
+  "allocation": "Global Unicast"
  },
  {
   "address": "2620:4f:8000:ffff:ffff:ffff:ffff:fffe",
@@ -3517,7 +3640,8 @@
    "multicast": false,
    "unspecified": false,
    "global": true
-  }
+  },
+  "allocation": "Global Unicast"
  },
  {
   "address": "2620:4f:8000:ffff:ffff:ffff:ffff:ffff",
@@ -3530,7 +3654,8 @@
    "multicast": false,
    "unspecified": false,
    "global": true
-  }
+  },
+  "allocation": "Global Unicast"
  },
  {
   "address": "2620:4f:8001::",
@@ -3543,7 +3668,8 @@
    "multicast": false,
    "unspecified": false,
    "global": true
-  }
+  },
+  "allocation": "Global Unicast"
  },
  {
   "address": "3ffe:ffff:ffff:ffff:ffff:ffff:ffff:ffff",
@@ -3556,7 +3682,8 @@
    "multicast": false,
    "unspecified": false,
    "global": true
-  }
+  },
+  "allocation": "Global Unicast"
  },
  {
   "address": "3fff::",
@@ -3569,7 +3696,8 @@
    "multicast": false,
    "unspecified": false,
    "global": false
-  }
+  },
+  "allocation": "Global Unicast"
  },
  {
   "address": "3fff::1",
@@ -3582,7 +3710,8 @@
    "multicast": false,
    "unspecified": false,
    "global": false
-  }
+  },
+  "allocation": "Global Unicast"
  },
  {
   "address": "3fff:7ff:ffff:ffff:ffff:ffff:ffff:ffff",
@@ -3595,7 +3724,8 @@
    "multicast": false,
    "unspecified": false,
    "global": false
-  }
+  },
+  "allocation": "Global Unicast"
  },
  {
   "address": "3fff:fff:ffff:ffff:ffff:ffff:ffff:fffe",
@@ -3608,7 +3738,8 @@
    "multicast": false,
    "unspecified": false,
    "global": false
-  }
+  },
+  "allocation": "Global Unicast"
  },
  {
   "address": "3fff:fff:ffff:ffff:ffff:ffff:ffff:ffff",
@@ -3621,7 +3752,8 @@
    "multicast": false,
    "unspecified": false,
    "global": false
-  }
+  },
+  "allocation": "Global Unicast"
  },
  {
   "address": "3fff:1000::",
@@ -3634,20 +3766,22 @@
    "multicast": false,
    "unspecified": false,
    "global": true
-  }
+  },
+  "allocation": "Global Unicast"
  },
  {
   "address": "5eff:ffff:ffff:ffff:ffff:ffff:ffff:ffff",
   "family": 6,
   "block": null,
-  "global": true,
+  "global": false,
   "python": {
    "loopback": false,
    "linkLocal": false,
    "multicast": false,
    "unspecified": false,
    "global": true
-  }
+  },
+  "allocation": "Reserved by IETF"
  },
  {
   "address": "5f00::",
@@ -3660,7 +3794,8 @@
    "multicast": false,
    "unspecified": false,
    "global": true
-  }
+  },
+  "allocation": "Reserved by IETF"
  },
  {
   "address": "5f00::1",
@@ -3673,7 +3808,8 @@
    "multicast": false,
    "unspecified": false,
    "global": true
-  }
+  },
+  "allocation": "Reserved by IETF"
  },
  {
   "address": "5f00:7fff:ffff:ffff:ffff:ffff:ffff:ffff",
@@ -3686,7 +3822,8 @@
    "multicast": false,
    "unspecified": false,
    "global": true
-  }
+  },
+  "allocation": "Reserved by IETF"
  },
  {
   "address": "5f00:ffff:ffff:ffff:ffff:ffff:ffff:fffe",
@@ -3699,7 +3836,8 @@
    "multicast": false,
    "unspecified": false,
    "global": true
-  }
+  },
+  "allocation": "Reserved by IETF"
  },
  {
   "address": "5f00:ffff:ffff:ffff:ffff:ffff:ffff:ffff",
@@ -3712,33 +3850,36 @@
    "multicast": false,
    "unspecified": false,
    "global": true
-  }
+  },
+  "allocation": "Reserved by IETF"
  },
  {
   "address": "5f01::",
   "family": 6,
   "block": null,
-  "global": true,
+  "global": false,
   "python": {
    "loopback": false,
    "linkLocal": false,
    "multicast": false,
    "unspecified": false,
    "global": true
-  }
+  },
+  "allocation": "Reserved by IETF"
  },
  {
   "address": "fbff:ffff:ffff:ffff:ffff:ffff:ffff:ffff",
   "family": 6,
   "block": null,
-  "global": true,
+  "global": false,
   "python": {
    "loopback": false,
    "linkLocal": false,
    "multicast": false,
    "unspecified": false,
    "global": true
-  }
+  },
+  "allocation": "Reserved by IETF"
  },
  {
   "address": "fc00::",
@@ -3751,7 +3892,8 @@
    "multicast": false,
    "unspecified": false,
    "global": false
-  }
+  },
+  "allocation": "Unique Local Unicast"
  },
  {
   "address": "fc00::1",
@@ -3764,7 +3906,8 @@
    "multicast": false,
    "unspecified": false,
    "global": false
-  }
+  },
+  "allocation": "Unique Local Unicast"
  },
  {
   "address": "fcff:ffff:ffff:ffff:ffff:ffff:ffff:ffff",
@@ -3777,7 +3920,8 @@
    "multicast": false,
    "unspecified": false,
    "global": false
-  }
+  },
+  "allocation": "Unique Local Unicast"
  },
  {
   "address": "fdff:ffff:ffff:ffff:ffff:ffff:ffff:fffe",
@@ -3790,7 +3934,8 @@
    "multicast": false,
    "unspecified": false,
    "global": false
-  }
+  },
+  "allocation": "Unique Local Unicast"
  },
  {
   "address": "fdff:ffff:ffff:ffff:ffff:ffff:ffff:ffff",
@@ -3803,33 +3948,36 @@
    "multicast": false,
    "unspecified": false,
    "global": false
-  }
+  },
+  "allocation": "Unique Local Unicast"
  },
  {
   "address": "fe00::",
   "family": 6,
   "block": null,
-  "global": true,
+  "global": false,
   "python": {
    "loopback": false,
    "linkLocal": false,
    "multicast": false,
    "unspecified": false,
    "global": true
-  }
+  },
+  "allocation": "Reserved by IETF"
  },
  {
   "address": "fe7f:ffff:ffff:ffff:ffff:ffff:ffff:ffff",
   "family": 6,
   "block": null,
-  "global": true,
+  "global": false,
   "python": {
    "loopback": false,
    "linkLocal": false,
    "multicast": false,
    "unspecified": false,
    "global": true
-  }
+  },
+  "allocation": "Reserved by IETF"
  },
  {
   "address": "fe80::",
@@ -3842,7 +3990,8 @@
    "multicast": false,
    "unspecified": false,
    "global": false
-  }
+  },
+  "allocation": "Link-Scoped Unicast"
  },
  {
   "address": "fe80::1",
@@ -3855,7 +4004,8 @@
    "multicast": false,
    "unspecified": false,
    "global": false
-  }
+  },
+  "allocation": "Link-Scoped Unicast"
  },
  {
   "address": "fe9f:ffff:ffff:ffff:ffff:ffff:ffff:ffff",
@@ -3868,7 +4018,8 @@
    "multicast": false,
    "unspecified": false,
    "global": false
-  }
+  },
+  "allocation": "Link-Scoped Unicast"
  },
  {
   "address": "febf:ffff:ffff:ffff:ffff:ffff:ffff:fffe",
@@ -3881,7 +4032,8 @@
    "multicast": false,
    "unspecified": false,
    "global": false
-  }
+  },
+  "allocation": "Link-Scoped Unicast"
  },
  {
   "address": "febf:ffff:ffff:ffff:ffff:ffff:ffff:ffff",
@@ -3894,10 +4046,585 @@
    "multicast": false,
    "unspecified": false,
    "global": false
-  }
+  },
+  "allocation": "Link-Scoped Unicast"
  },
  {
   "address": "fec0::",
+  "family": 6,
+  "block": null,
+  "global": false,
+  "python": {
+   "loopback": false,
+   "linkLocal": false,
+   "multicast": false,
+   "unspecified": false,
+   "global": true
+  },
+  "allocation": "Reserved by IETF"
+ },
+ {
+  "address": "::",
+  "family": 6,
+  "block": "Unspecified Address",
+  "global": false,
+  "python": {
+   "loopback": false,
+   "linkLocal": false,
+   "multicast": false,
+   "unspecified": true,
+   "global": false
+  },
+  "allocation": "Reserved by IETF"
+ },
+ {
+  "address": "::1",
+  "family": 6,
+  "block": "Loopback Address",
+  "global": false,
+  "python": {
+   "loopback": true,
+   "linkLocal": false,
+   "multicast": false,
+   "unspecified": false,
+   "global": false
+  },
+  "allocation": "Reserved by IETF"
+ },
+ {
+  "address": "7f:ffff:ffff:ffff:ffff:ffff:ffff:ffff",
+  "family": 6,
+  "block": null,
+  "global": false,
+  "python": {
+   "loopback": false,
+   "linkLocal": false,
+   "multicast": false,
+   "unspecified": false,
+   "global": true
+  },
+  "allocation": "Reserved by IETF"
+ },
+ {
+  "address": "ff:ffff:ffff:ffff:ffff:ffff:ffff:fffe",
+  "family": 6,
+  "block": null,
+  "global": false,
+  "python": {
+   "loopback": false,
+   "linkLocal": false,
+   "multicast": false,
+   "unspecified": false,
+   "global": true
+  },
+  "allocation": "Reserved by IETF"
+ },
+ {
+  "address": "ff:ffff:ffff:ffff:ffff:ffff:ffff:ffff",
+  "family": 6,
+  "block": null,
+  "global": false,
+  "python": {
+   "loopback": false,
+   "linkLocal": false,
+   "multicast": false,
+   "unspecified": false,
+   "global": true
+  },
+  "allocation": "Reserved by IETF"
+ },
+ {
+  "address": "100::",
+  "family": 6,
+  "block": "Discard-Only Address Block",
+  "global": false,
+  "python": {
+   "loopback": false,
+   "linkLocal": false,
+   "multicast": false,
+   "unspecified": false,
+   "global": false
+  },
+  "allocation": "Reserved by IETF"
+ },
+ {
+  "address": "ff:ffff:ffff:ffff:ffff:ffff:ffff:ffff",
+  "family": 6,
+  "block": null,
+  "global": false,
+  "python": {
+   "loopback": false,
+   "linkLocal": false,
+   "multicast": false,
+   "unspecified": false,
+   "global": true
+  },
+  "allocation": "Reserved by IETF"
+ },
+ {
+  "address": "100::",
+  "family": 6,
+  "block": "Discard-Only Address Block",
+  "global": false,
+  "python": {
+   "loopback": false,
+   "linkLocal": false,
+   "multicast": false,
+   "unspecified": false,
+   "global": false
+  },
+  "allocation": "Reserved by IETF"
+ },
+ {
+  "address": "100::1",
+  "family": 6,
+  "block": "Discard-Only Address Block",
+  "global": false,
+  "python": {
+   "loopback": false,
+   "linkLocal": false,
+   "multicast": false,
+   "unspecified": false,
+   "global": false
+  },
+  "allocation": "Reserved by IETF"
+ },
+ {
+  "address": "17f:ffff:ffff:ffff:ffff:ffff:ffff:ffff",
+  "family": 6,
+  "block": null,
+  "global": false,
+  "python": {
+   "loopback": false,
+   "linkLocal": false,
+   "multicast": false,
+   "unspecified": false,
+   "global": true
+  },
+  "allocation": "Reserved by IETF"
+ },
+ {
+  "address": "1ff:ffff:ffff:ffff:ffff:ffff:ffff:fffe",
+  "family": 6,
+  "block": null,
+  "global": false,
+  "python": {
+   "loopback": false,
+   "linkLocal": false,
+   "multicast": false,
+   "unspecified": false,
+   "global": true
+  },
+  "allocation": "Reserved by IETF"
+ },
+ {
+  "address": "1ff:ffff:ffff:ffff:ffff:ffff:ffff:ffff",
+  "family": 6,
+  "block": null,
+  "global": false,
+  "python": {
+   "loopback": false,
+   "linkLocal": false,
+   "multicast": false,
+   "unspecified": false,
+   "global": true
+  },
+  "allocation": "Reserved by IETF"
+ },
+ {
+  "address": "200::",
+  "family": 6,
+  "block": null,
+  "global": false,
+  "python": {
+   "loopback": false,
+   "linkLocal": false,
+   "multicast": false,
+   "unspecified": false,
+   "global": true
+  },
+  "allocation": "Reserved by IETF"
+ },
+ {
+  "address": "1ff:ffff:ffff:ffff:ffff:ffff:ffff:ffff",
+  "family": 6,
+  "block": null,
+  "global": false,
+  "python": {
+   "loopback": false,
+   "linkLocal": false,
+   "multicast": false,
+   "unspecified": false,
+   "global": true
+  },
+  "allocation": "Reserved by IETF"
+ },
+ {
+  "address": "200::",
+  "family": 6,
+  "block": null,
+  "global": false,
+  "python": {
+   "loopback": false,
+   "linkLocal": false,
+   "multicast": false,
+   "unspecified": false,
+   "global": true
+  },
+  "allocation": "Reserved by IETF"
+ },
+ {
+  "address": "200::1",
+  "family": 6,
+  "block": null,
+  "global": false,
+  "python": {
+   "loopback": false,
+   "linkLocal": false,
+   "multicast": false,
+   "unspecified": false,
+   "global": true
+  },
+  "allocation": "Reserved by IETF"
+ },
+ {
+  "address": "2ff:ffff:ffff:ffff:ffff:ffff:ffff:ffff",
+  "family": 6,
+  "block": null,
+  "global": false,
+  "python": {
+   "loopback": false,
+   "linkLocal": false,
+   "multicast": false,
+   "unspecified": false,
+   "global": true
+  },
+  "allocation": "Reserved by IETF"
+ },
+ {
+  "address": "3ff:ffff:ffff:ffff:ffff:ffff:ffff:fffe",
+  "family": 6,
+  "block": null,
+  "global": false,
+  "python": {
+   "loopback": false,
+   "linkLocal": false,
+   "multicast": false,
+   "unspecified": false,
+   "global": true
+  },
+  "allocation": "Reserved by IETF"
+ },
+ {
+  "address": "3ff:ffff:ffff:ffff:ffff:ffff:ffff:ffff",
+  "family": 6,
+  "block": null,
+  "global": false,
+  "python": {
+   "loopback": false,
+   "linkLocal": false,
+   "multicast": false,
+   "unspecified": false,
+   "global": true
+  },
+  "allocation": "Reserved by IETF"
+ },
+ {
+  "address": "400::",
+  "family": 6,
+  "block": null,
+  "global": false,
+  "python": {
+   "loopback": false,
+   "linkLocal": false,
+   "multicast": false,
+   "unspecified": false,
+   "global": true
+  },
+  "allocation": "Reserved by IETF"
+ },
+ {
+  "address": "3ff:ffff:ffff:ffff:ffff:ffff:ffff:ffff",
+  "family": 6,
+  "block": null,
+  "global": false,
+  "python": {
+   "loopback": false,
+   "linkLocal": false,
+   "multicast": false,
+   "unspecified": false,
+   "global": true
+  },
+  "allocation": "Reserved by IETF"
+ },
+ {
+  "address": "400::",
+  "family": 6,
+  "block": null,
+  "global": false,
+  "python": {
+   "loopback": false,
+   "linkLocal": false,
+   "multicast": false,
+   "unspecified": false,
+   "global": true
+  },
+  "allocation": "Reserved by IETF"
+ },
+ {
+  "address": "400::1",
+  "family": 6,
+  "block": null,
+  "global": false,
+  "python": {
+   "loopback": false,
+   "linkLocal": false,
+   "multicast": false,
+   "unspecified": false,
+   "global": true
+  },
+  "allocation": "Reserved by IETF"
+ },
+ {
+  "address": "5ff:ffff:ffff:ffff:ffff:ffff:ffff:ffff",
+  "family": 6,
+  "block": null,
+  "global": false,
+  "python": {
+   "loopback": false,
+   "linkLocal": false,
+   "multicast": false,
+   "unspecified": false,
+   "global": true
+  },
+  "allocation": "Reserved by IETF"
+ },
+ {
+  "address": "7ff:ffff:ffff:ffff:ffff:ffff:ffff:fffe",
+  "family": 6,
+  "block": null,
+  "global": false,
+  "python": {
+   "loopback": false,
+   "linkLocal": false,
+   "multicast": false,
+   "unspecified": false,
+   "global": true
+  },
+  "allocation": "Reserved by IETF"
+ },
+ {
+  "address": "7ff:ffff:ffff:ffff:ffff:ffff:ffff:ffff",
+  "family": 6,
+  "block": null,
+  "global": false,
+  "python": {
+   "loopback": false,
+   "linkLocal": false,
+   "multicast": false,
+   "unspecified": false,
+   "global": true
+  },
+  "allocation": "Reserved by IETF"
+ },
+ {
+  "address": "800::",
+  "family": 6,
+  "block": null,
+  "global": false,
+  "python": {
+   "loopback": false,
+   "linkLocal": false,
+   "multicast": false,
+   "unspecified": false,
+   "global": true
+  },
+  "allocation": "Reserved by IETF"
+ },
+ {
+  "address": "7ff:ffff:ffff:ffff:ffff:ffff:ffff:ffff",
+  "family": 6,
+  "block": null,
+  "global": false,
+  "python": {
+   "loopback": false,
+   "linkLocal": false,
+   "multicast": false,
+   "unspecified": false,
+   "global": true
+  },
+  "allocation": "Reserved by IETF"
+ },
+ {
+  "address": "800::",
+  "family": 6,
+  "block": null,
+  "global": false,
+  "python": {
+   "loopback": false,
+   "linkLocal": false,
+   "multicast": false,
+   "unspecified": false,
+   "global": true
+  },
+  "allocation": "Reserved by IETF"
+ },
+ {
+  "address": "800::1",
+  "family": 6,
+  "block": null,
+  "global": false,
+  "python": {
+   "loopback": false,
+   "linkLocal": false,
+   "multicast": false,
+   "unspecified": false,
+   "global": true
+  },
+  "allocation": "Reserved by IETF"
+ },
+ {
+  "address": "bff:ffff:ffff:ffff:ffff:ffff:ffff:ffff",
+  "family": 6,
+  "block": null,
+  "global": false,
+  "python": {
+   "loopback": false,
+   "linkLocal": false,
+   "multicast": false,
+   "unspecified": false,
+   "global": true
+  },
+  "allocation": "Reserved by IETF"
+ },
+ {
+  "address": "fff:ffff:ffff:ffff:ffff:ffff:ffff:fffe",
+  "family": 6,
+  "block": null,
+  "global": false,
+  "python": {
+   "loopback": false,
+   "linkLocal": false,
+   "multicast": false,
+   "unspecified": false,
+   "global": true
+  },
+  "allocation": "Reserved by IETF"
+ },
+ {
+  "address": "fff:ffff:ffff:ffff:ffff:ffff:ffff:ffff",
+  "family": 6,
+  "block": null,
+  "global": false,
+  "python": {
+   "loopback": false,
+   "linkLocal": false,
+   "multicast": false,
+   "unspecified": false,
+   "global": true
+  },
+  "allocation": "Reserved by IETF"
+ },
+ {
+  "address": "1000::",
+  "family": 6,
+  "block": null,
+  "global": false,
+  "python": {
+   "loopback": false,
+   "linkLocal": false,
+   "multicast": false,
+   "unspecified": false,
+   "global": true
+  },
+  "allocation": "Reserved by IETF"
+ },
+ {
+  "address": "fff:ffff:ffff:ffff:ffff:ffff:ffff:ffff",
+  "family": 6,
+  "block": null,
+  "global": false,
+  "python": {
+   "loopback": false,
+   "linkLocal": false,
+   "multicast": false,
+   "unspecified": false,
+   "global": true
+  },
+  "allocation": "Reserved by IETF"
+ },
+ {
+  "address": "1000::",
+  "family": 6,
+  "block": null,
+  "global": false,
+  "python": {
+   "loopback": false,
+   "linkLocal": false,
+   "multicast": false,
+   "unspecified": false,
+   "global": true
+  },
+  "allocation": "Reserved by IETF"
+ },
+ {
+  "address": "1000::1",
+  "family": 6,
+  "block": null,
+  "global": false,
+  "python": {
+   "loopback": false,
+   "linkLocal": false,
+   "multicast": false,
+   "unspecified": false,
+   "global": true
+  },
+  "allocation": "Reserved by IETF"
+ },
+ {
+  "address": "17ff:ffff:ffff:ffff:ffff:ffff:ffff:ffff",
+  "family": 6,
+  "block": null,
+  "global": false,
+  "python": {
+   "loopback": false,
+   "linkLocal": false,
+   "multicast": false,
+   "unspecified": false,
+   "global": true
+  },
+  "allocation": "Reserved by IETF"
+ },
+ {
+  "address": "1fff:ffff:ffff:ffff:ffff:ffff:ffff:fffe",
+  "family": 6,
+  "block": null,
+  "global": false,
+  "python": {
+   "loopback": false,
+   "linkLocal": false,
+   "multicast": false,
+   "unspecified": false,
+   "global": true
+  },
+  "allocation": "Reserved by IETF"
+ },
+ {
+  "address": "1fff:ffff:ffff:ffff:ffff:ffff:ffff:ffff",
+  "family": 6,
+  "block": null,
+  "global": false,
+  "python": {
+   "loopback": false,
+   "linkLocal": false,
+   "multicast": false,
+   "unspecified": false,
+   "global": true
+  },
+  "allocation": "Reserved by IETF"
+ },
+ {
+  "address": "2000::",
   "family": 6,
   "block": null,
   "global": true,
@@ -3907,7 +4634,1366 @@
    "multicast": false,
    "unspecified": false,
    "global": true
-  }
+  },
+  "allocation": "Global Unicast"
+ },
+ {
+  "address": "1fff:ffff:ffff:ffff:ffff:ffff:ffff:ffff",
+  "family": 6,
+  "block": null,
+  "global": false,
+  "python": {
+   "loopback": false,
+   "linkLocal": false,
+   "multicast": false,
+   "unspecified": false,
+   "global": true
+  },
+  "allocation": "Reserved by IETF"
+ },
+ {
+  "address": "2000::",
+  "family": 6,
+  "block": null,
+  "global": true,
+  "python": {
+   "loopback": false,
+   "linkLocal": false,
+   "multicast": false,
+   "unspecified": false,
+   "global": true
+  },
+  "allocation": "Global Unicast"
+ },
+ {
+  "address": "2000::1",
+  "family": 6,
+  "block": null,
+  "global": true,
+  "python": {
+   "loopback": false,
+   "linkLocal": false,
+   "multicast": false,
+   "unspecified": false,
+   "global": true
+  },
+  "allocation": "Global Unicast"
+ },
+ {
+  "address": "2fff:ffff:ffff:ffff:ffff:ffff:ffff:ffff",
+  "family": 6,
+  "block": null,
+  "global": true,
+  "python": {
+   "loopback": false,
+   "linkLocal": false,
+   "multicast": false,
+   "unspecified": false,
+   "global": true
+  },
+  "allocation": "Global Unicast"
+ },
+ {
+  "address": "3fff:ffff:ffff:ffff:ffff:ffff:ffff:fffe",
+  "family": 6,
+  "block": null,
+  "global": true,
+  "python": {
+   "loopback": false,
+   "linkLocal": false,
+   "multicast": false,
+   "unspecified": false,
+   "global": true
+  },
+  "allocation": "Global Unicast"
+ },
+ {
+  "address": "3fff:ffff:ffff:ffff:ffff:ffff:ffff:ffff",
+  "family": 6,
+  "block": null,
+  "global": true,
+  "python": {
+   "loopback": false,
+   "linkLocal": false,
+   "multicast": false,
+   "unspecified": false,
+   "global": true
+  },
+  "allocation": "Global Unicast"
+ },
+ {
+  "address": "4000::",
+  "family": 6,
+  "block": null,
+  "global": false,
+  "python": {
+   "loopback": false,
+   "linkLocal": false,
+   "multicast": false,
+   "unspecified": false,
+   "global": true
+  },
+  "allocation": "Reserved by IETF"
+ },
+ {
+  "address": "3fff:ffff:ffff:ffff:ffff:ffff:ffff:ffff",
+  "family": 6,
+  "block": null,
+  "global": true,
+  "python": {
+   "loopback": false,
+   "linkLocal": false,
+   "multicast": false,
+   "unspecified": false,
+   "global": true
+  },
+  "allocation": "Global Unicast"
+ },
+ {
+  "address": "4000::",
+  "family": 6,
+  "block": null,
+  "global": false,
+  "python": {
+   "loopback": false,
+   "linkLocal": false,
+   "multicast": false,
+   "unspecified": false,
+   "global": true
+  },
+  "allocation": "Reserved by IETF"
+ },
+ {
+  "address": "4000::1",
+  "family": 6,
+  "block": null,
+  "global": false,
+  "python": {
+   "loopback": false,
+   "linkLocal": false,
+   "multicast": false,
+   "unspecified": false,
+   "global": true
+  },
+  "allocation": "Reserved by IETF"
+ },
+ {
+  "address": "4fff:ffff:ffff:ffff:ffff:ffff:ffff:ffff",
+  "family": 6,
+  "block": null,
+  "global": false,
+  "python": {
+   "loopback": false,
+   "linkLocal": false,
+   "multicast": false,
+   "unspecified": false,
+   "global": true
+  },
+  "allocation": "Reserved by IETF"
+ },
+ {
+  "address": "5fff:ffff:ffff:ffff:ffff:ffff:ffff:fffe",
+  "family": 6,
+  "block": null,
+  "global": false,
+  "python": {
+   "loopback": false,
+   "linkLocal": false,
+   "multicast": false,
+   "unspecified": false,
+   "global": true
+  },
+  "allocation": "Reserved by IETF"
+ },
+ {
+  "address": "5fff:ffff:ffff:ffff:ffff:ffff:ffff:ffff",
+  "family": 6,
+  "block": null,
+  "global": false,
+  "python": {
+   "loopback": false,
+   "linkLocal": false,
+   "multicast": false,
+   "unspecified": false,
+   "global": true
+  },
+  "allocation": "Reserved by IETF"
+ },
+ {
+  "address": "6000::",
+  "family": 6,
+  "block": null,
+  "global": false,
+  "python": {
+   "loopback": false,
+   "linkLocal": false,
+   "multicast": false,
+   "unspecified": false,
+   "global": true
+  },
+  "allocation": "Reserved by IETF"
+ },
+ {
+  "address": "5fff:ffff:ffff:ffff:ffff:ffff:ffff:ffff",
+  "family": 6,
+  "block": null,
+  "global": false,
+  "python": {
+   "loopback": false,
+   "linkLocal": false,
+   "multicast": false,
+   "unspecified": false,
+   "global": true
+  },
+  "allocation": "Reserved by IETF"
+ },
+ {
+  "address": "6000::",
+  "family": 6,
+  "block": null,
+  "global": false,
+  "python": {
+   "loopback": false,
+   "linkLocal": false,
+   "multicast": false,
+   "unspecified": false,
+   "global": true
+  },
+  "allocation": "Reserved by IETF"
+ },
+ {
+  "address": "6000::1",
+  "family": 6,
+  "block": null,
+  "global": false,
+  "python": {
+   "loopback": false,
+   "linkLocal": false,
+   "multicast": false,
+   "unspecified": false,
+   "global": true
+  },
+  "allocation": "Reserved by IETF"
+ },
+ {
+  "address": "6fff:ffff:ffff:ffff:ffff:ffff:ffff:ffff",
+  "family": 6,
+  "block": null,
+  "global": false,
+  "python": {
+   "loopback": false,
+   "linkLocal": false,
+   "multicast": false,
+   "unspecified": false,
+   "global": true
+  },
+  "allocation": "Reserved by IETF"
+ },
+ {
+  "address": "7fff:ffff:ffff:ffff:ffff:ffff:ffff:fffe",
+  "family": 6,
+  "block": null,
+  "global": false,
+  "python": {
+   "loopback": false,
+   "linkLocal": false,
+   "multicast": false,
+   "unspecified": false,
+   "global": true
+  },
+  "allocation": "Reserved by IETF"
+ },
+ {
+  "address": "7fff:ffff:ffff:ffff:ffff:ffff:ffff:ffff",
+  "family": 6,
+  "block": null,
+  "global": false,
+  "python": {
+   "loopback": false,
+   "linkLocal": false,
+   "multicast": false,
+   "unspecified": false,
+   "global": true
+  },
+  "allocation": "Reserved by IETF"
+ },
+ {
+  "address": "8000::",
+  "family": 6,
+  "block": null,
+  "global": false,
+  "python": {
+   "loopback": false,
+   "linkLocal": false,
+   "multicast": false,
+   "unspecified": false,
+   "global": true
+  },
+  "allocation": "Reserved by IETF"
+ },
+ {
+  "address": "7fff:ffff:ffff:ffff:ffff:ffff:ffff:ffff",
+  "family": 6,
+  "block": null,
+  "global": false,
+  "python": {
+   "loopback": false,
+   "linkLocal": false,
+   "multicast": false,
+   "unspecified": false,
+   "global": true
+  },
+  "allocation": "Reserved by IETF"
+ },
+ {
+  "address": "8000::",
+  "family": 6,
+  "block": null,
+  "global": false,
+  "python": {
+   "loopback": false,
+   "linkLocal": false,
+   "multicast": false,
+   "unspecified": false,
+   "global": true
+  },
+  "allocation": "Reserved by IETF"
+ },
+ {
+  "address": "8000::1",
+  "family": 6,
+  "block": null,
+  "global": false,
+  "python": {
+   "loopback": false,
+   "linkLocal": false,
+   "multicast": false,
+   "unspecified": false,
+   "global": true
+  },
+  "allocation": "Reserved by IETF"
+ },
+ {
+  "address": "8fff:ffff:ffff:ffff:ffff:ffff:ffff:ffff",
+  "family": 6,
+  "block": null,
+  "global": false,
+  "python": {
+   "loopback": false,
+   "linkLocal": false,
+   "multicast": false,
+   "unspecified": false,
+   "global": true
+  },
+  "allocation": "Reserved by IETF"
+ },
+ {
+  "address": "9fff:ffff:ffff:ffff:ffff:ffff:ffff:fffe",
+  "family": 6,
+  "block": null,
+  "global": false,
+  "python": {
+   "loopback": false,
+   "linkLocal": false,
+   "multicast": false,
+   "unspecified": false,
+   "global": true
+  },
+  "allocation": "Reserved by IETF"
+ },
+ {
+  "address": "9fff:ffff:ffff:ffff:ffff:ffff:ffff:ffff",
+  "family": 6,
+  "block": null,
+  "global": false,
+  "python": {
+   "loopback": false,
+   "linkLocal": false,
+   "multicast": false,
+   "unspecified": false,
+   "global": true
+  },
+  "allocation": "Reserved by IETF"
+ },
+ {
+  "address": "a000::",
+  "family": 6,
+  "block": null,
+  "global": false,
+  "python": {
+   "loopback": false,
+   "linkLocal": false,
+   "multicast": false,
+   "unspecified": false,
+   "global": true
+  },
+  "allocation": "Reserved by IETF"
+ },
+ {
+  "address": "9fff:ffff:ffff:ffff:ffff:ffff:ffff:ffff",
+  "family": 6,
+  "block": null,
+  "global": false,
+  "python": {
+   "loopback": false,
+   "linkLocal": false,
+   "multicast": false,
+   "unspecified": false,
+   "global": true
+  },
+  "allocation": "Reserved by IETF"
+ },
+ {
+  "address": "a000::",
+  "family": 6,
+  "block": null,
+  "global": false,
+  "python": {
+   "loopback": false,
+   "linkLocal": false,
+   "multicast": false,
+   "unspecified": false,
+   "global": true
+  },
+  "allocation": "Reserved by IETF"
+ },
+ {
+  "address": "a000::1",
+  "family": 6,
+  "block": null,
+  "global": false,
+  "python": {
+   "loopback": false,
+   "linkLocal": false,
+   "multicast": false,
+   "unspecified": false,
+   "global": true
+  },
+  "allocation": "Reserved by IETF"
+ },
+ {
+  "address": "afff:ffff:ffff:ffff:ffff:ffff:ffff:ffff",
+  "family": 6,
+  "block": null,
+  "global": false,
+  "python": {
+   "loopback": false,
+   "linkLocal": false,
+   "multicast": false,
+   "unspecified": false,
+   "global": true
+  },
+  "allocation": "Reserved by IETF"
+ },
+ {
+  "address": "bfff:ffff:ffff:ffff:ffff:ffff:ffff:fffe",
+  "family": 6,
+  "block": null,
+  "global": false,
+  "python": {
+   "loopback": false,
+   "linkLocal": false,
+   "multicast": false,
+   "unspecified": false,
+   "global": true
+  },
+  "allocation": "Reserved by IETF"
+ },
+ {
+  "address": "bfff:ffff:ffff:ffff:ffff:ffff:ffff:ffff",
+  "family": 6,
+  "block": null,
+  "global": false,
+  "python": {
+   "loopback": false,
+   "linkLocal": false,
+   "multicast": false,
+   "unspecified": false,
+   "global": true
+  },
+  "allocation": "Reserved by IETF"
+ },
+ {
+  "address": "c000::",
+  "family": 6,
+  "block": null,
+  "global": false,
+  "python": {
+   "loopback": false,
+   "linkLocal": false,
+   "multicast": false,
+   "unspecified": false,
+   "global": true
+  },
+  "allocation": "Reserved by IETF"
+ },
+ {
+  "address": "bfff:ffff:ffff:ffff:ffff:ffff:ffff:ffff",
+  "family": 6,
+  "block": null,
+  "global": false,
+  "python": {
+   "loopback": false,
+   "linkLocal": false,
+   "multicast": false,
+   "unspecified": false,
+   "global": true
+  },
+  "allocation": "Reserved by IETF"
+ },
+ {
+  "address": "c000::",
+  "family": 6,
+  "block": null,
+  "global": false,
+  "python": {
+   "loopback": false,
+   "linkLocal": false,
+   "multicast": false,
+   "unspecified": false,
+   "global": true
+  },
+  "allocation": "Reserved by IETF"
+ },
+ {
+  "address": "c000::1",
+  "family": 6,
+  "block": null,
+  "global": false,
+  "python": {
+   "loopback": false,
+   "linkLocal": false,
+   "multicast": false,
+   "unspecified": false,
+   "global": true
+  },
+  "allocation": "Reserved by IETF"
+ },
+ {
+  "address": "cfff:ffff:ffff:ffff:ffff:ffff:ffff:ffff",
+  "family": 6,
+  "block": null,
+  "global": false,
+  "python": {
+   "loopback": false,
+   "linkLocal": false,
+   "multicast": false,
+   "unspecified": false,
+   "global": true
+  },
+  "allocation": "Reserved by IETF"
+ },
+ {
+  "address": "dfff:ffff:ffff:ffff:ffff:ffff:ffff:fffe",
+  "family": 6,
+  "block": null,
+  "global": false,
+  "python": {
+   "loopback": false,
+   "linkLocal": false,
+   "multicast": false,
+   "unspecified": false,
+   "global": true
+  },
+  "allocation": "Reserved by IETF"
+ },
+ {
+  "address": "dfff:ffff:ffff:ffff:ffff:ffff:ffff:ffff",
+  "family": 6,
+  "block": null,
+  "global": false,
+  "python": {
+   "loopback": false,
+   "linkLocal": false,
+   "multicast": false,
+   "unspecified": false,
+   "global": true
+  },
+  "allocation": "Reserved by IETF"
+ },
+ {
+  "address": "e000::",
+  "family": 6,
+  "block": null,
+  "global": false,
+  "python": {
+   "loopback": false,
+   "linkLocal": false,
+   "multicast": false,
+   "unspecified": false,
+   "global": true
+  },
+  "allocation": "Reserved by IETF"
+ },
+ {
+  "address": "dfff:ffff:ffff:ffff:ffff:ffff:ffff:ffff",
+  "family": 6,
+  "block": null,
+  "global": false,
+  "python": {
+   "loopback": false,
+   "linkLocal": false,
+   "multicast": false,
+   "unspecified": false,
+   "global": true
+  },
+  "allocation": "Reserved by IETF"
+ },
+ {
+  "address": "e000::",
+  "family": 6,
+  "block": null,
+  "global": false,
+  "python": {
+   "loopback": false,
+   "linkLocal": false,
+   "multicast": false,
+   "unspecified": false,
+   "global": true
+  },
+  "allocation": "Reserved by IETF"
+ },
+ {
+  "address": "e000::1",
+  "family": 6,
+  "block": null,
+  "global": false,
+  "python": {
+   "loopback": false,
+   "linkLocal": false,
+   "multicast": false,
+   "unspecified": false,
+   "global": true
+  },
+  "allocation": "Reserved by IETF"
+ },
+ {
+  "address": "e7ff:ffff:ffff:ffff:ffff:ffff:ffff:ffff",
+  "family": 6,
+  "block": null,
+  "global": false,
+  "python": {
+   "loopback": false,
+   "linkLocal": false,
+   "multicast": false,
+   "unspecified": false,
+   "global": true
+  },
+  "allocation": "Reserved by IETF"
+ },
+ {
+  "address": "efff:ffff:ffff:ffff:ffff:ffff:ffff:fffe",
+  "family": 6,
+  "block": null,
+  "global": false,
+  "python": {
+   "loopback": false,
+   "linkLocal": false,
+   "multicast": false,
+   "unspecified": false,
+   "global": true
+  },
+  "allocation": "Reserved by IETF"
+ },
+ {
+  "address": "efff:ffff:ffff:ffff:ffff:ffff:ffff:ffff",
+  "family": 6,
+  "block": null,
+  "global": false,
+  "python": {
+   "loopback": false,
+   "linkLocal": false,
+   "multicast": false,
+   "unspecified": false,
+   "global": true
+  },
+  "allocation": "Reserved by IETF"
+ },
+ {
+  "address": "f000::",
+  "family": 6,
+  "block": null,
+  "global": false,
+  "python": {
+   "loopback": false,
+   "linkLocal": false,
+   "multicast": false,
+   "unspecified": false,
+   "global": true
+  },
+  "allocation": "Reserved by IETF"
+ },
+ {
+  "address": "efff:ffff:ffff:ffff:ffff:ffff:ffff:ffff",
+  "family": 6,
+  "block": null,
+  "global": false,
+  "python": {
+   "loopback": false,
+   "linkLocal": false,
+   "multicast": false,
+   "unspecified": false,
+   "global": true
+  },
+  "allocation": "Reserved by IETF"
+ },
+ {
+  "address": "f000::",
+  "family": 6,
+  "block": null,
+  "global": false,
+  "python": {
+   "loopback": false,
+   "linkLocal": false,
+   "multicast": false,
+   "unspecified": false,
+   "global": true
+  },
+  "allocation": "Reserved by IETF"
+ },
+ {
+  "address": "f000::1",
+  "family": 6,
+  "block": null,
+  "global": false,
+  "python": {
+   "loopback": false,
+   "linkLocal": false,
+   "multicast": false,
+   "unspecified": false,
+   "global": true
+  },
+  "allocation": "Reserved by IETF"
+ },
+ {
+  "address": "f3ff:ffff:ffff:ffff:ffff:ffff:ffff:ffff",
+  "family": 6,
+  "block": null,
+  "global": false,
+  "python": {
+   "loopback": false,
+   "linkLocal": false,
+   "multicast": false,
+   "unspecified": false,
+   "global": true
+  },
+  "allocation": "Reserved by IETF"
+ },
+ {
+  "address": "f7ff:ffff:ffff:ffff:ffff:ffff:ffff:fffe",
+  "family": 6,
+  "block": null,
+  "global": false,
+  "python": {
+   "loopback": false,
+   "linkLocal": false,
+   "multicast": false,
+   "unspecified": false,
+   "global": true
+  },
+  "allocation": "Reserved by IETF"
+ },
+ {
+  "address": "f7ff:ffff:ffff:ffff:ffff:ffff:ffff:ffff",
+  "family": 6,
+  "block": null,
+  "global": false,
+  "python": {
+   "loopback": false,
+   "linkLocal": false,
+   "multicast": false,
+   "unspecified": false,
+   "global": true
+  },
+  "allocation": "Reserved by IETF"
+ },
+ {
+  "address": "f800::",
+  "family": 6,
+  "block": null,
+  "global": false,
+  "python": {
+   "loopback": false,
+   "linkLocal": false,
+   "multicast": false,
+   "unspecified": false,
+   "global": true
+  },
+  "allocation": "Reserved by IETF"
+ },
+ {
+  "address": "f7ff:ffff:ffff:ffff:ffff:ffff:ffff:ffff",
+  "family": 6,
+  "block": null,
+  "global": false,
+  "python": {
+   "loopback": false,
+   "linkLocal": false,
+   "multicast": false,
+   "unspecified": false,
+   "global": true
+  },
+  "allocation": "Reserved by IETF"
+ },
+ {
+  "address": "f800::",
+  "family": 6,
+  "block": null,
+  "global": false,
+  "python": {
+   "loopback": false,
+   "linkLocal": false,
+   "multicast": false,
+   "unspecified": false,
+   "global": true
+  },
+  "allocation": "Reserved by IETF"
+ },
+ {
+  "address": "f800::1",
+  "family": 6,
+  "block": null,
+  "global": false,
+  "python": {
+   "loopback": false,
+   "linkLocal": false,
+   "multicast": false,
+   "unspecified": false,
+   "global": true
+  },
+  "allocation": "Reserved by IETF"
+ },
+ {
+  "address": "f9ff:ffff:ffff:ffff:ffff:ffff:ffff:ffff",
+  "family": 6,
+  "block": null,
+  "global": false,
+  "python": {
+   "loopback": false,
+   "linkLocal": false,
+   "multicast": false,
+   "unspecified": false,
+   "global": true
+  },
+  "allocation": "Reserved by IETF"
+ },
+ {
+  "address": "fbff:ffff:ffff:ffff:ffff:ffff:ffff:fffe",
+  "family": 6,
+  "block": null,
+  "global": false,
+  "python": {
+   "loopback": false,
+   "linkLocal": false,
+   "multicast": false,
+   "unspecified": false,
+   "global": true
+  },
+  "allocation": "Reserved by IETF"
+ },
+ {
+  "address": "fbff:ffff:ffff:ffff:ffff:ffff:ffff:ffff",
+  "family": 6,
+  "block": null,
+  "global": false,
+  "python": {
+   "loopback": false,
+   "linkLocal": false,
+   "multicast": false,
+   "unspecified": false,
+   "global": true
+  },
+  "allocation": "Reserved by IETF"
+ },
+ {
+  "address": "fc00::",
+  "family": 6,
+  "block": "Unique-Local",
+  "global": false,
+  "python": {
+   "loopback": false,
+   "linkLocal": false,
+   "multicast": false,
+   "unspecified": false,
+   "global": false
+  },
+  "allocation": "Unique Local Unicast"
+ },
+ {
+  "address": "fbff:ffff:ffff:ffff:ffff:ffff:ffff:ffff",
+  "family": 6,
+  "block": null,
+  "global": false,
+  "python": {
+   "loopback": false,
+   "linkLocal": false,
+   "multicast": false,
+   "unspecified": false,
+   "global": true
+  },
+  "allocation": "Reserved by IETF"
+ },
+ {
+  "address": "fc00::",
+  "family": 6,
+  "block": "Unique-Local",
+  "global": false,
+  "python": {
+   "loopback": false,
+   "linkLocal": false,
+   "multicast": false,
+   "unspecified": false,
+   "global": false
+  },
+  "allocation": "Unique Local Unicast"
+ },
+ {
+  "address": "fc00::1",
+  "family": 6,
+  "block": "Unique-Local",
+  "global": false,
+  "python": {
+   "loopback": false,
+   "linkLocal": false,
+   "multicast": false,
+   "unspecified": false,
+   "global": false
+  },
+  "allocation": "Unique Local Unicast"
+ },
+ {
+  "address": "fcff:ffff:ffff:ffff:ffff:ffff:ffff:ffff",
+  "family": 6,
+  "block": "Unique-Local",
+  "global": false,
+  "python": {
+   "loopback": false,
+   "linkLocal": false,
+   "multicast": false,
+   "unspecified": false,
+   "global": false
+  },
+  "allocation": "Unique Local Unicast"
+ },
+ {
+  "address": "fdff:ffff:ffff:ffff:ffff:ffff:ffff:fffe",
+  "family": 6,
+  "block": "Unique-Local",
+  "global": false,
+  "python": {
+   "loopback": false,
+   "linkLocal": false,
+   "multicast": false,
+   "unspecified": false,
+   "global": false
+  },
+  "allocation": "Unique Local Unicast"
+ },
+ {
+  "address": "fdff:ffff:ffff:ffff:ffff:ffff:ffff:ffff",
+  "family": 6,
+  "block": "Unique-Local",
+  "global": false,
+  "python": {
+   "loopback": false,
+   "linkLocal": false,
+   "multicast": false,
+   "unspecified": false,
+   "global": false
+  },
+  "allocation": "Unique Local Unicast"
+ },
+ {
+  "address": "fe00::",
+  "family": 6,
+  "block": null,
+  "global": false,
+  "python": {
+   "loopback": false,
+   "linkLocal": false,
+   "multicast": false,
+   "unspecified": false,
+   "global": true
+  },
+  "allocation": "Reserved by IETF"
+ },
+ {
+  "address": "fdff:ffff:ffff:ffff:ffff:ffff:ffff:ffff",
+  "family": 6,
+  "block": "Unique-Local",
+  "global": false,
+  "python": {
+   "loopback": false,
+   "linkLocal": false,
+   "multicast": false,
+   "unspecified": false,
+   "global": false
+  },
+  "allocation": "Unique Local Unicast"
+ },
+ {
+  "address": "fe00::",
+  "family": 6,
+  "block": null,
+  "global": false,
+  "python": {
+   "loopback": false,
+   "linkLocal": false,
+   "multicast": false,
+   "unspecified": false,
+   "global": true
+  },
+  "allocation": "Reserved by IETF"
+ },
+ {
+  "address": "fe00::1",
+  "family": 6,
+  "block": null,
+  "global": false,
+  "python": {
+   "loopback": false,
+   "linkLocal": false,
+   "multicast": false,
+   "unspecified": false,
+   "global": true
+  },
+  "allocation": "Reserved by IETF"
+ },
+ {
+  "address": "fe3f:ffff:ffff:ffff:ffff:ffff:ffff:ffff",
+  "family": 6,
+  "block": null,
+  "global": false,
+  "python": {
+   "loopback": false,
+   "linkLocal": false,
+   "multicast": false,
+   "unspecified": false,
+   "global": true
+  },
+  "allocation": "Reserved by IETF"
+ },
+ {
+  "address": "fe7f:ffff:ffff:ffff:ffff:ffff:ffff:fffe",
+  "family": 6,
+  "block": null,
+  "global": false,
+  "python": {
+   "loopback": false,
+   "linkLocal": false,
+   "multicast": false,
+   "unspecified": false,
+   "global": true
+  },
+  "allocation": "Reserved by IETF"
+ },
+ {
+  "address": "fe7f:ffff:ffff:ffff:ffff:ffff:ffff:ffff",
+  "family": 6,
+  "block": null,
+  "global": false,
+  "python": {
+   "loopback": false,
+   "linkLocal": false,
+   "multicast": false,
+   "unspecified": false,
+   "global": true
+  },
+  "allocation": "Reserved by IETF"
+ },
+ {
+  "address": "fe80::",
+  "family": 6,
+  "block": "Link-Local Unicast",
+  "global": false,
+  "python": {
+   "loopback": false,
+   "linkLocal": true,
+   "multicast": false,
+   "unspecified": false,
+   "global": false
+  },
+  "allocation": "Link-Scoped Unicast"
+ },
+ {
+  "address": "fe7f:ffff:ffff:ffff:ffff:ffff:ffff:ffff",
+  "family": 6,
+  "block": null,
+  "global": false,
+  "python": {
+   "loopback": false,
+   "linkLocal": false,
+   "multicast": false,
+   "unspecified": false,
+   "global": true
+  },
+  "allocation": "Reserved by IETF"
+ },
+ {
+  "address": "fe80::",
+  "family": 6,
+  "block": "Link-Local Unicast",
+  "global": false,
+  "python": {
+   "loopback": false,
+   "linkLocal": true,
+   "multicast": false,
+   "unspecified": false,
+   "global": false
+  },
+  "allocation": "Link-Scoped Unicast"
+ },
+ {
+  "address": "fe80::1",
+  "family": 6,
+  "block": "Link-Local Unicast",
+  "global": false,
+  "python": {
+   "loopback": false,
+   "linkLocal": true,
+   "multicast": false,
+   "unspecified": false,
+   "global": false
+  },
+  "allocation": "Link-Scoped Unicast"
+ },
+ {
+  "address": "fe9f:ffff:ffff:ffff:ffff:ffff:ffff:ffff",
+  "family": 6,
+  "block": "Link-Local Unicast",
+  "global": false,
+  "python": {
+   "loopback": false,
+   "linkLocal": true,
+   "multicast": false,
+   "unspecified": false,
+   "global": false
+  },
+  "allocation": "Link-Scoped Unicast"
+ },
+ {
+  "address": "febf:ffff:ffff:ffff:ffff:ffff:ffff:fffe",
+  "family": 6,
+  "block": "Link-Local Unicast",
+  "global": false,
+  "python": {
+   "loopback": false,
+   "linkLocal": true,
+   "multicast": false,
+   "unspecified": false,
+   "global": false
+  },
+  "allocation": "Link-Scoped Unicast"
+ },
+ {
+  "address": "febf:ffff:ffff:ffff:ffff:ffff:ffff:ffff",
+  "family": 6,
+  "block": "Link-Local Unicast",
+  "global": false,
+  "python": {
+   "loopback": false,
+   "linkLocal": true,
+   "multicast": false,
+   "unspecified": false,
+   "global": false
+  },
+  "allocation": "Link-Scoped Unicast"
+ },
+ {
+  "address": "fec0::",
+  "family": 6,
+  "block": null,
+  "global": false,
+  "python": {
+   "loopback": false,
+   "linkLocal": false,
+   "multicast": false,
+   "unspecified": false,
+   "global": true
+  },
+  "allocation": "Reserved by IETF"
+ },
+ {
+  "address": "febf:ffff:ffff:ffff:ffff:ffff:ffff:ffff",
+  "family": 6,
+  "block": "Link-Local Unicast",
+  "global": false,
+  "python": {
+   "loopback": false,
+   "linkLocal": true,
+   "multicast": false,
+   "unspecified": false,
+   "global": false
+  },
+  "allocation": "Link-Scoped Unicast"
+ },
+ {
+  "address": "fec0::",
+  "family": 6,
+  "block": null,
+  "global": false,
+  "python": {
+   "loopback": false,
+   "linkLocal": false,
+   "multicast": false,
+   "unspecified": false,
+   "global": true
+  },
+  "allocation": "Reserved by IETF"
+ },
+ {
+  "address": "fec0::1",
+  "family": 6,
+  "block": null,
+  "global": false,
+  "python": {
+   "loopback": false,
+   "linkLocal": false,
+   "multicast": false,
+   "unspecified": false,
+   "global": true
+  },
+  "allocation": "Reserved by IETF"
+ },
+ {
+  "address": "fedf:ffff:ffff:ffff:ffff:ffff:ffff:ffff",
+  "family": 6,
+  "block": null,
+  "global": false,
+  "python": {
+   "loopback": false,
+   "linkLocal": false,
+   "multicast": false,
+   "unspecified": false,
+   "global": true
+  },
+  "allocation": "Reserved by IETF"
+ },
+ {
+  "address": "feff:ffff:ffff:ffff:ffff:ffff:ffff:fffe",
+  "family": 6,
+  "block": null,
+  "global": false,
+  "python": {
+   "loopback": false,
+   "linkLocal": false,
+   "multicast": false,
+   "unspecified": false,
+   "global": true
+  },
+  "allocation": "Reserved by IETF"
+ },
+ {
+  "address": "feff:ffff:ffff:ffff:ffff:ffff:ffff:ffff",
+  "family": 6,
+  "block": null,
+  "global": false,
+  "python": {
+   "loopback": false,
+   "linkLocal": false,
+   "multicast": false,
+   "unspecified": false,
+   "global": true
+  },
+  "allocation": "Reserved by IETF"
+ },
+ {
+  "address": "ff00::",
+  "family": 6,
+  "block": null,
+  "global": false,
+  "python": {
+   "loopback": false,
+   "linkLocal": false,
+   "multicast": true,
+   "unspecified": false,
+   "global": true
+  },
+  "allocation": "Multicast"
+ },
+ {
+  "address": "feff:ffff:ffff:ffff:ffff:ffff:ffff:ffff",
+  "family": 6,
+  "block": null,
+  "global": false,
+  "python": {
+   "loopback": false,
+   "linkLocal": false,
+   "multicast": false,
+   "unspecified": false,
+   "global": true
+  },
+  "allocation": "Reserved by IETF"
+ },
+ {
+  "address": "ff00::",
+  "family": 6,
+  "block": null,
+  "global": false,
+  "python": {
+   "loopback": false,
+   "linkLocal": false,
+   "multicast": true,
+   "unspecified": false,
+   "global": true
+  },
+  "allocation": "Multicast"
+ },
+ {
+  "address": "ff00::1",
+  "family": 6,
+  "block": null,
+  "global": false,
+  "python": {
+   "loopback": false,
+   "linkLocal": false,
+   "multicast": true,
+   "unspecified": false,
+   "global": true
+  },
+  "allocation": "Multicast"
+ },
+ {
+  "address": "ff7f:ffff:ffff:ffff:ffff:ffff:ffff:ffff",
+  "family": 6,
+  "block": null,
+  "global": false,
+  "python": {
+   "loopback": false,
+   "linkLocal": false,
+   "multicast": true,
+   "unspecified": false,
+   "global": true
+  },
+  "allocation": "Multicast"
+ },
+ {
+  "address": "ffff:ffff:ffff:ffff:ffff:ffff:ffff:fffe",
+  "family": 6,
+  "block": null,
+  "global": false,
+  "python": {
+   "loopback": false,
+   "linkLocal": false,
+   "multicast": true,
+   "unspecified": false,
+   "global": true
+  },
+  "allocation": "Multicast"
+ },
+ {
+  "address": "ffff:ffff:ffff:ffff:ffff:ffff:ffff:ffff",
+  "family": 6,
+  "block": null,
+  "global": false,
+  "python": {
+   "loopback": false,
+   "linkLocal": false,
+   "multicast": true,
+   "unspecified": false,
+   "global": true
+  },
+  "allocation": "Multicast"
  },
  {
   "address": "::ffff:0.0.0.0",
