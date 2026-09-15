@@ -1250,7 +1250,9 @@ export class Address6 {
 
   // #region Attributes
   /**
-   * Returns true if the given address is in the subnet of the current address
+   * Returns true if the given address is in the subnet of the current address.
+   * An `Address4` is never in the subnet of an `Address6`; convert with
+   * `Address6.fromAddress4()` or `to4()` to compare across families.
    * @returns {boolean}
    */
   isInSubnet = common.isInSubnet;
@@ -1261,6 +1263,8 @@ export class Address6 {
    * when classifying a single address, so the answer doesn't change with the
    * CIDR suffix the caller happened to write — notably when the address came
    * from untrusted input and the result backs a trust-boundary decision.
+   * An `Address4` is never in the subnet of an `Address6`; convert with
+   * `Address6.fromAddress4()` or `to4()` to compare across families.
    * @returns {boolean}
    */
   isHostInSubnet = common.isHostInSubnet;

@@ -35,8 +35,21 @@ export function isInSubnet(this: Address4 | Address6, address: Address4 | Addres
  * {@link isInSubnet} when classifying a single address — notably when the
  * address came from untrusted input and the result backs a trust-boundary
  * decision such as an SSRF allow/deny filter.
+ *
+ * An address of one family is never inside a network of the other, so an
+ * `Address4` against an `Address6` (or the reverse) is `false`. To compare
+ * across families, convert first: `Address6.fromAddress4()`, `to4()`, or
+ * `toAddress4Nat64()`.
  */
 export function isHostInSubnet(this: Address4 | Address6, address: Address4 | Address6) {
+  // mask() is a bit string of the family's width, and the leading bits of a
+  // 32-bit string can coincide with those of a 128-bit one (a00::1 and
+  // 10.0.0.0/8 both mask to 00001010), so the widths must agree before the
+  // strings are compared.
+  if (this.binaryZeroPad().length !== address.binaryZeroPad().length) {
+    return false;
+  }
+
   return this.mask(address.subnetMask) === address.mask();
 }
 
