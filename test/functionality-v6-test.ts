@@ -1554,6 +1554,14 @@ describe('v6', () => {
         should.equal(Address6.fromArpa('8.b.d.0.1.0.0.2.ip6.arpa').networkForm(), '2001:db8::/32');
         should.equal(Address6.fromArpa('8.b.d.0.1.0.0.2').networkForm(), '2001:db8::/32');
         should.equal(Address6.fromArpa('2.ip6.arpa.').networkForm(), '2000::/4');
+      });
+
+      it('accepts the suffix in any case, as DNS does', () => {
+        should.equal(
+          Address6.fromArpa('8.B.D.0.1.0.0.2.IP6.ARPA.').networkForm(),
+          '2001:db8::/32',
+        );
+        should.equal(Address6.fromArpa('8.b.d.0.1.0.0.2.Ip6.Arpa').networkForm(), '2001:db8::/32');
         [
           '2001:db8::/32',
           '2001:db8:1234::/48',

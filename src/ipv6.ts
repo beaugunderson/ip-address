@@ -407,8 +407,9 @@ export class Address6 {
    * Address6.fromArpa('8.b.d.0.1.0.0.2.ip6.arpa.').networkForm(); // '2001:db8::/32'
    */
   static fromArpa(arpaFormAddress: string): Address6 {
-    // remove an ending ".ip6.arpa", with or without the root dot
-    const nibbles = arpaFormAddress.replace(/(\.ip6\.arpa)?\.?$/, '');
+    // remove an ending ".ip6.arpa", in any case and with or without the root
+    // dot
+    const nibbles = arpaFormAddress.replace(/(\.ip6\.arpa)?\.?$/i, '');
 
     if (!/^[0-9a-f](\.[0-9a-f]){0,31}$/i.test(nibbles)) {
       throw new AddressError("Invalid 'ip6.arpa' form.");

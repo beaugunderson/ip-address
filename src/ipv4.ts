@@ -218,16 +218,20 @@ export class Address4 {
   }
 
   /**
-   * Return an address from in-addr.arpa form
+   * Return an address from in-addr.arpa form: the four octets reversed, with
+   * or without the `.in-addr.arpa` suffix and root dot, in any case. Throws
+   * `AddressError` unless the reversed labels form a valid IPv4 address, so
+   * `fromArpa(x.reverseForm())` round-trips {@link reverseForm}.
    * @param {string} arpaFormAddress - an 'in-addr.arpa' form ipv4 address
    * @returns {Adress4}
    * @example
-   * var address = Address4.fromArpa(42.2.0.192.in-addr.arpa.)
+   * var address = Address4.fromArpa('42.2.0.192.in-addr.arpa.')
    * address.correctForm(); // '192.0.2.42'
    */
   static fromArpa(arpaFormAddress: string): Address4 {
-    // remove ending ".in-addr.arpa." or just "."
-    const leader = arpaFormAddress.replace(/(\.in-addr\.arpa)?\.$/, '');
+    // remove an ending ".in-addr.arpa", in any case and with or without the
+    // root dot, as Address6.fromArpa does for ".ip6.arpa"
+    const leader = arpaFormAddress.replace(/(\.in-addr\.arpa)?\.?$/i, '');
 
     const address = leader.split('.').reverse().join('.');
 
