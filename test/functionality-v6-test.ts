@@ -1,4 +1,5 @@
 import * as chai from 'chai';
+import { Address4 } from '../src/ipv4';
 import { Address6 } from '../src/ipv6';
 import { AddressError } from '../src/address-error';
 import { v6 } from '../src/ip-address';
@@ -1816,6 +1817,53 @@ describe('v6', () => {
       should.equal(new Address6('fc00::/16').isInSubnet(new Address6('fc00::/7')), true);
       should.equal(new Address6('::1/128').isInSubnet(new Address6('::/0')), true);
       should.equal(new Address6('2001::/16').isInSubnet(new Address6('fc00::/7')), false);
+    });
+  });
+
+  describe('containment across address families', () => {
+    // mask() is a bit string of the family's width, and the leading bits of
+    // a 32-bit string can coincide with those of a 128-bit one: a00::1 and
+    // 10.0.0.0/8 both mask to 00001010. An address of one family is never
+    // inside a network of the other.
+    const pairs: Array<[Address4 | Address6, Address4 | Address6]> = [
+      [new Address6('a00::1'), new Address4('10.0.0.0/8')],
+      [new Address4('10.0.0.1'), new Address6('a00::/8')],
+      [new Address4('32.0.0.1'), new Address6('2000::/3')],
+      [new Address6('::ffff:10.0.0.1'), new Address4('10.0.0.0/8')],
+      [new Address4('10.0.0.1'), new Address6('::ffff:10.0.0.0/104')],
+      [new Address4('0.0.0.0/0'), new Address6('::/0')],
+      [new Address6('::/0'), new Address4('0.0.0.0/0')],
+    ];
+
+    it('isInSubnet is false for an address of the other family', () => {
+      for (const [address, network] of pairs) {
+        should.equal(
+          address.isInSubnet(network),
+          false,
+          `${address.address} in ${network.address}`,
+        );
+      }
+    });
+
+    it('isHostInSubnet is false for an address of the other family', () => {
+      for (const [address, network] of pairs) {
+        should.equal(
+          address.isHostInSubnet(network),
+          false,
+          `${address.address} in ${network.address}`,
+        );
+      }
+    });
+
+    it('still reports containment once the address is converted', () => {
+      should.equal(
+        new Address6('::ffff:10.0.0.1').to4().isInSubnet(new Address4('10.0.0.0/8')),
+        true,
+      );
+      should.equal(
+        Address6.fromAddress4('10.0.0.1').isInSubnet(new Address6('::ffff:10.0.0.0/104')),
+        true,
+      );
     });
   });
 
