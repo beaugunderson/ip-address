@@ -906,6 +906,48 @@ describe('v4', () => {
     });
   });
 
+  describe('fromArpa', () => {
+    it('reverses the octets of an in-addr.arpa name', () => {
+      should.equal(Address4.fromArpa('42.2.0.192.in-addr.arpa.').correctForm(), '192.0.2.42');
+      should.equal(Address4.fromArpa('42.2.0.192').correctForm(), '192.0.2.42');
+    });
+
+    it('accepts the suffix with or without the root dot, as Address6.fromArpa does', () => {
+      should.equal(Address4.fromArpa('42.2.0.192.in-addr.arpa').correctForm(), '192.0.2.42');
+      should.equal(Address4.fromArpa('42.2.0.192.').correctForm(), '192.0.2.42');
+    });
+
+    it('accepts the suffix in any case, as DNS does', () => {
+      should.equal(Address4.fromArpa('42.2.0.192.IN-ADDR.ARPA.').correctForm(), '192.0.2.42');
+      should.equal(Address4.fromArpa('42.2.0.192.In-Addr.Arpa').correctForm(), '192.0.2.42');
+    });
+
+    it('round-trips reverseForm for a host and a network', () => {
+      ['192.0.2.42', '192.0.2.0/24', '10.0.0.0/8'].forEach((n) => {
+        const address = new Address4(n);
+        should.equal(
+          Address4.fromArpa(address.reverseForm()).correctForm(),
+          address.correctForm(),
+          n,
+        );
+      });
+    });
+
+    it('rejects a name whose labels are not four octets', () => {
+      [
+        '',
+        '.',
+        'in-addr.arpa.',
+        'a.b.c.d.',
+        '1.0.127.',
+        '1.0.0.0.127.',
+        '1.0.0.127.ip6.arpa.',
+      ].forEach((s) => {
+        should.Throw(() => Address4.fromArpa(s), AddressError, undefined, JSON.stringify(s));
+      });
+    });
+  });
+
   describe('octets with a leading zero', () => {
     // A leading zero is octal to the WHATWG URL parser, inet_aton, and
     // getaddrinfo, and decimal to parseInt(part, 10). Accepting the notation
