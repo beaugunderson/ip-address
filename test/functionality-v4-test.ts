@@ -18,6 +18,29 @@ describe('v4', () => {
     });
   });
 
+  describe('input length', () => {
+    // Four three-digit octets and three dots: the longest well-formed
+    // address is 15 characters. Anything longer is rejected before parsing,
+    // as Address6 does at its own limit.
+    const longest = '255.255.255.255';
+
+    it('accepts the longest well-formed address, with a suffix', () => {
+      longest.length.should.equal(15);
+
+      should.equal(Address4.isValid(longest), true);
+      should.equal(Address4.isValid(`${longest}/32`), true);
+    });
+
+    it('rejects a longer address', () => {
+      const inputs = ['1'.repeat(16), `${'1'.repeat(16)}/8`, '!'.repeat(1 << 20)];
+
+      for (const input of inputs) {
+        should.equal(Address4.isValid(input), false);
+        should.Throw(() => new Address4(input), AddressError, /at most 15 characters/);
+      }
+    });
+  });
+
   describe('A correct address', () => {
     const topic = new Address4('127.0.0.1');
 

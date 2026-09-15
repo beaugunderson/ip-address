@@ -152,6 +152,18 @@ export class Address6 {
       address = address.replace(constants6.RE_ZONE_STRING, '');
     }
 
+    // The longest well-formed address is all but the last two groups written
+    // as four hex digits with their colons, then a 15-character dotted quad:
+    // 5 * (groups - 2) + 15, which is 45 for eight groups, the same line
+    // CPython's ipaddress module draws. Rejecting longer input here keeps the
+    // parse diagnostics, which wrap every offending character in a span,
+    // proportional to an address rather than to whatever was passed in.
+    const longest = this.groups * 5 + 5;
+
+    if (address.length > longest) {
+      throw new AddressError(`IPv6 addresses are at most ${longest} characters.`);
+    }
+
     this.addressMinusSuffix = address;
 
     this.parsedAddress = this.parse(this.addressMinusSuffix);

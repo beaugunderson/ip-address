@@ -38,6 +38,15 @@ export class Address4 {
       address = address.replace(constants.RE_SUBNET_STRING, '');
     }
 
+    // Four three-digit octets and three dots: the longest well-formed address
+    // is 15 characters. Longer input is rejected before parsing, as Address6
+    // does at its own limit.
+    const longest = constants.GROUPS * 4 - 1;
+
+    if (address.length > longest) {
+      throw new AddressError(`IPv4 addresses are at most ${longest} characters.`);
+    }
+
     this.addressMinusSuffix = address;
 
     this.parsedAddress = this.parse(address);

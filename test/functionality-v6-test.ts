@@ -21,6 +21,43 @@ describe('v6', () => {
     });
   });
 
+  describe('input length', () => {
+    // Six four-digit groups, six colons, and a dotted quad: the longest
+    // well-formed address is 45 characters, and CPython's ipaddress module
+    // draws the same line. Anything longer is rejected before the parser
+    // builds a diagnostic, since the bad-character diagnostic wraps every
+    // offending character in a span and an unbounded input made that
+    // allocation unbounded too.
+    const longest = 'ffff:ffff:ffff:ffff:ffff:ffff:255.255.255.255';
+
+    it('accepts the longest well-formed address, with a suffix and a zone', () => {
+      longest.length.should.equal(45);
+
+      should.equal(Address6.isValid(longest), true);
+      should.equal(Address6.isValid(`${longest}/128`), true);
+      should.equal(Address6.isValid(`${longest}%eth0`), true);
+      should.equal(Address6.isValid(`${longest}/128%eth0`), true);
+      should.equal(Address6.isValid(`2001:db8::1%${'x'.repeat(100)}`), true);
+    });
+
+    it('rejects a longer address without building a diagnostic', () => {
+      const inputs = ['f'.repeat(46), `${'f'.repeat(46)}/64`, '!'.repeat(1 << 20)];
+
+      for (const input of inputs) {
+        should.equal(Address6.isValid(input), false);
+        should.Throw(() => new Address6(input), AddressError, /at most 45 characters/);
+
+        try {
+          // eslint-disable-next-line no-new
+          new Address6(input);
+        } catch (e) {
+          should.equal((e as AddressError).parseMessage, undefined);
+          (e as AddressError).message.length.should.be.below(100);
+        }
+      }
+    });
+  });
+
   describe('a fully ellided /0 address', () => {
     const topic = new Address6('::/0');
 
