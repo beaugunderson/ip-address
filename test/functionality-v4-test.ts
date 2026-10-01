@@ -946,6 +946,29 @@ describe('v4', () => {
         should.Throw(() => Address4.fromArpa(s), AddressError, undefined, JSON.stringify(s));
       });
     });
+
+    describe('input length', () => {
+      // A 15-character address, a "/32" prefix length on its last octet (the
+      // RFC 2317 classless form) and ".in-addr.arpa.": the longest name is 32
+      // characters. Anything longer is rejected before its labels are split.
+      const longest = '255/32.255.255.255.in-addr.arpa.';
+
+      it('accepts the longest name', () => {
+        longest.length.should.equal(32);
+
+        should.equal(Address4.fromArpa(longest).correctForm(), '255.255.255.255');
+        should.equal(Address4.fromArpa(longest).subnet, '/32');
+        should.equal(Address4.fromArpa('0/25.2.0.192.in-addr.arpa.').subnet, '/25');
+      });
+
+      it('rejects a longer name', () => {
+        const inputs = [`${longest}.`, `1${longest}`, '1.'.repeat(17), '.'.repeat(1 << 20)];
+
+        for (const input of inputs) {
+          should.Throw(() => Address4.fromArpa(input), AddressError, /at most 32 characters/);
+        }
+      });
+    });
   });
 
   describe('octets with a leading zero', () => {

@@ -229,6 +229,15 @@ export class Address4 {
    * address.correctForm(); // '192.0.2.42'
    */
   static fromArpa(arpaFormAddress: string): Address4 {
+    // A 15-character address, a "/32" prefix length and ".in-addr.arpa.": the
+    // longest name is 32 characters. Longer input is rejected before its
+    // labels are split, as the constructor does at its own limit.
+    const longest = constants.GROUPS * 4 - 1 + '/32'.length + '.in-addr.arpa.'.length;
+
+    if (arpaFormAddress.length > longest) {
+      throw new AddressError(`in-addr.arpa names are at most ${longest} characters.`);
+    }
+
     // remove an ending ".in-addr.arpa", in any case and with or without the
     // root dot, as Address6.fromArpa does for ".ip6.arpa"
     const leader = arpaFormAddress.replace(/(\.in-addr\.arpa)?\.?$/i, '');
