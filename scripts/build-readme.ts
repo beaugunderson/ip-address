@@ -238,8 +238,17 @@ async function main() {
   const after = template.slice(endIdx);
   const next = `${before}\n\n${apiBlock}\n\n${after}`;
 
-  fs.writeFileSync(README_PATH, next);
-  console.log(`Wrote ${README_PATH} (${classes.length} classes, ${apiBlock.length} chars of API)`);
+  if (process.argv.includes('--check')) {
+    if (!fs.existsSync(README_PATH) || fs.readFileSync(README_PATH, 'utf8') !== next) {
+      throw new Error('README.md is out of date; run `npm run docs` and stage the result.');
+    }
+    console.log('README.md is current (no files written).');
+  } else {
+    fs.writeFileSync(README_PATH, next);
+    console.log(
+      `Wrote ${README_PATH} (${classes.length} classes, ${apiBlock.length} chars of API)`,
+    );
+  }
 }
 
 main().catch((err) => {

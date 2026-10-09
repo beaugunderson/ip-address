@@ -39,12 +39,7 @@ jobs:
       # the line numbers its links point at, so any change under src leaves it
       # stale until it is rebuilt.
       - name: Check the generated README is current
-        run: |
-          npm run docs
-          git diff --exit-code README.md || {
-            echo 'README.md is out of date; run `npm run docs` and commit the result.'
-            exit 1
-          }
+        run: npm run docs:check
 
   test:
     name: test-${{ matrix.node-version }}

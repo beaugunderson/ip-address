@@ -5,6 +5,18 @@
 
 set -e
 
+# The checker reads the working tree. Refuse mixed index/worktree inputs rather
+# than letting an unstaged fix hide a stale commit, or staging over user edits.
+if ! git diff --quiet -- src scripts README.md tsconfig.json package.json package-lock.json; then
+  echo "Docs inputs have unstaged changes; stage the intended inputs before committing."
+  exit 1
+fi
+if [ -n "$(git ls-files --others --exclude-standard -- src scripts README.md tsconfig.json package.json package-lock.json)" ]; then
+  echo "Docs inputs include untracked files; stage the intended inputs before committing."
+  exit 1
+fi
+npm run --silent docs:check
+
 if ! npm run --silent lint; then
   echo
   echo 'Lint failed. Run `npm run lint:fix` to correct what is mechanical.'

@@ -23,6 +23,7 @@
   "types": "dist/ip-address.d.ts",
   "scripts": {
     "docs": "tsx scripts/build-readme.ts",
+    "docs:check": "tsx scripts/build-readme.ts --check",
     "build": "rm -rf dist; mkdir dist; tsc",
     "prepack": "npm run docs && npm run build",
     "prepare": "git config core.hooksPath hooks || true",
