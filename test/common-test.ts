@@ -25,6 +25,18 @@ describe('the byte array API', () => {
   });
 });
 
+describe('the deprecated RE_ZONE_STRING export', () => {
+  it('lasts only until 11.0.0', () => {
+    const major = Number(pkg.version.split('.')[0]);
+
+    major.should.be.below(
+      11,
+      'ip-address is at 11.x, so delete RE_ZONE_STRING from src/v6/constants.ts: nothing in ' +
+        'the library uses it and it takes quadratic time on hostile input. Then delete this test.',
+    );
+  });
+});
+
 describe('testBit', () => {
   it('should return value per specific bit', () => {
     should.equal(testBit('0', 1), false);

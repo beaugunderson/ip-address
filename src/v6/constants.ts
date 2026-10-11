@@ -84,6 +84,9 @@ export const RE_SUBNET_STRING = /\/\d{1,3}(?=%|$)/;
  * A regular expression that matches an IPv6 zone
  * @memberof Address6
  * @static
+ * @deprecated Takes quadratic time on input holding many `%` characters
+ * followed by a line terminator. The library finds the zone by index, as
+ * `Address6`'s constructor shows, and 11.0.0 removes this export.
  */
 export const RE_ZONE_STRING = /%.*$/;
 

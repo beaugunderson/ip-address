@@ -40,8 +40,30 @@ describe('v6', () => {
       should.equal(Address6.isValid(`2001:db8::1%${'x'.repeat(100)}`), true);
     });
 
+    it('takes a zone from the first % and rejects a line terminator in it', () => {
+      new Address6('fe80::1%a%b').zone.should.equal('%a%b');
+      new Address6('fe80::1%').zone.should.equal('%');
+
+      for (const terminator of [
+        '\n',
+        '\r',
+        String.fromCharCode(0x2028),
+        String.fromCharCode(0x2029),
+      ]) {
+        should.equal(Address6.isValid(`fe80::1%eth0${terminator}`), false);
+        should.equal(Address6.isValid(`fe80::1%a${terminator}b%c`), false);
+      }
+    });
+
     it('rejects a longer address without building a diagnostic', () => {
-      const inputs = ['f'.repeat(46), `${'f'.repeat(46)}/64`, '!'.repeat(1 << 20)];
+      const inputs = [
+        'f'.repeat(46),
+        `${'f'.repeat(46)}/64`,
+        '!'.repeat(1 << 20),
+        // A line terminator keeps a `%` from starting a zone, so every one of
+        // these is a candidate zone start that fails.
+        `${'%'.repeat(1 << 17)}\n`,
+      ];
 
       for (const input of inputs) {
         should.equal(Address6.isValid(input), false);

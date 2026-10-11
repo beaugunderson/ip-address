@@ -144,12 +144,15 @@ export class Address6 {
       throw new AddressError('Invalid subnet mask.');
     }
 
-    const zone = constants6.RE_ZONE_STRING.exec(address);
+    // A zone runs from the first `%` to the end of the input and holds no line
+    // terminator. Finding it by index reads the input once, where matching
+    // RE_ZONE_STRING retries from every `%` that a line terminator disqualifies.
+    const zoneStart = address.indexOf('%');
 
-    if (zone) {
-      this.zone = zone[0];
+    if (zoneStart !== -1 && /^.*$/.test(address.slice(zoneStart))) {
+      this.zone = address.slice(zoneStart);
 
-      address = address.replace(constants6.RE_ZONE_STRING, '');
+      address = address.slice(0, zoneStart);
     }
 
     // The longest well-formed address is all but the last two groups written
