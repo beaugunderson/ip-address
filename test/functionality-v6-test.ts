@@ -80,6 +80,107 @@ describe('v6', () => {
     });
   });
 
+  describe('non-ASCII digits', () => {
+    // The WHATWG URL parser maps fullwidth characters to ASCII, so a parser
+    // that read them as hex or decimal would agree with it on the address
+    // while a raw string comparison disagreed: the shape of Node's
+    // CVE-2026-105483 TLS hostname bypass. Every entry point rejects them.
+    const fullwidth = (s: string) =>
+      s.replace(/[!-~]/g, (c) => String.fromCharCode(c.charCodeAt(0) + 0xfee0));
+    const digitsFrom = (zero: number) => (s: string) =>
+      s.replace(/[0-9]/g, (d) => String.fromCharCode(zero + Number(d)));
+
+    // Each ASCII input parses, so a rejected variant is rejected for its
+    // Unicode, not for its shape. The zone is left out of the per-character
+    // swaps because it is opaque text (see the test below).
+    const inputs = ['::1', '2001:db8::1', '2001:db8::/32', '::ffff:127.0.0.1', 'fe80::1%eth0'];
+
+    const variantsOf = (s: string) => {
+      const zoneStart = s.indexOf('%');
+      const end = zoneStart === -1 ? s.length : zoneStart;
+      const variants = [
+        fullwidth(s),
+        // Arabic-Indic and Devanagari digits
+        digitsFrom(0x0660)(s.slice(0, end)) + s.slice(end),
+        digitsFrom(0x0966)(s.slice(0, end)) + s.slice(end),
+      ];
+
+      // `%` itself is swapped: a fullwidth `％` must not start a zone
+      for (let i = 0; i <= Math.min(end, s.length - 1); i++) {
+        variants.push(s.slice(0, i) + fullwidth(s[i]) + s.slice(i + 1));
+      }
+
+      return variants.filter((variant) => variant !== s);
+    };
+
+    it('rejects them in an address, subnet, or embedded IPv4 address', () => {
+      for (const input of inputs) {
+        should.equal(Address6.isValid(input), true);
+
+        for (const variant of variantsOf(input)) {
+          should.equal(Address6.isValid(variant), false, variant);
+          should.Throw(() => new Address6(variant), AddressError);
+        }
+      }
+    });
+
+    it('rejects them in a URL host or port', () => {
+      Address6.fromURL('http://[2001:db8::1]:80/').port!.should.equal(80);
+
+      for (const url of [
+        `http://[${fullwidth('2001:db8::1')}]/`,
+        `http://[2001:db8::${fullwidth('1')}]:80/`,
+        `http://[2001:db8::1]:${fullwidth('80')}/`,
+        `http://[2001:db8::1]:8${fullwidth('0')}/`,
+        `http://${fullwidth('2001:db8::1')}/`,
+      ]) {
+        should.equal(Address6.fromURL(url).address, null, url);
+      }
+    });
+
+    it('rejects them in arpa and IPv4 forms', () => {
+      const arpa = '1.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.8.b.d.0.1.0.0.2.ip6.arpa.';
+      Address6.fromArpa(arpa).correctForm().should.equal('2001:db8::1');
+      should.Throw(() => Address6.fromArpa(fullwidth('1') + arpa.slice(1)), AddressError);
+
+      Address6.fromAddress4('127.0.0.1').correctForm().should.equal('::ffff:7f00:1');
+      should.Throw(() => Address6.fromAddress4(fullwidth('127.0.0.1')), AddressError);
+      should.Throw(() => Address6.fromAddress4(`127.0.0.${fullwidth('1')}`), AddressError);
+
+      Address6.fromAddress4Nat64('192.0.2.1').correctForm().should.equal('64:ff9b::c000:201');
+      should.Throw(() => Address6.fromAddress4Nat64(`192.0.2.${fullwidth('1')}`), AddressError);
+      should.Throw(() => Address6.fromAddress4Nat64('192.0.2.1', fullwidth('64:ff9b::/96')));
+      should.Throw(() => Address6.fromAddress4Nat64('192.0.2.1', `64:ff9b::/9${fullwidth('6')}`));
+    });
+
+    it('rejects them in mask and wildcard forms', () => {
+      Address6.fromAddressAndMask('fe80::1', 'ffff:ffff:ffff:ffff::').subnet.should.equal('/64');
+      should.Throw(() =>
+        Address6.fromAddressAndMask(fullwidth('fe80::1'), 'ffff:ffff:ffff:ffff::'),
+      );
+      should.Throw(() =>
+        Address6.fromAddressAndMask('fe80::1', fullwidth('ffff:ffff:ffff:ffff::')),
+      );
+
+      const wildcardMask = '::ffff:ffff:ffff:ffff';
+      Address6.fromAddressAndWildcardMask('fe80::1', wildcardMask).subnet.should.equal('/64');
+      should.Throw(() => Address6.fromAddressAndWildcardMask(fullwidth('fe80::1'), wildcardMask));
+      should.Throw(() => Address6.fromAddressAndWildcardMask('fe80::1', fullwidth(wildcardMask)));
+
+      Address6.fromWildcard('2001:db8::*').subnet.should.equal('/112');
+      should.Throw(() => Address6.fromWildcard(`2001:db${fullwidth('8')}::*`), AddressError);
+      should.Throw(() => Address6.fromWildcard(`2001:db8::${fullwidth('*')}`), AddressError);
+      should.Throw(() => Address6.fromWildcard(`2001:db8${fullwidth('::')}*`), AddressError);
+    });
+
+    it('keeps them in a zone as opaque text', () => {
+      const address = new Address6(`fe80::1%eth${fullwidth('0')}`);
+
+      address.zone.should.equal(`%eth${fullwidth('0')}`);
+      address.correctForm().should.equal('fe80::1');
+    });
+  });
+
   describe('a fully ellided /0 address', () => {
     const topic = new Address6('::/0');
 

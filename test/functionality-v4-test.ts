@@ -41,6 +41,73 @@ describe('v4', () => {
     });
   });
 
+  describe('non-ASCII digits', () => {
+    // The WHATWG URL parser maps fullwidth digits and dots to ASCII
+    // (`new URL('http://１２７．０．０．１/').hostname` is '127.0.0.1'), so a
+    // parser that read them as numbers would agree with it on the address
+    // while a raw string comparison disagreed: the shape of Node's
+    // CVE-2026-105483 TLS hostname bypass. Every entry point rejects them.
+    const fullwidth = (s: string) =>
+      s.replace(/[!-~]/g, (c) => String.fromCharCode(c.charCodeAt(0) + 0xfee0));
+    const digitsFrom = (zero: number) => (s: string) =>
+      s.replace(/[0-9]/g, (d) => String.fromCharCode(zero + Number(d)));
+
+    // Each ASCII input parses, so a rejected variant is rejected for its
+    // Unicode, not for its shape.
+    const inputs = ['127.0.0.1', '10.0.0.1/8', '192.168.1.255/32'];
+
+    const variantsOf = (s: string) => {
+      const variants = [
+        fullwidth(s),
+        // Arabic-Indic and Devanagari digits
+        digitsFrom(0x0660)(s),
+        digitsFrom(0x0966)(s),
+      ];
+
+      for (let i = 0; i < s.length; i++) {
+        variants.push(s.slice(0, i) + fullwidth(s[i]) + s.slice(i + 1));
+      }
+
+      return variants;
+    };
+
+    it('rejects them in an address or subnet', () => {
+      for (const input of inputs) {
+        should.equal(Address4.isValid(input), true);
+
+        for (const variant of variantsOf(input)) {
+          should.equal(Address4.isValid(variant), false, variant);
+          should.Throw(() => new Address4(variant), AddressError);
+        }
+      }
+    });
+
+    it('rejects them in hex and arpa forms', () => {
+      should.Throw(() => Address4.fromHex(fullwidth('7f000001')), AddressError);
+      should.Throw(() => Address4.fromHex(`7f00000${fullwidth('1')}`), AddressError);
+
+      const arpa = '1.0.0.127.in-addr.arpa.';
+      Address4.fromArpa(arpa).correctForm().should.equal('127.0.0.1');
+      should.Throw(() => Address4.fromArpa(fullwidth('1') + arpa.slice(1)), AddressError);
+      should.Throw(() => Address4.fromArpa(fullwidth(arpa)), AddressError);
+    });
+
+    it('rejects them in mask and wildcard forms', () => {
+      Address4.fromAddressAndMask('10.0.0.1', '255.255.255.0').subnet.should.equal('/24');
+      should.Throw(() => Address4.fromAddressAndMask(fullwidth('10.0.0.1'), '255.255.255.0'));
+      should.Throw(() => Address4.fromAddressAndMask('10.0.0.1', `255.255.255.${fullwidth('0')}`));
+
+      Address4.fromAddressAndWildcardMask('10.0.0.1', '0.0.0.255').subnet.should.equal('/24');
+      should.Throw(() => Address4.fromAddressAndWildcardMask(fullwidth('10.0.0.1'), '0.0.0.255'));
+      should.Throw(() => Address4.fromAddressAndWildcardMask('10.0.0.1', fullwidth('0.0.0.255')));
+
+      Address4.fromWildcard('192.168.0.*').subnet.should.equal('/24');
+      should.Throw(() => Address4.fromWildcard(`192.168.${fullwidth('0')}.*`), AddressError);
+      should.Throw(() => Address4.fromWildcard(`192.168.0.${fullwidth('*')}`), AddressError);
+      should.Throw(() => Address4.fromWildcard(`192.168.0${fullwidth('.')}*`), AddressError);
+    });
+  });
+
   describe('A correct address', () => {
     const topic = new Address4('127.0.0.1');
 
