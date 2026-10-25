@@ -554,6 +554,101 @@ describe('v6', () => {
       should.equal(teredo.microsoft.groupIndividual, false);
       should.equal(teredo.microsoft.nonce, '2662');
     });
+
+    it('reads each Teredo flag from its own bit', () => {
+      const cone = new Address6('2001:0:4136:e378:8000:63bf:3fff:fdd2').inspectTeredo();
+
+      should.equal(cone.coneNat, true);
+      should.equal(cone.microsoft.reserved, false);
+
+      const reserved = new Address6('2001:0:4136:e378:4000:63bf:3fff:fdd2').inspectTeredo();
+
+      should.equal(reserved.coneNat, false);
+      should.equal(reserved.microsoft.reserved, true);
+
+      const universalLocal = new Address6('2001:0:4136:e378:0200:63bf:3fff:fdd2').inspectTeredo();
+
+      should.equal(universalLocal.microsoft.universalLocal, true);
+      should.equal(universalLocal.microsoft.groupIndividual, false);
+
+      const groupIndividual = new Address6('2001:0:4136:e378:0100:63bf:3fff:fdd2').inspectTeredo();
+
+      should.equal(groupIndividual.microsoft.universalLocal, false);
+      should.equal(groupIndividual.microsoft.groupIndividual, true);
+    });
+
+    // Published addresses, each decoded against the flag layout in RFC 5991
+    // section 3.1: "CRAAAAUG AAAAAAAA", most significant bit first
+    it('decodes the Wikipedia cone NAT example', () => {
+      // https://en.wikipedia.org/wiki/Teredo_tunneling
+      const teredo = new Address6('2001:0000:4136:e378:8000:63bf:3fff:fdd2').inspectTeredo();
+
+      should.equal(teredo.prefix, '2001:0000');
+      should.equal(teredo.server4, '65.54.227.120');
+      should.equal(teredo.client4, '192.0.2.45');
+      should.equal(teredo.udpPort, '40000');
+      should.equal(teredo.flags, '1000000000000000');
+      should.equal(teredo.coneNat, true);
+
+      should.equal(teredo.microsoft.reserved, false);
+      should.equal(teredo.microsoft.universalLocal, false);
+      should.equal(teredo.microsoft.groupIndividual, false);
+      should.equal(teredo.microsoft.nonce, '0');
+    });
+
+    it('decodes the Black Hat 2007 cone NAT example', () => {
+      // Hoagland, "The Teredo Protocol: Tunneling Past Network Security and
+      // Other Security Implications", Black Hat USA 2007
+      const teredo = new Address6('2001::4136:E37E:8000:EEFB:3FFF:DD59').inspectTeredo();
+
+      should.equal(teredo.prefix, '2001:0000');
+      should.equal(teredo.server4, '65.54.227.126');
+      should.equal(teredo.client4, '192.0.34.166');
+      should.equal(teredo.udpPort, '4356');
+      should.equal(teredo.flags, '1000000000000000');
+      should.equal(teredo.coneNat, true);
+
+      should.equal(teredo.microsoft.reserved, false);
+      should.equal(teredo.microsoft.universalLocal, false);
+      should.equal(teredo.microsoft.groupIndividual, false);
+      should.equal(teredo.microsoft.nonce, '0');
+    });
+
+    it('decodes a Windows client address with RFC 5991 random flags', () => {
+      // ipconfig output posted to https://forums.overclockers.co.uk/threads/teredo.18711529/
+      // The reserved bit is clear while the bit beside it is set.
+      const teredo = new Address6('2001:0:9d38:6abd:286b:145e:ade5:1579').inspectTeredo();
+
+      should.equal(teredo.prefix, '2001:0000');
+      should.equal(teredo.server4, '157.56.106.189');
+      should.equal(teredo.client4, '82.26.234.134');
+      should.equal(teredo.udpPort, '60321');
+      should.equal(teredo.flags, '0010100001101011');
+      should.equal(teredo.coneNat, false);
+
+      should.equal(teredo.microsoft.reserved, false);
+      should.equal(teredo.microsoft.universalLocal, false);
+      should.equal(teredo.microsoft.groupIndividual, false);
+      should.equal(teredo.microsoft.nonce, '2667');
+    });
+
+    it('decodes a second Windows client address with RFC 5991 random flags', () => {
+      // ipconfig output posted to
+      // https://learn.microsoft.com/en-us/answers/questions/4373830/teredo-tunneling-pseudo-interface-how-to-reinstall
+      const teredo = new Address6('2001:0:284a:364:140a:f1d6:d204:199d').inspectTeredo();
+
+      should.equal(teredo.prefix, '2001:0000');
+      should.equal(teredo.server4, '40.74.3.100');
+      should.equal(teredo.client4, '45.251.230.98');
+      should.equal(teredo.udpPort, '3625');
+      should.equal(teredo.flags, '0001010000001010');
+      should.equal(teredo.coneNat, false);
+
+      should.equal(teredo.microsoft.reserved, false);
+      should.equal(teredo.microsoft.universalLocal, false);
+      should.equal(teredo.microsoft.groupIndividual, false);
+      should.equal(teredo.microsoft.nonce, '1290');
+    });
   });
 
   describe('A 6to4 address', () => {
