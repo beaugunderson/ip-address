@@ -16,7 +16,7 @@
     "bigint",
     "browser"
   ],
-  "version": "10.7.4",
+  "version": "10.7.5",
   "author": "Beau Gunderson <beau@beaugunderson.com> (https://beaugunderson.com/)",
   "license": "MIT",
   "main": "dist/ip-address.js",
